@@ -29,7 +29,7 @@ bash /home/tony/.codex/skills/tmux-v2/scripts/launch-interactive-grid.sh --repla
 bash /home/tony/.codex/skills/tmux-v2/scripts/open-grid-window.sh
 ```
 
-Default visible launch when the user wants to watch the session live:
+Default visible launch as the user always wants to watch the session live:
 
 ```bash
 bash /home/tony/.codex/skills/tmux-v2/scripts/launch-interactive-grid.sh --replace --open-window
