@@ -49,8 +49,8 @@ This repo treats the AI tool stack as a coordination protocol, not a single-vend
 | Vendor | Role | Skills published here |
 |---|---|---|
 | **Claude** (Opus, Sonnet, Haiku) | Manager pane + persona agents on Claude-tier lanes; primary skill suite | [`claude/`](claude/) |
-| **Codex** (gpt-5.4, gpt-5.3) | Persona agents on Codex-tier lanes (typically Frank, Dan, Elsa); parallel skill suite | [`codex/`](codex/) *(forthcoming)* |
-| **Gemini** | Specialized roles (currently `merge-manager`); third-vendor parity check on the protocol | [`gemini/`](gemini/) *(forthcoming)* |
+| **Codex** (gpt-5.4, gpt-5.3) | Persona agents on Codex-tier lanes (typically Dan, Elsa, Frank); parallel skill suite | [`codex/`](codex/) |
+| **Gemini** | Specialized roles (currently `merge-manager`); third-vendor parity check on the protocol | *(in flight — landing in v0.3)* |
 
 A single sprint can have ~30 agents working in parallel (7 personas × 3-5 sub-agents each) across the 7 wrfcoin repositories.
 
@@ -75,13 +75,17 @@ agent-orchestration/
 │   └── hooks/
 │       ├── sprint-doc-lock.sh        (PreToolUse — claim advisory lock on sprint doc)
 │       └── sprint-doc-unlock.sh      (PostToolUse — release lock)
-├── codex/                            (forthcoming — 12 codex-side skills)
-├── gemini/                           (forthcoming — 1 Gemini skill: merge-manager)
+├── codex/                            (4 of 13 codex-side skills published in v0.2)
+│   ├── skills/tmux-v2/                Codex-side persona-grid driver
+│   ├── skills/merge-manager/          Vendor-portable PR review + sprint coordination
+│   ├── skills/wrfcoin-sprint-dispatch/ "Resume sprint" workflow tying everything together
+│   └── skills/gh-fix-ci/              Vendor-portable CI failure triage
+├── gemini/                           (in flight — landing in v0.3)
 └── images/
     └── 00-hero-trolli.jpg            (sprint mid-flight)
 ```
 
-This is **v0.1**. The Claude side is the most mature; Codex and Gemini directories will land in subsequent commits.
+This is **v0.2**. The Claude side is the most mature. The Codex side now ships 4 skills (the flagship `tmux-v2`, the vendor-portable `merge-manager` and `gh-fix-ci`, and the integrative `wrfcoin-sprint-dispatch`); 9 more are forthcoming. The Gemini directory is in active development and lands in v0.3.
 
 ---
 
