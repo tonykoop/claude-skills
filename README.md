@@ -67,7 +67,9 @@ agent-orchestration/
 │   └── metrics.md                    (full Claude Code Insights breakdown)
 ├── claude/
 │   ├── skills/
-│   │   ├── tmux-sprint/              (flagship — persona dispatch, preflight probing, codex revival)
+│   │   ├── merge-review/             (DAILY DRIVER — Codex-review-gated PR review, 7-point checklist, structured comment)
+│   │   ├── sprint-update/            (DAILY DRIVER — per-persona queue mgmt + auto-generated themed dispatch prompts)
+│   │   ├── tmux-sprint/              (persona dispatch, preflight probing, codex revival)
 │   │   └── disk-cleanup/             (weekly cargo + worktree + Docker cleanup with --dry-run by default)
 │   ├── commands/
 │   │   ├── pull-all.md + .sh         (pull 20 repos + update 26 persona worktrees with state-aware safety)
@@ -107,16 +109,37 @@ Personas are stable across sprints. Their worktrees are semi-permanent — they 
 
 ---
 
+## How a typical day flows through this system
+
+Most working days run through a tight loop that hits two skills more often than anything else:
+
+```
+   tmux-sprint dispatch   →   personas open draft PRs   →   merge-review on each PR
+                                                                        ↓
+                                              sprint-update reflects merges in the doc
+                                                                        ↓
+                                                        next dispatch (top of loop)
+```
+
+`merge-review` and `sprint-update` are the daily drivers. Everything else (`tmux-sprint`, `pull-all`, `deploy-node`, `disk-cleanup`) supports the periodic moments — sprint kickoff, weekly maintenance, deploys. The loop above is what makes a single 8-hour session ship 18 PRs in one push: every PR goes through the same review checklist, every merge updates the sprint doc the same way, and the next round of work falls out of the doc automatically.
+
 ## Skills, commands, and hooks
 
-### Skills (Claude)
+### Skills (Claude) — daily drivers
+
+| Skill | Purpose |
+|---|---|
+| [`merge-review`](claude/skills/merge-review/SKILL.md) | **The PR-review-and-merge loop.** Reads the linked GitHub issue, gates on Codex auto-review (mandatory for codex-enabled repos: `core4`, `infra`, `frontend`, `backend`), runs a 7-point checklist (scope match, test coverage, CI status, code quality, implementation correctness, merge safety, codex-review verdict), posts a structured PR-review comment with explicit blockers / warnings / positives, and either merges (with closing comments on PR + issue) or requests changes. Knows the dependency-first merge order across the 7 wrfcoin repos. |
+| [`sprint-update`](claude/skills/sprint-update/SKILL.md) | **Sprint-doc maintenance after every merge batch.** Moves merged items from `Active` to `Completed` per persona, promotes the next Queue item to Active, updates header counts and velocity table, and **auto-generates themed dispatch-prompt patterns** for every persona with queued work — sized at 2-3 issues per agent, grouped by repo + theme (not batch number), with revision rounds prepended for any changes-requested PRs. The dispatch prompts get regenerated each run so they always reflect current queue state. |
+
+### Skills (Claude) — periodic / maintenance
 
 | Skill | Purpose |
 |---|---|
 | [`tmux-sprint`](claude/skills/tmux-sprint/SKILL.md) | Persona-grid driver: `preflight` (structured pane state probe), `dispatch` (transactional fan-out with assignment-file-as-contract), `restart` (codex-aware session revival). Replaces fragile `tmux send-keys \| sleep 5 \| capture-pane` patterns with verified primitives. |
 | [`disk-cleanup`](claude/skills/disk-cleanup/SKILL.md) | Weekly recovery: `cargo clean` per worktree, merged-branch cleanup, npm/pnpm cache prune, optional Docker prune, generates the WSL `Optimize-VHD` PowerShell command (does not run it — WSL can't shrink its own backing VHD while running). Default mode is `--dry-run`. |
 
-More skills (`handoff`, `merge-review`, `auto-manage`, `run-swarm`, `ci-triage`, `launch-lanes`, `launch-audit`, `heal`, `scaffold-hygiene`, `sprint-update`, `sprint-archive`, `sprint-planner`) are forthcoming.
+More skills (`handoff`, `auto-manage`, `run-swarm`, `ci-triage`, `launch-lanes`, `launch-audit`, `heal`, `scaffold-hygiene`, `sprint-archive`, `sprint-planner`) are forthcoming.
 
 ### Slash commands (Claude project-level)
 

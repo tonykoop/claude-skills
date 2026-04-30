@@ -11,7 +11,9 @@ For multi-vendor context, see the [top-level README](../README.md).
 ```
 claude/
 ├── skills/
-│   ├── tmux-sprint/        Persona-grid driver (preflight, dispatch, restart). Flagship skill.
+│   ├── merge-review/       DAILY DRIVER — review PR against linked issue, codex-review-gated merge.
+│   ├── sprint-update/      DAILY DRIVER — sprint-doc maintenance + auto-generated themed dispatch prompts.
+│   ├── tmux-sprint/        Persona-grid driver (preflight, dispatch, restart).
 │   └── disk-cleanup/       Weekly recovery: cargo, worktrees, npm/pnpm, optional Docker, WSL VHD shrink prompt.
 ├── commands/
 │   ├── pull-all.md + .sh   Pull 20 repos + update 26 persona worktrees with state-aware safety.
@@ -20,6 +22,8 @@ claude/
     ├── sprint-doc-lock.sh    PreToolUse — claim advisory lock on sprint doc.
     └── sprint-doc-unlock.sh  PostToolUse — release lock if owned by current process.
 ```
+
+`merge-review` and `sprint-update` are the highest-volume skills — together they're the loop that converts agent dispatches into merged commits and a current sprint-doc reflecting reality. See the top-level [README "How a typical day flows through this system"](../README.md#how-a-typical-day-flows-through-this-system) for the full picture.
 
 ---
 
