@@ -1,55 +1,54 @@
-# Prerequisites
-*.d
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
 
-# Object files
-*.o
-*.ko
-*.obj
-*.elf
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
 
-# Linker output
-*.ilk
-*.map
-*.exp
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
 
-# Precompiled Headers
-*.gch
-*.pch
+# Node
+node_modules/
+npm-debug.log*
+.pnpm-store/
+.yarn/
 
-# Libraries
-*.lib
-*.a
-*.la
-*.lo
+# Logs and local state
+*.log
+logs/
+tmp/
+*.tmp
 
-# Shared objects (inc. Windows DLLs)
-*.dll
-*.so
-*.so.*
-*.dylib
-
-# Executables
-*.exe
-*.out
-*.app
-*.i*86
-*.x86_64
-*.hex
-
-# Debug files
-*.dSYM/
-*.su
-*.idb
-*.pdb
-
-# Kernel Module Compile Results
-*.mod*
-*.cmd
-.tmp_versions/
-modules.order
-Module.symvers
-Mkfile.old
-dkms.conf
-
-# debug information files
-*.dwo
+# Claude / Codex / Gemini local artifacts (never commit)
+**/auth.json
+**/oauth_creds.json
+**/google_accounts.json
+**/installation_id
+**/user_id
+**/history.jsonl
+**/session_index.jsonl
+**/sessions/
+**/cache/
+**/paste-cache/
+**/shell_snapshots/
+**/file-history/
+**/projects/
+**/telemetry/
+**/usage-data/
+**/security_warnings_state_*.json
+settings.local.json
+.env
+.env.*
+!.env.example
