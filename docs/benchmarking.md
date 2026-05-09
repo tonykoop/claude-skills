@@ -57,3 +57,20 @@ under `docs/benchmarks/run-logs/` when the result supports a PR.
 
 See [run-log-schema.md](benchmarks/run-log-schema.md) for the current output
 format.
+
+## Known Gaps
+
+- **No model-in-the-loop evaluation**: the harness checks static file/text
+  fixtures only; it cannot verify that a live model run activates the right
+  skill or produces correct output.
+- **No CI integration**: the harness is invoked manually; automated gate on
+  `scripts/skill_benchmark.py` is not yet wired into any CI workflow.
+- **Response fixtures are hand-authored**: fixture files under
+  `docs/benchmarks/fixtures/` capture expected output patterns; they are not
+  recorded from real model runs and may drift as skills evolve.
+- **Single suite, single runtime**: the sample suite covers one pass of four
+  skills; cross-runtime (Codex CLI, Gemini CLI) and multi-version routing
+  coverage is not yet included.
+- **No regression baseline**: run logs are archived for reference but there is
+  no automated comparison to a previous run; regressions surface only on
+  manual inspection.
