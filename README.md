@@ -27,7 +27,9 @@ shippable skill should have:
 - a per-skill changelog;
 - a manifest entry;
 - a tagged release before zipping or upload;
-- a lightweight validation or benchmark story.
+- a lightweight validation or benchmark story;
+- a review evidence contract that states changed behavior, validation, known
+  gaps, reviewer focus, and the agent's own merge bar.
 
 Runtime-specific pieces stay under their runtime folders. Shared skills that
 should work across Claude Desktop, Claude Code, Codex, Codex Desktop, Gemini CLI,
@@ -64,6 +66,14 @@ detection. The guiding principle is simple: skills should be easy to install and
 portable, but hard to silently drift.
 
 See [docs/skill-controls.md](docs/skill-controls.md).
+
+## Review Gates
+
+Skill PRs are reviewed against an evidence-based gate, not just a plausible
+diff. Use [docs/review-gates/agentic-skill.md](docs/review-gates/agentic-skill.md)
+for skill, command, hook, adapter, and benchmark changes. Use
+[docs/review-gates/pr-evidence-contract.md](docs/review-gates/pr-evidence-contract.md)
+as the minimum PR-body template for agent-authored work.
 
 ## Provenance
 
