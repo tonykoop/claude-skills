@@ -1,0 +1,12 @@
+{
+  "eval_id": 6,
+  "eval_name": "maker-nexus-plasma-trellis-tier-2",
+  "prompt": "I want to build a 6-foot-tall garden trellis from quarter-inch mild steel — silhouette of climbing vine leaves, cut on the plasma table. I'm at Maker Nexus and cleared on metalshop. The pattern's an organic curve so I want plasma rather than waterjet. Powder coat finish in matte black. Tier 2 packet please. Include the cut path strategy — I haven't run the plasma at this scale before.",
+  "assertions": [
+    {"text": "Tier 2 file set complete (10 files)", "kind": "file_set"},
+    {"text": "design.md or op-sequence covers cut-path strategy (lead-in, kerf, pierce points, sequencing)", "kind": "regex_in_file"},
+    {"text": "BOM specifies mild steel + powder coat finish", "kind": "regex_in_file"},
+    {"text": "op-sequence references the metalshop or plasma area at Maker Nexus", "kind": "regex_in_file"},
+    {"text": "risks.md addresses fume / heat / cutting hazards specific to plasma", "kind": "regex_in_file"}
+  ]
+}

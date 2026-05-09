@@ -1,0 +1,33 @@
+{
+  "eval_name": "maker-nexus-canoe-paddle-cert-gap",
+  "variant": "with_skill",
+  "expectations": [
+    {
+      "text": "Response addresses the bandsaw cert gap explicitly",
+      "passed": true,
+      "evidence": "mentions bandsaw + cert/class context"
+    },
+    {
+      "text": "Response names the specific class that grants bandsaw access (woodshop-intro or equivalent)",
+      "passed": true,
+      "evidence": "named woodshop-intro / bandsaw class"
+    },
+    {
+      "text": "Response references the Maker Nexus class schedule URL",
+      "passed": true,
+      "evidence": "URL present"
+    },
+    {
+      "text": "Response stays in knowledge mode \u2014 does not produce a full Tier 2 build packet",
+      "passed": true,
+      "evidence": "no packet artifacts"
+    },
+    {
+      "text": "Response is a single chat-style markdown file (response.md), not a folder of packet artifacts",
+      "passed": true,
+      "evidence": "1 file(s)"
+    }
+  ],
+  "passed_count": 5,
+  "total_count": 5
+}

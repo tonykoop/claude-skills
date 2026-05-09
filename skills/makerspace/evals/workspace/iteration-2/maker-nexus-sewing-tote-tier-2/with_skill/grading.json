@@ -1,0 +1,33 @@
+{
+  "eval_name": "maker-nexus-sewing-tote-tier-2",
+  "variant": "with_skill",
+  "expectations": [
+    {
+      "text": "Tier 2 file set complete (10 files)",
+      "passed": true,
+      "evidence": "all present"
+    },
+    {
+      "text": "design.md mentions waxed canvas + cotton lining",
+      "passed": true,
+      "evidence": "canvas=True cotton/twill=True"
+    },
+    {
+      "text": "BOM lists canvas, lining, zipper, straps, and at least one structural element",
+      "passed": true,
+      "evidence": "zipper=True straps=True structure=True lining=True canvas=True"
+    },
+    {
+      "text": "op-sequence references the sewing/textile area at Maker Nexus",
+      "passed": true,
+      "evidence": "textile/sewing area cited"
+    },
+    {
+      "text": "Response addresses the industrial walking-foot machine question",
+      "passed": true,
+      "evidence": "walking-foot=True cert-discussion=True"
+    }
+  ],
+  "passed_count": 5,
+  "total_count": 5
+}

@@ -1,0 +1,12 @@
+{
+  "eval_id": 4,
+  "eval_name": "maker-nexus-sewing-tote-tier-2",
+  "prompt": "I'm at Maker Nexus and want to make a heavy-duty zippered tote bag — about 18 wide, 14 tall, 6 deep, with two padded straps and an inside pocket. 12-oz waxed canvas exterior, cotton-twill lining, bound seams. I have my domestic sewing machine cert but I'd love to use the industrial walking-foot machine if it'll handle the canvas — what's that need? Tier 2 build packet please.",
+  "assertions": [
+    {"text": "Tier 2 file set complete (10 files)", "kind": "file_set"},
+    {"text": "design.md mentions waxed canvas + cotton lining", "kind": "regex_in_file"},
+    {"text": "BOM lists canvas, lining, zipper, straps, and at least one structural element (foam/interfacing/webbing)", "kind": "regex_in_file"},
+    {"text": "op-sequence references the sewing/textile area at Maker Nexus", "kind": "regex_in_file"},
+    {"text": "Response addresses the industrial walking-foot machine question (cert requirement or capability check)", "kind": "regex_in_file"}
+  ]
+}

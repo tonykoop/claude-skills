@@ -1,0 +1,440 @@
+version: 1
+last_updated: 2026-05-08
+notes:
+  - Starter vinyasa-focused pose library for sequencing, not a complete catalog.
+  - Use this for relationships, prep logic, counter-pose ideas, and accessible substitutions.
+
+poses:
+  - id: sukhasana
+    english_name: Easy Seat
+    sanskrit_name: Sukhasana
+    family: centering
+    level: all
+    sides: centered
+    intensity: low
+    phase_roles: [arrival, breathwork]
+    focus: [spine, hips]
+    prepares_for: [cat_cow, seated_twist]
+    counterposes_for: []
+    contraindications: []
+    modifications: [sit_on_blanket, sit_on_block]
+
+  - id: balasana
+    english_name: Child's Pose
+    sanskrit_name: Balasana
+    family: reset
+    level: all
+    sides: centered
+    intensity: low
+    phase_roles: [warmup, rest, cooldown]
+    focus: [spine, hips, shoulders]
+    prepares_for: [tabletop, thread_the_needle]
+    counterposes_for: [crow, plank, camel]
+    contraindications: [sensitive_knees, pregnancy_if_compressed]
+    modifications: [blanket_under_knees, knees_wide, forearms_stacked]
+
+  - id: tabletop
+    english_name: Tabletop
+    sanskrit_name: Bharmanasana
+    family: warmup
+    level: all
+    sides: centered
+    intensity: low
+    phase_roles: [warmup, transition]
+    focus: [wrists, shoulders, core]
+    prepares_for: [cat_cow, plank]
+    counterposes_for: []
+    contraindications: [wrist_sensitivity]
+    modifications: [fists_or_forearms, blanket_under_knees]
+
+  - id: cat_cow
+    english_name: Cat-Cow
+    sanskrit_name: Marjaryasana-Bitilasana
+    family: spinal_mobility
+    level: all
+    sides: centered
+    intensity: low
+    phase_roles: [warmup]
+    focus: [spine, shoulders, core]
+    prepares_for: [downward_dog, cobra]
+    counterposes_for: []
+    contraindications: [wrist_sensitivity]
+    modifications: [forearms, seated_cat_cow]
+
+  - id: thread_the_needle
+    english_name: Thread the Needle
+    sanskrit_name: Parsva Balasana
+    family: twist
+    level: all
+    sides: both
+    intensity: low
+    phase_roles: [warmup, cooldown]
+    focus: [thoracic_spine, shoulders]
+    prepares_for: [seated_twist]
+    counterposes_for: []
+    contraindications: [shoulder_pressure]
+    modifications: [block_under_head, keep_bottom_arm_active]
+
+  - id: low_lunge
+    english_name: Low Lunge
+    sanskrit_name: Anjaneyasana
+    family: lunge
+    level: beginner
+    sides: both
+    intensity: low_medium
+    phase_roles: [warmup, prep]
+    focus: [hip_flexors, quads, balance]
+    prepares_for: [crescent_lunge, lizard, warrior_ii]
+    counterposes_for: []
+    contraindications: [sensitive_knees]
+    modifications: [blanket_under_knee, hands_on_blocks]
+
+  - id: half_split
+    english_name: Half Split
+    sanskrit_name: Ardha Hanumanasana
+    family: hamstring_prep
+    level: beginner
+    sides: both
+    intensity: low_medium
+    phase_roles: [warmup, cooldown]
+    focus: [hamstrings, calves, hips]
+    prepares_for: [triangle]
+    counterposes_for: []
+    contraindications: [hamstring_strain]
+    modifications: [microbend_front_knee, hands_on_blocks]
+
+  - id: downward_dog
+    english_name: Downward Facing Dog
+    sanskrit_name: Adho Mukha Svanasana
+    family: transition
+    level: beginner
+    sides: centered
+    intensity: medium
+    phase_roles: [warmup, flow, reset]
+    focus: [shoulders, hamstrings, wrists]
+    prepares_for: [plank, warrior_ii, triangle]
+    counterposes_for: [camel]
+    contraindications: [wrist_sensitivity, uncontrolled_high_blood_pressure]
+    modifications: [bent_knees, hands_on_blocks, puppy_pose]
+
+  - id: plank
+    english_name: Plank
+    sanskrit_name: Phalakasana
+    family: core_strength
+    level: beginner_intermediate
+    sides: centered
+    intensity: medium_high
+    phase_roles: [flow, prep]
+    focus: [core, shoulders, wrists]
+    prepares_for: [crow]
+    counterposes_for: []
+    contraindications: [wrist_sensitivity, shoulder_instability]
+    modifications: [knees_down, forearm_plank]
+
+  - id: cobra
+    english_name: Cobra
+    sanskrit_name: Bhujangasana
+    family: backbend
+    level: beginner
+    sides: centered
+    intensity: low_medium
+    phase_roles: [warmup, prep]
+    focus: [thoracic_spine, back_body]
+    prepares_for: [locust, bridge, camel]
+    counterposes_for: []
+    contraindications: [acute_low_back_pain]
+    modifications: [baby_cobra, hands_lighter]
+
+  - id: mountain
+    english_name: Mountain Pose
+    sanskrit_name: Tadasana
+    family: standing_base
+    level: all
+    sides: centered
+    intensity: low
+    phase_roles: [transition, reset]
+    focus: [posture, grounding]
+    prepares_for: [chair, warrior_ii, tree]
+    counterposes_for: []
+    contraindications: []
+    modifications: [feet_hip_width]
+
+  - id: chair
+    english_name: Chair Pose
+    sanskrit_name: Utkatasana
+    family: standing_strength
+    level: beginner_intermediate
+    sides: centered
+    intensity: medium_high
+    phase_roles: [flow, build]
+    focus: [legs, core, shoulders]
+    prepares_for: [crow, warrior_ii]
+    counterposes_for: []
+    contraindications: [sensitive_knees]
+    modifications: [hands_at_heart, smaller_bend]
+
+  - id: warrior_ii
+    english_name: Warrior II
+    sanskrit_name: Virabhadrasana II
+    family: standing
+    level: beginner
+    sides: both
+    intensity: medium
+    phase_roles: [build, flow]
+    focus: [legs, hips, stamina]
+    prepares_for: [side_angle, reverse_warrior, triangle]
+    counterposes_for: []
+    contraindications: [sensitive_front_knee]
+    modifications: [shorter_stance]
+
+  - id: reverse_warrior
+    english_name: Reverse Warrior
+    sanskrit_name: Viparita Virabhadrasana
+    family: standing_sidebend
+    level: beginner
+    sides: both
+    intensity: medium
+    phase_roles: [flow, build]
+    focus: [side_body, legs]
+    prepares_for: [side_angle, crescent_lunge]
+    counterposes_for: []
+    contraindications: [low_back_compression]
+    modifications: [hand_to_hip, keep_torso_lighter]
+
+  - id: side_angle
+    english_name: Extended Side Angle
+    sanskrit_name: Utthita Parsvakonasana
+    family: standing
+    level: beginner_intermediate
+    sides: both
+    intensity: medium
+    phase_roles: [build, flow]
+    focus: [legs, hips, side_body]
+    prepares_for: [triangle]
+    counterposes_for: []
+    contraindications: [shoulder_strain]
+    modifications: [forearm_to_thigh, hand_on_block]
+
+  - id: triangle
+    english_name: Triangle
+    sanskrit_name: Trikonasana
+    family: standing
+    level: beginner_intermediate
+    sides: both
+    intensity: medium
+    phase_roles: [build, prep]
+    focus: [hamstrings, adductors, side_body]
+    prepares_for: []
+    counterposes_for: []
+    contraindications: [hamstring_strain, neck_sensitivity]
+    modifications: [hand_on_block, shorter_stance]
+
+  - id: crescent_lunge
+    english_name: Crescent Lunge
+    sanskrit_name: Ashta Chandrasana
+    family: standing_balance
+    level: beginner_intermediate
+    sides: both
+    intensity: medium_high
+    phase_roles: [build, prep]
+    focus: [hip_flexors, legs, balance]
+    prepares_for: []
+    counterposes_for: []
+    contraindications: [balance_instability]
+    modifications: [hands_at_hips, shorter_stance]
+
+  - id: tree
+    english_name: Tree Pose
+    sanskrit_name: Vrksasana
+    family: standing_balance
+    level: beginner
+    sides: both
+    intensity: medium
+    phase_roles: [build, focus]
+    focus: [balance, hips, concentration]
+    prepares_for: []
+    counterposes_for: []
+    contraindications: [balance_instability]
+    modifications: [toes_down, wall_support]
+
+  - id: malasana
+    english_name: Garland Pose
+    sanskrit_name: Malasana
+    family: hip_opener
+    level: beginner_intermediate
+    sides: centered
+    intensity: medium
+    phase_roles: [warmup, prep, cooldown]
+    focus: [hips, ankles, pelvic_floor, spine]
+    prepares_for: [crow, seated_twist]
+    counterposes_for: []
+    contraindications: [sensitive_knees, achilles_sensitivity]
+    modifications: [block_under_seat, heels_lifted]
+
+  - id: lizard
+    english_name: Lizard Pose
+    sanskrit_name: Utthan Pristhasana
+    family: hip_opener
+    level: intermediate
+    sides: both
+    intensity: medium_high
+    phase_roles: [prep, cooldown]
+    focus: [hip_flexors, adductors, hamstrings]
+    prepares_for: [pigeon]
+    counterposes_for: []
+    contraindications: [knee_sensitivity, hamstring_strain]
+    modifications: [hands_on_blocks, back_knee_down]
+
+  - id: pigeon
+    english_name: Pigeon Pose
+    sanskrit_name: Eka Pada Rajakapotasana Prep
+    family: hip_opener
+    level: intermediate
+    sides: both
+    intensity: medium_high
+    phase_roles: [cooldown, focal]
+    focus: [glutes, outer_hips, hip_flexors]
+    prepares_for: []
+    counterposes_for: []
+    contraindications: [knee_sensitivity, SI_joint_irritation]
+    modifications: [reclined_figure_four, block_under_hip]
+
+  - id: bridge
+    english_name: Bridge Pose
+    sanskrit_name: Setu Bandha Sarvangasana
+    family: backbend
+    level: beginner
+    sides: centered
+    intensity: medium
+    phase_roles: [prep, cooldown]
+    focus: [glutes, hamstrings, chest]
+    prepares_for: [camel]
+    counterposes_for: []
+    contraindications: [neck_sensitivity]
+    modifications: [block_under_sacrum, smaller_lift]
+
+  - id: locust
+    english_name: Locust Pose
+    sanskrit_name: Salabhasana
+    family: backbend
+    level: beginner_intermediate
+    sides: centered
+    intensity: medium
+    phase_roles: [prep]
+    focus: [back_body, glutes, shoulders]
+    prepares_for: [bridge, camel]
+    counterposes_for: []
+    contraindications: [acute_low_back_pain]
+    modifications: [hands_back, one_leg_at_a_time]
+
+  - id: camel
+    english_name: Camel Pose
+    sanskrit_name: Ustrasana
+    family: backbend
+    level: intermediate
+    sides: centered
+    intensity: high
+    phase_roles: [peak, focal]
+    focus: [quads, hip_flexors, chest, thoracic_spine]
+    prepares_for: []
+    counterposes_for: []
+    contraindications: [neck_sensitivity, low_back_compression, knee_sensitivity]
+    modifications: [toes_tucked, hands_on_low_back]
+
+  - id: crow
+    english_name: Crow Pose
+    sanskrit_name: Bakasana
+    family: arm_balance
+    level: intermediate
+    sides: centered
+    intensity: high
+    phase_roles: [peak]
+    focus: [wrists, core, scapular_stability, hip_compression]
+    prepares_for: []
+    counterposes_for: []
+    contraindications: [wrist_sensitivity, shoulder_instability, pregnancy]
+    modifications: [toes_on_block, squat_hold, plank]
+
+  - id: seated_twist
+    english_name: Seated Spinal Twist
+    sanskrit_name: Ardha Matsyendrasana Variation
+    family: twist
+    level: beginner
+    sides: both
+    intensity: low_medium
+    phase_roles: [cooldown]
+    focus: [thoracic_spine, glutes]
+    prepares_for: []
+    counterposes_for: [camel]
+    contraindications: [disc_irritation, pregnancy_if_compressed]
+    modifications: [extend_bottom_leg, lighter_twist]
+
+  - id: supine_twist
+    english_name: Supine Twist
+    sanskrit_name: Jathara Parivartanasana Variation
+    family: twist
+    level: all
+    sides: both
+    intensity: low
+    phase_roles: [cooldown]
+    focus: [spine, ribs, nervous_system]
+    prepares_for: []
+    counterposes_for: [camel, bridge]
+    contraindications: [SI_joint_irritation_if_forced]
+    modifications: [support_with_blankets, keep_knees_higher]
+
+  - id: happy_baby
+    english_name: Happy Baby
+    sanskrit_name: Ananda Balasana
+    family: cooldown
+    level: all
+    sides: centered
+    intensity: low
+    phase_roles: [cooldown]
+    focus: [hips, low_back]
+    prepares_for: []
+    counterposes_for: [crow, chair]
+    contraindications: [hamstring_strain]
+    modifications: [hold_thighs, one_leg_at_a_time]
+
+  - id: reclined_figure_four
+    english_name: Reclined Figure Four
+    sanskrit_name: Supta Kapotasana Variation
+    family: hip_opener
+    level: all
+    sides: both
+    intensity: low_medium
+    phase_roles: [cooldown]
+    focus: [outer_hips, glutes]
+    prepares_for: []
+    counterposes_for: [pigeon]
+    contraindications: [knee_sensitivity_if_forced]
+    modifications: [foot_down_option, strap_behind_thigh]
+
+  - id: legs_up_the_wall
+    english_name: Legs Up the Wall
+    sanskrit_name: Viparita Karani Variation
+    family: restorative
+    level: all
+    sides: centered
+    intensity: low
+    phase_roles: [cooldown, restorative]
+    focus: [downshift, legs, breath]
+    prepares_for: [savasana]
+    counterposes_for: [warrior_ii, chair]
+    contraindications: [glaucoma_if_head_low, some_pregnancy_cases]
+    modifications: [calves_on_chair, bolster_under_pelvis]
+
+  - id: savasana
+    english_name: Corpse Pose
+    sanskrit_name: Savasana
+    family: rest
+    level: all
+    sides: centered
+    intensity: very_low
+    phase_roles: [final_rest]
+    focus: [integration, nervous_system]
+    prepares_for: []
+    counterposes_for: []
+    contraindications: [pregnancy_if_supine_uncomfortable, low_back_discomfort]
+    modifications: [bolster_under_knees, side_lying_rest]

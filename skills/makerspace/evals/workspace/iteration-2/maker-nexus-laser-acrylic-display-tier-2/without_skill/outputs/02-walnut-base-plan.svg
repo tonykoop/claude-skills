@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Walnut base — three-view shop drawing
+  Outer dimensions: 7.000 W x 2.500 D x 1.250 H inches
+-->
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="11in" height="8.5in"
+     viewBox="0 0 11 8.5"
+     font-family="Helvetica, Arial, sans-serif"
+     font-size="0.14">
+
+  <style>
+    .obj   { fill: #d8c3a0; stroke: #2b1d12; stroke-width: 0.012; }
+    .hidden{ fill: none; stroke: #2b1d12; stroke-width: 0.010; stroke-dasharray: 0.06 0.04; }
+    .dim   { stroke: #444; stroke-width: 0.006; fill: none; }
+    .dimtext { fill: #222; font-size: 0.12; }
+    .title { font-size: 0.22; font-weight: bold; fill: #2b1d12; }
+    .label { font-size: 0.13; fill: #2b1d12; }
+    .ctr   { stroke: #c00; stroke-width: 0.005; stroke-dasharray: 0.10 0.04 0.02 0.04; fill: none; }
+  </style>
+
+  <text x="0.4" y="0.4" class="title">Walnut Base — Edge-Lit Acrylic Award</text>
+  <text x="0.4" y="0.62" class="label">Material: walnut, S4S. Stock: 7.00 x 2.50 x 1.25 in.</text>
+  <text x="0.4" y="0.80" class="label">All dimensions in inches. Tolerance +/- 0.010 unless noted.</text>
+
+  <!-- TOP VIEW -->
+  <g transform="translate(0.5,1.4)">
+    <text x="0" y="-0.10" class="label" font-weight="bold">TOP VIEW</text>
+    <rect class="obj" x="0" y="0" width="7" height="2.5" rx="0.06" ry="0.06"/>
+    <rect class="obj" x="1.0" y="1.12" width="5.0" height="0.26" fill="#2b1d12"/>
+    <circle class="hidden" cx="3.5" cy="1.25" r="0.125"/>
+    <line class="ctr" x1="3.5" y1="-0.15" x2="3.5" y2="2.65"/>
+    <line class="ctr" x1="-0.15" y1="1.25" x2="7.15" y2="1.25"/>
+
+    <line class="dim" x1="0" y1="-0.30" x2="7" y2="-0.30"/>
+    <text class="dimtext" x="3.5" y="-0.36" text-anchor="middle">7.000</text>
+    <line class="dim" x1="-0.30" y1="0" x2="-0.30" y2="2.5"/>
+    <text class="dimtext" x="-0.40" y="1.30" text-anchor="end">2.500</text>
+
+    <line class="dim" x1="1.0" y1="0.85" x2="6.0" y2="0.85"/>
+    <text class="dimtext" x="3.5" y="0.79" text-anchor="middle">slot 5.000 long</text>
+    <line class="dim" x1="1.0" y1="1.65" x2="1.0" y2="1.95"/>
+    <line class="dim" x1="6.0" y1="1.65" x2="6.0" y2="1.95"/>
+    <text class="dimtext" x="0.5" y="1.92">1.000</text>
+    <text class="dimtext" x="6.5" y="1.92">1.000</text>
+    <text class="dimtext" x="3.5" y="1.62" text-anchor="middle">slot W = 0.260 (for 0.25 acrylic)</text>
+  </g>
+
+  <!-- FRONT VIEW -->
+  <g transform="translate(0.5,5.0)">
+    <text x="0" y="-0.10" class="label" font-weight="bold">FRONT VIEW</text>
+    <rect class="obj" x="0" y="0" width="7" height="1.25" rx="0.04" ry="0.04"/>
+    <rect class="hidden" x="1.0" y="0.0" width="5.0" height="0.50"/>
+    <rect class="hidden" x="1.5" y="0.10" width="4.0" height="0.10"/>
+
+    <line class="dim" x1="0" y1="-0.25" x2="7" y2="-0.25"/>
+    <text class="dimtext" x="3.5" y="-0.31" text-anchor="middle">7.000</text>
+    <line class="dim" x1="-0.30" y1="0" x2="-0.30" y2="1.25"/>
+    <text class="dimtext" x="-0.40" y="0.65" text-anchor="end">1.250</text>
+
+    <line class="dim" x1="6.10" y1="0" x2="6.10" y2="0.50"/>
+    <text class="dimtext" x="6.20" y="0.30">slot depth 0.500</text>
+  </g>
+
+  <!-- SIDE / SECTION VIEW -->
+  <g transform="translate(0.5,7.0)">
+    <text x="0" y="-0.10" class="label" font-weight="bold">SIDE SECTION (A-A)</text>
+    <rect class="obj" x="0" y="0" width="2.5" height="1.25" rx="0.04" ry="0.04"/>
+    <rect x="1.12" y="0" width="0.26" height="0.50" fill="#2b1d12"/>
+    <rect x="1.10" y="0.40" width="0.30" height="0.10" fill="#f5d76e" stroke="#2b1d12" stroke-width="0.008"/>
+    <text class="dimtext" x="1.7" y="0.48">LED strip (12V, ~3 in)</text>
+    <line class="hidden" x1="1.25" y1="0.50" x2="1.25" y2="1.25"/>
+    <circle class="hidden" cx="2.50" cy="0.50" r="0.156"/>
+    <text class="dimtext" x="2.70" y="0.55">5/16 dia</text>
+    <text class="dimtext" x="2.70" y="0.70">barrel jack</text>
+
+    <line class="dim" x1="-0.25" y1="0" x2="-0.25" y2="1.25"/>
+    <text class="dimtext" x="-0.32" y="0.65" text-anchor="end">1.250</text>
+    <line class="dim" x1="0" y1="1.45" x2="2.5" y2="1.45"/>
+    <text class="dimtext" x="1.25" y="1.55" text-anchor="middle">2.500</text>
+
+    <line x1="1.25" y1="-0.50" x2="1.25" y2="-0.05" stroke="#0a0" stroke-width="0.020"/>
+    <polygon points="1.20,-0.10 1.30,-0.10 1.25,-0.02" fill="#0a0"/>
+    <text class="dimtext" x="1.40" y="-0.30" fill="#0a0">acrylic panel inserts here</text>
+  </g>
+</svg>

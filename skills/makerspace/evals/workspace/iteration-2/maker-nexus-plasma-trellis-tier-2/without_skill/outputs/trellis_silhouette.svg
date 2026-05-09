@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  trellis_silhouette.svg
+  Concept silhouette for plasma-cut garden trellis.
+  Units: inches. ViewBox sized so 1 user unit = 0.1 inch (so a 24x72" panel
+  is 240x720 user units), making cleaner Bezier numbers.
+
+  LAYERS (by stroke color in this concept; final CAM file should put these
+  on named layers):
+    - black:  outer profile (one closed path) - cut LAST with tabs
+    - red:    interior leaf veins / tendril holes - cut FIRST
+  Tab locations marked with small green circles - operator should add tabs
+  there in CAM.
+
+  This is illustrative geometry only. Final cut file should be regenerated
+  in Fusion 360 / Inkscape from the master design with proper layering and
+  closed-path validation.
+-->
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="-150 0 300 740"
+     width="6in" height="14.8in"
+     stroke-linejoin="round" stroke-linecap="round">
+
+  <title>Climbing Vine Trellis - Concept Silhouette</title>
+  <desc>72 inch tall, 24 inch wide, 1/4 inch mild steel, plasma cut.</desc>
+
+  <!-- Outer profile: spine + tendrils + leaves, mirrored about x=0 -->
+  <!-- Drawn as a single closed path going up the right side, across the top, down the left -->
+  <path id="outer_profile"
+        fill="#dddddd" stroke="#000000" stroke-width="1.5"
+        d="
+          M -20,0
+          L  20,0
+          L  20,60
+          C  60,80   90,120  60,160
+          C  30,200  20,180  20,220
+          C  60,240 110,260  90,300
+          C  70,330  30,310  20,340
+          C  50,370  90,400  70,440
+          C  50,470  20,460  20,490
+          C  40,520  60,540  40,580
+          C  20,610   5,620  10,650
+          C  20,680  10,700   0,720
+          C -10,700 -20,680 -10,650
+          C  -5,620 -20,610 -40,580
+          C -60,540 -40,520 -20,490
+          C -20,460 -50,470 -70,440
+          C -90,400 -50,370 -20,340
+          C -30,310 -70,330 -90,300
+          C -110,260 -60,240 -20,220
+          C -20,180 -30,200 -60,160
+          C -90,120 -60,80  -20,60
+          Z" />
+
+  <!-- Interior cuts: leaf veins (slots) and tendril through-holes -->
+  <!-- Each is a closed loop; pierce in center, lead-in 0.10" to cut line -->
+  <g id="interior_cuts" fill="none" stroke="#cc0000" stroke-width="1.0">
+
+    <!-- Large leaves (4): vein slots, 1.5" x 0.25" each -->
+    <ellipse cx="55"  cy="160" rx="10" ry="2.5"/>
+    <ellipse cx="-55" cy="160" rx="10" ry="2.5"/>
+    <ellipse cx="80"  cy="300" rx="10" ry="2.5"/>
+    <ellipse cx="-80" cy="300" rx="10" ry="2.5"/>
+
+    <!-- Medium leaves (6) -->
+    <ellipse cx="60"  cy="430" rx="7" ry="2"/>
+    <ellipse cx="-60" cy="430" rx="7" ry="2"/>
+    <ellipse cx="40"  cy="540" rx="7" ry="2"/>
+    <ellipse cx="-40" cy="540" rx="7" ry="2"/>
+    <ellipse cx="35"  cy="220" rx="7" ry="2"/>
+    <ellipse cx="-35" cy="220" rx="7" ry="2"/>
+
+    <!-- Small leaves (8) -->
+    <ellipse cx="20"  cy="100" rx="5" ry="1.5"/>
+    <ellipse cx="-20" cy="100" rx="5" ry="1.5"/>
+    <ellipse cx="15"  cy="610" rx="5" ry="1.5"/>
+    <ellipse cx="-15" cy="610" rx="5" ry="1.5"/>
+    <ellipse cx="25"  cy="660" rx="5" ry="1.5"/>
+    <ellipse cx="-25" cy="660" rx="5" ry="1.5"/>
+    <ellipse cx="50"  cy="380" rx="5" ry="1.5"/>
+    <ellipse cx="-50" cy="380" rx="5" ry="1.5"/>
+
+    <!-- Tendril through-holes (2): for tying plant ties -->
+    <circle cx="75"  cy="250" r="3"/>
+    <circle cx="-75" cy="250" r="3"/>
+  </g>
+
+  <!-- Tab locations (operator reference, NOT cut) -->
+  <g id="tab_markers" fill="#00aa00" stroke="none" opacity="0.6">
+    <circle cx="0"   cy="2"   r="2"/>
+    <circle cx="20"  cy="240" r="2"/>
+    <circle cx="0"   cy="720" r="2"/>
+    <circle cx="-20" cy="500" r="2"/>
+  </g>
+
+  <!-- Datum origin marker -->
+  <g id="datum">
+    <line x1="-15" y1="60" x2="15" y2="60" stroke="#0000ff" stroke-width="0.5"
+          stroke-dasharray="2,2"/>
+    <line x1="0" y1="50" x2="0" y2="70" stroke="#0000ff" stroke-width="0.5"
+          stroke-dasharray="2,2"/>
+    <text x="20" y="65" font-family="sans-serif" font-size="8" fill="#0000ff">
+      datum (0,0)
+    </text>
+  </g>
+</svg>

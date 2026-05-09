@@ -1,0 +1,18 @@
+item_id,description,qty,unit,unit_cost_usd,extended_usd,supplier,notes
+M-01,"12-oz waxed canvas, 60""-wide, color: field tan",1.5,yd,18.50,27.75,"Big Duck Canvas / A. Wool & Sons","Pre-cut to 60×54""; 1.0 yd is enough for body+gusset+straps with careful nesting, +0.5 yd for stiffener panel and end tabs and a margin for re-cuts."
+M-02,"Cotton twill lining, 56""-wide, color: natural",1.25,yd,7.50,9.38,"Joann / Mood Fabrics","Pre-wash before cutting."
+M-03,"Cotton bias tape, double-fold 1.0"" (finishes 0.5""), natural",6,yd,0.75,4.50,"Joann / Wawak","Used on every interior seam; estimate generously."
+M-04,"YKK #10 molded coil zipper, 20"", two-way pulls, color: black",1,each,8.95,8.95,"Zipperstop","Continuous-tape #10 also OK; pulls can be added separately."
+M-05,"1/4"" closed-cell EVA foam, 12""×12"" sheet",1,each,3.50,3.50,"Amazon / Foam Order","Two 8""×1.25"" pieces nest from a 12×12 sheet with offcuts for future projects."
+M-06,"1/8"" HDPE sheet (cutting board grade), 6""×18""",1,each,6.00,6.00,"TAP Plastics (Sunnyvale)","Optional bottom stiffener. Cut to 5×17 with rounded corners."
+M-07,"Bonded polyester thread, Tex 70 (V-69), black, 4 oz cone",1,cone,7.95,7.95,"Wawak","Approx 1,400 yd; one cone covers this build with margin."
+M-08,"Bonded polyester thread, Tex 90, black, 4 oz cone (topstitch)",1,cone,8.95,8.95,"Wawak","Topstitching only; if you skip topstitching to save time, drop this line."
+M-09,"All-purpose polyester thread, Tex 40, natural",1,spool,3.50,3.50,"Joann","Lining + binding."
+M-10,"110/18 denim/jeans needles (5-pack)",1,pack,5.95,5.95,"Joann / Wawak","One pack covers the build with spares; expect 1-2 broken needles when crossing strap stacks."
+M-11,"90/14 universal needles (5-pack)",1,pack,4.95,4.95,"Joann","Lining work and pocket."
+M-12,"Topstitch needle 110/18 (5-pack, optional)",1,pack,5.95,5.95,"Joann","Skip if not topstitching."
+M-13,"Wonder clips (Clover or generic), pack of 50",1,pack,9.95,9.95,"Joann / Amazon","Pins won't go through 4 layers of waxed canvas; clips are essential."
+M-14,"Beeswax + paraffin re-wax block (optional)",1,each,8.00,8.00,"Otter Wax / Big Duck","For re-waxing high-wear seams after build."
+,,,,,,,,
+,Subtotal,,,,115.28,,
+,Notes,,,,,"Estimate ~$95 if you skip M-08 topstitch thread, M-12 topstitch needle, and M-14 re-wax (~$23 in optionals). Re-using a thread cone from a previous project drops another ~$8."

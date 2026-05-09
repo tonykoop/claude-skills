@@ -1,0 +1,68 @@
+study_id: 1
+project_slug: maker-nexus-doe-feeds-speeds
+title: Feeds & speeds — 1/8" single-flute upcut on 1/2" HDPE
+date_planned: 2026-05-08
+hypothesis: |
+  HDPE on the CNC router rewards aggressive chip evacuation; if the
+  feed rate is too low or the depth-per-pass is too shallow, the
+  upcut will recut chips and degrade edge finish (gummy/melted
+  edge). We expect higher feed rates (80 IPM) and moderate
+  depth-per-pass (0.10 in) to produce the cleanest edge with
+  acceptable cycle time on a 1/8" single-flute upcut. We want to
+  verify before committing to a production cut on this stock.
+
+factors:
+  - name: feed_rate_ipm
+    levels: [40, 60, 80]
+    unit: ""
+  - name: depth_per_pass_in
+    levels: [0.05, 0.10, 0.15]
+    unit: ""
+
+replicates: 2
+randomize: true
+
+response_variable:
+  name: edge_finish_score
+  unit: ""
+  measurement_method: |
+    Visual + tactile inspection of the cut edge on a 1-5 scale,
+    where 5 = glossy, no fuzz, no melt; 4 = clean, faint tool
+    marks; 3 = visible tool marks, no melt; 2 = some chip
+    welding or melt; 1 = severe melt or torn edge. Score on the
+    long climb-cut wall of the test pocket, mid-depth.
+
+secondary_responses:
+  - name: cycle_time
+    unit: seconds
+
+materials:
+  - id: hdpe-half
+    qty: 1
+    notes: |
+      1/2" HDPE sheet, ~12 × 12 test panel divided into 18 cells.
+      Member-supplied; not in shop stock. Confirm sheet flatness
+      and clamp to spoilboard with hold-downs (HDPE creeps under
+      vacuum).
+
+tools:
+  - id: cnc-area
+    space: maker-nexus
+    notes: |
+      1/8" single-flute upcut endmill, member-supplied. HDPE is
+      on the cnc-area allowed_materials list. Confirm dust
+      collection running; HDPE chips are stringy and can wrap
+      the bit.
+
+total_estimated_runtime_min: 75
+
+analysis_plan: |
+  Compute mean edge_finish_score per cell (3 × 3 = 9 cells, 2
+  replicates each). Flag cells whose mean score is < 3.5 as
+  unacceptable. Plot edge_finish_score vs feed_rate_ipm with
+  depth_per_pass_in as a series; look for the corner of the
+  factor space that maximizes finish without blowing cycle time
+  past ~2× the fastest cell. Visual inspection is sufficient at
+  this scale; ANOVA optional. Pick the recommended setting and
+  record it in study-01-analysis.md for the next HDPE job at
+  Maker Nexus.

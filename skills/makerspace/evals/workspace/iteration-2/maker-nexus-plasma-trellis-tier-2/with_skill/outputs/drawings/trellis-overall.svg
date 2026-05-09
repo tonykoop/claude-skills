@@ -1,0 +1,169 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 800" font-family="Inter, system-ui, sans-serif" font-size="11">
+  <style>
+    .frame { fill: none; stroke: #222; stroke-width: 1.2; }
+    .titleblock { fill: none; stroke: #222; stroke-width: 1; }
+    .silhouette { fill: #d8d8d8; stroke: #222; stroke-width: 1.2; }
+    .envelope { fill: none; stroke: #888; stroke-dasharray: 6 3 1 3; stroke-width: 0.8; }
+    .dim { fill: none; stroke: #c43; stroke-width: 0.7; }
+    .dimtext { fill: #c43; font-size: 10px; }
+    .label { fill: #222; }
+    .heading { font-size: 13px; font-weight: 600; fill: #222; }
+    .small { font-size: 9px; fill: #555; }
+  </style>
+
+  <!-- sheet frame -->
+  <rect class="frame" x="10" y="10" width="1080" height="780"/>
+
+  <!-- Drawing area -->
+  <g transform="translate(60,60)">
+    <!-- Envelope rectangle: 24 wide x 86 tall, scale 1:8 => 3 px/in -->
+    <!-- 24 in = 72 px wide, 86 in = 258 px tall -->
+    <!-- Centered at x=200 -->
+    <rect class="envelope" x="160" y="20" width="72" height="258"/>
+
+    <!-- Trellis silhouette (stylized) -->
+    <g transform="translate(160,20)">
+      <!-- Bottom rail 4 in tall = 12 px -->
+      <rect class="silhouette" x="0" y="246" width="72" height="12"/>
+      <!-- Spikes 12 in long = 36 px, two tapered triangles -->
+      <polygon class="silhouette" points="13,258 23,258 18,294"/>
+      <polygon class="silhouette" points="49,258 59,258 54,294"/>
+
+      <!-- Stem: a sinuous spline from base to tip, with tapered width -->
+      <path class="silhouette" d="
+        M 32 246
+        C 28 220, 50 200, 44 180
+        C 38 160, 22 145, 28 125
+        C 34 105, 52 88, 44 68
+        C 36 48, 22 32, 36 8
+        L 38 8
+        C 24 32, 38 50, 46 70
+        C 54 90, 36 108, 30 128
+        C 24 148, 40 162, 46 182
+        C 52 202, 30 222, 34 246
+        Z"/>
+
+      <!-- Leaves alternating -->
+      <ellipse class="silhouette" cx="50" cy="225" rx="18" ry="6" transform="rotate(-25 50 225)"/>
+      <ellipse class="silhouette" cx="22" cy="200" rx="18" ry="6" transform="rotate(28 22 200)"/>
+      <ellipse class="silhouette" cx="52" cy="175" rx="18" ry="6" transform="rotate(-30 52 175)"/>
+      <ellipse class="silhouette" cx="20" cy="150" rx="17" ry="5.5" transform="rotate(32 20 150)"/>
+      <ellipse class="silhouette" cx="50" cy="125" rx="17" ry="5.5" transform="rotate(-32 50 125)"/>
+      <ellipse class="silhouette" cx="22" cy="100" rx="16" ry="5" transform="rotate(34 22 100)"/>
+      <ellipse class="silhouette" cx="48" cy="78" rx="15" ry="5" transform="rotate(-34 48 78)"/>
+      <ellipse class="silhouette" cx="24" cy="55" rx="14" ry="4.5" transform="rotate(36 24 55)"/>
+      <ellipse class="silhouette" cx="46" cy="32" rx="13" ry="4" transform="rotate(-36 46 32)"/>
+
+      <!-- Tendrils -->
+      <path class="silhouette" d="M 38 210 q 14 -6 16 4 q 2 8 -8 6" fill="none" stroke="#222" stroke-width="2"/>
+      <path class="silhouette" d="M 32 145 q -14 -4 -16 6 q -2 8 8 6" fill="none" stroke="#222" stroke-width="2"/>
+      <path class="silhouette" d="M 38 80 q 14 -4 16 6 q 2 8 -8 6" fill="none" stroke="#222" stroke-width="2"/>
+    </g>
+
+    <!-- Dimensions -->
+    <!-- Overall height 86 in -->
+    <g class="dim">
+      <line x1="120" y1="20" x2="120" y2="294"/>
+      <line x1="115" y1="20" x2="125" y2="20"/>
+      <line x1="115" y1="294" x2="125" y2="294"/>
+    </g>
+    <text class="dimtext" x="80" y="160">86.000 in (H_total)</text>
+
+    <!-- Above-grade height 70 in (rail top to top tip) -->
+    <g class="dim">
+      <line x1="260" y1="20" x2="260" y2="266"/>
+      <line x1="255" y1="20" x2="265" y2="20"/>
+      <line x1="255" y1="266" x2="265" y2="266"/>
+    </g>
+    <text class="dimtext" x="270" y="150">70.000 in</text>
+    <text class="dimtext" x="270" y="162" font-size="9px">(above grade)</text>
+
+    <!-- Spike length 12 in -->
+    <g class="dim">
+      <line x1="260" y1="266" x2="260" y2="302"/>
+      <line x1="255" y1="266" x2="265" y2="266"/>
+      <line x1="255" y1="302" x2="265" y2="302"/>
+    </g>
+    <text class="dimtext" x="270" y="288">12.000 in (H_spike)</text>
+
+    <!-- Bottom rail height 4 in -->
+    <g class="dim">
+      <line x1="240" y1="266" x2="240" y2="278"/>
+      <line x1="235" y1="266" x2="245" y2="266"/>
+      <line x1="235" y1="278" x2="245" y2="278"/>
+    </g>
+    <text class="dimtext" x="248" y="276">4.000 in</text>
+
+    <!-- Width 24 in -->
+    <g class="dim">
+      <line x1="160" y1="320" x2="232" y2="320"/>
+      <line x1="160" y1="315" x2="160" y2="325"/>
+      <line x1="232" y1="315" x2="232" y2="325"/>
+    </g>
+    <text class="dimtext" x="180" y="335">24.000 in (W_stock)</text>
+
+    <!-- Spike center 6 in -->
+    <g class="dim">
+      <line x1="160" y1="345" x2="178" y2="345"/>
+      <line x1="160" y1="340" x2="160" y2="350"/>
+      <line x1="178" y1="340" x2="178" y2="350"/>
+    </g>
+    <text class="dimtext" x="160" y="360">6.000 in</text>
+
+    <!-- Spike center 18 in -->
+    <g class="dim">
+      <line x1="160" y1="370" x2="214" y2="370"/>
+      <line x1="160" y1="365" x2="160" y2="375"/>
+      <line x1="214" y1="365" x2="214" y2="375"/>
+    </g>
+    <text class="dimtext" x="160" y="385">18.000 in</text>
+
+    <!-- Datum labels -->
+    <g>
+      <rect x="138" y="262" width="14" height="14" fill="#fff" stroke="#c43"/>
+      <text x="141" y="273" class="dimtext">A</text>
+      <text x="118" y="273" class="dimtext">DATUM</text>
+    </g>
+    <g>
+      <rect x="190" y="2" width="14" height="14" fill="#fff" stroke="#c43"/>
+      <text x="193" y="13" class="dimtext">B</text>
+    </g>
+
+    <!-- Notes block (lower left) -->
+    <g transform="translate(0,440)">
+      <text class="heading">Notes</text>
+      <text x="0" y="18">1. All curves are organic splines defined in the production CAM file. Drawing shows nominal dimensions only.</text>
+      <text x="0" y="34">2. Plasma kerf compensation: 0.060 in nominal. Verify with kerf-test coupon (op-sequence step 4).</text>
+      <text x="0" y="50">3. Cut sequence: internal cutouts before perimeter. Final perimeter segment includes a bridge tab.</text>
+      <text x="0" y="66">4. Edge finish: flap-disc bottom edge to remove dross. Wire-wheel both faces. Sandblast prep at coater.</text>
+      <text x="0" y="82">5. Mounting: spikes drive into prepared garden bed. Strike through a wood buffer only.</text>
+      <text x="0" y="98">6. Smallest leaf-cusp interior radius: R 0.200 in TYP. Tendril width: 0.500 in. Stem rib taper: 1.500 in root to 0.625 in tip.</text>
+    </g>
+  </g>
+
+  <!-- Title block (lower right) -->
+  <g transform="translate(770,640)" class="titleblock">
+    <rect x="0" y="0" width="280" height="120"/>
+    <line x1="0" y1="20" x2="280" y2="20"/>
+    <line x1="0" y1="50" x2="280" y2="50"/>
+    <line x1="0" y1="80" x2="280" y2="80"/>
+    <line x1="140" y1="20" x2="140" y2="120"/>
+  </g>
+  <g transform="translate(770,640)">
+    <text x="6" y="14" class="heading">Climbing-Vine Plasma Trellis</text>
+    <text x="6" y="36" class="small">MATERIAL</text>
+    <text x="6" y="46">1/4 in A36 mild steel</text>
+    <text x="146" y="36" class="small">FINISH</text>
+    <text x="146" y="46">Powder coat RAL 9005 texture</text>
+    <text x="6" y="66" class="small">DRAWN BY</text>
+    <text x="6" y="76">Tony Koop / Maker Nexus</text>
+    <text x="146" y="66" class="small">DATE</text>
+    <text x="146" y="76">2026-05-08</text>
+    <text x="6" y="96" class="small">SHEET</text>
+    <text x="6" y="108">1 of 2 — Overall silhouette</text>
+    <text x="146" y="96" class="small">TOL UNLESS NOTED</text>
+    <text x="146" y="108">+/- 0.060 in (plasma cut)</text>
+  </g>
+
+  <text x="60" y="40" class="heading">Climbing-Vine Plasma Trellis — Overall Silhouette (1:8 scale, indicative)</text>
+</svg>

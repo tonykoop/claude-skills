@@ -1,0 +1,43 @@
+name: makerspace
+version: 1.0.0
+description: |
+  Fabrication specialist for jigs, fixtures, workholding, machine-aware
+  process plans, and make/order/buy/borrow decisions. Uses shop profiles
+  or lightweight equipment templates to produce repeatable shop packets
+  with safety, tolerance, and setup checks.
+authors:
+  - name: Tony Koop
+    url: https://github.com/tonykoop
+license: MIT
+homepage: https://github.com/tonykoop/makerspace
+keywords:
+  - makerspace
+  - fabrication
+  - jig
+  - fixture
+  - workholding
+  - shop-process
+  - machine-planning
+  - make-order-buy-borrow
+  - tooling
+  - cnc
+  - laser
+  - mill
+  - router
+  - makerspace-profile
+compatibility:
+  cowork: ">=0.1"
+  claude-code: ">=0.1"
+  features:
+    - subagents       # nice to have, not required for v0.1
+    - bash            # required for scripts/
+    - file-write      # required to emit packets
+artifacts:
+  - SKILL.md
+  - agents/
+  - references/
+  - scripts/
+  - assets/
+  - spaces/
+  - examples/
+  - evals/

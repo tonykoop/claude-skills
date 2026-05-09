@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Welcome sign - top-down layout
+  Units: inches. 1 unit = 1 inch.
+  This SVG is a layout placeholder - import into Inkscape or Illustrator
+  and replace the placeholder text with your chosen font (e.g. Cinzel,
+  Trajan Pro, EB Garamond Caps), converted to paths, before sending to CAM.
+-->
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 18 6"
+     width="18in" height="6in">
+  <!-- outside profile -->
+  <rect x="0" y="0" width="18" height="6"
+        rx="0.125" ry="0.125"
+        fill="none" stroke="#000" stroke-width="0.01"/>
+  <!-- inset border (V-carve target) -->
+  <rect x="0.5" y="0.5" width="17" height="5"
+        fill="none" stroke="#888" stroke-width="0.02"
+        stroke-dasharray="0.1,0.05"/>
+  <!-- placeholder lettering -->
+  <text x="9" y="3.95"
+        font-family="Georgia, 'Times New Roman', serif"
+        font-size="3"
+        font-weight="400"
+        text-anchor="middle"
+        fill="#222"
+        letter-spacing="0.08">WELCOME</text>
+  <!-- guide labels (will not export to CAM) -->
+  <g font-family="sans-serif" font-size="0.18" fill="#c00">
+    <text x="0.1" y="0.35">18.000 x 6.000</text>
+    <text x="9" y="5.85" text-anchor="middle">border inset 0.500 (V-carve)</text>
+  </g>
+</svg>

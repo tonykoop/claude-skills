@@ -1,0 +1,4 @@
+interface:
+  display_name: "Yoga Sequencer"
+  short_description: "Build balanced vinyasa class sequences"
+  default_prompt: "Use $yoga-sequencer to build a vinyasa class with a clear arc, balanced sides, and playlist-ready phase timings."

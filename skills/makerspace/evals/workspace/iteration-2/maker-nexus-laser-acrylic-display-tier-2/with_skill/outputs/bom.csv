@@ -1,0 +1,12 @@
+item_id,item_name,qty,unit,vendor,sku,unit_cost_usd,line_cost_usd,lead_time_days,notes
+b001,"Cast acrylic clear, 1/4"" sheet, 12x24",1,sheet,TAP Plastics,ACR-CL-025-1224,18.00,18.00,0,"Walk-in MV store; yields 6x9 panel + scrap. CAST not extruded — better edge-lit performance."
+b002,"Walnut hardwood, S4S, 4/4 nominal, 4""x12""",1,piece,MacBeath Berkeley,WAL-44-4x12,14.00,14.00,1,"Member-supplied. Pick a clear straight piece — slot cut is fussy on figured grain."
+b003,"LED strip, 12V COB warm white 3000K, 1ft cuttable",1,foot,Amazon,B0CXXXXXXX,7.00,7.00,2,"COB style — looks like a continuous line, not dots. Verify SKU at order time."
+b004,"12V 1A wall-wart power supply, 2.1mm barrel jack",1,each,Amazon,B07XXXXXXX,8.00,8.00,2,"Center-positive. Verify polarity on arrival."
+b005,"DC barrel jack pigtail, 2.1mm, female",1,each,Amazon,B0BXXXXXXX,4.50,4.50,2,"Solder to LED strip leads."
+b006,"Heat-shrink tubing assortment",1,kit,Amazon,B07XXXXXXX,0.00,0.00,0,"Already on bench — no purchase needed"
+b007,"Wood finish — Watco Danish Oil, natural",1,can,Home Depot,100000000,12.00,12.00,0,"Or substitute existing oil finish."
+b008,"Felt-pad rubber feet, 1/2"" dia, peel-stick",4,each,Home Depot,1000FELT,0.50,2.00,0,"Pack of 100 typically. Use 4."
+b009,"Acrylic cleaner / Novus #1",1,bottle,TAP Plastics,NOVUS-1,7.00,7.00,0,"For panel cleanup pre-engrave."
+b010,"Painters tape — blue, 1""",1,roll,On hand,N/A,0.00,0.00,0,"For laser bed positioning"
+,,,,,,,72.50,,"Total parts cost"

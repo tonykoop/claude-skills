@@ -1,0 +1,179 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 800" font-family="Inter, system-ui, sans-serif" font-size="11">
+  <style>
+    .frame { fill: none; stroke: #222; stroke-width: 1.2; }
+    .titleblock { fill: none; stroke: #222; stroke-width: 1; }
+    .silhouette { fill: #d8d8d8; stroke: #222; stroke-width: 1.2; }
+    .section { fill: #b8b8b8; stroke: #222; stroke-width: 1.2; }
+    .dim { fill: none; stroke: #c43; stroke-width: 0.7; }
+    .dimtext { fill: #c43; font-size: 10px; }
+    .heading { font-size: 13px; font-weight: 600; fill: #222; }
+    .small { font-size: 9px; fill: #555; }
+    .hatch { fill: url(#hatch); stroke: #222; }
+  </style>
+  <defs>
+    <pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="6" stroke="#222" stroke-width="0.6"/>
+    </pattern>
+  </defs>
+
+  <rect class="frame" x="10" y="10" width="1080" height="780"/>
+
+  <text x="60" y="40" class="heading">Climbing-Vine Plasma Trellis — Base &amp; Spike Detail (Detail 1:2, Section 1:2)</text>
+
+  <!-- Detail B: rail-to-stem fillet, scale 1:2 (6 px/in) -->
+  <g transform="translate(80,80)">
+    <text class="heading" x="0" y="0">Detail B — rail and spike layout (1:2)</text>
+    <text class="small" x="0" y="14">Rail 24.000 × 4.000 in. Spikes centered at x = 6, 18 in.</text>
+
+    <!-- 24 in wide × 4 in rail = 144 × 24 px at 1:2 (6 px/in) -->
+    <g transform="translate(40,50)">
+      <!-- bottom rail -->
+      <rect class="silhouette" x="0" y="0" width="144" height="24"/>
+      <!-- spike 1 at x=6 in (36 px) -->
+      <polygon class="silhouette" points="30,24 42,24 36,96"/>
+      <!-- spike 2 at x=18 in (108 px) -->
+      <polygon class="silhouette" points="102,24 114,24 108,96"/>
+
+      <!-- stem stub joining rail -->
+      <path class="silhouette" d="M 64 0 C 60 -10, 84 -10, 80 0 Z"/>
+      <!-- fillet annotation point -->
+      <circle cx="64" cy="0" r="3" fill="none" stroke="#c43" stroke-width="0.7"/>
+
+      <!-- dims -->
+      <g class="dim">
+        <!-- overall width 24 in -->
+        <line x1="0" y1="115" x2="144" y2="115"/>
+        <line x1="0" y1="110" x2="0" y2="120"/>
+        <line x1="144" y1="110" x2="144" y2="120"/>
+      </g>
+      <text class="dimtext" x="55" y="130">24.000 in</text>
+
+      <g class="dim">
+        <!-- spike 1 center 6 in -->
+        <line x1="0" y1="140" x2="36" y2="140"/>
+        <line x1="0" y1="135" x2="0" y2="145"/>
+        <line x1="36" y1="135" x2="36" y2="145"/>
+      </g>
+      <text class="dimtext" x="0" y="155">6.000 in</text>
+
+      <g class="dim">
+        <!-- spike 2 center 18 in -->
+        <line x1="0" y1="165" x2="108" y2="165"/>
+        <line x1="0" y1="160" x2="0" y2="170"/>
+        <line x1="108" y1="160" x2="108" y2="170"/>
+      </g>
+      <text class="dimtext" x="0" y="180">18.000 in</text>
+
+      <!-- rail height 4 in -->
+      <g class="dim">
+        <line x1="-20" y1="0" x2="-20" y2="24"/>
+        <line x1="-25" y1="0" x2="-15" y2="0"/>
+        <line x1="-25" y1="24" x2="-15" y2="24"/>
+      </g>
+      <text class="dimtext" x="-58" y="16">4.000 in</text>
+
+      <!-- spike length 12 in below rail = 72 px -->
+      <g class="dim">
+        <line x1="160" y1="24" x2="160" y2="96"/>
+        <line x1="155" y1="24" x2="165" y2="24"/>
+        <line x1="155" y1="96" x2="165" y2="96"/>
+      </g>
+      <text class="dimtext" x="168" y="62">12.000 in</text>
+
+      <!-- spike root width 1.5 in -->
+      <g class="dim">
+        <line x1="30" y1="-10" x2="42" y2="-10"/>
+        <line x1="30" y1="-15" x2="30" y2="-5"/>
+        <line x1="42" y1="-15" x2="42" y2="-5"/>
+      </g>
+      <text class="dimtext" x="30" y="-18">1.500 in</text>
+
+      <!-- spike taper angle -->
+      <text class="dimtext" x="40" y="80">30 deg taper</text>
+
+      <!-- detail-B callout circle -->
+      <circle cx="72" cy="-1" r="14" fill="none" stroke="#c43" stroke-width="0.7"/>
+      <text class="dimtext" x="88" y="-12">Detail B</text>
+    </g>
+  </g>
+
+  <!-- Detail B enlarged: rail-to-stem fillet -->
+  <g transform="translate(620,80)">
+    <text class="heading" x="0" y="0">Detail B (enlarged, 4:1) — rail-to-stem fillet</text>
+    <text class="small" x="0" y="14">Generous fillet avoids stress riser at the ground line.</text>
+    <g transform="translate(40,60)">
+      <!-- enlarged rail edge -->
+      <rect class="silhouette" x="0" y="80" width="240" height="40"/>
+      <!-- stem with fillet -->
+      <path class="silhouette" d="
+        M 80 80
+        C 72 50, 80 30, 100 20
+        L 140 20
+        C 160 30, 168 50, 160 80
+        Z"/>
+      <!-- fillet radius indicator -->
+      <path class="dim" d="M 80 80 Q 86 70 96 64"/>
+      <text class="dimtext" x="60" y="60">R 0.750 in MIN</text>
+      <line class="dim" x1="240" y1="170" x2="0" y2="170"/>
+      <text class="dimtext" x="80" y="185">Generous fillet</text>
+    </g>
+  </g>
+
+  <!-- Section A-A through spike at root -->
+  <g transform="translate(80,420)">
+    <text class="heading" x="0" y="0">Section A-A — through spike at root (1:2)</text>
+    <text class="small" x="0" y="14">Plate thickness 0.250 in across cut profile.</text>
+    <g transform="translate(40,50)">
+      <!-- 1.5 in wide x 0.25 in thick at 1:2 = 9 px wide x 1.5 px thick — too thin to read; show 6:1 here -->
+      <!-- Use 6 px / in for width (= 9 px) but exaggerate thickness for clarity; label that thickness is true value -->
+      <rect class="hatch" x="0" y="0" width="60" height="6"/>
+      <!-- Label -->
+      <g class="dim">
+        <line x1="0" y1="20" x2="60" y2="20"/>
+        <line x1="0" y1="15" x2="0" y2="25"/>
+        <line x1="60" y1="15" x2="60" y2="25"/>
+      </g>
+      <text class="dimtext" x="14" y="36">1.500 in (spike root width)</text>
+
+      <g class="dim">
+        <line x1="80" y1="0" x2="80" y2="6"/>
+        <line x1="75" y1="0" x2="85" y2="0"/>
+        <line x1="75" y1="6" x2="85" y2="6"/>
+      </g>
+      <text class="dimtext" x="90" y="6">0.250 in (plate thickness, exaggerated for clarity)</text>
+    </g>
+  </g>
+
+  <!-- Notes block -->
+  <g transform="translate(80,580)">
+    <text class="heading">Notes</text>
+    <text x="0" y="18">1. Spikes are integral to the cut silhouette — no weld step required if production CAM cuts them as one piece with the trellis.</text>
+    <text x="0" y="34">2. If spikes are cut separately to save sheet, MIG weld per op-sequence.md step 10. Tack 4 corners then 1-in stitch each side.</text>
+    <text x="0" y="50">3. Rail-to-stem fillet R 0.750 in MIN. Smaller fillets concentrate stress at the ground line; check after cut and grind smooth if needed.</text>
+    <text x="0" y="66">4. Drive spikes through a 2x4 wood buffer only. Direct hammer contact will damage powder coat at the rail.</text>
+  </g>
+
+  <!-- Title block -->
+  <g transform="translate(770,640)" class="titleblock">
+    <rect x="0" y="0" width="280" height="120"/>
+    <line x1="0" y1="20" x2="280" y2="20"/>
+    <line x1="0" y1="50" x2="280" y2="50"/>
+    <line x1="0" y1="80" x2="280" y2="80"/>
+    <line x1="140" y1="20" x2="140" y2="120"/>
+  </g>
+  <g transform="translate(770,640)">
+    <text x="6" y="14" class="heading">Climbing-Vine Plasma Trellis</text>
+    <text x="6" y="36" class="small">MATERIAL</text>
+    <text x="6" y="46">1/4 in A36 mild steel</text>
+    <text x="146" y="36" class="small">FINISH</text>
+    <text x="146" y="46">Powder coat RAL 9005 texture</text>
+    <text x="6" y="66" class="small">DRAWN BY</text>
+    <text x="6" y="76">Tony Koop / Maker Nexus</text>
+    <text x="146" y="66" class="small">DATE</text>
+    <text x="146" y="76">2026-05-08</text>
+    <text x="6" y="96" class="small">SHEET</text>
+    <text x="6" y="108">2 of 2 — Base &amp; spike detail</text>
+    <text x="146" y="96" class="small">TOL UNLESS NOTED</text>
+    <text x="146" y="108">+/- 0.060 in (plasma cut)</text>
+  </g>
+</svg>

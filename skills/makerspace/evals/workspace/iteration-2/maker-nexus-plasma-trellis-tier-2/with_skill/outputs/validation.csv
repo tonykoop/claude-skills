@@ -1,0 +1,16 @@
+check_id,what_to_verify,nominal,tolerance,method,when,result,notes
+v001,Kerf width on KT1 coupon,0.060 in,+/- 0.010 in,Caliper across both cut walls of two parallel 1.000-in-spaced cuts,After step 4 (kerf-test),,Update CAM kerf parameter if delta > tolerance and re-cut KT1
+v002,Pierce-test entry quality,Clean dimple no blowout,visual,Inspect each of three test pierces under shop light with magnification,After step 5 (pierce-test),,Replace consumables and re-test if blowout observed
+v003,Overall trellis height,86.000 in,+/- 0.060 in,Tape measure end-to-end (spike tip to top tip),After step 8 (production cut + dross),,
+v004,Overall trellis width,24.000 in,+/- 0.060 in,Tape measure across the bottom rail,After step 8,,
+v005,Bottom rail height (rectangle portion),4.000 in,+/- 0.030 in,Caliper or scale at three positions,After step 8,,
+v006,Spike tip locations,"x = 6.000, x = 18.000 in",+/- 0.060 in,Tape from rail's left edge,After step 8,,
+v007,Smallest leaf-cusp interior radius,>= 0.150 in,minimum only,Radius gauge at the three sharpest cusps,After step 8,,If less than 0.150 the cusp may have collapsed; document for next packet
+v008,Tendril minimum width,0.500 in,-0.030 / +0.060 in,Caliper at the narrowest point of each tendril,After step 8,,
+v009,Edge finish on bottom edge,Cotton rag passes without snagging,subjective,Drag a clean rag along the full bottom edge,After step 7 (flap-disc),,Re-flap any spot that snags
+v010,Mill-scale removal pre-coat,Coater's blast prep covers any residual,visual,Inspect by eye and note any heavy patches; coater handles final,Before step 10 (degrease),,Coater quote includes SSPC-SP6
+v011,Powder-coat coverage,No bare spots no runs no fiber pickoffs,visual,Inspect both faces and all edges under shop light,At pickup,,Reject and request rework if defects exceed spec
+v012,Powder-coat color,RAL 9005 texture matte black,subjective,Compare to a sample swatch from the coater,At pickup,,
+v013,Trellis flatness,< 0.125 in deviation across 86 in,+/- 0.125 in,Lay on a flat reference; check gap with feeler,After step 8 and at pickup,,Heat distortion can warp; powder-coat oven can also relax/induce warp
+v014,Spike straightness post-install,Plumb within 2 deg,+/- 2 deg,4-ft level on the longest stem axis,After step 13 (install),,Re-drive if out of plumb
+v015,One-month outdoor check,No rust at edges or coating defects,visual,Walk-around inspection,30 days post-install,,Note any coating failure for warranty claim with coater

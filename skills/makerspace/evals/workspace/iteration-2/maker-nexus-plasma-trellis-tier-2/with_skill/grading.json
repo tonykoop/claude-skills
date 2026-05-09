@@ -1,0 +1,33 @@
+{
+  "eval_name": "maker-nexus-plasma-trellis-tier-2",
+  "variant": "with_skill",
+  "expectations": [
+    {
+      "text": "Tier 2 file set complete (10 files)",
+      "passed": true,
+      "evidence": "all present"
+    },
+    {
+      "text": "design.md or op-sequence covers cut-path strategy (lead-in, kerf, pierce, sequencing)",
+      "passed": true,
+      "evidence": "matched 7/9 cut-path terms"
+    },
+    {
+      "text": "BOM specifies mild steel + powder coat finish",
+      "passed": true,
+      "evidence": "steel=True powder-coat=True"
+    },
+    {
+      "text": "op-sequence references the metalshop or plasma area at Maker Nexus",
+      "passed": true,
+      "evidence": "metalshop or plasma referenced"
+    },
+    {
+      "text": "risks.md addresses fume / heat / cutting hazards specific to plasma",
+      "passed": true,
+      "evidence": "matched 9/10 plasma-specific safety terms"
+    }
+  ],
+  "passed_count": 5,
+  "total_count": 5
+}

@@ -1,0 +1,43 @@
+{
+  "eval_name": "maker-nexus-cnc-sign-tier-2",
+  "variant": "with_skill",
+  "expectations": [
+    {
+      "text": "Tier 2 file set complete: design.md, bom.csv, cut-list.csv, op-sequence.md, safety-notes.md, assembly-manual.md, sourcing.csv, validation.csv, risks.md, README.md all present",
+      "passed": true,
+      "evidence": "all present"
+    },
+    {
+      "text": "Drawing artifact present: either drawing-brief.md or non-empty drawings/ directory",
+      "passed": true,
+      "evidence": "drawing-brief.md, drawings/ has files"
+    },
+    {
+      "text": "design.md contains parametric formulas (a `=` in a derivation, not just static numbers)",
+      "passed": true,
+      "evidence": "found derivation patterns"
+    },
+    {
+      "text": "op-sequence.md does NOT cite laser ops (user is not laser-cleared)",
+      "passed": true,
+      "evidence": "no laser ops"
+    },
+    {
+      "text": "BOM references baltic birch (or similar plywood callout)",
+      "passed": true,
+      "evidence": "found 'birch'"
+    },
+    {
+      "text": "README mentions Maker Nexus",
+      "passed": true,
+      "evidence": "found 'maker nexus'"
+    },
+    {
+      "text": "risks.md contains at least one *Test* line attached to a risk",
+      "passed": true,
+      "evidence": "found Test: line"
+    }
+  ],
+  "passed_count": 7,
+  "total_count": 7
+}

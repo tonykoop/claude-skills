@@ -1,0 +1,38 @@
+{
+  "eval_name": "home-shop-lazy-susan-tier-1",
+  "variant": "without_skill",
+  "expectations": [
+    {
+      "text": "Tier 1 file set complete: design.md, bom.csv, cut-list.csv, op-sequence.md, safety-notes.md all present",
+      "passed": false,
+      "evidence": "missing: ['design.md', 'bom.csv', 'cut-list.csv', 'op-sequence.md', 'safety-notes.md']"
+    },
+    {
+      "text": "No Tier 2/3 over-delivery (no README, drawings/, deck, sourcing.csv, validation.csv, risks.md, assembly-manual.md)",
+      "passed": true,
+      "evidence": "no extras"
+    },
+    {
+      "text": "op-sequence.md uses ONLY the user's stated tools",
+      "passed": false,
+      "evidence": "op-sequence.md missing"
+    },
+    {
+      "text": "op-sequence.md mentions bandsaw plus another tool",
+      "passed": false,
+      "evidence": "op-sequence.md missing"
+    },
+    {
+      "text": "design.md contains hexagon math",
+      "passed": false,
+      "evidence": "design.md missing"
+    },
+    {
+      "text": "bom.csv references walnut",
+      "passed": false,
+      "evidence": "bom.csv missing"
+    }
+  ],
+  "passed_count": 1,
+  "total_count": 6
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Maker Engineering"
+  short_description: "Route physical making projects"
+  default_prompt: "Use $maker-engineering to route my physical making project, identify the right specialist skills, and draft any needed experiment or handoff plan."

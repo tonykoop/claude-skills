@@ -1,0 +1,12 @@
+{
+  "eval_id": 7,
+  "eval_name": "maker-nexus-doe-feeds-speeds",
+  "prompt": "I'm at Maker Nexus and I want to dial in feeds and speeds for the CNC on a new bit-and-material combo I haven't run before — 1/8-inch single-flute upcut on 1/2-inch HDPE. I want to vary feed rate (40, 60, 80 IPM) and depth-per-pass (0.05, 0.1, 0.15 in) and measure edge finish quality (1-5 scale) and cycle time. Set up a DoE study for me — protocol YAML, blank data CSV, and tell me how I record results as I run them.",
+  "assertions": [
+    {"text": "doe/study-01-protocol.yaml exists with the right factors and levels", "kind": "regex_in_file"},
+    {"text": "doe/study-01-data.csv exists with 18 planned rows (3 x 3 x 2 replicates)", "kind": "regex_in_file"},
+    {"text": "Protocol references both response variables (edge finish + cycle time)", "kind": "regex_in_file"},
+    {"text": "Response references record_doe_results.py or doe-integration.md", "kind": "regex_in_file"},
+    {"text": "Response references HDPE in materials and is consistent with Maker Nexus's wood-CNC banned_materials policy (HDPE is allowed per the seed profile)", "kind": "regex_in_file"}
+  ]
+}

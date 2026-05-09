@@ -1,0 +1,19 @@
+item_id,description,supplier,sku_or_search,url,unit_cost_usd,lead_time_days,in_stock_check,notes
+M-01,"12-oz waxed canvas, 60""-wide, field tan, 1.5 yd",Big Duck Canvas,"12 oz waxed duck #10 — Field Tan",https://www.bigduckcanvas.com,18.50/yd,3-5,Verify on order,"BDC is the standard waxed-canvas supplier in the US. Cuts to length."
+M-01-alt,"12-oz waxed canvas alternative",A. Wool & Sons,"Martexin Original Wax Finish 11oz",https://martexin.com,21.00/yd,5-7,Verify on order,"Martexin is the original waxed-canvas mill. 11oz reads close to 12oz."
+M-02,"Cotton twill lining, 56"" natural, 1.25 yd",Joann (Sunnyvale store or online),"7 oz cotton twill — Natural",https://www.joann.com,7.50/yd,Same-day if in-store,Call store first,"Joann sometimes lists it as 'cotton bottomweight twill'. Mood Fabrics is an online alternative."
+M-03,"Cotton bias tape, double-fold 1.0"" natural, 6 yd",Wawak,"Bias tape — natural — 1.0"" double fold",https://www.wawak.com,0.75/yd,3-5,Yes,"Wawak is a sewing-trade supplier; faster than Joann for bulk bias tape."
+M-04,"YKK #10 molded coil zipper, 20"" two-way pulls, black",Zipperstop,"YKK #10 VISLON two-way 20""",https://www.zipperstop.com,8.95,3-5,Yes,"Zipperstop will assemble custom-length zippers with two pulls; specify two-way."
+M-05,"1/4"" closed-cell EVA foam sheet, 12×12",Foam Order or Amazon,"EVA foam 6mm 12x12",https://www.amazon.com or https://www.foamorder.com,3.50,2-3,Yes,"Two strap pads from one sheet."
+M-06,"1/8"" HDPE sheet, 6×18 (optional)",TAP Plastics — Sunnyvale,"HDPE 1/8"" cut to size",https://www.tapplastics.com,6.00,Same-day,Yes (Sunnyvale store),"TAP will cut to size at the counter. Bring the cut list."
+M-07,"Bonded polyester thread Tex 70 V-69 black, 4oz cone",Wawak,"V-69 bonded poly — black",https://www.wawak.com,7.95,3-5,Yes,"Approx 1,400 yd; reusable across many projects."
+M-08,"Bonded polyester thread Tex 90 black, 4oz cone (topstitch, optional)",Wawak,"Tex 90 bonded poly — black",https://www.wawak.com,8.95,3-5,Yes,"Optional; only if you topstitch."
+M-09,"All-purpose polyester thread Tex 40 natural",Joann,"Coats & Clark all-purpose — natural",https://www.joann.com,3.50,Same-day if in-store,Yes,"Generic polyester — many equivalents."
+M-10,"110/18 denim/jeans needles, 5-pack",Joann or Wawak,"Schmetz Jeans 110/18",https://www.joann.com,5.95,Same-day,Yes,"Schmetz brand recommended; Organ is the alternative."
+M-11,"90/14 universal needles, 5-pack",Joann,"Schmetz Universal 90/14",https://www.joann.com,4.95,Same-day,Yes,
+M-12,"Topstitch 110/18 needles, 5-pack (optional)",Joann,"Schmetz Topstitch 110/18",https://www.joann.com,5.95,Same-day,Yes,"Larger eye for thicker thread."
+M-13,"Wonder clips, 50-pack",Joann or Amazon,"Clover Wonder Clips 50ct",https://www.joann.com,9.95,Same-day,Yes,"Pins won't push through 4 layers of waxed canvas."
+M-14,"Otter Wax fabric re-wax bar, optional",Otter Wax direct or REI,"Otter Wax Fabric Wax 5oz",https://otterwax.com,8.00,3-5,Yes,"Beeswax + paraffin blend. Use sparingly."
+,,,,,,,,
+,Lead-time summary,,,,,7 days max,,Plan to order online items 1 week before build day. Joann + TAP are walk-ins.
+,Total in-cart estimate,,,,~115.28 if buying everything new,,,Drop ~$23 by skipping M-08/M-12/M-14.

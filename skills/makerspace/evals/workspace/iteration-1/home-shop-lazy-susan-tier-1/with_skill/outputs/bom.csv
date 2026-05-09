@@ -1,0 +1,12 @@
+item_id,item_name,qty,unit,vendor,sku,unit_cost_usd,line_cost_usd,lead_time_days,notes
+b001,"Walnut, 4/4 S2S, ~6"" wide × 48"" long board",4,board,local hardwood dealer,TBD,42.00,168.00,0,"4 boards yields enough glue-up stock for all 3 tier blanks plus ~20% trim/grain-match waste"
+b002,"Lazy-susan bearing, 6"" square, 4-hole, ~500 lb load",1,each,Rockler/Lee Valley/Amazon,TBD,12.00,12.00,2,"between tier 1 and tier 2"
+b003,"Lazy-susan bearing, 4"" square, 4-hole, ~250 lb load",1,each,Rockler/Lee Valley/Amazon,TBD,9.00,9.00,2,"between tier 2 and tier 3"
+b004,"Titebond II or III wood glue, 16 oz",1,bottle,Home Depot,TBD,11.00,11.00,0,"glue-up of tier blanks"
+b005,"#8 × 1/2"" pan-head wood screws, 100ct box",1,box,Home Depot,TBD,8.00,8.00,0,"bearing mounting; 16 screws used, rest scrap"
+b006,"Watco Danish Oil, natural, 1 pint",1,can,Home Depot,TBD,15.00,15.00,0,"finish; assumption — user can swap"
+b007,"Sandpaper assortment 80/120/180/220 grit, ROS discs",1,pack,Home Depot,TBD,18.00,18.00,0,"5"" hook-and-loop for orbital sander"
+b008,"Self-adhesive felt or rubber feet, 1"" dia, 8-pack",1,pack,Home Depot,TBD,5.00,5.00,0,"4 feet on bottom of tier 1; 4 spare"
+b009,"1/4"" roundover router bit, 1/4"" shank, bearing-guided",1,each,Home Depot/Amazon,TBD,18.00,18.00,0,"may already be on hand"
+b010,"1/2"" 3-TPI bandsaw blade (resaw or general)",1,each,Home Depot/Amazon,TBD,22.00,22.00,0,"sharp blade non-negotiable for hex sides"
+,,,,,,,TOTAL,286.00,,

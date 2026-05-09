@@ -1,0 +1,15 @@
+item,qty,unit,description,vendor,sku,unit_price_usd,line_total_usd,notes
+1,1,sheet,"Baltic birch plywood, 1/4 in, 24 x 30 in, B/BB grade",Ocooch Hardwoods,BB-024-030-025,16.50,16.50,"Half-sheet; price [verify]; alt: KJP Select, Forest Plywood"
+2,1,bit,"60 deg V-bit, 1/4 in shank, solid carbide",Amana Tool,45624-K,32.00,32.00,"Reusable; one bit lasts many signs"
+3,1,bit,"1/8 in two-flute upcut end mill, 1/4 in shank, solid carbide",Amana Tool,46100-K,18.00,18.00,"Reusable; spare recommended"
+4,1,roll,"Double-sided carpet tape, 2 in x 30 yd",3M / generic,n/a,9.00,9.00,"Or use shop-supplied tape"
+5,1,can,"Osmo Polyx-Oil 3032 (satin), 0.125 L",Osmo,3032-0125,22.00,22.00,"Enough for 10+ signs"
+6,1,pack,"White nylon non-woven pads, pack of 10",3M / generic,7445,8.00,8.00,"For oil application"
+7,1,pack,"Microfiber cloths, 6-pack",generic,n/a,10.00,10.00,"For wipe-back"
+8,1,sheet,"220 grit sandpaper, hand sheet",3M / generic,n/a,1.00,1.00,
+9,1,sheet,"180 grit sandpaper, ROS disc",3M / generic,n/a,1.50,1.50,
+10,1,each,"#8 x 1-1/4 in panhead wood screw",hardware store,n/a,0.25,0.25,"Wall mount"
+11,2,each,"Self-adhesive felt bumpers, 0.5 in",hardware store,n/a,0.10,0.20,"Back bottom corners"
+,,,,,,,,
+,,,,,,SUBTOTAL,118.45,
+,,,,,,CONSUMED THIS BUILD (approx),12.00,"Plywood ~$8 + finish/tape proportionally"

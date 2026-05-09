@@ -1,0 +1,13 @@
+part_id,part_name,qty,material,stock_id,length_in,width_in,thickness_in,grain_dir,kerf_in,x_origin_in,y_origin_in,notes
+p001,sign body,1,baltic-birch-quarter,b001,18.000,6.000,0.250,length,0.125,1.000,1.000,"primary part; profile-cut on CNC with 1/8"" endmill, 6 tabs"
+p002,mounting cleat,2,baltic-birch-quarter,b001,5.000,0.750,0.250,length,0.125,1.000,8.000,"optional spacers behind sign for 1/4"" standoff; bandsaw or CNC"
+p003,spacer block,4,baltic-birch-quarter,b001,1.000,1.000,0.250,length,0.125,1.000,9.500,"optional shims for keyhole alignment if mounting on uneven wall"
+p004,test coupon,1,baltic-birch-quarter,b001,4.000,4.000,0.250,length,0.125,1.000,11.500,"V-carve test ('A' or 'W') before committing to sign body"
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+,STOCK_INVENTORY,,,,,,,,,,,
+,"Sheet b001: 60x60 in",,,,,,,,,,,
+,"Used for parts above (incl 1/8"" kerf): ~150 in^2",,,,,,,,,,,
+,"Sheet area: 3600 in^2",,,,,,,,,,,
+,"Remaining offcut: ~3450 in^2 (~95.8% of sheet)",,,,,,,,,,,
+,"Layout strategy: cut sign body and test coupon from one corner; leave rest of sheet intact for future builds",,,,,,,,,,,

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Edge-Lit Acrylic Award Panel
+  Material: cast clear acrylic, 0.25 in thick
+  Outer dimensions: 6.000 x 9.000 inches
+  Units: inches. 1 user unit = 1 inch.
+
+  Layer/color convention for laser:
+    RED  stroke, 0.001 in width = VECTOR CUT (panel outline)
+    BLUE stroke, 0.001 in width = VECTOR ENGRAVE (fine line accents — optional)
+    BLACK fill                  = RASTER ENGRAVE (text, logo)
+
+  IMPORTANT: This SVG uses inches. Set RDWorks / LightBurn / Epilog driver
+  to inches, or import as 6 x 9 and verify scale.
+-->
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="6in" height="9in"
+     viewBox="0 0 6 9">
+
+  <!-- ===== CUT LAYER (red) ===== -->
+  <g id="CUT" stroke="red" stroke-width="0.001" fill="none">
+    <rect x="0" y="0" width="6" height="9" rx="0.125" ry="0.125"/>
+  </g>
+
+  <!-- ===== RASTER ENGRAVE LAYER (black fill) ===== -->
+  <g id="ENGRAVE_RASTER" fill="black" stroke="none">
+    <text x="3" y="3.6"
+          font-family="Georgia, 'Times New Roman', serif"
+          font-style="italic"
+          font-size="0.85"
+          text-anchor="middle">Award of Excellence</text>
+
+    <text x="3" y="4.9"
+          font-family="Georgia, 'Times New Roman', serif"
+          font-size="0.55"
+          text-anchor="middle">[ Recipient Name ]</text>
+
+    <text x="3" y="5.8"
+          font-family="Helvetica, Arial, sans-serif"
+          font-size="0.22"
+          text-anchor="middle">For outstanding contribution</text>
+    <text x="3" y="6.15"
+          font-family="Helvetica, Arial, sans-serif"
+          font-size="0.22"
+          text-anchor="middle">to the Maker Nexus community</text>
+
+    <text x="3" y="7.3"
+          font-family="Helvetica, Arial, sans-serif"
+          font-size="0.20"
+          text-anchor="middle">May 2026</text>
+  </g>
+
+  <!-- ===== VECTOR ENGRAVE LAYER (blue, light scoring) ===== -->
+  <g id="ENGRAVE_VECTOR" stroke="blue" stroke-width="0.001" fill="none">
+    <line x1="0.75" y1="3.3" x2="2.25" y2="3.3"/>
+    <line x1="3.75" y1="3.3" x2="5.25" y2="3.3"/>
+    <line x1="1.5" y1="8.4" x2="4.5" y2="8.4"/>
+  </g>
+
+  <!-- ===== REFERENCE / NON-CUTTING (gray dashed) ===== -->
+  <g id="REF_DO_NOT_CUT" stroke="#999" stroke-width="0.005"
+     stroke-dasharray="0.05 0.05" fill="none">
+    <line x1="0" y1="8.5" x2="6" y2="8.5"/>
+    <text x="0.1" y="8.7" font-family="Helvetica" font-size="0.12"
+          fill="#999" stroke="none">slot line — do not cut</text>
+  </g>
+</svg>

@@ -1,0 +1,13 @@
+item_id,primary_vendor,primary_url,primary_unit_cost_usd,alt_vendor,alt_url,alt_unit_cost_usd,lead_time_days,shipping_usd,rfq_sent,rfq_quoted,notes
+b001,MacBeath Hardwood Berkeley,https://macbeath.com,42.00,Anderson Plywood (Mountain View),https://andersonplywood.com,48.00,0,0.00,false,false,"will-call; bring a vehicle that fits 60x60. Anderson is closer to Sunnyvale but pricier."
+b002,Toolstoday (Amana),https://www.toolstoday.com/v-15145-45624-k.html,38.00,Infinity Tools,https://www.infinitytools.com/60-degree-v-groove-router-bit,42.00,2,9.99,false,false,"Amana 45624-K is the standard 60-deg V-bit; carbide, 1/2 shank"
+b003,Toolstoday (Amana),https://www.toolstoday.com/v-15145-46100-k.html,18.00,Bits & Bits,https://www.bitsbits.com,16.50,2,9.99,false,false,"1/8 upcut spiral, 2-flute, 1/4 shank; consider buying a 2-pack since these snap"
+b004,Home Depot,https://www.homedepot.com/p/Roberts-2-in-x-30-yd-Indoor-Carpet-Tape-50-150,8.97,Amazon,https://www.amazon.com/dp/B000I1NHU0,9.49,0,0.00,false,false,"in-store pickup; double-sided cloth carpet tape, not the foam kind"
+b005,Rockler,https://www.rockler.com/zinsser-bullseye-sealcoat-quart,16.99,Woodcraft,https://www.woodcraft.com,17.99,0,0.00,false,false,"Zinsser SealCoat or equivalent dewaxed shellac/sanding sealer"
+b006,Home Depot (Minwax),https://www.homedepot.com/p/Minwax-1-qt-Clear-Satin-Helmsman-Spar-Urethane-43210000,18.98,Lowes,https://www.lowes.com,19.48,0,0.00,false,false,"Minwax Helmsman Spar — exterior-rated; satin reads as clean wood, not glossy"
+b007,Home Depot,https://www.homedepot.com/p/3M-Pro-Grade-Precision-9-in-x-11-in-Multi-Surface-Sandpaper-Variety-Pack-9-Sheets,11.97,Amazon,https://www.amazon.com,12.99,0,0.00,false,false,"3M Pro-Grade variety pack covers 120/180/220/320"
+b008,Home Depot,https://www.homedepot.com/p/Trimaco-9-in-x-17-in-Tack-Cloth-3-Pack,3.47,Amazon,https://www.amazon.com,4.99,0,0.00,false,false,"any tack cloth works"
+b009,Home Depot,https://www.homedepot.com/p/204321712,4.98,Lowes,https://www.lowes.com,5.48,0,0.00,false,false,"#8 x 1-1/4 pan-head, zinc-plated; quantity is overkill for 2 screws"
+b010,Home Depot,https://www.homedepot.com/p/E-Z-Ancor-Plastic-Drywall-Anchor-25-Pack,4.97,Amazon,https://www.amazon.com,5.99,0,0.00,false,false,"only needed if mounting location has no studs"
+b011,Home Depot,https://www.homedepot.com/p/3-4-in-MDF-Panel,15.98,n/a,n/a,15.98,0,0.00,false,false,"only buy if Maker Nexus spoilboard is in poor shape; usually shop has this"
+b012,Home Depot,https://www.homedepot.com/p/Home-Depot-Foam-Brush-2-in-6-Pack,4.97,Amazon,https://www.amazon.com,6.49,0,0.00,false,false,"foam brushes; throw away after each coat"

@@ -1,0 +1,33 @@
+{
+  "eval_name": "maker-nexus-doe-feeds-speeds",
+  "variant": "without_skill",
+  "expectations": [
+    {
+      "text": "doe/study-01-protocol.yaml exists with the right factors and levels",
+      "passed": false,
+      "evidence": "path=False feed=False depth=False feed-levels=False depth-levels=False"
+    },
+    {
+      "text": "doe/study-01-data.csv exists with 18 planned rows (3 x 3 x 2 replicates)",
+      "passed": false,
+      "evidence": "row_count=0"
+    },
+    {
+      "text": "Protocol references both response variables (edge finish + cycle time)",
+      "passed": false,
+      "evidence": "edge=False cycle_time=False"
+    },
+    {
+      "text": "Response references record_doe_results.py or doe-integration.md",
+      "passed": false,
+      "evidence": "script-ref=False ref-doc=False"
+    },
+    {
+      "text": "Response references HDPE in materials and respects Maker Nexus material policy",
+      "passed": false,
+      "evidence": "no HDPE mention"
+    }
+  ],
+  "passed_count": 0,
+  "total_count": 5
+}

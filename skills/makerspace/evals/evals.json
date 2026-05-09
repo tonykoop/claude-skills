@@ -1,0 +1,48 @@
+{
+  "skill_name": "makerspace",
+  "version": "1.0.0",
+  "focus": "fabrication specialist for jigs, fixtures, workholding, machine-aware planning, and make/order/buy/borrow decisions",
+  "legacy_workspace": "evals/workspace",
+  "evals": [
+    {
+      "id": 1,
+      "name": "maker-nexus-bench-dog-drilling-jig",
+      "prompt": "I'm at Maker Nexus and need to drill repeatable 20 mm bench-dog holes into twelve birch workbench aprons on the CNC drill setup. Hole centerline has to stay within +/-0.010 in relative to the apron top edge. I can use the CNC and woodshop, but I want a jig or fixture plan that keeps setup time low after the first part. Give me a repeatable shop packet.",
+      "expected_output": "A fabrication packet that separates design intent from machine ops, defines datums and workholding, recommends a jig strategy, and includes safety and make/order/buy/borrow sections.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "name": "home-shop-router-template-mobob",
+      "prompt": "I have a home shop with a handheld router, drill press, jigsaw, flush-trim bits, and clamps. I need to make eight matching ash chair arms with a sweeping outside curve. Help me decide whether I should make a router template, order one, buy a commercial template, or borrow shop tooling. I care more about repeatability than speed.",
+      "expected_output": "A make/order/buy/borrow recommendation with reuse, accuracy, lead-time, and shop-capability tradeoffs plus a safe fallback route for a home shop.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "name": "maker-nexus-soft-jaw-fixture-review",
+      "prompt": "I need to machine a small aluminum camera bracket on a manual mill at Maker Nexus. The part is awkward to grip and I only need four parts, but hole position matters. Should I cut soft jaws, make a sacrificial fixture plate, or redesign the sequence around strap clamps? Give me the jig decision and workholding checklist, not a full CAD model.",
+      "expected_output": "A jig-decision artifact comparing at least three fixturing options, explicit datums, tolerance checkpoints, and machine-aware pros and cons.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "name": "instrument-neck-drill-fixture-routing",
+      "prompt": "I already have the neck geometry from instrument-maker-v4. What I need now is a safe, repeatable drill fixture for tuner holes on a small batch of headstocks. Keep acoustics out of scope. I want the setup plan, workholding, and safety checks for a drill press or mill depending on shop availability.",
+      "expected_output": "A fabrication-focused response that explicitly keeps acoustics out of scope while producing a machine-aware fixture plan and fallback route.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 5,
+      "name": "maker-nexus-laser-spacer-fixture",
+      "prompt": "I'm laser-cutting a batch of acrylic spacers at Maker Nexus and need a carrier fixture so small parts don't shift after the final contour cut. I also need a quick safety review because the stock comes with protective film and I want to avoid flare-ups. Give me the repeatable shop packet.",
+      "expected_output": "A fixture concept, workholding strategy, go/no-go checks, and a laser-specific safety checklist that acknowledges small-part retention risks.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

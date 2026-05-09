@@ -1,0 +1,33 @@
+{
+  "eval_name": "maker-nexus-laser-acrylic-display-tier-2",
+  "variant": "with_skill",
+  "expectations": [
+    {
+      "text": "Tier 2 file set complete (10 files)",
+      "passed": true,
+      "evidence": "all present"
+    },
+    {
+      "text": "design.md / BOM contains both acrylic and walnut callouts",
+      "passed": true,
+      "evidence": "acrylic=True walnut=True"
+    },
+    {
+      "text": "Material discussion confirms polycarbonate is banned and acrylic is fine",
+      "passed": true,
+      "evidence": "poly-banned=True acrylic-ok=True"
+    },
+    {
+      "text": "op-sequence has both laser ops and woodshop ops",
+      "passed": true,
+      "evidence": "laser=True woodshop=True"
+    },
+    {
+      "text": "BOM mentions LED strip / lighting",
+      "passed": true,
+      "evidence": "LED strip in BOM"
+    }
+  ],
+  "passed_count": 5,
+  "total_count": 5
+}

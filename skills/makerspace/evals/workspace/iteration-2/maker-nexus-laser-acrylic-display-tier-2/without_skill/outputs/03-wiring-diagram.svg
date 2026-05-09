@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 800 360"
+     width="800" height="360"
+     font-family="Helvetica, Arial, sans-serif">
+
+  <style>
+    .wireR  { stroke: #c92a2a; stroke-width: 3; fill: none; }
+    .wireB  { stroke: #1d3557; stroke-width: 3; fill: none; }
+    .lab    { font-size: 13px; fill: #222; }
+    .titl   { font-size: 18px; font-weight: bold; fill: #111; }
+    .box    { fill: #f6efe2; stroke: #2b1d12; stroke-width: 1.5; }
+    .pill   { fill: #fff7d6; stroke: #2b1d12; stroke-width: 1.2; }
+  </style>
+
+  <text x="20" y="28" class="titl">Wiring — Edge-Lit Acrylic Award</text>
+  <text x="20" y="48" class="lab">12V DC, center-positive. Total draw ~0.25 A. Single-color LED strip shown; for RGB, replace with controller module.</text>
+
+  <rect class="box" x="40" y="120" width="140" height="80" rx="8"/>
+  <text class="lab" x="110" y="150" text-anchor="middle">12V 1A wall</text>
+  <text class="lab" x="110" y="168" text-anchor="middle">power supply</text>
+  <text class="lab" x="110" y="186" text-anchor="middle">2.1mm barrel plug</text>
+
+  <circle class="pill" cx="260" cy="160" r="32"/>
+  <text class="lab" x="260" y="156" text-anchor="middle">barrel jack</text>
+  <text class="lab" x="260" y="172" text-anchor="middle">(rear of base)</text>
+
+  <rect class="pill" x="350" y="130" width="110" height="60" rx="6"/>
+  <text class="lab" x="405" y="156" text-anchor="middle">SPST switch</text>
+  <text class="lab" x="405" y="174" text-anchor="middle">(optional)</text>
+
+  <rect class="box" x="540" y="120" width="220" height="80" rx="6"/>
+  <text class="lab" x="650" y="150" text-anchor="middle">12V LED strip, 5050</text>
+  <text class="lab" x="650" y="168" text-anchor="middle">~3 in section, 6 LEDs</text>
+  <text class="lab" x="650" y="186" text-anchor="middle">(in slot floor)</text>
+
+  <path class="wireR" d="M180 145 L 230 145 L 260 145"/>
+  <path class="wireR" d="M292 145 L 350 145"/>
+  <path class="wireR" d="M460 145 L 540 145"/>
+  <text class="lab" x="220" y="138" fill="#c92a2a">+12V (red)</text>
+
+  <path class="wireB" d="M180 175 L 230 175 L 260 175"/>
+  <path class="wireB" d="M292 175 L 350 175"/>
+  <path class="wireB" d="M460 175 L 540 175"/>
+  <text class="lab" x="220" y="195" fill="#1d3557">GND (black)</text>
+
+  <text class="lab" x="20" y="250">Assembly notes:</text>
+  <text class="lab" x="20" y="270">  1. Solder LED strip leads to ~10 in pigtail. Heat-shrink each joint individually before the outer shrink.</text>
+  <text class="lab" x="20" y="288">  2. Feed pigtail up through the 1/4 in pass-through hole into the slot. Stick LED strip to slot floor with its 3M backing.</text>
+  <text class="lab" x="20" y="306">  3. Wire barrel jack: tip = +12V (red), sleeve = GND (black). Confirm with multimeter against a known-good 12V supply.</text>
+  <text class="lab" x="20" y="324">  4. If using a switch, install on the +12V leg between jack and LED. Use a switch rated for at least 12V / 1A.</text>
+  <text class="lab" x="20" y="342">  5. Strain-relieve internal wires with a small dab of hot glue at the pass-through hole.</text>
+</svg>

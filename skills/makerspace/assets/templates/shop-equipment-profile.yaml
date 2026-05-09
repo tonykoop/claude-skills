@@ -1,0 +1,32 @@
+# Temporary shop equipment profile template.
+#
+# Use this when the user needs machine-aware planning but there is no
+# canonical profile under spaces/<slug>/ yet.
+
+slug: temporary-shop
+name: Temporary shop profile
+location:
+  city: ""
+  state: ""
+  country: ""
+
+tools:
+  - id: primary-machine
+    name: ""
+    category: ""
+    specs: {}
+    inventory: {}
+    allowed_materials: []
+    banned_materials: []
+    cert_required: ""
+
+materials: []
+certifications: []
+classes: []
+
+notes:
+  batch_size: ""
+  tolerance_priority: ""
+  preferred_units: in
+  deadline: ""
+  operator_experience: ""

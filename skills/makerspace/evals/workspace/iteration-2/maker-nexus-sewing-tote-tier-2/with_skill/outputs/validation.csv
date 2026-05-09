@@ -1,0 +1,26 @@
+check_id,phase,what_to_verify,how_to_verify,target,tolerance,pass_fail,notes
+v001,Cutting,Body panel dimensions,"Tape measure across cut panel",19×16 in,"±1/8""",,Both P-01 and P-02. Both P-07 and P-08.
+v002,Cutting,Gusset length,"Tape measure end-to-end",48 in,"±1/4""",,P-03 and P-09.
+v003,Cutting,Gusset corner notch positions,"Tape measure from each end to nearest notch",16 in / 32 in,"±1/8""",,Notches mark the pivot points.
+v004,Cutting,Strap length,"Tape measure",28 in,"±1/4""",,P-05 ×2.
+v005,Lining,Pocket finished dimensions,"Tape measure once attached",8×10 in,"±1/4""",,Inside slip pocket on P-08.
+v006,Lining,Pocket placement,"Tape measure from top of P-08 to top of pocket",4 in,"±1/4""",,
+v007,Lining,Pocket corner reinforcement,"Visual — box-X stitches at upper corners",present,n/a,,Hand-tug test: pocket should not pull off when loaded with 5 lb.
+v008,Strap,Strap finished width,"Calipers or ruler",1.5 in,"±1/16""",,
+v009,Strap,Strap length match (A vs B),"Tape measure both straps","equal","±1/2""",,Bag will hang asymmetrically if straps differ by more than 1/2"".
+v010,Strap,Foam centered in strap,"Feel along strap length","8 in foam, centered",n/a,,Foam shifted off-center will create a comfort hot spot.
+v011,Strap anchor,Bartack stitch density,"Visual count","30+ stitches per bartack",n/a,,Box-X plus dense zigzag.
+v012,Strap anchor,Anchor pull test,"Hang 25 lb from each strap for 1 minute","no thread breakage, no fabric tear",n/a,,Bag rated for ~20 lb working load with 25% safety margin.
+v013,Zipper,Zipper opens fully end-to-end,"Operate zipper",smooth, 20 in opening,no catch,,Catch usually means lining is rolled into the teeth. Adjust before final close-up.
+v014,Zipper,Zipper end tab integrity,"Tug each tab",does not separate,n/a,,
+v015,Shell,Boxed corner squareness,"Tape measure diagonal of each corner","matches its mate within 1/4""",1/4",,If diagonals don't match the bag will sit lopsided.
+v016,Shell,Bottom reinforcement attached,"Visual + tug",present, no lifting,n/a,,
+v017,Binding,All interior seams bound,"Visual inspection — turn bag inside-out","no raw edges visible",n/a,,Raw cotton edges will fray over months of use.
+v018,Binding,Corner crossover construction,"Visual at each gusset corner, inside","tucked under, no raw end exposed",n/a,,
+v019,Final,Overall finished dimensions,"Tape measure with bag stuffed lightly",18×14×6 in,"±1/2"" W/H, ±1/4"" D",,Empty bag will sag without stiffener.
+v020,Final,Bag stands upright on its base,"Set bag on flat surface, lightly stuffed","stands without tipping",n/a,,Stiffener (P-14) helps; doubled bottom (P-04) helps.
+v021,Final,Top opening usable mouth,"Hand fits through with bag stuffed",">= 4 in clearance with 5 lb load",n/a,,
+v022,Final,No skipped stitches in any seam,"Walk every seam visually","none",n/a,,Skipped stitches in waxed canvas usually mean wax-clogged needle or thread tension off.
+v023,Durability,30-day soak test,"Carry 15 lb of groceries 5x/week for 30 days","no seam failure, no strap stretch >1/4""",n/a,,Empirical-learning loop: log results to spaces/maker-nexus/corrections/raw-measurements.jsonl with check_id v023.
+v024,Durability,Wax wear pattern,"Photograph after 30 days","wear patches at corners and strap anchors only",n/a,,Wax should NOT have flaked off in mid-panel areas.
+v025,Aesthetic,Topstitch consistency,"Visual",even spacing across straps and zipper,n/a,,Tier 2 portfolio standard.

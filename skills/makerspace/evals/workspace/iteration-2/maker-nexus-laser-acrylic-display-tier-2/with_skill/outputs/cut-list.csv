@@ -1,0 +1,8 @@
+part_id,part_name,qty,material,stock_id,length_in,width_in,thickness_in,grain_dir,kerf_in,notes
+p001,acrylic panel,1,cast-acrylic-clear-quarter,b001,9.000,6.000,0.250,n/a,0.020,"Laser-cut from 12x24 sheet. Leaves 12x15 + offcuts."
+p002,walnut base blank,1,walnut-44,b002,8.250,3.250,0.875,length,0.125,"Oversize by 0.25"" each direction; trim to 8.000 x 3.000 after milling."
+p003,walnut base finished,1,walnut-44,p002,8.000,3.000,0.750,length,n/a,"Mill flat after planer; final thickness 0.750-0.875 (TBD by stock)"
+,,,,,,,,,,
+,,,,,,,,,,Stock plan summary:
+,,,,,,,,,,Acrylic sheet 12x24 yields 1x p001 + ~12x15 of offcut for spares
+,,,,,,,,,,Walnut 4x12 yields 1x p002 with ~3x12 of remaining stock

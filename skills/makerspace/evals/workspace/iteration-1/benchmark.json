@@ -1,0 +1,354 @@
+{
+  "iteration": "iteration-1",
+  "skill_name": "makerspace",
+  "evals": [
+    {
+      "name": "home-shop-lazy-susan-tier-1",
+      "runs": {
+        "with_skill": {
+          "grading": {
+            "eval_name": "home-shop-lazy-susan-tier-1",
+            "variant": "with_skill",
+            "expectations": [
+              {
+                "text": "Tier 1 file set complete: design.md, bom.csv, cut-list.csv, op-sequence.md, safety-notes.md all present",
+                "passed": true,
+                "evidence": "all 5 present"
+              },
+              {
+                "text": "No Tier 2/3 over-delivery (no README, drawings/, deck, sourcing.csv, validation.csv, risks.md, assembly-manual.md)",
+                "passed": true,
+                "evidence": "no extras"
+              },
+              {
+                "text": "op-sequence.md uses ONLY the user's stated tools \u2014 no CNC, laser, mill, jointer, planer, tablesaw",
+                "passed": true,
+                "evidence": "only allowed tools"
+              },
+              {
+                "text": "op-sequence.md mentions bandsaw plus at least one of drill press / sander / router",
+                "passed": true,
+                "evidence": "bandsaw=True, other allowed tool=True"
+              },
+              {
+                "text": "design.md contains hexagon math (apothem, side length, or across-flats)",
+                "passed": true,
+                "evidence": "found hex math terms"
+              },
+              {
+                "text": "bom.csv references walnut",
+                "passed": true,
+                "evidence": "walnut found"
+              }
+            ],
+            "passed_count": 6,
+            "total_count": 6
+          },
+          "pass_rate": 1.0,
+          "timing": {
+            "total_tokens": 56630,
+            "duration_ms": 373503,
+            "total_duration_seconds": 373.5
+          }
+        },
+        "without_skill": {
+          "grading": {
+            "eval_name": "home-shop-lazy-susan-tier-1",
+            "variant": "without_skill",
+            "expectations": [
+              {
+                "text": "Tier 1 file set complete: design.md, bom.csv, cut-list.csv, op-sequence.md, safety-notes.md all present",
+                "passed": false,
+                "evidence": "missing: ['design.md', 'bom.csv', 'cut-list.csv', 'op-sequence.md', 'safety-notes.md']"
+              },
+              {
+                "text": "No Tier 2/3 over-delivery (no README, drawings/, deck, sourcing.csv, validation.csv, risks.md, assembly-manual.md)",
+                "passed": true,
+                "evidence": "no extras"
+              },
+              {
+                "text": "op-sequence.md uses ONLY the user's stated tools",
+                "passed": false,
+                "evidence": "op-sequence.md missing"
+              },
+              {
+                "text": "op-sequence.md mentions bandsaw plus another tool",
+                "passed": false,
+                "evidence": "op-sequence.md missing"
+              },
+              {
+                "text": "design.md contains hexagon math",
+                "passed": false,
+                "evidence": "design.md missing"
+              },
+              {
+                "text": "bom.csv references walnut",
+                "passed": false,
+                "evidence": "bom.csv missing"
+              }
+            ],
+            "passed_count": 1,
+            "total_count": 6
+          },
+          "pass_rate": 0.16666666666666666,
+          "timing": {
+            "total_tokens": 29139,
+            "duration_ms": 173784,
+            "total_duration_seconds": 173.8
+          }
+        }
+      },
+      "prompt": "I just have my home garage \u2014 bandsaw, drill press, hand tools, an orbital sander, a router, and a few clamps. No CNC, no laser. I want to build a 3-tier hexagonal lazy susan from solid walnut. Bottom tier is 16 inches across (point-to-point), each tier steps down by 2 inches. Just give me a shop-ready Tier 1 plan, I don't need anything fancy."
+    },
+    {
+      "name": "maker-nexus-canoe-paddle-cert-gap",
+      "runs": {
+        "with_skill": {
+          "grading": {
+            "eval_name": "maker-nexus-canoe-paddle-cert-gap",
+            "variant": "with_skill",
+            "expectations": [
+              {
+                "text": "Response addresses the bandsaw cert gap explicitly",
+                "passed": true,
+                "evidence": "mentions bandsaw + cert/class context"
+              },
+              {
+                "text": "Response names the specific class that grants bandsaw access (woodshop-intro or equivalent)",
+                "passed": true,
+                "evidence": "named woodshop-intro / bandsaw class"
+              },
+              {
+                "text": "Response references the Maker Nexus class schedule URL",
+                "passed": true,
+                "evidence": "URL present"
+              },
+              {
+                "text": "Response stays in knowledge mode \u2014 does not produce a full Tier 2 build packet",
+                "passed": true,
+                "evidence": "no packet artifacts"
+              },
+              {
+                "text": "Response is a single chat-style markdown file (response.md), not a folder of packet artifacts",
+                "passed": true,
+                "evidence": "1 file(s)"
+              }
+            ],
+            "passed_count": 5,
+            "total_count": 5
+          },
+          "pass_rate": 1.0,
+          "timing": {
+            "total_tokens": 39933,
+            "duration_ms": 144610,
+            "total_duration_seconds": 144.6
+          }
+        },
+        "without_skill": {
+          "grading": {
+            "eval_name": "maker-nexus-canoe-paddle-cert-gap",
+            "variant": "without_skill",
+            "expectations": [
+              {
+                "text": "Response addresses the bandsaw cert gap explicitly",
+                "passed": true,
+                "evidence": "mentions bandsaw + cert/class context"
+              },
+              {
+                "text": "Response names the specific class that grants bandsaw access (woodshop-intro or equivalent)",
+                "passed": true,
+                "evidence": "named woodshop-intro / bandsaw class"
+              },
+              {
+                "text": "Response references the Maker Nexus class schedule URL",
+                "passed": false,
+                "evidence": "no Maker Nexus URL"
+              },
+              {
+                "text": "Response stays in knowledge mode \u2014 does not produce a full Tier 2 build packet",
+                "passed": true,
+                "evidence": "no packet artifacts"
+              },
+              {
+                "text": "Response is a single chat-style markdown file (response.md), not a folder of packet artifacts",
+                "passed": true,
+                "evidence": "1 file(s)"
+              }
+            ],
+            "passed_count": 4,
+            "total_count": 5
+          },
+          "pass_rate": 0.8,
+          "timing": {
+            "total_tokens": 24617,
+            "duration_ms": 9409694,
+            "total_duration_seconds": 9409.7,
+            "_note": "duration_ms appears anomalously high (~2.6 hours wall clock for 4 tool uses); may include idle/queued time; tokens are real."
+          }
+        }
+      },
+      "prompt": "Hey, I'm at Maker Nexus and I want to make a steam-bent ash canoe paddle this summer. I'm cleared on the woodshop but not on the bandsaw yet (I know that's weird). What's possible \u2014 and is there a class I should take first? I don't need a full build packet yet, just help me figure out my path."
+    },
+    {
+      "name": "maker-nexus-cnc-sign-tier-2",
+      "runs": {
+        "with_skill": {
+          "grading": {
+            "eval_name": "maker-nexus-cnc-sign-tier-2",
+            "variant": "with_skill",
+            "expectations": [
+              {
+                "text": "Tier 2 file set complete: design.md, bom.csv, cut-list.csv, op-sequence.md, safety-notes.md, assembly-manual.md, sourcing.csv, validation.csv, risks.md, README.md all present",
+                "passed": true,
+                "evidence": "all present"
+              },
+              {
+                "text": "Drawing artifact present: either drawing-brief.md or non-empty drawings/ directory",
+                "passed": true,
+                "evidence": "drawing-brief.md, drawings/ has files"
+              },
+              {
+                "text": "design.md contains parametric formulas (a `=` in a derivation, not just static numbers)",
+                "passed": true,
+                "evidence": "found derivation patterns"
+              },
+              {
+                "text": "op-sequence.md does NOT cite laser ops (user is not laser-cleared)",
+                "passed": true,
+                "evidence": "no laser ops"
+              },
+              {
+                "text": "BOM references baltic birch (or similar plywood callout)",
+                "passed": true,
+                "evidence": "found 'birch'"
+              },
+              {
+                "text": "README mentions Maker Nexus",
+                "passed": true,
+                "evidence": "found 'maker nexus'"
+              },
+              {
+                "text": "risks.md contains at least one *Test* line attached to a risk",
+                "passed": true,
+                "evidence": "found Test: line"
+              }
+            ],
+            "passed_count": 7,
+            "total_count": 7
+          },
+          "pass_rate": 1.0,
+          "timing": {
+            "total_tokens": 71061,
+            "duration_ms": 635607,
+            "total_duration_seconds": 635.6
+          }
+        },
+        "without_skill": {
+          "grading": {
+            "eval_name": "maker-nexus-cnc-sign-tier-2",
+            "variant": "without_skill",
+            "expectations": [
+              {
+                "text": "Tier 2 file set complete: design.md, bom.csv, cut-list.csv, op-sequence.md, safety-notes.md, assembly-manual.md, sourcing.csv, validation.csv, risks.md, README.md all present",
+                "passed": false,
+                "evidence": "missing: ['design.md', 'cut-list.csv', 'op-sequence.md', 'safety-notes.md', 'assembly-manual.md', 'sourcing.csv', 'validation.csv', 'risks.md']"
+              },
+              {
+                "text": "Drawing artifact present: either drawing-brief.md or non-empty drawings/ directory",
+                "passed": true,
+                "evidence": "drawing artifact found"
+              },
+              {
+                "text": "design.md contains parametric formulas (a `=` in a derivation, not just static numbers)",
+                "passed": false,
+                "evidence": "no formula patterns"
+              },
+              {
+                "text": "op-sequence.md does NOT cite laser ops (user is not laser-cleared)",
+                "passed": false,
+                "evidence": "laser referenced"
+              },
+              {
+                "text": "BOM references baltic birch (or similar plywood callout)",
+                "passed": true,
+                "evidence": "birch found"
+              },
+              {
+                "text": "README mentions Maker Nexus",
+                "passed": true,
+                "evidence": "Maker Nexus mentioned"
+              },
+              {
+                "text": "risks.md contains at least one *Test* line attached to a risk",
+                "passed": false,
+                "evidence": "no Test: lines"
+              }
+            ],
+            "passed_count": 3,
+            "total_count": 7
+          },
+          "pass_rate": 0.42857142857142855,
+          "timing": {
+            "total_tokens": 63470,
+            "duration_ms": 688752,
+            "total_duration_seconds": 688.8
+          }
+        }
+      },
+      "prompt": "I'm a member at Maker Nexus in Sunnyvale and I want to build a CNC-routed welcome sign in baltic birch quarter-inch ply, about 18 by 6 inches, with V-carved letters that read 'WELCOME'. I'm cleared on the woodshop and the CNC but not laser. Help me put together a portfolio-ready build packet I can drop into a GitHub repo \u2014 Tier 2."
+    }
+  ],
+  "configurations": {
+    "with_skill": {
+      "pass_rates": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "durations_seconds": [
+        373.5,
+        144.6,
+        635.6
+      ],
+      "total_tokens_list": [
+        56630,
+        39933,
+        71061
+      ],
+      "pass_rate_mean": 1.0,
+      "pass_rate_stddev": 0.0,
+      "duration_mean_seconds": 384.6,
+      "duration_stddev_seconds": 245.7,
+      "tokens_mean": 55874,
+      "tokens_stddev": 15577
+    },
+    "without_skill": {
+      "pass_rates": [
+        0.16666666666666666,
+        0.8,
+        0.42857142857142855
+      ],
+      "durations_seconds": [
+        173.8,
+        9409.7,
+        688.8
+      ],
+      "total_tokens_list": [
+        29139,
+        24617,
+        63470
+      ],
+      "pass_rate_mean": 0.465,
+      "pass_rate_stddev": 0.318,
+      "duration_mean_seconds": 3424.1,
+      "duration_stddev_seconds": 5190.1,
+      "tokens_mean": 39075,
+      "tokens_stddev": 21247
+    }
+  },
+  "delta": {
+    "pass_rate_delta": 0.535,
+    "duration_delta_seconds": -3039.5,
+    "tokens_delta": 16799
+  }
+}

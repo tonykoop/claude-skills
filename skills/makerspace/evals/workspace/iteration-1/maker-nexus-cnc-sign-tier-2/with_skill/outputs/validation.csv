@@ -1,0 +1,19 @@
+check_id,check_name,target,tolerance,method,when_to_check,pass_fail,notes
+v001,overall length L,18.000 in,+/-0.031 in,"steel rule or tape across longest face",after profile cut (Op 8),pending,"+/-1/32 in is generous; CNC profile easily holds +/-0.010"
+v002,overall width W,6.000 in,+/-0.031 in,"steel rule across widest face",after profile cut (Op 8),pending,""
+v003,corner radius r,0.250 in,+/-0.031 in,"compare to 1/4-radius gauge or by eye",after profile cut (Op 8),pending,"radius set in CAM; will be exact unless bit is off"
+v004,V-carve depth max,0.125 in,+/-0.005 in,"depth gauge or calipers on deepest letter",after V-carve (Op 5),pending,"if over 0.125, the back face is at risk; if 0 the bit didn't engage"
+v005,V-carve no breakthrough,"no light visible from back","binary","backlight the sign with a phone flashlight; look at the back face",after V-carve (Op 5),pending,"if any light shows through, the V depth was too deep — sign is salvageable as a back-lit piece but not as designed"
+v006,letter centering horizontal,"text optical-centered on L/2","+/-0.10 in eyeball","measure left margin and right margin from outermost letter strokes; should match",after V-carve (Op 5),pending,"font kerning means perfect math centering is not perfect optical centering; eyeball wins"
+v007,letter centering vertical,"baseline on W/2 = 3.000 in","+/-0.05 in","measure from top of stock to top of caps; should be 1.500 in",after V-carve (Op 5),pending,""
+v008,keyhole slot spacing,12.000 in,+/-0.031 in,"calipers center-to-center on the wide ends",after Op 10,pending,"this dimension matters for mounting; if off, screws won't both engage"
+v009,keyhole slot depth,0.150 in,+/-0.010 in,"depth gauge in pocket",after Op 10,pending,"too deep risks breakthrough on V-carve; too shallow won't hold the screw head"
+v010,keyhole slot screw test,"#8 screw head fits wide end, locks in narrow","binary","test-fit a #8 x 1-1/4 screw",after Op 10,pending,""
+v011,tabs sanded flush,"no nub felt sliding fingernail along edge","binary","fingernail check around perimeter",after Op 11,pending,""
+v012,sanding completeness,"no fuzz, no pencil marks, uniform dull surface","visual","raking light at finish bench",after Op 11,pending,""
+v013,finish coverage,"no bare spots","binary","raking light, both faces and edges",after final coat (Op 12),pending,"endgrain on plywood drinks finish — may need an extra coat on edges"
+v014,finish smoothness,"no runs, no sags, no orange peel","visual","raking light, finger-feel",after final coat (Op 12),pending,""
+v015,mount fit on wall,"sign hangs flush, no rocking","binary","hang on installed screws, push corners",after install,pending,"if rocking, add the optional spacer blocks (p003)"
+,TOTALS,,,,,,
+,Total checks: 15,,,,,,
+,Pass: 0 / Fail: 0 / Pending: 15,,,,,,

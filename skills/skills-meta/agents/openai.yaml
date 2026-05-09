@@ -1,0 +1,13 @@
+interface:
+  display_name: "Skills Meta"
+  short_description: "Audit installed skills and report drift"
+  default_prompt: "Use $skills-meta to inventory installed skills, check a single skill version, or suggest frontmatter fixes from manifest.yaml."
+  triggers:
+    - "audit my skills"
+    - "what skills do I have?"
+    - "version check"
+    - "are my skills up to date?"
+    - "what version of X am I running?"
+    - "skill drift"
+policy:
+  allow_implicit_invocation: true

@@ -1,0 +1,20 @@
+piece_id,piece_name,material,qty,width_in,length_in,grain,seam_allowance_in,nests_from,notes
+P-01,Body panel — front,12-oz waxed canvas,1,19,16,"length parallel to selvedge",0.5,M-01,"Mark grain arrow on pattern."
+P-02,Body panel — back,12-oz waxed canvas,1,19,16,"length parallel to selvedge",0.5,M-01,"Cut from same orientation as P-01 to keep wax-pattern direction consistent."
+P-03,Gusset (continuous strip),12-oz waxed canvas,1,7,48,"length parallel to selvedge",0.5,M-01,"Or split into 2× 7×16 sides + 1× 7×19 bottom — see design.md."
+P-04,Bottom reinforcement panel,12-oz waxed canvas,1,7,19,"length parallel to selvedge",0.5,M-01,"Doubled over the bottom of the gusset on the outside."
+P-05,Strap,12-oz waxed canvas,2,7,28,"length parallel to selvedge",0.5,M-01,"Folded twice into 1.5""-wide strap."
+P-06,Zipper end tab,12-oz waxed canvas,2,2,2,any,0.25,M-01,"Cut from offcuts."
+P-07,Body panel — front lining,Cotton twill,1,19,16,"length parallel to selvedge",0.5,M-02,"Mark grain arrow."
+P-08,Body panel — back lining,Cotton twill,1,19,16,"length parallel to selvedge",0.5,M-02,"Same orientation as P-07."
+P-09,Gusset lining,Cotton twill,1,7,48,"length parallel to selvedge",0.5,M-02,"Or split as for P-03."
+P-10,Inside slip pocket,Cotton twill,1,9,22,"length parallel to selvedge",0.5,M-02,"Folded in half to self-line; finished pocket = 8""×10""."
+P-11,Stiffener sleeve (top),Cotton twill,1,5.5,17.5,any,0.5,M-02,"Cut from lining offcut. Pairs with P-12 to form a sleeve."
+P-12,Stiffener sleeve (bottom),Cotton twill,1,5.5,17.5,any,0.5,M-02,"Sewn 3 sides; 4th side = sleeve opening."
+P-13,Strap padding,1/4"" EVA foam,2,1.25,8,n/a,n/a,M-05,"No SA; foam is enclosed in the strap fold."
+P-14,Bottom stiffener (optional),1/8"" HDPE,1,5,17,n/a,n/a,M-06,"Round corners to 0.5"" radius. Drops into stiffener sleeve."
+P-15,Bias binding tape,Cotton bias (pre-made),1,1,216,bias,n/a,M-03,"6 yd; cut to length as you bind each seam."
+,,,,,,,,,
+,YIELD CHECK,,,,,,,,
+,12-oz canvas yield (1.5 yd × 60""),,,,,,,,"Body+lining-mirror layout: P-01,P-02 nest as 19×32 block. P-03 as 7×48 strip. P-04 as 7×19. P-05×2 = 14×28 block. P-06×2 from offcuts. Total used ≈ 50""×52"" — fits within 54×60 with margin."
+,Cotton twill yield (1.25 yd × 56""),,,,,,,,"P-07,P-08 nest as 19×32. P-09 as 7×48. P-10 as 9×22. P-11,P-12 from offcuts. Total ≈ 35""×48"" — fits within 45×56 with margin."

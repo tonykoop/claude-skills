@@ -1,0 +1,6 @@
+{
+  "total_tokens": 24617,
+  "duration_ms": 9409694,
+  "total_duration_seconds": 9409.7,
+  "_note": "duration_ms appears anomalously high (~2.6 hours wall clock for 4 tool uses); may include idle/queued time; tokens are real."
+}

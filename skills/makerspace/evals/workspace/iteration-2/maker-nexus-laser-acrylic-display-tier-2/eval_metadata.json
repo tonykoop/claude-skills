@@ -1,0 +1,12 @@
+{
+  "eval_id": 5,
+  "eval_name": "maker-nexus-laser-acrylic-display-tier-2",
+  "prompt": "I'm at Maker Nexus, cleared on the laser and the woodshop. I want to build an edge-lit acrylic award display — 6x9 quarter-inch clear acrylic panel with engraved lettering, slotted into a walnut base with an LED strip in the slot. Make me a Tier 2 build packet. Important: confirm what acrylic types are okay for the laser — I've heard polycarbonate is banned but I want to double check.",
+  "assertions": [
+    {"text": "Tier 2 file set complete (10 files)", "kind": "file_set"},
+    {"text": "design.md / BOM contains both acrylic and walnut callouts", "kind": "regex_in_file"},
+    {"text": "Material discussion confirms polycarbonate is banned and acrylic is fine", "kind": "regex_in_file"},
+    {"text": "op-sequence has both laser ops (engrave/cut acrylic) and woodshop ops (slot the walnut base)", "kind": "regex_in_file"},
+    {"text": "BOM mentions LED strip / lighting", "kind": "regex_in_file"}
+  ]
+}

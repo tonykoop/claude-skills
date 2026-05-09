@@ -1,0 +1,15 @@
+part_id,part_name,qty,material,stock_id,length_in,width_in,thickness_in,grain_dir,kerf_in,notes
+p001,"tier-1 glue-up strip (from board 1)",3,walnut,b001,17,5.5,0.75,length,0.0625,"three ~5.5"" wide strips edge-glued = ~16.5"" wide blank; trim length to 17"" for layout slop"
+p002,"tier-2 glue-up strip (from board 2)",3,walnut,b001,15,5,0.75,length,0.0625,"three ~5"" wide strips edge-glued = ~15"" wide blank; trim length to 15"""
+p003,"tier-3 glue-up strip (from board 3)",3,walnut,b001,13,4.25,0.75,length,0.0625,"three ~4.25"" wide strips edge-glued = ~12.75"" wide blank; trim length to 13"""
+p004,"tier 1 hex disk",1,walnut,p001,16,16,0.75,length,0.0625,"D = 16"" point-to-point; cut from glued-up tier-1 blank; six bandsaw cuts to perimeter"
+p005,"tier 2 hex disk",1,walnut,p002,14,14,0.75,length,0.0625,"D = 14"" point-to-point; six bandsaw cuts"
+p006,"tier 3 hex disk",1,walnut,p003,12,12,0.75,length,0.0625,"D = 12"" point-to-point; six bandsaw cuts"
+,,,,,,,,,,
+,STOCK USAGE SUMMARY,,,,,,,,,
+,"4 boards × 6"" × 48"" walnut yields 4 × ~280 sq in = ~1120 sq in usable",,,,,,,,,
+,"Tier-1 blank ≈ 16.5×16.5 = 272 sq in",,,,,,,,,
+,"Tier-2 blank ≈ 14.5×14.5 = 210 sq in",,,,,,,,,
+,"Tier-3 blank ≈ 12.5×12.5 = 156 sq in",,,,,,,,,
+,"Subtotal blanks ≈ 638 sq in; plus ~20% kerf+grain-match waste ≈ 765 sq in",,,,,,,,,
+,"765 / 1120 ≈ 68% yield — comfortable margin; 4th board allows grain-matching choices",,,,,,,,,

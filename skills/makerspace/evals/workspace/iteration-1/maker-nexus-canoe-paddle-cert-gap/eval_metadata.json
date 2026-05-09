@@ -1,0 +1,12 @@
+{
+  "eval_id": 2,
+  "eval_name": "maker-nexus-canoe-paddle-cert-gap",
+  "prompt": "Hey, I'm at Maker Nexus and I want to make a steam-bent ash canoe paddle this summer. I'm cleared on the woodshop but not on the bandsaw yet (I know that's weird). What's possible — and is there a class I should take first? I don't need a full build packet yet, just help me figure out my path.",
+  "assertions": [
+    {"text": "Response addresses the bandsaw cert gap explicitly", "kind": "regex_in_file"},
+    {"text": "Response names the specific class that grants bandsaw access (woodshop-intro or equivalent)", "kind": "regex_in_file"},
+    {"text": "Response references the Maker Nexus class schedule URL", "kind": "regex_in_file"},
+    {"text": "Response stays in knowledge mode — does not produce a full Tier 2 build packet (no separate bom.csv / cut-list.csv / drawings/ files)", "kind": "no_extra_packet_files"},
+    {"text": "Response is a single chat-style markdown file (response.md), not a folder of packet artifacts", "kind": "single_file"}
+  ]
+}

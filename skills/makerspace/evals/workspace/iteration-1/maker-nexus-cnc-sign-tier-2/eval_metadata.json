@@ -1,0 +1,14 @@
+{
+  "eval_id": 1,
+  "eval_name": "maker-nexus-cnc-sign-tier-2",
+  "prompt": "I'm a member at Maker Nexus in Sunnyvale and I want to build a CNC-routed welcome sign in baltic birch quarter-inch ply, about 18 by 6 inches, with V-carved letters that read 'WELCOME'. I'm cleared on the woodshop and the CNC but not laser. Help me put together a portfolio-ready build packet I can drop into a GitHub repo — Tier 2.",
+  "assertions": [
+    {"text": "Tier 2 file set complete: design.md, bom.csv, cut-list.csv, op-sequence.md, safety-notes.md, assembly-manual.md, sourcing.csv, validation.csv, risks.md, README.md all present", "kind": "file_set"},
+    {"text": "Drawing artifact present: either drawing-brief.md or non-empty drawings/ directory", "kind": "either_or"},
+    {"text": "design.md contains parametric formulas (a `=` in a derivation, not just static numbers)", "kind": "regex_in_file"},
+    {"text": "op-sequence.md does NOT cite laser ops (user is not laser-cleared)", "kind": "negative_regex"},
+    {"text": "BOM references baltic birch (or similar plywood callout)", "kind": "regex_in_file"},
+    {"text": "README mentions Maker Nexus", "kind": "regex_in_file"},
+    {"text": "risks.md contains at least one *Test* line attached to a risk", "kind": "regex_in_file"}
+  ]
+}

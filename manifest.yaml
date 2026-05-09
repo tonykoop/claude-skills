@@ -5,6 +5,14 @@ schema_version: 1
 last_updated: 2026-05-08
 
 skills:
+  skills-meta:
+    canonical_version: 1.0.0
+    runtime: portable
+    repo_path: skills/skills-meta
+    last_updated: 2026-05-08
+    status: active
+    notes: Portable drift-audit skill for Claude, Codex, Gemini, and desktop installs.
+
   tmux-v2:
     canonical_version: 2.0.0
     runtime: codex
@@ -63,19 +71,45 @@ skills:
     last_updated: 2026-05-08
     status: active
 
-planned_skills:
   idea-incubator:
-    status: issue-handoff
+    canonical_version: 1.0.0
+    runtime: shared
+    repo_path: skills/idea-incubator
+    last_updated: 2026-05-08
+    status: active
+
   maker-engineering:
-    status: issue-handoff
+    canonical_version: 1.0.0
+    runtime: shared
+    repo_path: skills/maker-engineering
+    last_updated: 2026-05-08
+    status: active
+    notes: Umbrella routing skill for physical making projects and specialist handoffs.
+
   yoga-sequencer:
-    status: issue-handoff
-  skills-meta:
-    status: issue-handoff
+    canonical_version: 1.0.0
+    runtime: shared
+    repo_path: skills/yoga-sequencer
+    last_updated: 2026-05-08
+    status: active
+    notes: Vinyasa-first shared class-sequencing skill with playlist-builder handoff output.
+
   makerspace:
-    status: issue-handoff
+    canonical_version: 1.0.0
+    runtime: shared
+    repo_path: skills/makerspace
+    last_updated: 2026-05-08
+    status: active
+    notes: Portable snapshot from the standalone makerspace repo for cross-platform review.
+
   reverse-engineer:
-    status: issue-handoff
+    canonical_version: 1.0.0
+    runtime: shared
+    repo_path: skills/reverse-engineer
+    last_updated: 2026-05-08
+    status: active
+    notes: Portable snapshot from reverse-engineering/skills/v1/reverse-engineer for cross-platform review.
+
+planned_skills:
   energy-management:
     status: issue-handoff
-

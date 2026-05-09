@@ -1,0 +1,410 @@
+{
+  "iteration": "iteration-2",
+  "skill_name": "makerspace",
+  "evals": [
+    {
+      "name": "maker-nexus-doe-feeds-speeds",
+      "runs": {
+        "with_skill": {
+          "grading": {
+            "eval_name": "maker-nexus-doe-feeds-speeds",
+            "variant": "with_skill",
+            "expectations": [
+              {
+                "text": "doe/study-01-protocol.yaml exists with the right factors and levels",
+                "passed": true,
+                "evidence": "path=True feed=True depth=True feed-levels=True depth-levels=True"
+              },
+              {
+                "text": "doe/study-01-data.csv exists with 18 planned rows (3 x 3 x 2 replicates)",
+                "passed": true,
+                "evidence": "row_count=18"
+              },
+              {
+                "text": "Protocol references both response variables (edge finish + cycle time)",
+                "passed": true,
+                "evidence": "edge=True cycle_time=True"
+              },
+              {
+                "text": "Response references record_doe_results.py or doe-integration.md",
+                "passed": true,
+                "evidence": "script-ref=True ref-doc=True"
+              },
+              {
+                "text": "Response references HDPE in materials and respects Maker Nexus material policy",
+                "passed": true,
+                "evidence": "HDPE referenced"
+              }
+            ],
+            "passed_count": 5,
+            "total_count": 5
+          },
+          "pass_rate": 1.0,
+          "timing": {
+            "total_tokens": 43983,
+            "duration_ms": 96042,
+            "total_duration_seconds": 96.0
+          }
+        },
+        "without_skill": {
+          "grading": {
+            "eval_name": "maker-nexus-doe-feeds-speeds",
+            "variant": "without_skill",
+            "expectations": [
+              {
+                "text": "doe/study-01-protocol.yaml exists with the right factors and levels",
+                "passed": false,
+                "evidence": "path=False feed=False depth=False feed-levels=False depth-levels=False"
+              },
+              {
+                "text": "doe/study-01-data.csv exists with 18 planned rows (3 x 3 x 2 replicates)",
+                "passed": false,
+                "evidence": "row_count=0"
+              },
+              {
+                "text": "Protocol references both response variables (edge finish + cycle time)",
+                "passed": false,
+                "evidence": "edge=False cycle_time=False"
+              },
+              {
+                "text": "Response references record_doe_results.py or doe-integration.md",
+                "passed": false,
+                "evidence": "script-ref=False ref-doc=False"
+              },
+              {
+                "text": "Response references HDPE in materials and respects Maker Nexus material policy",
+                "passed": false,
+                "evidence": "no HDPE mention"
+              }
+            ],
+            "passed_count": 0,
+            "total_count": 5
+          },
+          "pass_rate": 0.0
+        }
+      },
+      "prompt": "I'm at Maker Nexus and I want to dial in feeds and speeds for the CNC on a new bit-and-material combo I haven't run before \u2014 1/8-inch single-flute upcut on 1/2-inch HDPE. I want to vary feed rate (40, 60, 80 IPM) and depth-per-pass (0.05, 0.1, 0.15 in) and measure edge finish quality (1-5 scale) and cycle time. Set up a DoE study for me \u2014 protocol YAML, blank data CSV, and tell me how I record results as I run them."
+    },
+    {
+      "name": "maker-nexus-laser-acrylic-display-tier-2",
+      "runs": {
+        "with_skill": {
+          "grading": {
+            "eval_name": "maker-nexus-laser-acrylic-display-tier-2",
+            "variant": "with_skill",
+            "expectations": [
+              {
+                "text": "Tier 2 file set complete (10 files)",
+                "passed": true,
+                "evidence": "all present"
+              },
+              {
+                "text": "design.md / BOM contains both acrylic and walnut callouts",
+                "passed": true,
+                "evidence": "acrylic=True walnut=True"
+              },
+              {
+                "text": "Material discussion confirms polycarbonate is banned and acrylic is fine",
+                "passed": true,
+                "evidence": "poly-banned=True acrylic-ok=True"
+              },
+              {
+                "text": "op-sequence has both laser ops and woodshop ops",
+                "passed": true,
+                "evidence": "laser=True woodshop=True"
+              },
+              {
+                "text": "BOM mentions LED strip / lighting",
+                "passed": true,
+                "evidence": "LED strip in BOM"
+              }
+            ],
+            "passed_count": 5,
+            "total_count": 5
+          },
+          "pass_rate": 1.0,
+          "timing": {
+            "total_tokens": 56233,
+            "duration_ms": 330421,
+            "total_duration_seconds": 330.4
+          }
+        },
+        "without_skill": {
+          "grading": {
+            "eval_name": "maker-nexus-laser-acrylic-display-tier-2",
+            "variant": "without_skill",
+            "expectations": [
+              {
+                "text": "Tier 2 file set complete (10 files)",
+                "passed": false,
+                "evidence": "missing: ['design.md', 'bom.csv', 'cut-list.csv', 'op-sequence.md', 'safety-notes.md', 'assembly-manual.md', 'sourcing.csv', 'validation.csv', 'risks.md', 'README.md']"
+              },
+              {
+                "text": "design.md / BOM contains both acrylic and walnut callouts",
+                "passed": true,
+                "evidence": "acrylic=True walnut=True"
+              },
+              {
+                "text": "Material discussion confirms polycarbonate is banned and acrylic is fine",
+                "passed": true,
+                "evidence": "poly-banned=True acrylic-ok=True"
+              },
+              {
+                "text": "op-sequence has both laser ops and woodshop ops",
+                "passed": false,
+                "evidence": "laser=False woodshop=False"
+              },
+              {
+                "text": "BOM mentions LED strip / lighting",
+                "passed": false,
+                "evidence": "no LED in BOM"
+              }
+            ],
+            "passed_count": 2,
+            "total_count": 5
+          },
+          "pass_rate": 0.4,
+          "timing": {
+            "total_tokens": 51957,
+            "duration_ms": 486380,
+            "total_duration_seconds": 486.4
+          }
+        }
+      },
+      "prompt": "I'm at Maker Nexus, cleared on the laser and the woodshop. I want to build an edge-lit acrylic award display \u2014 6x9 quarter-inch clear acrylic panel with engraved lettering, slotted into a walnut base with an LED strip in the slot. Make me a Tier 2 build packet. Important: confirm what acrylic types are okay for the laser \u2014 I've heard polycarbonate is banned but I want to double check."
+    },
+    {
+      "name": "maker-nexus-plasma-trellis-tier-2",
+      "runs": {
+        "with_skill": {
+          "grading": {
+            "eval_name": "maker-nexus-plasma-trellis-tier-2",
+            "variant": "with_skill",
+            "expectations": [
+              {
+                "text": "Tier 2 file set complete (10 files)",
+                "passed": true,
+                "evidence": "all present"
+              },
+              {
+                "text": "design.md or op-sequence covers cut-path strategy (lead-in, kerf, pierce, sequencing)",
+                "passed": true,
+                "evidence": "matched 7/9 cut-path terms"
+              },
+              {
+                "text": "BOM specifies mild steel + powder coat finish",
+                "passed": true,
+                "evidence": "steel=True powder-coat=True"
+              },
+              {
+                "text": "op-sequence references the metalshop or plasma area at Maker Nexus",
+                "passed": true,
+                "evidence": "metalshop or plasma referenced"
+              },
+              {
+                "text": "risks.md addresses fume / heat / cutting hazards specific to plasma",
+                "passed": true,
+                "evidence": "matched 9/10 plasma-specific safety terms"
+              }
+            ],
+            "passed_count": 5,
+            "total_count": 5
+          },
+          "pass_rate": 1.0,
+          "timing": {
+            "total_tokens": 86738,
+            "duration_ms": 886674,
+            "total_duration_seconds": 886.7
+          }
+        },
+        "without_skill": {
+          "grading": {
+            "eval_name": "maker-nexus-plasma-trellis-tier-2",
+            "variant": "without_skill",
+            "expectations": [
+              {
+                "text": "Tier 2 file set complete (10 files)",
+                "passed": false,
+                "evidence": "missing: ['design.md', 'bom.csv', 'cut-list.csv', 'op-sequence.md', 'safety-notes.md', 'assembly-manual.md', 'sourcing.csv', 'validation.csv', 'risks.md', 'README.md']"
+              },
+              {
+                "text": "design.md or op-sequence covers cut-path strategy (lead-in, kerf, pierce, sequencing)",
+                "passed": true,
+                "evidence": "matched 7/9 cut-path terms"
+              },
+              {
+                "text": "BOM specifies mild steel + powder coat finish",
+                "passed": true,
+                "evidence": "steel=True powder-coat=True"
+              },
+              {
+                "text": "op-sequence references the metalshop or plasma area at Maker Nexus",
+                "passed": false,
+                "evidence": "no metalshop/plasma reference"
+              },
+              {
+                "text": "risks.md addresses fume / heat / cutting hazards specific to plasma",
+                "passed": false,
+                "evidence": "matched 0/10 plasma-specific safety terms"
+              }
+            ],
+            "passed_count": 2,
+            "total_count": 5
+          },
+          "pass_rate": 0.4,
+          "timing": {
+            "total_tokens": 41517,
+            "duration_ms": 375237,
+            "total_duration_seconds": 375.2
+          }
+        }
+      },
+      "prompt": "I want to build a 6-foot-tall garden trellis from quarter-inch mild steel \u2014 silhouette of climbing vine leaves, cut on the plasma table. I'm at Maker Nexus and cleared on metalshop. The pattern's an organic curve so I want plasma rather than waterjet. Powder coat finish in matte black. Tier 2 packet please. Include the cut path strategy \u2014 I haven't run the plasma at this scale before."
+    },
+    {
+      "name": "maker-nexus-sewing-tote-tier-2",
+      "runs": {
+        "with_skill": {
+          "grading": {
+            "eval_name": "maker-nexus-sewing-tote-tier-2",
+            "variant": "with_skill",
+            "expectations": [
+              {
+                "text": "Tier 2 file set complete (10 files)",
+                "passed": true,
+                "evidence": "all present"
+              },
+              {
+                "text": "design.md mentions waxed canvas + cotton lining",
+                "passed": true,
+                "evidence": "canvas=True cotton/twill=True"
+              },
+              {
+                "text": "BOM lists canvas, lining, zipper, straps, and at least one structural element",
+                "passed": true,
+                "evidence": "zipper=True straps=True structure=True lining=True canvas=True"
+              },
+              {
+                "text": "op-sequence references the sewing/textile area at Maker Nexus",
+                "passed": true,
+                "evidence": "textile/sewing area cited"
+              },
+              {
+                "text": "Response addresses the industrial walking-foot machine question",
+                "passed": true,
+                "evidence": "walking-foot=True cert-discussion=True"
+              }
+            ],
+            "passed_count": 5,
+            "total_count": 5
+          },
+          "pass_rate": 1.0,
+          "timing": {
+            "total_tokens": 67530,
+            "duration_ms": 505127,
+            "total_duration_seconds": 505.1
+          }
+        },
+        "without_skill": {
+          "grading": {
+            "eval_name": "maker-nexus-sewing-tote-tier-2",
+            "variant": "without_skill",
+            "expectations": [
+              {
+                "text": "Tier 2 file set complete (10 files)",
+                "passed": false,
+                "evidence": "missing: ['design.md', 'bom.csv', 'cut-list.csv', 'op-sequence.md', 'safety-notes.md', 'assembly-manual.md', 'sourcing.csv', 'validation.csv', 'risks.md', 'README.md']"
+              },
+              {
+                "text": "design.md mentions waxed canvas + cotton lining",
+                "passed": true,
+                "evidence": "canvas=True cotton/twill=True"
+              },
+              {
+                "text": "BOM lists canvas, lining, zipper, straps, and at least one structural element",
+                "passed": false,
+                "evidence": "zipper=False straps=False structure=False lining=False canvas=False"
+              },
+              {
+                "text": "op-sequence references the sewing/textile area at Maker Nexus",
+                "passed": false,
+                "evidence": "no textile area reference"
+              },
+              {
+                "text": "Response addresses the industrial walking-foot machine question",
+                "passed": true,
+                "evidence": "walking-foot=True cert-discussion=True"
+              }
+            ],
+            "passed_count": 2,
+            "total_count": 5
+          },
+          "pass_rate": 0.4,
+          "timing": {
+            "total_tokens": 47162,
+            "duration_ms": 475419,
+            "total_duration_seconds": 475.4
+          }
+        }
+      },
+      "prompt": "I'm at Maker Nexus and want to make a heavy-duty zippered tote bag \u2014 about 18 wide, 14 tall, 6 deep, with two padded straps and an inside pocket. 12-oz waxed canvas exterior, cotton-twill lining, bound seams. I have my domestic sewing machine cert but I'd love to use the industrial walking-foot machine if it'll handle the canvas \u2014 what's that need? Tier 2 build packet please."
+    }
+  ],
+  "configurations": {
+    "with_skill": {
+      "pass_rates": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "durations_seconds": [
+        96.0,
+        330.4,
+        886.7,
+        505.1
+      ],
+      "total_tokens_list": [
+        43983,
+        56233,
+        86738,
+        67530
+      ],
+      "pass_rate_mean": 1.0,
+      "pass_rate_stddev": 0.0,
+      "duration_mean_seconds": 454.5,
+      "duration_stddev_seconds": 333.3,
+      "tokens_mean": 63621,
+      "tokens_stddev": 18165
+    },
+    "without_skill": {
+      "pass_rates": [
+        0.0,
+        0.4,
+        0.4,
+        0.4
+      ],
+      "durations_seconds": [
+        486.4,
+        375.2,
+        475.4
+      ],
+      "total_tokens_list": [
+        51957,
+        41517,
+        47162
+      ],
+      "pass_rate_mean": 0.3,
+      "pass_rate_stddev": 0.2,
+      "duration_mean_seconds": 445.7,
+      "duration_stddev_seconds": 61.3,
+      "tokens_mean": 46878,
+      "tokens_stddev": 5225
+    }
+  },
+  "delta": {
+    "pass_rate_delta": 0.7,
+    "duration_delta_seconds": 8.8,
+    "tokens_delta": 16743
+  }
+}

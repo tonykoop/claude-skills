@@ -1,0 +1,20 @@
+item,description,qty,unit,unit_cost_usd,extended_usd,vendor,notes
+1,"Mild steel A36 sheet, 1/4 in × 24 in × 96 in, hot-rolled, pickled & oiled",1,sheet,95.00,95.00,Industrial Metal Supply / Alan Steel SF Bay,"Trim 10 in waste off one end after cut; or buy a 2x4 ft offcut if available"
+2,"Plasma consumables — Hypertherm Powermax 65 fine-cut electrode",2,ea,18.00,36.00,Hypertherm distributor,"One installed, one spare; verify Maker Nexus stock policy"
+3,"Plasma consumables — fine-cut nozzle, 45A",2,ea,16.00,32.00,Hypertherm distributor,"Match torch model; ask staff before bringing your own"
+4,"Plasma consumables — shield cap & swirl ring (1/4-in mild fine cut)",1,set,28.00,28.00,Hypertherm distributor,
+5,"MIG wire, ER70S-6, 0.035 in, 11 lb spool",1,spool,38.00,38.00,Praxair / local welding supply,"Only if shop spool is empty"
+6,"75/25 Argon/CO2 shielding gas",0.5,fill,45.00,22.50,Praxair / Airgas,"Fill or rental fee for spike welds"
+7,"Sanding flap disc, 40-grit, 4.5 in for angle grinder",4,ea,4.50,18.00,Home Depot / McMaster,"Dross removal and weld blending"
+8,"Sanding flap disc, 80-grit, 4.5 in for angle grinder",4,ea,4.50,18.00,Home Depot / McMaster,
+9,"Wire wheel, 4.5 in, knot-style for angle grinder",1,ea,12.00,12.00,Home Depot,"Mill scale removal"
+10,"Acetone, 1 gal — degrease before powder coater handoff",1,gal,28.00,28.00,Home Depot,
+11,"Lint-free shop rags, 50 ct",1,pack,14.00,14.00,Home Depot,
+12,"Powder coat — matte black, RAL 9005 texture",1,job,180.00,180.00,Bay Area powder coater (see sourcing.csv),"Quote based on 24x86 in part, 1/4 thick; pickup/dropoff included"
+13,"Sandblast/abrasive blast prep at coater",1,job,60.00,60.00,Same coater as line 12,"Required to remove mill scale & dross artifacts"
+14,"Welding rod for spike tack, 6011 1/8 in (alternative to MIG)",1,lb,8.00,8.00,Local welding supply,"Optional fallback if MIG is unavailable"
+15,"Anti-spatter spray for the welds",1,can,12.00,12.00,Home Depot,
+,,,,,,,
+,,,,SUBTOTAL,601.50,,
+,,,,Contingency 15%,90.23,,
+,,,,TOTAL ESTIMATE,691.73,,

@@ -1,0 +1,131 @@
+# Sequencing Principles
+
+Use this reference when building or checking a class arc.
+
+## Table of contents
+
+- Default arc by class length
+- Class-building heuristics
+- Bilateral symmetry checklist
+- Warm-up guidance
+- Peak-pose ladders
+- Counter-pose rules
+- Mixed-level room defaults
+- Breath-count heuristics
+
+## Default arc by class length
+
+### 30 minutes
+
+- Arrival and breath: 2 to 3 minutes
+- Warm-up and floor prep: 5 to 6 minutes
+- Standing flow and build: 10 to 12 minutes
+- Peak or focal work: 4 to 5 minutes
+- Cooldown and savasana: 6 to 7 minutes
+
+### 45 minutes
+
+- Arrival and breath: 3 to 4 minutes
+- Warm-up and floor prep: 7 to 9 minutes
+- Standing flow and build: 15 to 18 minutes
+- Peak or focal work: 6 to 8 minutes
+- Cooldown and savasana: 10 to 12 minutes
+
+### 60 minutes
+
+- Arrival and breath: 4 to 5 minutes
+- Warm-up and floor prep: 10 to 12 minutes
+- Standing flow and build: 20 to 24 minutes
+- Peak or focal work: 8 to 10 minutes
+- Cooldown and savasana: 12 to 15 minutes
+
+### 75 minutes
+
+- Arrival and breath: 5 to 6 minutes
+- Warm-up and floor prep: 12 to 15 minutes
+- Standing flow and build: 25 to 30 minutes
+- Peak or focal work: 10 to 14 minutes
+- Cooldown and savasana: 18 to 20 minutes
+
+## Class-building heuristics
+
+- Choose one main story: anatomical region, energetic tone, or peak pose.
+- Let the class intensify in only one or two dimensions at a time.
+- Repeat key shapes with small progressions so students can feel the pattern.
+- The closer you get to the peak, the fewer new ideas you should introduce.
+- Save enough time to come down gradually.
+
+## Bilateral symmetry checklist
+
+- Mirror lunges, warriors, standing balances, and one-sided hip openers.
+- If the setup differs by side because of room logistics or a teaching experiment, say so explicitly.
+- Repeated flows do not count as symmetric unless both sides receive comparable time and complexity.
+
+## Warm-up guidance
+
+- Start with breath, spinal mobility, and low-load weight shifting.
+- Prep the tissues and actions the class will ask for later.
+- For wrist-heavy or shoulder-heavy classes, build load progressively before plank, chaturanga, or crow work.
+- For backbend themes, warm the legs, glutes, thoracic spine, and shoulders before asking for deep range.
+- For hip-opening themes, blend mobility with standing strength so the class does not collapse into passive stretching.
+
+## Peak-pose ladders
+
+### Arm balance or inversion
+
+- Wrist prep
+- Core activation
+- Scapular stability
+- Hip compression or hamstring prep, if relevant
+- Lower-intensity balance entry
+- Peak attempt with exit plan
+- Wrist relief and neutral spine recovery
+
+### Deep twist
+
+- Axial extension
+- Gentle supine or seated twist
+- Lunge-based twist
+- Standing twist or revolved shape
+- Peak twist
+- Neutral spine and decompression
+
+### Backbend
+
+- Core and glute wake-up
+- Shoulder opening
+- Low backbend with strong legs
+- Midline stabilization
+- Peak backbend
+- Neutral or mildly flexion-based reset before longer cooldown
+
+### Hip opener
+
+- Hamstring and adductor prep
+- Lunge variations
+- External rotation and glute activation
+- Standing integration
+- Peak hip opener
+- Neutralizing fold, twist, or reclined reset
+
+## Counter-pose rules
+
+- Counter the dominant action, not necessarily with the most extreme opposite shape.
+- After strong extension, start with neutral spine or a soft fold before deep flexion.
+- After strong rotation, use neutral or a gentle twist to the other side before stacking more torque.
+- After wrist loading, unload hands and add forearm or shoulder recovery.
+- After deep hip work, give at least one integrating shape before savasana.
+
+## Mixed-level room defaults
+
+- Offer one regression before the most intense version.
+- Keep at least one steady-breath option available during peak work.
+- Use props or wall support when it meaningfully widens access.
+- If a pose is advanced, name who might skip it and what they should do instead.
+
+## Breath-count heuristics
+
+- Short heat-building holds: 3 to 5 breaths
+- Moderate standing or prep holds: 5 to 8 breaths
+- Peak exploration: 3 to 5 breaths or 1 to 2 attempts
+- Restorative cooldown holds: 6 to 10 breaths or longer by time

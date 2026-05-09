@@ -1,0 +1,7 @@
+stock_id,stock_description,qty,length_in,width_in,thickness_in,part_yield,scrap_in2,notes
+S1,"A36 mild steel sheet, hot-rolled P&O",1,96.0,24.0,0.25,"1× trellis silhouette + 2× spikes (integral)",~240,"Trellis is 86 in × 24 in nominal; ~10 in × 24 in scrap end remains. Save the scrap for kerf-test coupons and weld practice."
+KT1,"Kerf-test coupon, cut from S1 scrap",1,4.0,4.0,0.25,"1× kerf-test square with 2 parallel cuts 1.0 in apart",-,"Cut FIRST. Measure actual kerf width with caliper across both cut walls; if delta from design (0.060 in) is >0.010 in, update the production file's kerf compensation and re-export the path."
+P1,"Pierce-test scrap, cut from S1 scrap",1,3.0,3.0,0.25,"3× pierce dots with 0.30-in lead-ins",-,"Verify pierce timing and lead-in geometry won't blow out at the entry point on a real leaf-interior pierce."
+,,,,,,,
+,,,,,TOTAL stock pieces,1,
+,,,,,Estimated cut path length,40 ft,"Refine after CAM. Includes 12 internal pierces and 1 perimeter."
