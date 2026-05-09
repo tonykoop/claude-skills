@@ -189,3 +189,35 @@ A sync pass is complete when:
 - every drift item has an action: updated, backed up, intentionally stale, or
   follow-up issue;
 - no target-only files were overwritten without review.
+
+## Platform Smoke Notes
+
+Tested on WSL2 (Ubuntu on Windows). Expected behavior on other platforms:
+
+- **macOS**: `~/.claude/skills/` and `~/.codex/skills/` resolve correctly;
+  `rsync` is available by default. `skill-sync-check.sh` should run without
+  modification.
+- **Windows (PowerShell)**: `skill-sync-check.sh` requires WSL or Git Bash.
+  Use `scripts/package_skill.ps1` for packaging; manual copy with Explorer or
+  `robocopy` for installs. Drift check from WSL works when the Windows paths
+  are mounted under `/mnt/c/`.
+- **Codex Desktop / Claude Desktop**: install roots are typically inside the
+  app container and not directly readable from the host shell. Use the
+  exported zip or pasted `SKILL.md` fallback as described above.
+- **Mobile / review-only**: no shell access. Use the exported zip + manifest
+  comparison method; record as `unverified`.
+
+## Known Gaps
+
+- **No automated sync**: `skill-sync-check.sh` is read-only and reports drift;
+  it does not copy files. A `--apply` mode for safe automated sync is not
+  yet implemented (tracked separately in `skills-meta.py --apply` design).
+- **Gemini CLI root not confirmed**: the Gemini CLI install root path is
+  documented as a placeholder; the actual path depends on the Gemini CLI
+  version and has not been smoke-tested.
+- **Desktop app containers**: Claude Desktop and Codex Desktop skill roots
+  inside app sandboxes cannot be read from the host without export; the
+  workflow relies on manual export steps with no automated verification.
+- **No tag enforcement**: the workflow documents tagging before artifact
+  builds but does not enforce it; `package_skill.sh` accepts `--allow-dirty`
+  which bypasses the clean-tag requirement.
