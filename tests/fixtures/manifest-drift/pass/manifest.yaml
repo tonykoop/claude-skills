@@ -1,0 +1,11 @@
+schema_version: 1
+last_updated: 2026-05-08
+
+skills:
+  clean-skill:
+    canonical_version: 1.2.3
+    runtime: portable
+    repo_path: skills/clean-skill
+    last_updated: 2026-05-08
+    status: active
+
