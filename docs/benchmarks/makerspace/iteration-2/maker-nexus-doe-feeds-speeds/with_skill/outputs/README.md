@@ -37,7 +37,7 @@ When you finish the study, drop these alongside:
 ## How to record results as you run
 
 The makerspace skill ships `scripts/record_doe_results.py`. Run it
-from the skill folder (`C:\Users\Tony\Documents\GitHub\makerspace\`)
+from the skill folder (`<your-workspace>/makerspace/`)
 and point `--packet` at this folder.
 
 ### One-time setup (already done if `doe/study-01-data.csv` exists)

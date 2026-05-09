@@ -33,7 +33,7 @@ Gemini CLI) hit them as reliably as Claude does.
 4. **Review** - surface stale ideas, best-fit-for-now ideas, and clusters
    worth revisiting. Summarize; do not score emotional resonance numerically.
 5. **Promote** - draft the handoff text for the downstream repo or specialist
-   skill. Include `closes #N` only when Tony wants the tracked issue closed by
+   skill. Include `closes #N` only when the user wants the tracked issue closed by
    the downstream work.
 
 ## Operating rules
@@ -44,8 +44,8 @@ Gemini CLI) hit them as reliably as Claude does.
 - If `gh` is available, you may create labels or issues directly; otherwise
   print the exact command or issue draft.
 - Do not hard-code repository ownership or visibility when the target repo is
-  unknown. Use a placeholder or ask Tony first.
-- Do not auto-close ideas, and do not invent ideas that Tony did not capture.
+  unknown. Use a placeholder or ask the user first.
+- Do not auto-close ideas, and do not invent ideas that the user did not capture.
 
 ## Bundled references
 

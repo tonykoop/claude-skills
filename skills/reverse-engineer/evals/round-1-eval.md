@@ -6,7 +6,7 @@ Method: Manual quality gate using the skill instructions and bundled references,
 
 ## Skill-Creator Compliance Check
 
-Reread: `/home/tony/.codex/skills/.system/skill-creator/SKILL.md`
+Reread: `skill-creator/SKILL.md`
 
 Pass:
 - Skill folder name matches skill name: `reverse-engineer`.
@@ -28,7 +28,7 @@ Fix made during gate:
 Commands run:
 
 ```bash
-python3 /home/tony/.codex/skills/.system/skill-creator/scripts/quick_validate.py skills/v1/reverse-engineer
+python3 <skill-creator>/scripts/quick_validate.py skills/v1/reverse-engineer
 python3 - <<'PY'
 from pathlib import Path
 import yaml

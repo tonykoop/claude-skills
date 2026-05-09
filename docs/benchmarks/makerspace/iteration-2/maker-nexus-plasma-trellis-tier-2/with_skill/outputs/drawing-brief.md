@@ -16,7 +16,7 @@ needed to fit dimensions cleanly).
 - Project: Climbing-Vine Plasma Trellis
 - Material: 1/4 in A36 mild steel
 - Finish: Powder coat, RAL 9005 texture matte black
-- Drawn by: Tony Koop / Maker Nexus
+- Drawn by: [Maker Name] / Maker Nexus
 - Date: 2026-05-08
 - Sheet 1 of 2
 - Tolerance unless noted: +/- 0.060 in (1.5 mm) — plasma cut

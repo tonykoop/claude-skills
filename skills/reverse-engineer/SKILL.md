@@ -108,7 +108,7 @@ Emit a builder-ready handoff only when all of these are true:
 - Safety, legal, and product-boundary risks have been surfaced.
 - Remaining unknowns are non-critical or are explicitly assigned to a test/prototype.
 
-If a user asks to reproduce a proprietary product for commercial use, pause and ask Tony or the user for legal review before writing a production handoff. You may still provide learning-focused analysis, noncommercial repair notes, or high-level functional explanation.
+If a user asks to reproduce a proprietary product for commercial use, pause and ask the user for legal review before writing a production handoff. You may still provide learning-focused analysis, noncommercial repair notes, or high-level functional explanation.
 
 ## Reference Map
 

@@ -1,6 +1,6 @@
 # Runtime Roots
 
-Use this reference to teach `skills-meta` where Tony's skills may be
+Use this reference to teach `skills-meta` where skills may be
 organized, duplicated, or stale across machines and runtimes.
 
 `skills-meta` should treat the manifest as canonical, then scan every root the
@@ -14,21 +14,18 @@ not automatically the source of truth.
 - `codex/skills/`
 - `gemini/skills/` when the directory exists
 
-## Known Tony roots
+## Example PC roots (WSL2 + Windows)
 
-These are the current starting points for Tony's installs:
+The following are example source or staging locations for a WSL2 + Windows
+setup. Adapt to your own paths — these should be configured, not hard-coded:
 
-- `/mnt/c/Users/Tony/.claude`
-- `/mnt/c/Users/Tony/.codex`
-- `/mnt/c/Users/Tony/Documents/GitHub/.claude`
-- `/home/tony/.claude`
-- `/home/tony/.codex`
-- `/home/tony/.gemini`
-- `/home/tony/wrfcoin/.claude`
-- `/home/tony/wrfcoin/.codex`
-- `/home/tony/wrfcoin/.gemini`
-- `/home/tony/wrfcoin/core4/.claude`
-- `/home/tony/wrfcoin/core4/.gemini`
+- `/mnt/c/Users/<you>/Documents/GitHub/claude-skills/skills`
+- `/mnt/c/Users/<you>/Documents/GitHub/claude-skills/claude/skills`
+- `/mnt/c/Users/<you>/Documents/GitHub/claude-skills/codex/skills`
+- `/mnt/c/Users/<you>/Documents/GitHub/instrument-maker/skills`
+- `/mnt/c/Users/<you>/Documents/GitHub/makerspace`
+- `/mnt/c/Users/<you>/Documents/GitHub/reverse-engineering/skills`
+- `~/.codex/skills`
 
 ## Runtime install roots
 

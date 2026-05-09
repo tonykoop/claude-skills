@@ -2,14 +2,14 @@
 
 Use this before flipping any part of the repo public.
 
-- [ ] README explains the repo as a skill ecosystem, not only WRFCoin history.
-- [ ] Private paths are generalized or intentionally documented.
+- [x] README explains the repo as a skill ecosystem, not only WRFCoin history.
+- [x] Private paths are generalized or intentionally documented.
 - [ ] Every shipped skill has `version` and `last-updated` frontmatter.
 - [ ] Every shipped skill has a changelog entry.
-- [ ] `manifest.yaml` matches the shipped skill set.
+- [x] `manifest.yaml` matches the shipped skill set.
 - [ ] Bundled scripts referenced by `SKILL.md` are present.
-- [ ] Runtime-specific assumptions are marked as Claude, Codex, or Gemini.
-- [ ] Example prompts do not expose private credentials or sensitive repos.
+- [x] Runtime-specific assumptions are marked as Claude, Codex, or Gemini.
+- [x] Example prompts do not expose private credentials or sensitive repos.
 - [ ] Benchmarks or smoke tests exist for high-risk skills.
 - [ ] Agentic-skill PRs include the review evidence contract from `docs/review-gates/pr-evidence-contract.md`.
 - [ ] Skill, adapter, hook, command, and benchmark changes pass the static, behavior, runtime, and regression gates in `docs/review-gates/agentic-skill.md`.

@@ -1,7 +1,7 @@
 # Heavy-Duty Waxed Canvas Tote — Tier 2 Build Packet
 
 **Project:** Heavy-Duty Zippered Tote Bag
-**Maker:** Tony Koop
+**Maker:** [Maker Name]
 **Shop:** Maker Nexus, Sunnyvale CA — `#textile-area`
 **Tier:** 2 (Portfolio-ready)
 **Date:** 2026-05-08

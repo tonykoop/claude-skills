@@ -8,8 +8,8 @@ Evaluator: Codex
 
 | Check | Result | Notes |
 | --- | --- | --- |
-| Re-read `skill-creator` | pass | Re-read `/home/tony/.codex/skills/.system/skill-creator/SKILL.md` before making quality-gate changes. |
-| `quick_validate.py` | pass | `python3 /home/tony/.codex/skills/.system/skill-creator/scripts/quick_validate.py skills/maker-engineering` returned `Skill is valid!`. |
+| Re-read `skill-creator` | pass | Re-read `skill-creator/SKILL.md` before making quality-gate changes. |
+| `quick_validate.py` | pass | `python3 <skill-creator>/scripts/quick_validate.py skills/maker-engineering` returned `Skill is valid!`. |
 | YAML/frontmatter parse | pass | Parsed `SKILL.md`, `agents/openai.yaml`, and `manifest.yaml`; confirmed validator-compatible frontmatter and manifest version entry. |
 | OpenAI metadata | pass | Added generated `agents/openai.yaml`; `default_prompt` includes literal `$maker-engineering`. |
 | Benchmark assertions | pass | Ran a lightweight local benchmark assertion script for hybrid routing, jig/fixture routing, and DoE routing terms. |
@@ -105,4 +105,4 @@ Cross-runtime routing smoke (3 prompts, contract-level):
 2. "Design a jig or fixture for repeated tone-hole drilling. Is this instrument-maker or makerspace?" → routes shop implementation to `makerspace` and reserves `instrument-maker` for tone-hole datum requirements only. Pass.
 3. "I'm on Claude Desktop and only have `instrument-maker` (no v4). Route a slip-cast ocarina build." → canonical name resolves correctly; the registry's naming convention covers the case and the handoff prompt template stays runtime-agnostic. Pass.
 
-Validator: `python3 /home/tony/.codex/skills/.system/skill-creator/scripts/quick_validate.py skills/maker-engineering` returns `Skill is valid!` after the rename.
+Validator: `python3 <skill-creator>/scripts/quick_validate.py skills/maker-engineering` returns `Skill is valid!` after the rename.

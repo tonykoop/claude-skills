@@ -12,9 +12,9 @@ worked.
 Nexus have been splitting umbrella certs into machine-specific
 sub-certs (cf. metalshop's lathe / mill / welder sub-certs noted
 in `certifications.md`). If textile has split since this packet
-was generated and Tony hasn't checked, he'll show up expecting
-to use the walking-foot and find he needs an industrial-machine
-sub-cert he doesn't hold.
+was generated and the maker hasn't checked, they'll show up expecting
+to use the walking-foot and find they need an industrial-machine
+sub-cert they don't hold.
 
 **Severity:** Medium (project-blocking, not safety-blocking).
 

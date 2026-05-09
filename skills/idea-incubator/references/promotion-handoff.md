@@ -39,4 +39,4 @@ downstream issue or PR body.
 ## Ownership note
 
 Do not hard-code future repo ownership or visibility in the handoff. Keep the
-target repo as an explicit input unless Tony has already chosen it.
+target repo as an explicit input unless the user has already chosen it.

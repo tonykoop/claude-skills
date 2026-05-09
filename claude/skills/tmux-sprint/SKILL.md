@@ -330,5 +330,5 @@ The supporting `scripts/preflight.sh`, `scripts/dispatch.sh`, `scripts/restart.s
 `assets/assignment-preamble.txt`, and `assets/personas.default.json` files
 referenced above live in the working wrfcoin workspace and are not yet
 included in this v0.1 publish. The SKILL.md (this file) is the contract;
-the implementation is shipped incrementally. Reach out via the wrfcoin GitHub
-org if you want a copy of the current scripts to fork from.
+the implementation is shipped incrementally. Open an issue in this repo if you
+want to request the reference script implementations.

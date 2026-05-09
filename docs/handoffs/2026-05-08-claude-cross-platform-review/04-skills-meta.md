@@ -4,4 +4,4 @@ Review `skills/skills-meta` for cross-platform skill discovery, cleanup, and syn
 
 Focus on how users teach the skill all possible roots: manifest entries, `SKILLS_META_ROOTS`, repeated `--root`, exported zips, desktop install folders, repo-local copies, and unreadable mobile installs. Run `quick_validate.py`, parse YAML, run the helper in inventory/single/fix modes, and test at least one simulated extra root.
 
-Branch from latest `main` in private repo `tonykoop/claude-skills`, commit your fixes, push your branch, and open a PR. Include validation results and a recommended sync/cleanup UX in the PR body.
+Branch from latest `main` in this repo, commit your fixes, push your branch, and open a PR. Include validation results and a recommended sync/cleanup UX in the PR body.
