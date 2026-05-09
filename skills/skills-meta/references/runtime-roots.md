@@ -108,3 +108,21 @@ drive, or fix the path.
 
 Default repo-local roots that don't exist (e.g. a fresh checkout with
 no `gemini/skills/`) are skipped silently; that's normal, not drift.
+
+## Sync targets
+
+`--mode sync --target <path>` copies canonical skills from the manifest
+into a target install root. Common targets:
+
+- `~/.claude/skills` — Claude Code user skills directory
+- `~/.codex/skills` — Codex CLI skills directory
+- a repo-local `claude/skills/` or `codex/skills/` when staging portable
+  bundles
+- an exported zip staging directory before re-packaging
+
+The source of truth is `manifest.skills.<name>.repo_path`. Skills with
+no `repo_path` get a `source-missing` entry in the plan. The target is
+not auto-detected per skill — pass `--target` explicitly. The same skill
+may legitimately live in more than one install root (a `merge-review`
+that drives both Claude Code and Codex CLI sprints, for example) and
+the helper has no way to guess which runtime you mean.

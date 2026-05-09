@@ -28,6 +28,8 @@ exercise three realistic prompts against the bundled helper.
 | `simulated extra root via --root` | Honor an additional root and surface a missing root with origin `cli`. | Picked up `test-skill v0.1.0` from `/tmp/skills-meta-fixture/skills/test-skill` as `unknown` (not in manifest) and reported `cli missing /tmp/this-does-not-exist` in the unreadable section. | pass | `0.18s` |
 | `simulated extra root via SKILLS_META_ROOTS` | Same input via env var; missing path tags as `env`. | Reported `env missing /tmp/also-missing` in the unreadable section. | pass | `0.18s` |
 | `--mode inventory --json` | Emit machine-readable output covering records, unreadable roots, and duplicate groups. | Emitted valid JSON with `records: 100`, `unreadable: 3`, `duplicate_groups: 28`. The earlier `datetime.date` serialization bug in `manifest.last_updated` was fixed via `_json_safe`. | pass | `0.18s` |
+| `--mode sync` dry run, two skills | Show a plan of what would copy/keep/skip into a target install root. | For `--target /home/tony/.codex/skills --skill merge-review,sprint-update` reported `! drift merge-review` (one cosmetic-newline difference) and `+ copy sprint-update` (missing on Codex). Plan footer reminded the user that `--force` is needed to overwrite drift. | pass | `0.20s` |
+| `--mode sync --apply --force`, real install | Copy `sprint-update` into the Codex CLI install on Ubuntu and overwrite the drifted `merge-review` so the Codex sprint-manager agent sees the canonical Claude-side prompts. | Copied `sprint-update`, overwrote `merge-review`. Re-running the dry run reported `= keep` for both. `diff -q` confirmed byte-for-byte equality with the repo source. | pass | `0.21s` |
 
 ## Skill-Creator Compliance
 

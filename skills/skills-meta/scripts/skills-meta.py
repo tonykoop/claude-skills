@@ -66,10 +66,14 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Audit installed skills against manifest.yaml.")
     parser.add_argument(
         "--mode",
-        choices=("inventory", "single", "drift", "fix", "fix-duplicates"),
+        choices=("inventory", "single", "drift", "fix", "fix-duplicates", "sync"),
         default="inventory",
     )
-    parser.add_argument("--skill", help="Skill name to focus on in single/fix mode.")
+    parser.add_argument(
+        "--skill",
+        help="Skill name to focus on. In single/fix modes one skill; in sync mode "
+        "a comma-separated list (default: all manifest skills).",
+    )
     parser.add_argument("--manifest", default="manifest.yaml", help="Path to manifest.yaml.")
     parser.add_argument(
         "--root",
@@ -77,12 +81,23 @@ def parse_args() -> argparse.Namespace:
         default=[],
         help="Skill root to scan. Repeatable. Defaults to repo-local roots plus SKILLS_META_ROOTS.",
     )
+    parser.add_argument(
+        "--target",
+        help="In sync mode, the install root to copy into (e.g. ~/.codex/skills). Required for sync.",
+    )
     parser.add_argument("--json", action="store_true", help="Emit JSON instead of text.")
     parser.add_argument(
         "--apply",
         action="store_true",
-        help="In fix-duplicates mode, prompt y/n per stale copy and delete on confirmation. "
-        "Without --apply, prints a dry-run checklist only.",
+        help="Perform side effects. In fix-duplicates mode, prompt y/n per stale copy "
+        "and delete on confirmation. In sync mode, copy missing skills (and overwrite "
+        "drifted ones when combined with --force). Without --apply, prints a dry-run only.",
+    )
+    parser.add_argument(
+        "--force",
+        action="store_true",
+        help="In sync --apply, overwrite a target that has drifted from the canonical source. "
+        "Without --force, drifted targets are reported and skipped to protect local edits.",
     )
     return parser.parse_args()
 
@@ -641,11 +656,186 @@ def apply_fix_duplicates(duplicates: dict[str, list[SkillRecord]]) -> int:
     return removed
 
 
+@dataclass
+class SyncEntry:
+    """One row in a sync plan: copy a canonical skill into a target install root.
+
+    State explains what would happen: `missing` (target absent — safe to copy),
+    `in-sync` (byte-for-byte match — skip), `drift` (target has its own edits —
+    skip unless --force is set), `source-missing` (manifest entry has no
+    repo_path on disk — can't sync).
+    """
+
+    name: str
+    source: Path
+    target: Path
+    state: str
+    note: str = ""
+
+
+def hash_dir(path: Path) -> str | None:
+    """Hash every file under path so we can detect drift cheaply.
+
+    File contents matter; mtimes don't. Returns None if the directory is missing.
+    Symlinks are ignored — we never want to follow a symlink into another tree
+    during a sync diff.
+    """
+    import hashlib
+
+    if not path.exists():
+        return None
+    h = hashlib.sha256()
+    for file in sorted(path.rglob("*")):
+        if file.is_symlink() or not file.is_file():
+            continue
+        rel = file.relative_to(path).as_posix()
+        h.update(rel.encode("utf-8"))
+        h.update(b"\0")
+        try:
+            h.update(file.read_bytes())
+        except OSError:
+            return None
+        h.update(b"\0")
+    return h.hexdigest()
+
+
+def build_sync_plan(
+    repo_root: Path,
+    manifest: dict[str, Any],
+    target: Path,
+    skill_filter: list[str] | None,
+) -> list[SyncEntry]:
+    """For each manifest skill we're asked to sync, classify the target state."""
+    active = manifest.get("skills", {}) or {}
+    entries: list[SyncEntry] = []
+    for key, raw in active.items():
+        entry = raw or {}
+        name = canonical_name(str(key), entry)
+        if skill_filter and name not in skill_filter and str(key) not in skill_filter:
+            continue
+        repo_path = entry.get("repo_path")
+        if not repo_path:
+            entries.append(
+                SyncEntry(name, repo_root / str(key), target / name, "source-missing", "no repo_path in manifest")
+            )
+            continue
+        source = (repo_root / str(repo_path)).resolve()
+        dest = target / name
+        if not source.exists():
+            entries.append(SyncEntry(name, source, dest, "source-missing", f"{source} not on disk"))
+            continue
+        source_hash = hash_dir(source)
+        dest_hash = hash_dir(dest)
+        if dest_hash is None:
+            entries.append(SyncEntry(name, source, dest, "missing"))
+        elif source_hash == dest_hash:
+            entries.append(SyncEntry(name, source, dest, "in-sync"))
+        else:
+            entries.append(SyncEntry(name, source, dest, "drift", "target has local changes"))
+    return entries
+
+
+def render_sync_plan(plan: list[SyncEntry], target: Path, apply: bool, force: bool) -> str:
+    """One line per skill so it scrolls on a phone."""
+    if not plan:
+        return f"sync: no manifest skills matched (target {target})"
+    lines = [f"sync plan -> {target}", ""]
+    counts: dict[str, int] = {}
+    for entry in plan:
+        counts[entry.state] = counts.get(entry.state, 0) + 1
+        marker = {
+            "missing": "+ copy   ",
+            "in-sync": "= keep   ",
+            "drift": "! drift  ",
+            "source-missing": "? skip   ",
+        }.get(entry.state, "  ?      ")
+        suffix = f"  ({entry.note})" if entry.note else ""
+        lines.append(f"{marker} {entry.name:<22} {entry.source}  ->  {entry.target}{suffix}")
+    lines.append("")
+    summary = ", ".join(f"{state}: {n}" for state, n in sorted(counts.items()))
+    lines.append(f"summary: {summary}")
+    if not apply:
+        lines.append("dry run. Pass --apply to copy missing skills.")
+        if any(e.state == "drift" for e in plan):
+            lines.append("Drifted targets need --apply --force to overwrite local edits.")
+    elif not force and any(e.state == "drift" for e in plan):
+        lines.append("--force not set; drifted targets were skipped.")
+    return "\n".join(lines)
+
+
+def apply_sync(plan: list[SyncEntry], force: bool) -> tuple[int, int, int]:
+    """Returns (copied, overwritten, skipped). Drifted entries need --force."""
+    copied = overwritten = skipped = 0
+    for entry in plan:
+        if entry.state == "in-sync":
+            skipped += 1
+            continue
+        if entry.state == "source-missing":
+            print(f"skip {entry.name}: {entry.note}", file=sys.stderr)
+            skipped += 1
+            continue
+        if entry.state == "drift" and not force:
+            print(f"skip {entry.name}: drifted (pass --force to overwrite)", file=sys.stderr)
+            skipped += 1
+            continue
+        try:
+            entry.target.parent.mkdir(parents=True, exist_ok=True)
+            if entry.target.exists():
+                shutil.rmtree(entry.target)
+                shutil.copytree(entry.source, entry.target, symlinks=False)
+                print(f"overwrote {entry.target}")
+                overwritten += 1
+            else:
+                shutil.copytree(entry.source, entry.target, symlinks=False)
+                print(f"copied   {entry.target}")
+                copied += 1
+        except (OSError, shutil.Error) as exc:
+            print(f"failed   {entry.name}: {exc}", file=sys.stderr)
+            skipped += 1
+    print(f"\ncopied {copied}, overwrote {overwritten}, skipped {skipped}")
+    return copied, overwritten, skipped
+
+
 def main() -> int:
     args = parse_args()
     repo_root = Path.cwd()
     manifest_path = (repo_root / args.manifest).resolve()
     manifest = load_yaml(manifest_path)
+
+    if args.mode == "sync":
+        if not args.target:
+            print("--target is required for sync mode", file=sys.stderr)
+            return 2
+        target = Path(args.target).expanduser().resolve()
+        skill_filter: list[str] | None = None
+        if args.skill:
+            skill_filter = [s.strip() for s in args.skill.split(",") if s.strip()]
+        plan = build_sync_plan(repo_root, manifest, target, skill_filter)
+        if args.json:
+            payload = {
+                "mode": "sync",
+                "target": str(target),
+                "force": args.force,
+                "apply": args.apply,
+                "plan": [
+                    {
+                        "name": e.name,
+                        "source": str(e.source),
+                        "target": str(e.target),
+                        "state": e.state,
+                        "note": e.note,
+                    }
+                    for e in plan
+                ],
+            }
+            print(json.dumps(payload, indent=2, sort_keys=True))
+            return 0
+        print(render_sync_plan(plan, target, args.apply, args.force))
+        if args.apply:
+            print()
+            apply_sync(plan, args.force)
+        return 0
+
     specs = collect_root_specs(repo_root, manifest_path, args.root)
     resolved, unreadable = resolve_skill_dirs(specs)
     records = scan_roots(repo_root, resolved)

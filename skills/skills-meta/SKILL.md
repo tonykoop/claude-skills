@@ -2,10 +2,15 @@
 name: skills-meta
 description: >-
   Audit installed skills, compare frontmatter to manifest.yaml, and report
-  version drift or missing metadata. Use when asked what skills are
-  installed, what version a skill is running, whether skills are up to date,
-  or to suggest frontmatter fixes. Read-only by default; never rewrite
-  installed skills automatically.
+  version drift, missing metadata, unreadable roots, or duplicate copies
+  across roots. Can also sync canonical skills from manifest repo_path
+  into a target install root (e.g. cross-install Claude-side skills like
+  merge-review and sprint-update into a Codex CLI skill folder). Use when
+  asked what skills are installed, what version a skill is running,
+  whether skills are up to date, to suggest frontmatter fixes, to clean
+  up duplicate skill copies, or to make a skill available to another
+  runtime on the same machine. Read-only by default; never rewrites,
+  deletes, or copies without an explicit --apply flag.
 ---
 
 # skills-meta
@@ -54,6 +59,40 @@ Desktop installs are user-configured. Accept roots via `SKILLS_META_ROOTS` or
 - Fix-duplicates: when a skill name appears at multiple roots, print a
   keep/remove plan. Default is dry-run; pass `--apply` to confirm each
   removal interactively. Never deletes without per-copy y/n.
+- Sync: copy manifest skills from their canonical `repo_path` into a
+  `--target` install root. Useful for cross-runtime install — e.g.
+  making Claude-side skills (`merge-review`, `sprint-update`) available
+  to a Codex CLI agent. Dry-run by default; `--apply` copies missing
+  skills; `--apply --force` also overwrites targets that have drifted
+  from the canonical source. Without `--force`, drifted targets are
+  reported and skipped so local edits aren't clobbered silently.
+
+## Sync workflow
+
+Same-machine cross-runtime install. Source of truth is
+`manifest.skills.<name>.repo_path`; target is whatever skill folder the
+runtime expects (Claude Code: `~/.claude/skills`; Codex CLI:
+`~/.codex/skills`; Codex Desktop: its skill bundle path; etc.).
+
+Typical commands:
+
+```bash
+# Preview what would happen
+python skills/skills-meta/scripts/skills-meta.py --mode sync \
+  --target ~/.codex/skills --skill merge-review,sprint-update
+
+# Land missing skills only (drifted targets get reported, not touched)
+python skills/skills-meta/scripts/skills-meta.py --mode sync \
+  --target ~/.codex/skills --skill merge-review,sprint-update --apply
+
+# Also overwrite drifted targets after eyeballing the diff
+python skills/skills-meta/scripts/skills-meta.py --mode sync \
+  --target ~/.codex/skills --skill merge-review,sprint-update --apply --force
+```
+
+Omit `--skill` to operate on every manifest skill. Sync only knows about
+skills listed in `manifest.skills`; unknown directories at the target
+are left alone.
 
 ## Unreadable roots
 
