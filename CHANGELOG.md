@@ -7,11 +7,15 @@
   portability quick-reference and instrument packet guidance.
 - Reconciled release-hygiene docs: README, `docs/public-release-checklist.md`,
   and `docs/skill-versioning.md` now agree that canonical version metadata
-  lives in `manifest.yaml` until the bundled `skill-creator` validator
-  accepts `version` / `last-updated` in `SKILL.md` frontmatter.
-- Added `docs/release-hygiene-followups.md` to track deferred items
-  (per-skill changelogs, tagging, packaging, sync workflow, frontmatter
-  mirror).
+  lives in `manifest.yaml`. Documented the `metadata`-nested migration path
+  for `SKILL.md` frontmatter that already passes the bundled `skill-creator`
+  validator without a validator update.
+- Added `docs/release-hygiene-followups.md` as an index of deferred items;
+  it defers to PR #32 (manifest drift automation) and PR #37 (packaging /
+  release workflow / changelog format) instead of competing with their
+  wording.
+- Captured verbatim `quick_validate.py` evidence in the follow-ups doc so
+  the manifest-as-canonical decision is auditable.
 - Bumped `manifest.yaml` `last_updated` to 2026-05-09.
 
 ## 2026-05-08

@@ -52,9 +52,11 @@ skills:
 ```
 
 `SKILL.md` frontmatter stays minimal (`name` + `description`) for compatibility
-with the bundled `skill-creator` validator. Once the validator accepts
-`version` and `last-updated`, those fields can be mirrored into `SKILL.md`. See
-[docs/skill-versioning.md](docs/skill-versioning.md) for the full rationale.
+with the bundled `skill-creator` validator. The validator accepts `metadata`
+as a nested key, so a future migration can carry version data inline as
+`metadata.version` / `metadata.last-updated` without waiting on a validator
+update. Until that migration is decided, `manifest.yaml` is the only
+authoritative version source.
 
 Each skill is independently versioned with semver. Tags are namespaced:
 
@@ -63,6 +65,8 @@ instrument-maker-v4/v4.3.1
 tmux-v2/v2.0.0
 idea-incubator/v1.0.0
 ```
+
+See [docs/skill-versioning.md](docs/skill-versioning.md).
 
 ## Controls
 

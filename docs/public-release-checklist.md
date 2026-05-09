@@ -5,12 +5,14 @@ Use this before flipping any part of the repo public.
 - [x] README explains the repo as a skill ecosystem, not only WRFCoin history.
 - [x] Private paths are generalized or intentionally documented.
 - [ ] Every shipped skill has a `manifest.yaml` entry with
-      `canonical_version` and `last_updated`. (`SKILL.md` frontmatter mirrors
-      these fields only once the bundled `skill-creator` validator accepts
-      them — see `docs/skill-versioning.md`.)
-- [ ] Every shipped skill has a changelog source — either a per-skill
-      `CHANGELOG.md` kept outside validator-checked skill files, or a `notes`
-      entry on the manifest record summarizing the latest release.
+      `canonical_version` and `last_updated`. `SKILL.md` frontmatter may
+      additionally carry version data nested under `metadata` (the bundled
+      `skill-creator` validator already accepts this); see
+      `docs/skill-versioning.md` and `docs/release-hygiene-followups.md`.
+- [ ] Every shipped skill has a changelog source per the convention defined
+      in `docs/packaging.md` (PR #37). The drift checker in
+      `skills/skills-meta/scripts/skills-meta.py --mode drift --strict` (PR
+      #32) confirms coverage.
 - [ ] `manifest.yaml` `last_updated` is current and matches the shipped skill set.
 - [ ] Bundled scripts referenced by `SKILL.md` are present.
 - [x] Runtime-specific assumptions are marked as Claude, Codex, or Gemini.
