@@ -23,7 +23,7 @@ path, and produce crisp handoffs.
 ## Scope Check
 
 - Stay in this skill when the project is unclear, hybrid, experimental, or needs multiple specialist owners.
-- Switch to `instrument-maker-v4` for full instrument packets, acoustic design, tuning tables, or shop packets.
+- Switch to `instrument-maker` for full instrument packets, acoustic design, tuning tables, or shop packets. Prefer the latest installed version (currently v4); the canonical name keeps routing portable across runtimes.
 - Switch to `makerspace` when available for jig, fixture, toolpath, machine setup, or shop-process-only work.
 - Switch to `reverse-engineer` when available for existing-object measurement, cloning, teardown, or documentation-only work.
 - Switch to `idea-incubator` when available for early concepts that are not ready for build planning.
@@ -86,4 +86,5 @@ muddled packet.
 - Keep boundaries explicit: what this umbrella skill decided versus what a specialist must produce.
 - For hybrid work, create one handoff per specialist plus a short integration note.
 - For DoE work, include factors, response metrics, controls, trial matrix, logging fields, and stop conditions.
+- Keep handoff prompts runtime-agnostic: name the specialist by its canonical name and describe the work, but do not embed runtime-specific invocation syntax (such as `$skill` or slash-command markers). The user may carry the prompt to a different runtime where the specialist is installed.
 - Do not generate full instrument packets, CNC toolpaths, BOMs, shop drawings, or acoustic calculations here.

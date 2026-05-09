@@ -18,7 +18,7 @@ Choose the primary axis by the user's next needed deliverable.
 
 | Primary need | Route |
 | --- | --- |
-| Acoustic behavior, playable instrument, tuning, bore/string/membrane/body design, instrument shop packet | `instrument-maker-v4` |
+| Acoustic behavior, playable instrument, tuning, bore/string/membrane/body design, instrument shop packet | `instrument-maker` |
 | Jig, fixture, machine setup, toolpath, cut plan, workholding, shop operation, fabrication workflow | `makerspace` |
 | Existing-object teardown, measurement, clone, fit check, unknown geometry/material inference | `reverse-engineer` |
 | Early concept shaping, idea promotion, feasibility framing before build planning | `idea-incubator` |
@@ -33,14 +33,14 @@ different artifacts.
 Examples:
 
 - Ceramic ocarina with slip-cast mold and tuning validation:
-  - `instrument-maker-v4`: acoustic geometry and tuning intent.
+  - `instrument-maker`: acoustic geometry and tuning intent.
   - `makerspace`: mold, casting, firing, and shop workflow.
   - `maker-engineering`: DoE matrix tying shrinkage, wall thickness, and pitch error.
 - Copy a vintage instrument from photos and calipers:
   - `reverse-engineer`: measurement plan and geometry reconstruction.
-  - `instrument-maker-v4`: acoustic interpretation and playable redesign.
+  - `instrument-maker`: acoustic interpretation and playable redesign.
 - Build a router jig for repeated tone-hole drilling:
-  - `instrument-maker-v4`: tone-hole datum requirements.
+  - `instrument-maker`: tone-hole datum requirements.
   - `makerspace`: jig/workholding/toolpath implementation.
 
 Do not ask one specialist to absorb another specialist's deliverable. Cross-link

@@ -70,7 +70,7 @@ humidity, curing time, operator fatigue, or instrument warm-up.
 
 If the DoE needs a specialist deliverable, route that part separately:
 
-- Acoustic target, tuning model, or playable geometry: `instrument-maker-v4`.
+- Acoustic target, tuning model, or playable geometry: `instrument-maker`.
 - Fixture, toolpath, workholding, or shop operation: `makerspace`.
 - Measurement extraction from an existing object: `reverse-engineer`.
 - Early concept selection before experiments: `idea-incubator`.

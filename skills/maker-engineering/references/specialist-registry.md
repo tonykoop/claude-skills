@@ -2,9 +2,20 @@
 
 Use this reference when producing handoff prompts or explaining route ownership.
 
+## Naming Convention
+
+Use the canonical, unversioned specialist name in routing decisions and handoff
+prompts (`instrument-maker`, `makerspace`, `reverse-engineer`,
+`idea-incubator`). A user may have a different version installed in a different
+runtime (Claude Code, Claude Desktop, Codex CLI, Codex Desktop, Gemini CLI,
+mobile zip upload), and the canonical name keeps the route correct as long as
+any compatible version is present. When you know a feature requires a specific
+minimum version, add a parenthetical hint like "prefer v4+" rather than baking
+the version into the name.
+
 ## Current Specialists
 
-### `instrument-maker-v4`
+### `instrument-maker` (current canonical version: v4)
 
 Owns musical instrument design and documentation: acoustic physics, parametric
 tables, CAD/OpenSCAD/SolidWorks starters, dimensioned drawings, BOMs, sourcing,
@@ -70,3 +81,9 @@ Validation expected:
 
 For hybrid projects, produce one prompt per specialist and keep shared
 assumptions identical across prompts.
+
+Keep these prompts runtime-agnostic: use the canonical specialist name and plain
+prose. Do not embed `$skill`, slash-command markers, or runtime-specific
+invocation syntax — the user may paste the prompt into whichever runtime has the
+specialist installed (Claude Code, Claude Desktop, Codex CLI, Codex Desktop,
+Gemini CLI, or a mobile zip upload).
