@@ -1,9 +1,36 @@
 ---
 name: makerspace
-description: Plan shop-floor fabrication for jigs, fixtures, workholding, molds, machine setups, and make/order/buy/borrow decisions. Use when the user asks to design a jig or fixture, review a CNC/laser/mill/router/plasma setup, choose workholding, build a repeatable shop packet, or separate design intent from machine-specific operations. Inputs are part geometry, materials, tolerances, batch size, deadline, and shop constraints. Outputs are fabrication plans, jig packets, workholding and safety checklists, and make/order/buy/borrow recommendations. Do not use this skill for instrument acoustics; route that to instrument-maker-v4 or maker-engineering.
+version: 0.1.0
+last-updated: 2026-05-09
+description: >-
+  Plan shop-floor fabrication for jigs, fixtures, workholding, molds, machine
+  setups, and make/order/buy/borrow decisions. Use when the user asks to
+  design a jig or fixture, review a CNC/laser/mill/router/plasma setup, choose
+  workholding, build a repeatable shop packet, or separate design intent from
+  machine-specific operations. Inputs are part geometry, materials, tolerances,
+  batch size, deadline, and shop constraints. Outputs are fabrication plans,
+  jig packets, workholding and safety checklists, and make/order/buy/borrow
+  recommendations. Do not use for instrument acoustics — route to
+  `instrument-maker` or `maker-engineering`. Do not use when the project is
+  still conceptual — route to `idea-incubator` or `maker-engineering` first.
 ---
 
 # Makerspace
+
+## Trigger phrases
+
+- `design a jig` / `I need a fixture for this`
+- `help me set up the CNC` / `plan this on the router / laser / mill`
+- `make or buy?` / `should I build this or source it?`
+- `repeatable shop packet` / `setup sheet`
+- `workholding for this part`
+- `tolerance check` / `go/no-go`
+
+## Do not trigger for
+
+- Instrument acoustics or voicing — route to `instrument-maker`.
+- Projects that are not yet scoped — route to `maker-engineering` or `idea-incubator`.
+- Reverse engineering of an existing object — route to `reverse-engineer` first, then return here when builder-ready.
 
 Treat `makerspace` as a fabrication specialist. Use it after the concept
 exists and the next question is practical: hold the part safely, choose a
@@ -24,7 +51,7 @@ packaging, broad project management, or acoustic design.
 ## Respect these boundaries
 
 - Do not calculate instrument acoustics or take over voicing. Route that
-  work to `instrument-maker-v4`.
+  work to `instrument-maker`.
 - Do not invent CAD/CAM blindly. Mark missing geometry, machine limits, or
   stock constraints as `TBD` when they affect safety, fit, or feasibility.
 - Do not override posted shop safety practices.
@@ -139,7 +166,7 @@ needs a temporary profile instead of a canonical `spaces/<slug>/` entry.
 
 - Accept source geometry, design intent, and tolerances from
   `maker-engineering`.
-- Accept instrument geometry or tooling needs from `instrument-maker-v4`
+- Accept instrument geometry or tooling needs from `instrument-maker`
   without taking over acoustic decisions.
 - Accept measured dimensions from `reverse-engineer`.
 

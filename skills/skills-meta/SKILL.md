@@ -1,19 +1,34 @@
 ---
 name: skills-meta
+version: 0.1.0
+last-updated: 2026-05-09
 description: >-
-  Audit installed skills, compare frontmatter to manifest.yaml, and report
-  version drift, missing metadata, unreadable roots, or duplicate copies
-  across roots. Can also sync canonical skills from manifest repo_path
-  into a target install root (e.g. cross-install Claude-side skills like
-  merge-review and sprint-update into a Codex CLI skill folder). Use when
-  asked what skills are installed, what version a skill is running,
-  whether skills are up to date, to suggest frontmatter fixes, to clean
-  up duplicate skill copies, or to make a skill available to another
-  runtime on the same machine. Read-only by default; never rewrites,
-  deletes, or copies without an explicit --apply flag.
+  Audit installed skills across Claude, Codex, Gemini, and desktop installs.
+  Compare frontmatter to manifest.yaml and report version drift, missing
+  metadata, unreadable roots, or duplicate copies across roots. Can also sync
+  canonical skills from manifest repo_path into a target install root (e.g.
+  cross-install Claude-side skills into a Codex CLI skill folder). Use when
+  asked what skills are installed, what version a skill is running, whether
+  skills are up to date, to suggest frontmatter fixes, to clean up duplicate
+  skill copies, or to make a skill available to another runtime on the same
+  machine. Read-only by default; never rewrites, deletes, or copies without an
+  explicit --apply flag.
 ---
 
 # skills-meta
+
+## Trigger phrases
+
+- `what skills do I have?` / `list installed skills`
+- `what version is [skill] running?`
+- `are my skills up to date?` / `check for drift`
+- `audit my skills` / `skills inventory`
+- `suggest frontmatter fix for [skill]`
+
+## Do not trigger for
+
+- Editing or rewriting skills — treat that as a separate user-authorized task.
+- Skill design or new skill creation — route to `skill-creator` if available.
 
 Use this skill to answer "what skill versions am I running?" across Claude,
 Codex, Gemini, and desktop installs.

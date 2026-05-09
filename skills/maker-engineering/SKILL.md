@@ -1,5 +1,7 @@
 ---
 name: maker-engineering
+version: 0.1.0
+last-updated: 2026-05-09
 description: >-
   Route physical making projects when the right specialist is unclear, the user
   asks "I want to make X", "help me design this physical thing", "is this
@@ -13,6 +15,21 @@ description: >-
 
 # Maker Engineering
 
+## Trigger phrases
+
+- `I want to make X` / `help me design this physical thing`
+- `is this instrument-maker or makerspace?` / `which specialist?`
+- `route this project` / `what should I build this with?`
+- `set up an experiment` / `design of experiments`
+- `hybrid project` / `this touches fabrication and acoustics`
+- `multi-specialist handoff`
+
+## Do not trigger for
+
+- Work clearly owned by one specialist — go directly to `instrument-maker`, `makerspace`, `reverse-engineer`, or `idea-incubator`.
+- Generic CAD/design questions with no physical build goal.
+- Idea capture for unscoped concepts — route to `idea-incubator` first.
+
 Route and orchestrate physical making work without taking over specialist jobs.
 
 Treat this skill as an umbrella for buildable objects, materials, tools,
@@ -23,7 +40,7 @@ path, and produce crisp handoffs.
 ## Scope Check
 
 - Stay in this skill when the project is unclear, hybrid, experimental, or needs multiple specialist owners.
-- Switch to `instrument-maker` for full instrument packets, acoustic design, tuning tables, or shop packets. Prefer the latest installed version (currently v4); the canonical name keeps routing portable across runtimes.
+- Switch to `instrument-maker` for full instrument packets, acoustic design, tuning tables, or shop packets. Always use the canonical name `instrument-maker` in handoffs so routing stays portable across runtimes regardless of which version is installed.
 - Switch to `makerspace` when available for jig, fixture, toolpath, machine setup, or shop-process-only work.
 - Switch to `reverse-engineer` when available for existing-object measurement, cloning, teardown, or documentation-only work.
 - Switch to `idea-incubator` when available for early concepts that are not ready for build planning.
