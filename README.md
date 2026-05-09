@@ -55,6 +55,8 @@ idea-incubator/v1.0.0
 ```
 
 See [docs/skill-versioning.md](docs/skill-versioning.md).
+See [docs/manifest-drift-checks.md](docs/manifest-drift-checks.md) for the
+sprint-manager and CI smoke commands.
 
 ## Controls
 

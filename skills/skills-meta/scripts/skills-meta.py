@@ -11,7 +11,10 @@ from datetime import date
 from pathlib import Path
 from typing import Any
 
-import yaml
+try:
+    import yaml
+except ImportError:  # pragma: no cover - exercised on hosts without PyYAML.
+    yaml = None
 
 DEFAULT_ROOTS = ("skills", "claude/skills", "codex/skills", "gemini/skills")
 DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
@@ -27,6 +30,7 @@ class SkillRecord:
     version: str | None
     last_updated: str | None
     description: str | None
+    changelog_path: Path | None = None
     manifest: dict[str, Any] | None = None
     planned: dict[str, Any] | None = None
     issues: list[str] = field(default_factory=list)
@@ -53,14 +57,80 @@ def parse_args() -> argparse.Namespace:
         help="Skill root to scan. Repeatable. Defaults to repo-local roots plus SKILLS_META_ROOTS.",
     )
     parser.add_argument("--json", action="store_true", help="Emit JSON instead of text.")
+    parser.add_argument("--strict", action="store_true", help="Exit 1 when drift or missing manifest skills are found.")
     return parser.parse_args()
 
 
 def load_yaml(path: Path) -> dict[str, Any]:
     if not path.exists():
         return {}
-    data = yaml.safe_load(path.read_text(encoding="utf-8"))
+    data = parse_yaml(path.read_text(encoding="utf-8"))
     return data or {}
+
+
+def parse_yaml(text: str) -> dict[str, Any]:
+    if yaml is not None:
+        data = yaml.safe_load(text)
+        return data or {}
+    return parse_simple_yaml(text)
+
+
+def parse_simple_yaml(text: str) -> dict[str, Any]:
+    lines = text.splitlines()
+    data, _ = parse_mapping(lines, 0, 0)
+    return data
+
+
+def parse_mapping(lines: list[str], index: int, indent: int) -> tuple[dict[str, Any], int]:
+    result: dict[str, Any] = {}
+    while index < len(lines):
+        raw_line = lines[index]
+        stripped = raw_line.strip()
+        if not stripped or stripped.startswith("#") or stripped == "---":
+            index += 1
+            continue
+        current_indent = len(raw_line) - len(raw_line.lstrip(" "))
+        if current_indent < indent:
+            break
+        if current_indent > indent:
+            index += 1
+            continue
+        if ":" not in stripped:
+            index += 1
+            continue
+
+        key, raw_value = stripped.split(":", 1)
+        value = raw_value.strip()
+        if not value:
+            child, index = parse_mapping(lines, index + 1, indent + 2)
+            result[key.strip()] = child
+            continue
+        if value.startswith((">", "|")):
+            block, index = parse_block_scalar(lines, index + 1, current_indent)
+            result[key.strip()] = block
+            continue
+        result[key.strip()] = parse_scalar(value)
+        index += 1
+    return result, index
+
+
+def parse_block_scalar(lines: list[str], index: int, parent_indent: int) -> tuple[str, int]:
+    chunks: list[str] = []
+    while index < len(lines):
+        raw_line = lines[index]
+        stripped = raw_line.strip()
+        current_indent = len(raw_line) - len(raw_line.lstrip(" "))
+        if stripped and current_indent <= parent_indent:
+            break
+        chunks.append(stripped)
+        index += 1
+    return " ".join(chunk for chunk in chunks if chunk), index
+
+
+def parse_scalar(value: str) -> str:
+    if len(value) >= 2 and value[0] in {"'", '"'} and value[-1] == value[0]:
+        return value[1:-1]
+    return value
 
 
 def read_frontmatter(path: Path) -> dict[str, Any]:
@@ -71,7 +141,7 @@ def read_frontmatter(path: Path) -> dict[str, Any]:
     if end == -1:
         return {}
     raw = text[4:end]
-    data = yaml.safe_load(raw)
+    data = parse_yaml(raw)
     return data or {}
 
 
@@ -137,6 +207,18 @@ def is_date(value: str | None) -> bool:
     return bool(value and DATE_RE.match(value))
 
 
+def changelog_for(skill_md: Path) -> Path | None:
+    path = skill_md.parent / "CHANGELOG.md"
+    return path if path.exists() else None
+
+
+def changelog_mentions_version(path: Path, version: str | None) -> bool:
+    if not version:
+        return True
+    text = path.read_text(encoding="utf-8")
+    return version in text or f"v{version}" in text
+
+
 def scan_roots(repo_root: Path, roots: list[Path]) -> list[SkillRecord]:
     records: list[SkillRecord] = []
     for root in roots:
@@ -149,6 +231,7 @@ def scan_roots(repo_root: Path, roots: list[Path]) -> list[SkillRecord]:
             version = frontmatter.get("version")
             last_updated = frontmatter.get("last-updated")
             description = frontmatter.get("description")
+            changelog_path = changelog_for(skill_md)
             records.append(
                 SkillRecord(
                     name=name,
@@ -158,6 +241,7 @@ def scan_roots(repo_root: Path, roots: list[Path]) -> list[SkillRecord]:
                     version=str(version) if version is not None else None,
                     last_updated=str(last_updated) if last_updated is not None else None,
                     description=str(description) if description is not None else None,
+                    changelog_path=changelog_path,
                 )
             )
     return records
@@ -213,6 +297,11 @@ def annotate_records(records: list[SkillRecord], manifest: dict[str, Any]) -> tu
                 record.issues.append(f"stale-last-updated:{manifest_updated}")
             elif not is_date(record.last_updated):
                 record.issues.append("unparseable-last-updated")
+
+            if not record.changelog_path:
+                record.issues.append("missing-changelog")
+            elif not changelog_mentions_version(record.changelog_path, canonical):
+                record.issues.append(f"changelog-missing-version:{canonical}")
         else:
             if record.planned:
                 record.issues.append("planned-only")
@@ -268,6 +357,10 @@ def text_output(records: list[SkillRecord], missing: list[str], mode: str, skill
         lines.append(f"status: {record.render_status()}")
         if record.issues:
             lines.append("issues: " + ", ".join(record.issues))
+        if record.changelog_path:
+            lines.append(f"changelog: {record.changelog_path}")
+        else:
+            lines.append("changelog: missing")
         return "\n".join(lines)
 
     total = len(records)
@@ -290,8 +383,9 @@ def text_output(records: list[SkillRecord], missing: list[str], mode: str, skill
         status = record.render_status()
         canonical = f"  canonical {record.manifest.get('canonical_version')}" if record.manifest else ""
         updated = record.last_updated or "missing"
+        issues = f"  issues: {', '.join(record.issues)}" if record.issues else ""
         lines.append(
-            f"{status:<7} {record.name:<18} v{record.version or 'missing'}  {updated}  {record.path}{canonical}"
+            f"{status:<7} {record.name:<18} v{record.version or 'missing'}  {updated}  {record.path}{canonical}{issues}"
         )
         shown += 1
 
@@ -325,6 +419,7 @@ def json_output(records: list[SkillRecord], missing: list[str], mode: str) -> st
                 "runtime": record.runtime,
                 "version": record.version,
                 "last_updated": record.last_updated,
+                "changelog_path": str(record.changelog_path) if record.changelog_path else None,
                 "status": record.render_status(),
                 "issues": record.issues,
                 "manifest": record.manifest,
@@ -363,6 +458,8 @@ def main() -> int:
         print(json_output(records, missing, args.mode))
     else:
         print(text_output(records, missing, args.mode, args.skill))
+    if args.strict and (any(record.render_status() != "ok" for record in records) or missing):
+        return 1
     return 0
 
 
