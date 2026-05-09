@@ -14,18 +14,21 @@ not automatically the source of truth.
 - `codex/skills/`
 - `gemini/skills/` when the directory exists
 
-## Tony's common PC roots
+## Known Tony roots
 
-These are common source or staging locations on Tony's main PC. They should be
-configurable, not hard-coded forever:
+These are the current starting points for Tony's installs:
 
-- `/mnt/c/Users/Tony/Documents/GitHub/claude-skills/skills`
-- `/mnt/c/Users/Tony/Documents/GitHub/claude-skills/claude/skills`
-- `/mnt/c/Users/Tony/Documents/GitHub/claude-skills/codex/skills`
-- `/mnt/c/Users/Tony/Documents/GitHub/instrument-maker/skills`
-- `/mnt/c/Users/Tony/Documents/GitHub/makerspace`
-- `/mnt/c/Users/Tony/Documents/GitHub/reverse-engineering/skills`
-- `/home/tony/.codex/skills`
+- `/mnt/c/Users/Tony/.claude`
+- `/mnt/c/Users/Tony/.codex`
+- `/mnt/c/Users/Tony/Documents/GitHub/.claude`
+- `/home/tony/.claude`
+- `/home/tony/.codex`
+- `/home/tony/.gemini`
+- `/home/tony/wrfcoin/.claude`
+- `/home/tony/wrfcoin/.codex`
+- `/home/tony/wrfcoin/.gemini`
+- `/home/tony/wrfcoin/core4/.claude`
+- `/home/tony/wrfcoin/core4/.gemini`
 
 ## Runtime install roots
 
@@ -42,6 +45,12 @@ Do not assume mobile has a readable local filesystem. For mobile-only installs,
 ask the user to export, paste, or provide the uploaded zip/manifest when a
 direct scan is impossible.
 
+## App-data note
+
+The AppData package folders for Claude and Codex contain app state and session
+data. They are useful provenance targets, but they were not skill-install roots
+in the scan. Treat them as supporting paths, not canonical roots.
+
 ## Configured roots
 
 Use either of these:
@@ -56,7 +65,7 @@ python skills/skills-meta/scripts/skills-meta.py --root ~/.claude/skills --root 
 ```
 
 ```bash
-SKILLS_META_ROOTS="~/.claude/skills:~/.codex/skills" \
+SKILLS_META_ROOTS="~/.claude:~/.codex" \
   python skills/skills-meta/scripts/skills-meta.py
 ```
 
@@ -69,9 +78,51 @@ the path. Do not guess.
 
 When multiple copies of the same skill appear:
 
-1. Prefer the manifest entry as canonical.
+1. Prefer the manifest entry as canonical. The helper picks the copy
+   whose path matches `manifest.skills.<name>.repo_path` when present;
+   otherwise it falls back to the highest installed semver, then the
+   newest `last-updated`, then the first record.
 2. Report each discovered copy with path, runtime, version fields, and
-   last-updated fields when present.
+   last-updated fields when present. Stale copies get tagged
+   `duplicate` and carry a `duplicate-of:<path>` issue.
 3. Flag missing frontmatter metadata separately from version drift.
 4. Flag copies that are outside the manifest as `unknown`.
-5. Do not delete or overwrite stale copies. Produce a cleanup checklist instead.
+5. Do not delete or overwrite stale copies by default. The helper
+   prints a cleanup plan; `fix-duplicates --apply` walks each removal
+   interactively with a per-copy y/n prompt and never auto-deletes.
+
+## Unreadable roots
+
+When a manifest, `SKILLS_META_ROOTS`, or `--root` entry doesn't exist or
+can't be read, the helper does not silently skip it. Instead it reports
+the path, the origin (`manifest`, `env`, or `cli`), and a reason:
+
+- `missing` — the path doesn't exist on this machine
+- `not-a-directory` — the path resolves to a file or symlink target
+- `permission-denied` — the path can't be listed
+- `no-skills-found` — the directory exists but has no `SKILL.md` files
+
+This is how mobile-only installs surface in the report. Treat an
+unreadable root as a prompt to ask the user for an export, mount the
+drive, or fix the path.
+
+Default repo-local roots that don't exist (e.g. a fresh checkout with
+no `gemini/skills/`) are skipped silently; that's normal, not drift.
+
+## Sync targets
+
+`--mode sync --target <path>` copies canonical skills from the manifest
+into a target install root. Common targets:
+
+- `~/.claude/skills` — Claude Code user skills directory
+- `~/.codex/skills` — Codex CLI skills directory
+- a repo-local `claude/skills/` or `codex/skills/` when staging portable
+  bundles
+- an exported zip staging directory before re-packaging
+
+The source of truth is `manifest.skills.<name>.repo_path`. Skills with
+no `repo_path` get a `source-missing` entry in the plan. The target is
+not auto-detected per skill — pass `--target` explicitly. The same skill
+may legitimately live in more than one install root (a `merge-review`
+that drives both Claude Code and Codex CLI sprints, for example) and
+the helper has no way to guess which runtime you mean.

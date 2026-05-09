@@ -4,6 +4,22 @@
 schema_version: 1
 last_updated: 2026-05-08
 
+install_roots:
+  windows:
+    - /mnt/c/Users/Tony/.claude
+    - /mnt/c/Users/Tony/.codex
+    - /mnt/c/Users/Tony/Documents/GitHub/.claude
+  wsl:
+    - /home/tony/.claude
+    - /home/tony/.codex
+    - /home/tony/.gemini
+    - /home/tony/wrfcoin/.claude
+    - /home/tony/wrfcoin/.codex
+    - /home/tony/wrfcoin/.gemini
+  legacy:
+    - /home/tony/wrfcoin/core4/.claude
+    - /home/tony/wrfcoin/core4/.gemini
+
 skills:
   skills-meta:
     canonical_version: 1.0.0
