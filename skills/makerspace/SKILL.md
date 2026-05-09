@@ -145,7 +145,10 @@ needs a temporary profile instead of a canonical `spaces/<slug>/` entry.
 
 ## Treat legacy material as optional context
 
-Use `examples/` and `evals/workspace/` only for historical comparison,
-legacy packet behavior, or benchmark inspection. Do not let the broader
-v0.2 build-packet material take over the default runtime behavior of this
+Use `examples/` only for historical comparison or legacy packet behavior.
+The v0.2 benchmark workspace lives outside the skill package at
+`docs/benchmarks/makerspace/` in the host repo (or
+`tonykoop/makerspace/evals/workspace/` in the standalone repo); load it on
+demand for benchmark inspection only. Do not let the broader v0.2
+build-packet material take over the default runtime behavior of this
 skill.
