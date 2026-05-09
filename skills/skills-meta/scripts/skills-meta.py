@@ -407,28 +407,45 @@ def detect_duplicates(repo_root: Path, records: list[SkillRecord]) -> dict[str, 
     return dup_groups
 
 
-def pick_canonical_copy(repo_root: Path, group: list[SkillRecord]) -> SkillRecord:
+def canonicalness_key(repo_root: Path, group: list[SkillRecord]) -> "callable[[SkillRecord], tuple]":
+    """Return a sort key (descending) that mirrors pick_canonical_copy's
+    precedence: manifest repo_path match > highest semver > newest
+    last-updated > path string. Path string is the final tiebreaker so
+    the order is fully deterministic across runs and machines.
+    """
     manifest_entry = next((r.manifest for r in group if r.manifest), None)
     repo_path_hint: str | None = None
     if manifest_entry:
         repo_path = manifest_entry.get("repo_path")
         if repo_path:
-            repo_path_hint = str((repo_root / str(repo_path)).resolve())
-
-    if repo_path_hint:
-        for record in group:
             try:
-                if str(record.path.parent.resolve()) == repo_path_hint:
-                    return record
+                repo_path_hint = str((repo_root / str(repo_path)).resolve())
             except OSError:
-                continue
+                repo_path_hint = None
 
-    def sort_key(record: SkillRecord) -> tuple:
+    def key(record: SkillRecord) -> tuple:
+        try:
+            is_repo_path = repo_path_hint is not None and str(record.path.parent.resolve()) == repo_path_hint
+        except OSError:
+            is_repo_path = False
         sv = semver_tuple(record.version) or (-1, -1, -1)
         date_val = record.last_updated if is_date(record.last_updated) else ""
-        return (sv, date_val)
+        return (1 if is_repo_path else 0, sv, date_val, str(record.path))
 
-    return max(group, key=sort_key)
+    return key
+
+
+def pick_canonical_copy(repo_root: Path, group: list[SkillRecord]) -> SkillRecord:
+    return max(group, key=canonicalness_key(repo_root, group))
+
+
+def sort_canonical_first(repo_root: Path, records: list[SkillRecord]) -> list[SkillRecord]:
+    """Stable sort with the canonical copy first; used so single-mode
+    output is deterministic in duplicate-heavy installs."""
+    if len(records) <= 1:
+        return list(records)
+    key = canonicalness_key(repo_root, records)
+    return sorted(records, key=key, reverse=True)
 
 
 def render_fix(record: SkillRecord) -> str:
@@ -475,6 +492,11 @@ def text_output(
 ) -> str:
     lines: list[str] = []
     if mode == "single" and records:
+        # records is already sorted canonical-first by filter_and_sort, so
+        # records[0] is deterministic across runs even when the same skill
+        # name appears at multiple roots. The remaining copies surface in
+        # an "other copies" block so a duplicate-heavy install isn't
+        # silently collapsed to a single arbitrary path.
         record = records[0]
         lines.append(f"{record.name}")
         lines.append(f"path: {record.path}")
@@ -490,6 +512,14 @@ def text_output(
         lines.append(f"status: {record.render_status()}")
         if record.issues:
             lines.append("issues: " + ", ".join(record.issues))
+        if len(records) > 1:
+            lines.append("")
+            lines.append(f"other copies: {len(records) - 1}")
+            for extra in records[1:]:
+                lines.append(
+                    f"- {extra.render_status():<9} v{extra.version or 'missing':<10} "
+                    f"{extra.runtime:<10} {extra.path}"
+                )
         return "\n".join(lines)
 
     total = len(records)
@@ -601,6 +631,11 @@ def filter_records(records: list[SkillRecord], skill: str | None) -> list[SkillR
     return matches
 
 
+def filter_and_sort(repo_root: Path, records: list[SkillRecord], skill: str | None) -> list[SkillRecord]:
+    matches = filter_records(records, skill)
+    return sort_canonical_first(repo_root, matches)
+
+
 def render_fix_duplicates_plan(duplicates: dict[str, list[SkillRecord]]) -> str:
     """Print a human-readable plan: which copy stays, which get removed."""
     if not duplicates:
@@ -642,11 +677,20 @@ def apply_fix_duplicates(duplicates: dict[str, list[SkillRecord]]) -> int:
             if record is canonical:
                 continue
             target = record.path.parent
-            answer = input(f"remove {target} ? [y/N] ").strip().lower()
+            is_link = target.is_symlink()
+            link_note = f" (symlink to {os.readlink(target)})" if is_link else ""
+            answer = input(f"remove {target}{link_note} ? [y/N] ").strip().lower()
             if answer == "y":
                 try:
-                    shutil.rmtree(target)
-                    print(f"  removed {target}")
+                    # If the duplicate path is itself a symlink, only
+                    # unlink the symlink — never rmtree through it. That
+                    # protects the shared source the user pointed it at.
+                    if is_link:
+                        target.unlink()
+                        print(f"  unlinked {target}")
+                    else:
+                        shutil.rmtree(target)
+                        print(f"  removed {target}")
                     removed += 1
                 except OSError as exc:
                     print(f"  failed: {exc}", file=sys.stderr)
@@ -664,6 +708,12 @@ class SyncEntry:
     `in-sync` (byte-for-byte match — skip), `drift` (target has its own edits —
     skip unless --force is set), `source-missing` (manifest entry has no
     repo_path on disk — can't sync).
+
+    `symlink_target` is set when the install path is itself a symlink. We
+    refuse to mutate symlinked targets without --force because the user may
+    have linked the install path into a working tree on purpose, and a naive
+    rmtree would either error out or — worse, in older Pythons — follow the
+    link and delete the source.
     """
 
     name: str
@@ -671,6 +721,7 @@ class SyncEntry:
     target: Path
     state: str
     note: str = ""
+    symlink_target: Path | None = None
 
 
 def hash_dir(path: Path) -> str | None:
@@ -724,14 +775,30 @@ def build_sync_plan(
         if not source.exists():
             entries.append(SyncEntry(name, source, dest, "source-missing", f"{source} not on disk"))
             continue
+        symlink_target: Path | None = None
+        if dest.is_symlink():
+            try:
+                symlink_target = Path(os.readlink(dest))
+            except OSError:
+                symlink_target = Path("?")
         source_hash = hash_dir(source)
         dest_hash = hash_dir(dest)
-        if dest_hash is None:
+        if dest_hash is None and not dest.is_symlink():
             entries.append(SyncEntry(name, source, dest, "missing"))
         elif source_hash == dest_hash:
-            entries.append(SyncEntry(name, source, dest, "in-sync"))
+            note = f"symlinked to {symlink_target}" if symlink_target else ""
+            entries.append(
+                SyncEntry(name, source, dest, "in-sync", note, symlink_target=symlink_target)
+            )
         else:
-            entries.append(SyncEntry(name, source, dest, "drift", "target has local changes"))
+            note = (
+                f"target is a symlink to {symlink_target}"
+                if symlink_target
+                else "target has local changes"
+            )
+            entries.append(
+                SyncEntry(name, source, dest, "drift", note, symlink_target=symlink_target)
+            )
     return entries
 
 
@@ -763,8 +830,25 @@ def render_sync_plan(plan: list[SyncEntry], target: Path, apply: bool, force: bo
     return "\n".join(lines)
 
 
+def _remove_target_path(path: Path) -> None:
+    """Remove a path safely without following symlinks.
+
+    `shutil.rmtree` raises on a symlink, and even when it doesn't it would
+    descend into whatever the link points at. For sync overwrites we want
+    to peel off only the install entry, never the directory it might link
+    into. So: if the path is a symlink, unlink it; otherwise rmtree.
+    """
+    if path.is_symlink() or (path.exists() and not path.is_dir()):
+        path.unlink()
+    elif path.exists():
+        shutil.rmtree(path)
+
+
 def apply_sync(plan: list[SyncEntry], force: bool) -> tuple[int, int, int]:
-    """Returns (copied, overwritten, skipped). Drifted entries need --force."""
+    """Returns (copied, overwritten, skipped). Drifted or symlinked
+    targets need --force; even with --force we only remove the link
+    (not its target) before laying down the fresh copy.
+    """
     copied = overwritten = skipped = 0
     for entry in plan:
         if entry.state == "in-sync":
@@ -774,19 +858,31 @@ def apply_sync(plan: list[SyncEntry], force: bool) -> tuple[int, int, int]:
             print(f"skip {entry.name}: {entry.note}", file=sys.stderr)
             skipped += 1
             continue
+        if entry.symlink_target is not None and not force:
+            print(
+                f"skip {entry.name}: target is a symlink to {entry.symlink_target} "
+                f"(pass --force to replace the link with a real copy)",
+                file=sys.stderr,
+            )
+            skipped += 1
+            continue
         if entry.state == "drift" and not force:
             print(f"skip {entry.name}: drifted (pass --force to overwrite)", file=sys.stderr)
             skipped += 1
             continue
         try:
             entry.target.parent.mkdir(parents=True, exist_ok=True)
-            if entry.target.exists():
-                shutil.rmtree(entry.target)
-                shutil.copytree(entry.source, entry.target, symlinks=False)
+            existed = entry.target.exists() or entry.target.is_symlink()
+            _remove_target_path(entry.target)
+            # symlinks=True so source-side symlinks are preserved as
+            # symlinks in the install. Flattening them with symlinks=False
+            # would silently turn a curated layout into a copy and break
+            # any user who symlinks bundled scripts to a shared cache.
+            shutil.copytree(entry.source, entry.target, symlinks=True)
+            if existed:
                 print(f"overwrote {entry.target}")
                 overwritten += 1
             else:
-                shutil.copytree(entry.source, entry.target, symlinks=False)
                 print(f"copied   {entry.target}")
                 copied += 1
         except (OSError, shutil.Error) as exc:
@@ -841,7 +937,7 @@ def main() -> int:
     records = scan_roots(repo_root, resolved)
     records, missing = annotate_records(records, manifest)
     duplicates = detect_duplicates(repo_root, records)
-    records = filter_records(records, args.skill)
+    records = filter_and_sort(repo_root, records, args.skill)
 
     if args.mode in {"single", "fix"} and not args.skill:
         print("--skill is required for single and fix mode", file=sys.stderr)
