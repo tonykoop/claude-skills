@@ -7,13 +7,14 @@ Apply the section that matches the PR type. All PRs must pass the **Universal** 
 
 ## Universal (all PR types)
 
-- [ ] PR targets the correct base branch (not `main` unless it is a release merge).
+- [ ] PR targets the intended release/integration branch for the sprint (e.g., `main` for direct-to-main workflows, or the sprint integration branch if one exists).
 - [ ] PR title is ≤ 72 characters and describes the change, not the ticket.
 - [ ] PR body links the issue it closes (`Closes #N`).
 - [ ] PR is small: a single coherent unit of change. If it touches ≥ 3 unrelated areas, ask to split.
 - [ ] CI / GitHub Actions checks have run and are green (or failures are explained in the PR body).
 - [ ] No merge conflicts with base branch.
 - [ ] Author is not merging their own PR without review (sprint manager counts as reviewer).
+- [ ] PR is not in draft state; if it is, do not merge until the author marks it ready.
 
 ---
 
