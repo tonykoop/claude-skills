@@ -25,14 +25,29 @@ If the request is clearly for yin, restorative, hot power, prenatal, or therapy-
 - full class generation
 - playlist-builder handoff
 
-## Load these references
+## Load references on demand
+
+These references are bundled but not all are needed every time. Pull only what the current request actually uses, so the skill stays lean on context-constrained platforms (mobile, zip-uploaded skills, smaller runtimes).
 
 - `references/poses.yaml`
-  Use for starter pose metadata, prep relationships, counter-pose ideas, and constraint-aware substitutions.
+  Query for specific lookups: prep ladder for a peak pose, counter-pose ideas, or constraint-aware substitutions. For a routine class plan that only uses the staple poses listed below, you usually do not need to open this file at all.
 - `references/sequencing-principles.md`
-  Use for arc design, timing heuristics, symmetry checks, and intensity management.
+  Open when you need the default arc by class length, peak-pose ladders, or the bilateral symmetry checklist.
 - `references/playlist-builder-handoff.md`
-  Use when the user wants music, phase timing export, or a clean handoff to `yoga-playlist-builder`.
+  Open when the user wants music or a phase-timing export.
+
+### Staple pose cheat-sheet
+
+Most 30 to 75 minute mixed-level classes can be built from these without opening `poses.yaml`:
+
+- arrival and breath: sukhasana, child's pose
+- spinal warm-up: cat-cow, thread the needle, low lunge
+- sun salutation core: downward dog, plank, cobra, mountain
+- standing build: warrior II, side angle, triangle, crescent lunge, chair, tree
+- hip and floor work: malasana, lizard, pigeon, bridge
+- cooldown: seated twist, supine twist, reclined figure four, happy baby, legs up the wall, savasana
+
+Open `poses.yaml` when you need contraindications, modifications, or prep-relationships for a pose outside this set, or when a constraint (wrist sensitivity, sensitive knees, pregnancy, low back) needs explicit substitutions.
 
 ## Gather inputs
 
@@ -105,7 +120,7 @@ Always include warm-up, standing build, peak or focal work, counterpose, cooldow
 
 ### Playlist handoff
 
-Do not generate songs. Export the phase structure and energy map described in `references/playlist-builder-handoff.md`, then hand off to `yoga-playlist-builder`.
+Do not generate songs. Always emit the phase-map YAML block described in `references/playlist-builder-handoff.md` directly in your reply when the user wants music or playlist-ready timing. Treat the YAML as portable data the user can paste into `yoga-playlist-builder`, another Claude session, or any other tool — do not assume the companion skill is installed on the current platform.
 
 ## Sequencing rules
 
@@ -137,7 +152,9 @@ For lookup requests, return only the smallest useful subset.
 
 ## Pairings
 
-- `yoga-playlist-builder` for music selection and phase-matched track planning
+These are optional collaborators, not requirements. The skill should produce a complete, self-contained class plan even if none of them are installed on the current platform.
+
+- `yoga-playlist-builder` for music selection and phase-matched track planning, when available
 - `energy-management` when class design must fit Tony's week, energy, or teaching schedule
 - `idea-incubator` when the user wants class themes, workshop angles, or retreat concepts
 

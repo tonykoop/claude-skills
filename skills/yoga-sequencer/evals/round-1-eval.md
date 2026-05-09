@@ -138,3 +138,22 @@ Notes:
 
 - `poses.yaml` is intentionally a starter library, so unusual peak poses will still require judgment rather than exhaustive catalog lookup.
 - The benchmark runs in this round are manual contract evaluations, not an automated harness with independent model execution.
+
+## Round 2: Cross-Platform Smoke Eval (2026-05-08)
+
+Re-ran the same three prompt fixtures against the updated skill to validate lazy-loading and inline-YAML-handoff changes.
+
+- Validation: `quick_validate.py` pass; YAML parse pass for `poses.yaml`, `agents/openai.yaml`, `manifest.yaml`.
+- Benchmark 1 (twists + grounding, 60 min): pass. Skipped `poses.yaml`; staple cheat-sheet sufficient. Inline phase-map YAML emitted. Bilateral symmetry intact.
+- Benchmark 2 (crow peak, 45 min, wrist-sensitive room): pass. Opened `poses.yaml` because of the constraint, exactly as the lazy-load rule prescribes. Wrist-aware parallel track from arrival through cooldown, published exit ramp from crow. Inline phase-map YAML emitted, compressed proportionally for 45 min.
+- Benchmark 3 (camel counter-pose lookup): pass. Skipped `poses.yaml`. Stayed in lookup-brevity mode (no full class plan, no playlist YAML).
+
+### Cross-platform notes from this round
+
+- The "load references on demand" framing is doing real work — agents skip `poses.yaml` for routine class plans and open it for constraint or peak-pose lookups, which is the correct pattern for mobile and zip-uploaded installs.
+- Reframing playlist handoff as "always emit YAML inline" removes a hidden dependency on `yoga-playlist-builder` being installed. The block now stands on its own across Claude Desktop, Claude mobile zip uploads, Codex, and Gemini.
+
+### Minor follow-ups (not blocking)
+
+- Add a 45-minute worked example to the playlist handoff schema; the proportional-compression rule works but a worked example would save a step.
+- Consider listing camel and wheel explicitly under the staple cheat-sheet (they came up as judgment calls in the lookup test).

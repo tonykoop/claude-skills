@@ -4,9 +4,11 @@ Use this reference when the user wants music or says "now build music for this c
 
 ## Intent
 
-`yoga-sequencer` defines the class arc and timing. `yoga-playlist-builder` picks tracks that match each phase.
+`yoga-sequencer` defines the class arc and timing. The job here is to emit a portable phase map — a chunk of YAML the user can hand to `yoga-playlist-builder`, paste into another Claude session, or feed to any other music-selection tool.
 
-Do not generate music selections here. Instead, export a clean phase map that another skill can consume.
+Always emit the YAML block inline in your reply. Do not assume `yoga-playlist-builder` (or any other companion skill) is installed on the platform the user is on right now — Claude Desktop, mobile zip uploads, Codex, and Gemini installations may all carry different skill sets. The block needs to stand on its own.
+
+Do not generate music selections here.
 
 ## Handoff schema
 
