@@ -138,3 +138,52 @@ Notes:
 
 - `poses.yaml` is intentionally a starter library, so unusual peak poses will still require judgment rather than exhaustive catalog lookup.
 - The benchmark runs in this round are manual contract evaluations, not an automated harness with independent model execution.
+
+## Round 2: Cross-Platform Smoke Eval (2026-05-08)
+
+Re-ran the same three prompt fixtures against the updated skill to validate lazy-loading and inline-YAML-handoff changes.
+
+- Validation: `quick_validate.py` pass; YAML parse pass for `poses.yaml`, `agents/openai.yaml`, `manifest.yaml`.
+- Benchmark 1 (twists + grounding, 60 min): pass. Skipped `poses.yaml`; staple cheat-sheet sufficient. Inline phase-map YAML emitted. Bilateral symmetry intact.
+- Benchmark 2 (crow peak, 45 min, wrist-sensitive room): pass. Opened `poses.yaml` because of the constraint, exactly as the lazy-load rule prescribes. Wrist-aware parallel track from arrival through cooldown, published exit ramp from crow. Inline phase-map YAML emitted, compressed proportionally for 45 min.
+- Benchmark 3 (camel counter-pose lookup): the agent skipped `poses.yaml` and produced a reasonable answer from general teaching knowledge. Treat this as a soft pass on output quality but a contract regression — see Round 3 below.
+
+### Cross-platform notes from this round
+
+- The "load references on demand" framing is doing real work — agents skip `poses.yaml` for routine class plans and open it for explicit constraints, which is the correct pattern for mobile and zip-uploaded installs.
+- Reframing playlist handoff as "always emit YAML inline" removes a hidden dependency on `yoga-playlist-builder` being installed. The block now stands on its own across Claude Desktop, Claude mobile zip uploads, Codex, and Gemini.
+
+## Round 3: Owner Review Fixes (2026-05-08)
+
+Owner of the original yoga-sequencer requested three contract corrections after Round 2. All three are now applied.
+
+### Issue 1: cheat-sheet was too permissive about constraint-sensitive poses
+
+The Round 2 staple cheat-sheet lumped lizard, pigeon, malasana, bridge, etc. into the "no `poses.yaml` lookup required" group. Those shapes have real, frequent failure modes (knees, SI joint, neck) that the bundled library tracks explicitly, so encouraging Claude to skip the file for them is unsafe.
+
+**Fix:** Split the cheat-sheet into two tiers in `SKILL.md` — Tier 1 (safe defaults, no lookup) and Tier 2 (constraint-sensitive staples, always cross-reference `poses.yaml`). Tier 2 explicitly lists hip openers (malasana, lizard, pigeon, reclined figure four), backbends (bridge, locust, camel), arm balances and inversions (crow), and deep twists (revolved triangle, revolved crescent).
+
+### Issue 2: Round 2 Benchmark 3 was a contract miss
+
+Counter-pose lookups should always open `poses.yaml` because the `counterposes_for` and `contraindications` fields are how the library encodes the right neutralizers. The Round 2 camel test reported "skipped `poses.yaml`" as a pass, but that's exactly the failure mode the bundled library exists to prevent (e.g., recommending a deep forward fold straight after camel).
+
+**Fix:** Tightened the Counter-pose lookup mode in `SKILL.md` to mandate opening `poses.yaml` and to list the specific fields (`counterposes_for`, `contraindications`, `focus`, `intensity`, `family`) that drive the answer. Added the same rule to the "Always open `poses.yaml`" list under the cheat-sheet.
+
+**Re-test (Round 3 Benchmark 3, camel counter-pose):** pass. The agent opened `poses.yaml`, found camel's contraindications (`neck_sensitivity, low_back_compression, knee_sensitivity`), and located the `counterposes_for: [camel]` relationships on `downward_dog`, `seated_twist`, and `supine_twist`. Output started with a neutral reset (child's pose, down dog) before the gentle counter-shapes, which is the correct mixed-level recommendation. Stayed in lookup brevity, correctly skipped the playlist phase-map YAML.
+
+### Issue 3: playlist handoff contract was ambiguous
+
+Round 2 phrasing ("always emit when the user wants music or playlist-ready timing") left it unclear whether full class plans without the word "music" should still get the YAML.
+
+**Fix:** Added an unambiguous rule block under Output shape in `SKILL.md` — "When to include the playlist phase-map YAML" — with explicit always/skip lists. The phase-map block is now declared part of the contract for any full class plan, with lookup-only requests as the explicit exception. `references/playlist-builder-handoff.md` updated to reference the SKILL.md rule as authoritative and reinforce the same contract.
+
+### Validation (Round 3)
+
+- `python3 .../skill-creator/scripts/quick_validate.py skills/yoga-sequencer`: pass
+- YAML parse for `poses.yaml`, `agents/openai.yaml`, `manifest.yaml`: pass
+- Re-test of Benchmark 3 against the corrected skill: pass — see Issue 2 above.
+
+### Residual minor follow-ups (not blocking)
+
+- 45-minute worked example for the playlist handoff schema (proportional-compression rule works, but a worked example would save a step).
+- Slight redundancy between the Tier 2 cheat-sheet and the "Always open `poses.yaml`" bullet list. Reinforcing rather than contradictory; left as-is for now.
