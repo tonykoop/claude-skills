@@ -23,9 +23,11 @@ released publicly.
 The repository treats a skill as a versioned product, not a pasted prompt. Every
 shippable skill should have:
 
-- a `SKILL.md` with structured frontmatter;
-- a per-skill changelog;
-- a manifest entry;
+- a `SKILL.md` with validator-compatible frontmatter (`name`, `description`);
+- a manifest entry in `manifest.yaml` carrying the canonical
+  `canonical_version` and `last_updated`;
+- a changelog entry — either as a per-skill `CHANGELOG.md` kept outside the
+  validator-checked skill files, or as `notes` on the manifest entry;
 - a tagged release before zipping or upload;
 - a lightweight validation or benchmark story;
 - a review evidence contract that states changed behavior, validation, known
@@ -37,16 +39,24 @@ and future runtimes live under `skills/`.
 
 ## Versioning
 
-Every `SKILL.md` should include:
+Canonical version metadata lives in `manifest.yaml`:
 
 ```yaml
----
-name: skill-name
-version: 1.0.0
-last-updated: 2026-05-08
-description: ...
----
+skills:
+  skill-name:
+    canonical_version: 1.0.0
+    runtime: shared
+    repo_path: skills/skill-name
+    last_updated: 2026-05-09
+    status: active
 ```
+
+`SKILL.md` frontmatter stays minimal (`name` + `description`) for compatibility
+with the bundled `skill-creator` validator. The validator accepts `metadata`
+as a nested key, so a future migration can carry version data inline as
+`metadata.version` / `metadata.last-updated` without waiting on a validator
+update. Until that migration is decided, `manifest.yaml` is the only
+authoritative version source.
 
 Each skill is independently versioned with semver. Tags are namespaced:
 
