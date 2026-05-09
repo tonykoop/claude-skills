@@ -88,3 +88,21 @@ Result: pass
 - `makerspace` and `reverse-engineer` are planned specialists in this repo, so the skill currently routes to them "when available."
 - The benchmarks are contract-level checks plus manual behavior review, not an automated model-in-the-loop harness.
 - The repo's versioning docs prefer version fields in `SKILL.md`, but the current bundled `quick_validate.py` rejects them; this eval follows the validator for quality-gate pass/fail.
+
+## Round 1.1 Addendum — Cross-Runtime Routing Pass (2026-05-08)
+
+Followup to the cross-platform review handoff `02-maker-engineering.md`.
+
+Changes:
+
+- Switched the routed-to instrument specialist from the literal versioned name `instrument-maker-v4` to the canonical unversioned name `instrument-maker` across `SKILL.md`, `references/routing-decision-tree.md`, `references/specialist-registry.md`, and `references/doe-template.md`. The benchmarks above were authored against `instrument-maker-v4`; their intent is preserved (route to the instrument specialist), and the canonical name resolves to whichever compatible version is installed in the current runtime.
+- Added a "Naming Convention" section to `references/specialist-registry.md` explaining when to add a minimum-version hint (e.g., "prefer v4+") instead of baking a version into the routed name.
+- Added a runtime-agnostic-handoffs rule to `SKILL.md` and the registry's handoff prompt section: do not embed `$skill`, slash-command markers, or runtime-specific invocation syntax in the prompt body, since the user may paste the handoff into Claude Code, Claude Desktop, Codex CLI, Codex Desktop, Gemini CLI, or a mobile zip upload.
+
+Cross-runtime routing smoke (3 prompts, contract-level):
+
+1. "I want to make a ceramic ocarina and need to figure out the slip-cast mold, tuning approach, and a small experiment for shrinkage." → routing tree splits to `instrument-maker` (acoustics/tuning), `makerspace` (mold/shop), and stays in `maker-engineering` DoE for the shrinkage matrix. Pass.
+2. "Design a jig or fixture for repeated tone-hole drilling. Is this instrument-maker or makerspace?" → routes shop implementation to `makerspace` and reserves `instrument-maker` for tone-hole datum requirements only. Pass.
+3. "I'm on Claude Desktop and only have `instrument-maker` (no v4). Route a slip-cast ocarina build." → canonical name resolves correctly; the registry's naming convention covers the case and the handoff prompt template stays runtime-agnostic. Pass.
+
+Validator: `python3 /home/tony/.codex/skills/.system/skill-creator/scripts/quick_validate.py skills/maker-engineering` returns `Skill is valid!` after the rename.
