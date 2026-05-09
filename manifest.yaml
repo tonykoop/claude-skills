@@ -2,7 +2,7 @@
 # Update this file whenever a skill version is bumped, packaged, or deprecated.
 
 schema_version: 1
-last_updated: 2026-05-08
+last_updated: 2026-05-09
 
 install_roots:
   windows:
