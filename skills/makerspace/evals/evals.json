@@ -2,7 +2,7 @@
   "skill_name": "makerspace",
   "version": "1.0.0",
   "focus": "fabrication specialist for jigs, fixtures, workholding, machine-aware planning, and make/order/buy/borrow decisions",
-  "legacy_workspace": "evals/workspace",
+  "legacy_workspace": "../../../docs/benchmarks/makerspace",
   "evals": [
     {
       "id": 1,
