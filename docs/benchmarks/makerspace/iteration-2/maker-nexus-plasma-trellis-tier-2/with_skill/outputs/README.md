@@ -53,4 +53,4 @@ risks, and README so the project is shareable on GitHub.
 
 Maker Nexus, Sunnyvale CA. The packet cites the **metalshop-area**
 catch-all (the seed profile lists plasma under metalshop-area until
-specific machines are entered). Tony is cleared on metalshop-cert.
+specific machines are entered). The maker is cleared on metalshop-cert.

@@ -195,7 +195,7 @@ If you are unsure whether the request is full-class or lookup, default to includ
 These are optional collaborators, not requirements. The skill should produce a complete, self-contained class plan even if none of them are installed on the current platform.
 
 - `yoga-playlist-builder` for music selection and phase-matched track planning, when available
-- `energy-management` when class design must fit Tony's week, energy, or teaching schedule
+- `energy-management` when class design must fit the user's week, energy, or teaching schedule
 - `idea-incubator` when the user wants class themes, workshop angles, or retreat concepts
 
 ## Final check before replying

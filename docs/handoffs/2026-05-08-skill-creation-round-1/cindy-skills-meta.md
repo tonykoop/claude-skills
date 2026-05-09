@@ -5,8 +5,8 @@
 Build the `skills-meta` skill for GitHub issue #18, using issue #4 as supporting infrastructure requirements:
 
 ```bash
-gh issue view 18 --repo tonykoop/claude-skills
-gh issue view 4 --repo tonykoop/claude-skills
+gh issue view 18 --repo <your-username>/<your-repo>
+gh issue view 4 --repo <your-username>/<your-repo>
 ```
 
 ## Model / lane
@@ -18,7 +18,7 @@ Use your configured `gpt-5.4-mini` lane. This is a focused metadata/audit skill.
 Primary repo:
 
 ```text
-/mnt/c/Users/Tony/Documents/GitHub/claude-skills
+<your-workspace>/claude-skills
 ```
 
 Target skill path:
@@ -40,7 +40,7 @@ skills/skills-meta/
 - You are not alone in the repo. Other agents may edit sibling paths under `skills/`.
 - Do not revert unrelated changes.
 - Do not commit or push.
-- Ask Tony if a runtime path is ambiguous and the answer materially affects implementation.
+- Ask the repo owner if a runtime path is ambiguous and the answer materially affects implementation.
 
 ## Done
 

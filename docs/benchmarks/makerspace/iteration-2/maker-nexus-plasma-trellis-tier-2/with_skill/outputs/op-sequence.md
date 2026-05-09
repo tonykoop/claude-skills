@@ -2,7 +2,7 @@
 
 All shop operations cite **Maker Nexus' metalshop-area** (per the
 seed profile, plasma lives under metalshop-area until per-machine
-entries are added). Tony is cleared on `metalshop-cert`, which
+entries are added). The maker is cleared on `metalshop-cert`, which
 grants access to metalshop-area.
 
 | # | Op | Area / Tool | Fixturing | Time | Notes |
@@ -31,7 +31,7 @@ grants access to metalshop-area.
 
 - **shop-safety-cert** — prerequisite (Shop Safety Orientation).
 - **metalshop-cert** — required for metalshop-area, which covers
-  the plasma table on the seed profile. Tony has this. (cleared)
+  the plasma table on the seed profile. The maker has this. (cleared)
 
 If a future profile update splits plasma into its own
 `plasma-area` with a `plasma-cert`, this op-sequence should be

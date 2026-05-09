@@ -2,10 +2,10 @@
 
 ## Assignment
 
-Build the `reverse-engineer` analysis skill in Tony's existing reverse-engineering repo for GitHub issue #17:
+Build the `reverse-engineer` analysis skill in the existing reverse-engineering repo for GitHub issue #17:
 
 ```bash
-gh issue view 17 --repo tonykoop/claude-skills
+gh issue view 17 --repo <your-username>/<your-repo>
 ```
 
 ## Model / lane
@@ -17,7 +17,7 @@ Use your configured `gpt-5.5` lane. This skill needs careful uncertainty handlin
 Primary repo:
 
 ```text
-/mnt/c/Users/Tony/Documents/GitHub/reverse-engineering
+<your-workspace>/reverse-engineering
 ```
 
 ## Build requirements
@@ -40,7 +40,7 @@ The repo already has local modifications in `.gitignore` and `LICENSE`. Do not r
 
 - You are not alone in the wider workspace.
 - Do not commit or push.
-- Ask Tony if a legal/product boundary needs a decision.
+- Ask the repo owner if a legal/product boundary needs a decision.
 
 ## Done
 

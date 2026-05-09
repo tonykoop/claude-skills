@@ -65,7 +65,7 @@ tools_md: tools.md             # If tool entries below are summaries
 
 # Optional — provenance
 last_updated: 2026-05-07
-last_updated_by: tony-koop
+last_updated_by: <your-username>
 data_sources:
   - https://wiki.makernexus.org/equipment/   # If scraped
 notebooklm_url: ""              # Optional NotebookLM brain pointer

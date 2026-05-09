@@ -142,5 +142,5 @@ entirely — they reflect the queue state at update time, not historical plans.
 
 Update the sprint progress memory file:
 ```
-/home/tony/.claude/projects/<project-slug>/memory/project_sprint_progress.md
+~/.claude/projects/<project-slug>/memory/project_sprint_progress.md
 ```

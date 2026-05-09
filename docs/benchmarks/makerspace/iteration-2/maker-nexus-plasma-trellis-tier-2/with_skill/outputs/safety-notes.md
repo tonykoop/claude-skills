@@ -59,7 +59,7 @@
 
 - (cleared) `shop-safety-cert` — prerequisite for any metalshop work.
 - (cleared) `metalshop-cert` — covers metalshop-area, which on the
-  seed profile covers plasma. Tony confirmed cleared.
+  seed profile covers plasma. Maker confirmed cleared.
 
 ## What to do if something goes wrong
 

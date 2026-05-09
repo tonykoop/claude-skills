@@ -80,8 +80,7 @@ Detailed layout in `cut-list.csv`.
 - **Font choice.** Default is Bebas Neue Regular (free, condensed sans
   with clean V-carve geometry). User may swap for a serif (e.g.,
   Cinzel) before generating toolpaths — re-check letter run width if
-  so. Italic-serif is reserved for Heifer Zephyr wordmark per Tony's
-  brand rules; this is a generic welcome sign so any clean display
+  so. This is a generic welcome sign so any clean display
   face is fine.
 - **Mounting style.** Default: keyhole slots cut into back face (no
   visible hardware). Alternate: through-holes with washers. User

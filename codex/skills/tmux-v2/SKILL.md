@@ -18,21 +18,21 @@ For the WRFCoin six-persona layout, keep the grid in its own tmux session:
 - window: `sprint`
 - panes: Alice, Bob, Cindy on the top row; Dan, Elsa, Frank on the bottom row
 
-The launcher writes the active tmux target to `/home/tony/wrfcoin/.sprint-target`. Always use that breadcrumb instead of guessing the session or window name.
+The launcher writes the active tmux target to `<workspace>/.sprint-target`. Always use that breadcrumb instead of guessing the session or window name.
 
 ## Launch the interactive 2x3 grid
 
 Run:
 
 ```bash
-bash /home/tony/.codex/skills/tmux-v2/scripts/launch-interactive-grid.sh --replace
-bash /home/tony/.codex/skills/tmux-v2/scripts/open-grid-window.sh
+bash ~/.codex/skills/tmux-v2/scripts/launch-interactive-grid.sh --replace
+bash ~/.codex/skills/tmux-v2/scripts/open-grid-window.sh
 ```
 
 Default visible launch as the user always wants to watch the session live:
 
 ```bash
-bash /home/tony/.codex/skills/tmux-v2/scripts/launch-interactive-grid.sh --replace --open-window
+bash ~/.codex/skills/tmux-v2/scripts/launch-interactive-grid.sh --replace --open-window
 ```
 
 What it does:
@@ -40,7 +40,7 @@ What it does:
 - creates a detached `sprint` tmux session
 - builds the explicit 2x3 pane grid
 - starts an interactive Claude or Codex CLI in each pane
-- writes `/home/tony/wrfcoin/.sprint-target`
+- writes `<workspace>/.sprint-target`
 
 Implementation note:
 
@@ -54,10 +54,10 @@ The default persona mix lives in `~/.codex/memories/tmux-v2/personas.json`. The 
 Use:
 
 ```bash
-bash /home/tony/.codex/skills/tmux-v2/scripts/preflight.sh
-bash /home/tony/.codex/skills/tmux-v2/scripts/preflight.sh --json
-bash /home/tony/.codex/skills/tmux-v2/scripts/preflight.sh --persona frank
-bash /home/tony/.codex/skills/tmux-v2/scripts/capture-pane.sh --persona alice
+bash ~/.codex/skills/tmux-v2/scripts/preflight.sh
+bash ~/.codex/skills/tmux-v2/scripts/preflight.sh --json
+bash ~/.codex/skills/tmux-v2/scripts/preflight.sh --persona frank
+bash ~/.codex/skills/tmux-v2/scripts/capture-pane.sh --persona alice
 ```
 
 Read `references/pane-state-machine.md` when you need the full classification details.
@@ -67,13 +67,13 @@ Read `references/pane-state-machine.md` when you need the full classification de
 Use these helpers for safe in-band steering:
 
 ```bash
-bash /home/tony/.codex/skills/tmux-v2/scripts/nudge-pane.sh \
+bash ~/.codex/skills/tmux-v2/scripts/nudge-pane.sh \
   --persona alice \
   --message "Manager check-in: reply with current task, current file/path, and blocker or none."
 
-bash /home/tony/.codex/skills/tmux-v2/scripts/check-in-all.sh
+bash ~/.codex/skills/tmux-v2/scripts/check-in-all.sh
 
-bash /home/tony/.codex/skills/tmux-v2/scripts/advance-pane.sh --persona dan
+bash ~/.codex/skills/tmux-v2/scripts/advance-pane.sh --persona dan
 ```
 
 Rules:
@@ -85,18 +85,18 @@ Rules:
 
 Recommended reusable approvals for future users:
 
-- `["bash", "/home/tony/.codex/skills/tmux-v2/scripts/preflight.sh"]`
-- `["bash", "/home/tony/.codex/skills/tmux-v2/scripts/capture-pane.sh"]`
-- `["bash", "/home/tony/.codex/skills/tmux-v2/scripts/nudge-pane.sh"]`
-- `["bash", "/home/tony/.codex/skills/tmux-v2/scripts/check-in-all.sh"]`
-- `["bash", "/home/tony/.codex/skills/tmux-v2/scripts/advance-pane.sh"]`
+- `["bash", "~/.codex/skills/tmux-v2/scripts/preflight.sh"]`
+- `["bash", "~/.codex/skills/tmux-v2/scripts/capture-pane.sh"]`
+- `["bash", "~/.codex/skills/tmux-v2/scripts/nudge-pane.sh"]`
+- `["bash", "~/.codex/skills/tmux-v2/scripts/check-in-all.sh"]`
+- `["bash", "~/.codex/skills/tmux-v2/scripts/advance-pane.sh"]`
 
 ## Dispatch assignment files
 
 Use:
 
 ```bash
-bash /home/tony/.codex/skills/tmux-v2/scripts/dispatch.sh \
+bash ~/.codex/skills/tmux-v2/scripts/dispatch.sh \
   --round 53 \
   --manager codex \
   --to alice --assignment sprint-alice.md \
@@ -106,7 +106,7 @@ bash /home/tony/.codex/skills/tmux-v2/scripts/dispatch.sh \
 Rules:
 
 - Dispatch only short one-line instructions through `send-keys`.
-- Point each pane at a markdown assignment file under `/home/tony/wrfcoin/docs/plans/`.
+- Point each pane at a markdown assignment file under `<workspace>/docs/plans/`.
 - Let `dispatch.sh` perform preflight first unless the user explicitly wants `--force`.
 - For any agent that will edit files, create a per-agent git worktree before
   dispatch. Never send two agents into the same mutable checkout. Use a naming
@@ -144,8 +144,8 @@ in the handoff.
 Use:
 
 ```bash
-bash /home/tony/.codex/skills/tmux-v2/scripts/restart.sh frank
-bash /home/tony/.codex/skills/tmux-v2/scripts/restart.sh --persona bob
+bash ~/.codex/skills/tmux-v2/scripts/restart.sh frank
+bash ~/.codex/skills/tmux-v2/scripts/restart.sh --persona bob
 ```
 
 `restart.sh` uses the persona config to relaunch the correct runtime, model, effort, and working directory for either Claude or Codex panes.

@@ -1,6 +1,6 @@
 # claude-skills
 
-Canonical source for Tony Koop's agentic skills, routines, hooks, commands, and
+Canonical source for agentic skills, routines, hooks, commands, and
 cross-runtime orchestration patterns.
 
 This repo started as `agent-orchestration`, the WRFCoin sprint infrastructure
