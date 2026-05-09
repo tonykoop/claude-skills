@@ -1,0 +1,15 @@
+# Public Release Checklist
+
+Use this before flipping any part of the repo public.
+
+- [ ] README explains the repo as a skill ecosystem, not only WRFCoin history.
+- [ ] Private paths are generalized or intentionally documented.
+- [ ] Every shipped skill has `version` and `last-updated` frontmatter.
+- [ ] Every shipped skill has a changelog entry.
+- [ ] `manifest.yaml` matches the shipped skill set.
+- [ ] Bundled scripts referenced by `SKILL.md` are present.
+- [ ] Runtime-specific assumptions are marked as Claude, Codex, or Gemini.
+- [ ] Example prompts do not expose private credentials or sensitive repos.
+- [ ] Benchmarks or smoke tests exist for high-risk skills.
+- [ ] Tags exist for release artifacts.
+

@@ -1,0 +1,81 @@
+# Canonical version manifest for Tony Koop's skills.
+# Update this file whenever a skill version is bumped, packaged, or deprecated.
+
+schema_version: 1
+last_updated: 2026-05-08
+
+skills:
+  tmux-v2:
+    canonical_version: 2.0.0
+    runtime: codex
+    repo_path: codex/skills/tmux-v2
+    last_updated: 2026-05-08
+    status: active
+    notes: Current Codex tmux sprint driver. v3 evolution is tracked by issues.
+
+  tmux-sprint:
+    canonical_version: 2.0.0
+    runtime: claude
+    repo_path: claude/skills/tmux-sprint
+    last_updated: 2026-05-08
+    status: active
+    notes: Claude-side tmux sprint counterpart.
+
+  merge-review:
+    canonical_version: 1.0.0
+    runtime: claude
+    repo_path: claude/skills/merge-review
+    last_updated: 2026-05-08
+    status: active
+
+  sprint-update:
+    canonical_version: 1.0.0
+    runtime: claude
+    repo_path: claude/skills/sprint-update
+    last_updated: 2026-05-08
+    status: active
+
+  disk-cleanup:
+    canonical_version: 1.0.0
+    runtime: claude
+    repo_path: claude/skills/disk-cleanup
+    last_updated: 2026-05-08
+    status: active
+
+  codex-merge-manager:
+    canonical_version: 1.0.0
+    runtime: codex
+    repo_path: codex/skills/merge-manager
+    last_updated: 2026-05-08
+    status: active
+
+  codex-gh-fix-ci:
+    canonical_version: 1.0.0
+    runtime: codex
+    repo_path: codex/skills/gh-fix-ci
+    last_updated: 2026-05-08
+    status: active
+
+  wrfcoin-sprint-dispatch:
+    canonical_version: 1.0.0
+    runtime: codex
+    repo_path: codex/skills/wrfcoin-sprint-dispatch
+    last_updated: 2026-05-08
+    status: active
+
+planned_skills:
+  idea-incubator:
+    status: issue-handoff
+  maker-engineering:
+    status: issue-handoff
+  yoga-sequencer:
+    status: issue-handoff
+  skills-meta:
+    status: issue-handoff
+  makerspace:
+    status: issue-handoff
+  reverse-engineer:
+    status: issue-handoff
+  energy-management:
+    status: issue-handoff
+
