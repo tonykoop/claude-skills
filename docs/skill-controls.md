@@ -16,6 +16,8 @@ Codex, Gemini, and future desktop or automation variants.
 - Deprecation: old skills remain documented and discoverable until removed from every device.
 - Runtime parity: the same skill behaves the same way across runtimes, or the difference is documented.
 - Benchmarking: fragile skills get repeatable test prompts and watch-points.
+- Review gates: every skill PR carries evidence for static, behavior, runtime,
+  and regression review before it is merged.
 
 ---
 
@@ -121,6 +123,28 @@ this hierarchy:
 A trigger collision that survives a release is a release blocker. Add a
 benchmark prompt that exercises both skills' descriptions to lock in the
 intended winner.
+
+---
+
+## Review Gate
+
+Every skill, runtime adapter, command, hook, or benchmark PR should link to the
+agentic skill gate in `docs/review-gates/agentic-skill.md` and include the PR
+evidence contract from `docs/review-gates/pr-evidence-contract.md`.
+
+The gate is intentionally staged:
+
+1. **Static:** frontmatter, description, manifest, changelog, references,
+   scripts, and public-safety hygiene are internally consistent.
+2. **Behavior:** trigger, non-trigger, ambiguity, conflict, and safety/deprecation
+   fixture prompts prove the routing claim.
+3. **Runtime:** tested runtimes, permission/settings needs, hooks, and adapter
+   determinism are stated.
+4. **Regression:** adjacent skills, deprecated versions, public examples, and
+   benchmark coverage do not drift.
+
+Missing evidence is a changes-requested finding even when the implementation
+looks plausible.
 
 ---
 
@@ -270,4 +294,3 @@ These are intentionally unresolved and tracked for follow-up:
 - **Trigger collision detection.** Should `skills-meta` flag descriptions
   whose embedding similarity exceeds a threshold, or rely on benchmark
   prompts as the only collision check?
-

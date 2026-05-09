@@ -11,9 +11,10 @@ Use this before flipping any part of the repo public.
 - [ ] Runtime-specific assumptions are marked as Claude, Codex, or Gemini.
 - [ ] Example prompts do not expose private credentials or sensitive repos.
 - [ ] Benchmarks or smoke tests exist for high-risk skills.
+- [ ] Agentic-skill PRs include the review evidence contract from `docs/review-gates/pr-evidence-contract.md`.
+- [ ] Skill, adapter, hook, command, and benchmark changes pass the static, behavior, runtime, and regression gates in `docs/review-gates/agentic-skill.md`.
 - [ ] Tags exist for release artifacts.
 - [ ] Description includes a `Do not use for ...` clause when adjacent specialists exist.
 - [ ] Deprecated skills carry `superseded_by` and a `Deprecated: prefer <successor>` clause in their description.
 - [ ] Runtime adapters reference the portable canonical name and document any divergence.
 - [ ] Project-specific examples are clearly labeled "Example, illustrative:" or generalized.
-
