@@ -1,6 +1,17 @@
 ---
 name: idea-incubator
-description: Capture, classify, connect, review, and promote speculative ideas through GitHub issues, with Telegram Saved Messages as the capture layer and copy-pasteable issue drafts when automation is unavailable.
+metadata:
+  version: 0.1.0
+  last-updated: 2026-05-09
+description: >-
+  Capture, classify, connect, review, and promote speculative ideas into a
+  searchable GitHub issue inbox. Use when the user says "new idea", "incubate
+  this", "add this to my inbox", "process my Telegram dump", "review my
+  ideas", "does this connect to anything?", "promote idea #N", or wants to
+  turn a rough note, voice fragment, or URL into a tracked issue. Telegram
+  Saved Messages is the quick-capture layer; GitHub issues are the durable
+  layer. Do not use for ideas that are already scoped and ready to build —
+  route those directly to maker-engineering or the relevant specialist.
 ---
 
 # Idea Incubator
@@ -22,6 +33,12 @@ into specialist handoffs.
 The phrases are kept punctuation-free so substring-matching agents (Codex,
 Gemini CLI) hit them as reliably as Claude does.
 
+## Do not trigger for
+
+- Ideas that already have a clear build plan — route to `maker-engineering` instead.
+- Feature requests for active code projects — open a GitHub issue directly.
+- Tasks the user wants done immediately rather than tracked.
+
 ## Modes
 
 1. **Capture** - turn one idea into one issue draft. If the input is a note,
@@ -33,8 +50,11 @@ Gemini CLI) hit them as reliably as Claude does.
 4. **Review** - surface stale ideas, best-fit-for-now ideas, and clusters
    worth revisiting. Summarize; do not score emotional resonance numerically.
 5. **Promote** - draft the handoff text for the downstream repo or specialist
-   skill. Include `closes #N` only when the user wants the tracked issue closed by
-   the downstream work.
+   skill. Include `closes #N` only when the user wants the tracked issue closed
+   by the downstream work. Route to `maker-engineering` for physical builds,
+   to a domain specialist (`instrument-maker`, `makerspace`, `reverse-engineer`)
+   when the scope is clear, or to a project repo when the idea belongs in an
+   existing backlog.
 
 ## Operating rules
 
@@ -84,4 +104,4 @@ This skill is intentionally portable. Behavior shifts a little by host:
   bundled scripts run via the host shell as usual.
 - **Mobile zip-upload (Claude.ai)** - assume no `gh`, no shell. Stay in
   copy-pasteable Markdown mode and emit the issue draft and `gh label create`
-  commands as text blocks for Tony to run later.
+  commands as text blocks for the user to run later.

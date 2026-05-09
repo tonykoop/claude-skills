@@ -1,25 +1,41 @@
 ---
 name: reverse-engineer
+metadata:
+  version: 1.0.0
+  last-updated: 2026-05-09
 description: >-
-  Analyze existing objects, photos, video, sketches, dictated or written
-  descriptions, and named-but-unseen artifacts into disciplined
-  reverse-engineering notes: observed facts, inferred facts, assumptions,
-  unknowns, confidence-marked dimensions, follow-up measurement requests,
-  mechanism hypotheses, material/process guesses, and builder handoffs. Works
-  on platforms that can render images and on platforms that can't (Codex CLI
-  without vision, Gemini CLI text mode, mobile zip-upload, pasted-link-only
-  flows) by switching to named-object, dictated, video, or
-  description-only intake modes. Use when the user says "reverse engineer
+  Analyze objects, photos, video, sketches, descriptions, and
+  named-but-unseen artifacts into disciplined reverse-engineering notes:
+  observed facts, inferred facts, assumptions, unknowns, confidence-marked
+  dimensions, follow-up measurements, mechanism hypotheses, material/process
+  guesses, and builder handoffs. Works on platforms that can render images and
+  on platforms that can't (Codex CLI without vision, Gemini CLI text mode,
+  mobile zip-upload, pasted-link-only flows) by switching to named-object,
+  dictated, video, or description-only intake modes. Use when the user says "reverse engineer
   this", "how does this work?", "make my own version of this", "extract
   dimensions from this photo", "infer the mechanism", "what is inside this?",
   or otherwise asks to understand or recreate a real thing from incomplete
-  evidence. Pair with maker-engineering, makerspace, and instrument-maker-v4
-  when analysis turns into design, fabrication, or instrument build packets.
+  evidence. Pair with `maker-engineering`, `makerspace`, or `instrument-maker`
+  when analysis turns into design or fabrication. Do not use for software
+  reverse engineering or protocol analysis.
 ---
 
 # Reverse Engineer
 
-Version: 1.0.0
+## Trigger phrases
+
+- `reverse engineer this` / `analyze this object`
+- `how does this work?` / `what's inside this?`
+- `make my own version of this` / `clone this design`
+- `extract dimensions from this photo`
+- `infer the mechanism` / `how is this assembled?`
+- `teardown notes` / `document this existing thing`
+
+## Do not trigger for
+
+- Software reverse engineering, protocol analysis, or binary disassembly.
+- Design work after the object is already understood — route to `maker-engineering` or `makerspace`.
+- Requests to reproduce proprietary products commercially — pause and confirm legal scope before writing a production handoff.
 
 Turn incomplete evidence about a real thing into a structured, uncertainty-preserving analysis. The job is not to guess confidently; it is to separate what is visible, what is measured, what is inferred, what is assumed, and what remains unknown so a builder or specialist skill can act without inheriting hidden fiction.
 
@@ -34,7 +50,7 @@ Never present inferred dimensions, materials, mechanisms, internal structure, or
    - **Dimension inference** for scale estimates, proportions, tolerances, and missing views.
    - **Mechanism explanation** for motion, force paths, assemblies, hidden components, and failure modes.
    - **Material/process inference** for likely materials, finish, tooling, wear, manufacturing traces, and assembly sequence.
-   - **Handoff-to-builder** when there is enough data for `maker-engineering`, `makerspace`, or `instrument-maker-v4`.
+   - **Handoff-to-builder** when there is enough data for `maker-engineering`, `makerspace`, or `instrument-maker`.
 2. Inventory the inputs. Note images, sketches, links, user-provided dimensions, known scale references, object access, measurement tools, and usage context. If the runtime can't render attached images (Codex CLI without vision, Gemini CLI text mode, mobile zip-upload that strips media, or any pasted-link-only workflow), say so up front and switch to one of the no-vision intake modes below — don't pretend to see what you can't.
 3. Create the observation ledger using `references/observation-template.md`. Fill observed facts before making inferences.
 4. Mark every claim as one of:
@@ -51,7 +67,7 @@ Never present inferred dimensions, materials, mechanisms, internal structure, or
 8. Route the next phase:
    - `maker-engineering`: turn verified analysis into engineered design choices, tolerances, simulations, or trade studies.
    - `makerspace`: fabricate fixtures, shop plans, cut lists, toolpaths, or physical parts.
-   - `instrument-maker-v4`: create instrument design/build packets after critical acoustic and dimensional data is validated.
+   - `instrument-maker`: create instrument design/build packets after critical acoustic and dimensional data is validated.
 
 ## Image Handling
 
@@ -75,7 +91,7 @@ This skill has to work on platforms that don't render uploaded images and on mob
 - **Sketch or diagram.** Treat as a stylized image: good for topology and connections, weak for absolute dimensions and proportions.
 - **Written description only.** The leanest mode. Stick to topology, function, and named parts. Do not produce a dimension table from prose alone — produce a "feature register" instead and route every quantitative question into Measurement Requests.
 
-In every no-vision mode, state the mode at the top of the analysis ("intake mode: named-object + dictated description, no images viewable") so the user knows what discipline you're operating under. Pair with `instrument-maker-v4`'s description-only intake when the object is a musical instrument.
+In every no-vision mode, state the mode at the top of the analysis ("intake mode: named-object + dictated description, no images viewable") so the user knows what discipline you're operating under. Pair with `instrument-maker`'s description-only intake when the object is a musical instrument.
 
 ## Output Shape
 
@@ -108,11 +124,11 @@ Emit a builder-ready handoff only when all of these are true:
 - Safety, legal, and product-boundary risks have been surfaced.
 - Remaining unknowns are non-critical or are explicitly assigned to a test/prototype.
 
-If a user asks to reproduce a proprietary product for commercial use, pause and ask the user for legal review before writing a production handoff. You may still provide learning-focused analysis, noncommercial repair notes, or high-level functional explanation.
+If a user asks to reproduce a proprietary product for commercial use, pause and ask for legal review before writing a production handoff. You may still provide learning-focused analysis, noncommercial repair notes, or high-level functional explanation.
 
 ## Reference Map
 
 - `references/observation-template.md`: Claim ledger, dimension table, mechanism notes, and unknown register.
 - `references/measurement-request-checklist.md`: Follow-up photo and measurement checklist by object type.
 - `references/confidence-language.md`: Approved confidence terms and phrases to avoid.
-- `references/builder-handoff-template.md`: Compact handoff format for `maker-engineering`, `makerspace`, and `instrument-maker-v4`.
+- `references/builder-handoff-template.md`: Compact handoff format for `maker-engineering`, `makerspace`, and `instrument-maker`.
