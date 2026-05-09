@@ -36,18 +36,35 @@ These references are bundled but not all are needed every time. Pull only what t
 - `references/playlist-builder-handoff.md`
   Open when the user wants music or a phase-timing export.
 
-### Staple pose cheat-sheet
+### Staple pose cheat-sheet (two tiers)
 
-Most 30 to 75 minute mixed-level classes can be built from these without opening `poses.yaml`:
+The staple list is split by risk profile. Tier 1 covers everyday vinyasa shapes whose default cues and modifications are common knowledge — fine to sequence without opening `poses.yaml`. Tier 2 flags shapes that look routine but have failure modes the bundled library tracks explicitly (knees, low back, neck, wrists, SI joint, pregnancy). Use them, but always cross-reference `poses.yaml` first so the modifications and contraindications you cue are the ones the library actually documents.
+
+**Tier 1 — safe-default staples (no `poses.yaml` lookup required):**
 
 - arrival and breath: sukhasana, child's pose
-- spinal warm-up: cat-cow, thread the needle, low lunge
+- spinal warm-up: cat-cow, thread the needle
 - sun salutation core: downward dog, plank, cobra, mountain
-- standing build: warrior II, side angle, triangle, crescent lunge, chair, tree
-- hip and floor work: malasana, lizard, pigeon, bridge
-- cooldown: seated twist, supine twist, reclined figure four, happy baby, legs up the wall, savasana
+- standing build: warrior II, side angle, triangle, crescent lunge, chair, tree, low lunge
+- cooldown: seated twist, supine twist, happy baby, legs up the wall, savasana
 
-Open `poses.yaml` when you need contraindications, modifications, or prep-relationships for a pose outside this set, or when a constraint (wrist sensitivity, sensitive knees, pregnancy, low back) needs explicit substitutions.
+**Tier 2 — constraint-sensitive staples (always cross-reference `poses.yaml`):**
+
+These shapes are still common in mixed-level vinyasa — keep using them — but their typical contraindications come up often enough that a quick lookup is cheap insurance and the right thing for student safety:
+
+- hip openers: malasana, lizard, pigeon, reclined figure four
+- backbends: bridge, locust, camel
+- arm balances and inversions: crow, any inverted peak
+- deep twists: revolved triangle, revolved crescent
+
+Always open `poses.yaml` (regardless of which tier the pose lives in) when:
+
+- the user names a constraint (wrists, knees, shoulders, low back, SI joint, neck, pregnancy, balance instability)
+- the request is a counter-pose lookup — `counterposes_for` and `contraindications` are how the library encodes the right neutralizers
+- a peak-pose-first sequence centers on a Tier 2 shape or any pose outside Tier 1
+- the requested pose is not on either staple list
+
+If `poses.yaml` is unavailable on the current platform (rare), say so explicitly, reason from general teaching knowledge, and bias toward more conservative modifications.
 
 ## Gather inputs
 
@@ -67,7 +84,7 @@ Collect what matters, but do not over-interview. If details are missing, choose 
 3. Build a preparation ladder that earns the most demanding shape.
 4. Mirror unilateral work or explain a deliberate asymmetry.
 5. Include a downshift: counterpose, cooldown, and savasana.
-6. Output phase timing that can be handed to `yoga-playlist-builder`.
+6. End any full class plan with the playlist phase-map YAML block. Skip it for pure lookup requests. See "When to include the playlist phase-map YAML" under Output shape.
 
 ## Mode guide
 
@@ -98,11 +115,14 @@ When the user wants prep for an area or action, return:
 
 ### Counter-pose lookup
 
+Always open `poses.yaml` for this mode, even when the target pose is one you think you know cold. The bundled library encodes the right neutralizers in the `counterposes_for` field, and the `contraindications` field tells you which "obvious" counter-shapes are actually wrong for a mixed-level room. Skipping the lookup is how you end up recommending a deep forward fold straight after camel, or supine twist for a student whose SI joint is the reason they came to class.
+
 When the user gives a pose or family, return:
 
-- what the pose loaded most heavily
-- 2 to 5 reasonable counter-shapes
-- whether the best follow-up is a full counterpose, neutral reset, or rest
+- what the pose loaded most heavily — cross-reference `focus`, `intensity`, and `family` in `poses.yaml`
+- 2 to 5 reasonable counter-shapes — start from poses whose `counterposes_for` lists the target, then add common-sense neighbors
+- whether the best follow-up is a full counterpose, a neutral reset, or rest
+- contraindications worth naming briefly if the room is mixed-level
 
 Do not force dramatic opposites. After deep backbends, twists, balances, or arm loads, a neutralizing transition is often better than a hard reversal.
 
@@ -120,7 +140,9 @@ Always include warm-up, standing build, peak or focal work, counterpose, cooldow
 
 ### Playlist handoff
 
-Do not generate songs. Always emit the phase-map YAML block described in `references/playlist-builder-handoff.md` directly in your reply when the user wants music or playlist-ready timing. Treat the YAML as portable data the user can paste into `yoga-playlist-builder`, another Claude session, or any other tool — do not assume the companion skill is installed on the current platform.
+Do not generate songs. Emit the phase-map YAML block described in `references/playlist-builder-handoff.md` directly in your reply, as portable data the user can paste into `yoga-playlist-builder`, another Claude session, or any other tool. Do not assume the companion skill is installed on the current platform.
+
+The YAML is part of the contract for any full class plan — see "When to include the playlist phase-map YAML" under Output shape for the exact rule.
 
 ## Sequencing rules
 
@@ -146,9 +168,27 @@ For a full sequence, use this structure unless the user asks for something short
 1. Class summary: length, level, theme, peak pose, energy.
 2. Sequence by phase: timing, intent, pose order, brief cues.
 3. Modifications and cautions.
-4. Playlist-builder handoff block.
+4. Playlist phase-map YAML block (see rule below).
 
-For lookup requests, return only the smallest useful subset.
+For lookup requests (counter-pose, anatomical prep, single-pose modifications), return only the smallest useful subset and skip the playlist YAML.
+
+### When to include the playlist phase-map YAML
+
+The phase-map block is part of the contract for a complete class plan, not an optional add-on. This rule exists so a teacher who asks for a class never gets handed back a sequence without the timing block they need to plan music, watch the clock, or hand off to `yoga-playlist-builder`.
+
+**Always include the YAML when any of these are true:**
+
+- the user asked for a full class, full sequence, or any output containing phase-by-phase timing
+- the user mentioned music, playlists, or `yoga-playlist-builder`
+- the user said "playlist-ready" or "playlist-builder handoff"
+
+**Skip the YAML only when:**
+
+- the user asked for a pure lookup — counter-poses for X, prep for Y, modifications for Z
+- the user explicitly requested no music or no handoff
+- the output is a fragment such as "just give me a warm-up" with no full arc to map
+
+If you are unsure whether the request is full-class or lookup, default to including the YAML. It is cheap to produce and ignorable if unused, and the failure mode of omitting it (a teacher missing the timing block they expected) is worse than the failure mode of including it.
 
 ## Pairings
 

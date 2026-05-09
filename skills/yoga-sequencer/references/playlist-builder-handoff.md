@@ -1,10 +1,12 @@
 # Playlist Builder Handoff
 
-Use this reference when the user wants music or says "now build music for this class."
+Use this reference whenever you produce a full class plan, or whenever the user mentions music, playlists, or `yoga-playlist-builder`.
 
 ## Intent
 
 `yoga-sequencer` defines the class arc and timing. The job here is to emit a portable phase map — a chunk of YAML the user can hand to `yoga-playlist-builder`, paste into another Claude session, or feed to any other music-selection tool.
+
+The phase-map YAML is part of the contract for a complete class plan, not an optional add-on. SKILL.md's "When to include the playlist phase-map YAML" rule is the authoritative trigger list — emit the block whenever that rule says to. Skip it only for pure lookup requests (counter-pose, anatomical prep, single-pose modifications).
 
 Always emit the YAML block inline in your reply. Do not assume `yoga-playlist-builder` (or any other companion skill) is installed on the platform the user is on right now — Claude Desktop, mobile zip uploads, Codex, and Gemini installations may all carry different skill sets. The block needs to stand on its own.
 
