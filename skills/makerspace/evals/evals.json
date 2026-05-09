@@ -2,7 +2,7 @@
   "skill_name": "makerspace",
   "version": "1.0.0",
   "focus": "fabrication specialist for jigs, fixtures, workholding, machine-aware planning, and make/order/buy/borrow decisions",
-  "legacy_workspace": "../../../docs/benchmarks/makerspace",
+  "legacy_workspace_note": "The v0.2 benchmark workspace is intentionally not bundled in this portable package. When this snapshot is installed inside the tonykoop/claude-skills repo it lives at docs/benchmarks/makerspace/; the standalone tonykoop/makerspace repo keeps it at evals/workspace/. Both are optional context only; the runtime skill never loads them.",
   "evals": [
     {
       "id": 1,

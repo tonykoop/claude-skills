@@ -21,6 +21,13 @@ Re-validate the portable snapshot after the cross-platform-review fixes:
 - `quick_validate.py`:
   `python3 /home/tony/.codex/skills/.system/skill-creator/scripts/quick_validate.py skills/makerspace`
   → `Skill is valid!`
+- `scripts/validate_packaged_paths.py skills/makerspace` → ok. This new
+  validator walks every YAML/JSON value inside the package and fails if
+  any value resolves to a path outside the skill (e.g.
+  `../../../docs/...` or absolute paths leaving the skill root). It is
+  also called automatically at the end of `sync_makerspace_snapshot.sh`
+  so a future sync that re-introduces an out-of-package pointer fails
+  loud rather than silently shipping a broken zip.
 - YAML/JSON parse: 7 YAML files + 1 JSON file all parse; SKILL.md
   frontmatter has only `name` and `description`. Files checked:
   - `agents/openai.yaml`
@@ -137,3 +144,17 @@ All three pass. None of the three regressed relative to the round-1 run
    under `/tmp/`. Six concurrent codex sessions on the same working
    tree will checkout-stomp each other's edits (this happened during
    round-2 — recovered by switching to an isolated worktree).
+7. **Host-only annotations** (this file, future cross-platform-review
+   docs) are protected from `--delete` by an explicit rsync filter for
+   `evals/round-*-cross-platform-*.md` in the sync script. Name new
+   host-only eval annotations to match that pattern, or extend
+   `PROTECT_EVALS` in `scripts/sync_makerspace_snapshot.sh`.
+
+## Self-consistency for portable installs
+
+`evals/evals.json` no longer contains a `legacy_workspace` pointer that
+escapes the package. The skill is now self-consistent under zip-upload
+and mobile installs: nothing inside `skills/makerspace/` resolves to a
+path outside the skill at runtime. The host-repo benchmark location is
+still discoverable via the `legacy_workspace_note` description string,
+which is human-readable context rather than a load instruction.

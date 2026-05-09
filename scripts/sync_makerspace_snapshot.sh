@@ -36,6 +36,29 @@ fi
 # copied into the skill package.
 DIRS=(SKILL.md manifest.yaml agents references assets spaces scripts examples evals)
 
+# Host-only annotations that exist in the snapshot but not in the standalone
+# repo. They live alongside the synced material because they are about this
+# specific snapshot (cross-platform-review eval docs, packaging metadata)
+# and protecting them by name keeps the rsync layer dumb. Filenames must
+# match the per-directory rsync invocation below.
+#
+# Convention for new host-only annotations:
+#   - eval-style notes: name them round-N-cross-platform-*.md and put them
+#     in evals/.
+#   - packaging metadata at the skill root (SOURCE_COMMIT.md) is handled by
+#     the per-entry whitelist above (it is not in DIRS, so it is never
+#     touched by rsync).
+PROTECT_EVALS=(
+  '/round-*-cross-platform-*.md'
+)
+
+build_filter_args() {
+  # Print rsync --filter=... args for the protect list passed in.
+  for pattern in "$@"; do
+    printf -- '--filter=protect %s\n' "$pattern"
+  done
+}
+
 echo "Syncing from $SRC -> $DEST"
 
 for entry in "${DIRS[@]}"; do
@@ -45,10 +68,15 @@ for entry in "${DIRS[@]}"; do
     continue
   fi
   if [[ -d "$src_path" ]]; then
+    extra_filters=()
+    if [[ "$entry" == "evals" ]]; then
+      mapfile -t extra_filters < <(build_filter_args "${PROTECT_EVALS[@]}")
+    fi
     rsync -a --delete \
       --exclude='__pycache__' \
       --exclude='*.pyc' \
       --exclude='workspace/' \
+      "${extra_filters[@]}" \
       "$src_path/" "$DEST/$entry/"
     echo "  dir  $entry"
   else
@@ -61,9 +89,12 @@ done
 find "$DEST" -name 'catalog.sqlite*' -delete
 find "$DEST" -name 'dream-log.md' -delete
 
-# Re-create the moved-out evals/workspace as an empty shim so SKILL.md
-# pointers stay valid and the round-1-eval doc keeps its sibling layout.
-mkdir -p "$DEST/evals/round-1-outputs"
+# Run the packaged-paths validator so a sync that introduces an
+# out-of-package pointer fails loud rather than silently corrupting the
+# snapshot's metadata.
+if [[ -x "$REPO_ROOT/scripts/validate_packaged_paths.py" ]]; then
+  "$REPO_ROOT/scripts/validate_packaged_paths.py" "$DEST"
+fi
 
 SIZE=$(du -sh "$DEST" | cut -f1)
 SHA=$(cd "$SRC" && git rev-parse HEAD 2>/dev/null || echo "unknown")
