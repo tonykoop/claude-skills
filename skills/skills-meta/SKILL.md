@@ -38,6 +38,8 @@ Default roots:
 - `codex/skills/`
 - `gemini/skills/` when present
 
+Also honor `manifest.yaml` `install_roots` entries when present.
+
 Desktop installs are user-configured. Accept roots via `SKILLS_META_ROOTS` or
 `--root`.
 
@@ -49,16 +51,47 @@ Desktop installs are user-configured. Accept roots via `SKILLS_META_ROOTS` or
   canonical version.
 - Drift check: surface only mismatches, missing skills, and stale dates.
 - Frontmatter-fix: print a suggested frontmatter block, never apply it.
+- Fix-duplicates: when a skill name appears at multiple roots, print a
+  keep/remove plan. Default is dry-run; pass `--apply` to confirm each
+  removal interactively. Never deletes without per-copy y/n.
+
+## Unreadable roots
+
+When a manifest, `SKILLS_META_ROOTS`, or `--root` entry doesn't exist or
+can't be read on this machine, the helper reports it as an unreadable
+root with a reason (`missing`, `not-a-directory`, `permission-denied`,
+`no-skills-found`). This is how mobile installs and unmounted drives
+stay visible instead of silently skipping — when you see one, ask the
+user for an export or check the path. Missing repo-local defaults stay
+quiet on purpose; they're expected on a fresh checkout.
+
+## Duplicate handling
+
+The same skill can land at multiple roots (a portable copy in `skills/`
+and an installed copy under `~/.claude/skills/`, for example). The helper
+groups records by name and picks one canonical copy:
+
+1. The path matching `manifest.skills.<name>.repo_path`, if any.
+2. The highest installed semver.
+3. The newest `last-updated` date.
+4. Whichever record came first.
+
+Other copies are tagged `duplicate` with a `duplicate-of:<path>` issue
+and surfaced in inventory/drift output. Use `--mode fix-duplicates` to
+print a keep/remove plan, or `--mode fix-duplicates --apply` to walk
+each removal interactively.
 
 ## Output rules
 
 - Keep reports short and mobile-friendly.
 - One skill per line when possible.
-- Prefer status tags like `ok`, `missing`, `drift`, `planned`, `unknown`.
+- Prefer status tags like `ok`, `missing`, `drift`, `planned`,
+  `unknown`, `duplicate`.
 - Summarize counts first, then the top mismatches.
 - If there are many results, cap the initial list and say how many were
   omitted.
 - Show file paths only when they help resolve ambiguity.
+- Always surface unreadable roots and duplicate counts in the summary.
 
 ## References
 
