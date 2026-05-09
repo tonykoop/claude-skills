@@ -16,8 +16,11 @@ into specialist handoffs.
 - `add this to the inbox`
 - `process my Telegram dump`
 - `review my ideas`
-- `does this connect to anything?`
+- `does this connect to anything`
 - `promote idea #N`
+
+The phrases are kept punctuation-free so substring-matching agents (Codex,
+Gemini CLI) hit them as reliably as Claude does.
 
 ## Modes
 
@@ -50,7 +53,35 @@ into specialist handoffs.
 - [`references/issue-template.md`](references/issue-template.md)
 - [`references/promotion-handoff.md`](references/promotion-handoff.md)
 
-## Optional helper
+## Optional helpers
 
-- [`scripts/bootstrap-labels.sh`](scripts/bootstrap-labels.sh) creates the
-  labels in the schema when `gh` is installed.
+Both helpers create the same labels and need an authenticated `gh`. Pick the
+one that matches the host shell:
+
+- [`scripts/bootstrap-labels.sh`](scripts/bootstrap-labels.sh) - bash, for
+  WSL, macOS, Linux, and Git Bash on Windows.
+- [`scripts/bootstrap_labels.py`](scripts/bootstrap_labels.py) - Python 3,
+  for native PowerShell on Claude Desktop (Windows) or any environment where
+  bash is awkward but Python is available.
+
+If neither works (mobile zip-upload, sandboxed Codex Desktop, no `gh`), fall
+back to the copy-pasteable `gh label create` block in
+[`references/label-schema.md`](references/label-schema.md), or apply the
+labels by hand from the GitHub web UI.
+
+## Platform notes
+
+This skill is intentionally portable. Behavior shifts a little by host:
+
+- **Claude Code / Claude Desktop on WSL or macOS** - full path; `gh` and bash
+  scripts work as written.
+- **Claude Desktop on native Windows** - prefer the Python bootstrap helper;
+  paths in this skill are POSIX-relative and resolve correctly.
+- **Codex CLI / Codex Desktop** - invoke explicitly with `$idea-incubator`
+  when you want guaranteed routing. The `$skill-name` syntax is a Codex
+  convention; do not paste it into other clients.
+- **Gemini CLI** - triggers match by substring, so the phrases above work;
+  bundled scripts run via the host shell as usual.
+- **Mobile zip-upload (Claude.ai)** - assume no `gh`, no shell. Stay in
+  copy-pasteable Markdown mode and emit the issue draft and `gh label create`
+  commands as text blocks for Tony to run later.

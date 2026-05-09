@@ -72,11 +72,12 @@ skills:
     status: active
 
   idea-incubator:
-    canonical_version: 1.0.0
+    canonical_version: 1.1.0
     runtime: shared
     repo_path: skills/idea-incubator
     last_updated: 2026-05-08
     status: active
+    notes: Cross-platform pass; Python label bootstrap companion and platform notes.
 
   maker-engineering:
     canonical_version: 1.0.0

@@ -8,7 +8,7 @@ interface:
     - "add this to the inbox"
     - "process my Telegram dump"
     - "review my ideas"
-    - "does this connect to anything?"
+    - "does this connect to anything"
     - "promote idea #N"
 policy:
   allow_implicit_invocation: true
