@@ -108,6 +108,36 @@ Rules:
 - Dispatch only short one-line instructions through `send-keys`.
 - Point each pane at a markdown assignment file under `/home/tony/wrfcoin/docs/plans/`.
 - Let `dispatch.sh` perform preflight first unless the user explicitly wants `--force`.
+- For any agent that will edit files, create a per-agent git worktree before
+  dispatch. Never send two agents into the same mutable checkout. Use a naming
+  pattern like `/tmp/<repo>-alice-r1-idea-incubator` and a branch pattern like
+  `sprint/alice-r1-idea-incubator`.
+- Send `/rename <agent>_r<round>_<topic>` to each pane so `/resume` and later
+  reviews show who did what. Examples: `alice_r1_idea-incubator`,
+  `bob_r4_sheet-music`.
+- If the runtime is Claude and the API/login state is touchy, wait about five
+  seconds between `/rename`, `/new`, and handoff sends.
+
+## Worktree isolation
+
+The sprint manager owns worktree setup. Agents should receive an explicit
+working directory and should be told not to run branch-changing, index-writing,
+commit, or PR commands from the shared repo checkout.
+
+For portable tmux-sprint work, use the public helper when available:
+
+```bash
+bash /mnt/c/Users/Tony/Documents/GitHub/tmux-sprint/scripts/prepare-agent-worktree.sh \
+  --repo /mnt/c/Users/Tony/Documents/GitHub/claude-skills \
+  --agent alice \
+  --round 1 \
+  --topic idea-incubator \
+  --base main \
+  --root /tmp
+```
+
+The helper prints `worktree=`, `branch=`, and `conversation=` values that belong
+in the handoff.
 
 ## Revive a dead pane
 
