@@ -19,6 +19,10 @@ Codex, Gemini, and future desktop or automation variants.
 - Review gates: every skill PR carries evidence for static, behavior, runtime,
   and regression review before it is merged.
 
+See [cross-device-skill-sync.md](cross-device-skill-sync.md) for the repeatable
+operator workflow that turns packaging and drift detection into a cross-device
+sync pass.
+
 ---
 
 ## Activation: Trigger Precedence
