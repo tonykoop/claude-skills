@@ -76,6 +76,9 @@ detection. The guiding principle is simple: skills should be easy to install and
 portable, but hard to silently drift.
 
 See [docs/skill-controls.md](docs/skill-controls.md).
+For the operator workflow that keeps CLI, desktop, laptop, and review-only
+copies aligned, see
+[docs/cross-device-skill-sync.md](docs/cross-device-skill-sync.md).
 
 ## Review Gates
 
