@@ -1,23 +1,23 @@
 ---
 name: reverse-engineer
-version: 1.0.0
-last-updated: 2026-05-09
+metadata:
+  version: 1.0.0
+  last-updated: 2026-05-09
 description: >-
-  Analyze existing objects, photos, video, sketches, dictated or written
-  descriptions, and named-but-unseen artifacts into disciplined
-  reverse-engineering notes: observed facts, inferred facts, assumptions,
-  unknowns, confidence-marked dimensions, follow-up measurement requests,
-  mechanism hypotheses, material/process guesses, and builder handoffs. Works
-  on platforms that can render images and on platforms that can't (Codex CLI
-  without vision, Gemini CLI text mode, mobile zip-upload, pasted-link-only
-  flows) by switching to named-object, dictated, video, or
-  description-only intake modes. Use when the user says "reverse engineer
+  Analyze objects, photos, video, sketches, descriptions, and
+  named-but-unseen artifacts into disciplined reverse-engineering notes:
+  observed facts, inferred facts, assumptions, unknowns, confidence-marked
+  dimensions, follow-up measurements, mechanism hypotheses, material/process
+  guesses, and builder handoffs. Works on platforms that can render images and
+  on platforms that can't (Codex CLI without vision, Gemini CLI text mode,
+  mobile zip-upload, pasted-link-only flows) by switching to named-object,
+  dictated, video, or description-only intake modes. Use when the user says "reverse engineer
   this", "how does this work?", "make my own version of this", "extract
   dimensions from this photo", "infer the mechanism", "what is inside this?",
   or otherwise asks to understand or recreate a real thing from incomplete
-  evidence. Pair with `maker-engineering`, `makerspace`, and `instrument-maker`
-  when analysis turns into design, fabrication, or instrument build packets.
-  Do not use for software reverse engineering or protocol analysis.
+  evidence. Pair with `maker-engineering`, `makerspace`, or `instrument-maker`
+  when analysis turns into design or fabrication. Do not use for software
+  reverse engineering or protocol analysis.
 ---
 
 # Reverse Engineer

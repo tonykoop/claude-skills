@@ -1,7 +1,8 @@
 ---
 name: makerspace
-version: 0.1.0
-last-updated: 2026-05-09
+metadata:
+  version: 0.1.0
+  last-updated: 2026-05-09
 description: >-
   Plan shop-floor fabrication for jigs, fixtures, workholding, molds, machine
   setups, and make/order/buy/borrow decisions. Use when the user asks to
