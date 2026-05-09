@@ -12,4 +12,8 @@ Use this before flipping any part of the repo public.
 - [ ] Example prompts do not expose private credentials or sensitive repos.
 - [ ] Benchmarks or smoke tests exist for high-risk skills.
 - [ ] Tags exist for release artifacts.
+- [ ] Description includes a `Do not use for ...` clause when adjacent specialists exist.
+- [ ] Deprecated skills carry `superseded_by` and a `Deprecated: prefer <successor>` clause in their description.
+- [ ] Runtime adapters reference the portable canonical name and document any divergence.
+- [ ] Project-specific examples are clearly labeled "Example, illustrative:" or generalized.
 
