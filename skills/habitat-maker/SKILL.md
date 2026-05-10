@@ -1,7 +1,7 @@
 ---
 name: habitat-maker
 metadata:
-  version: 0.2.0
+  version: 0.3.0
   last-updated: 2026-05-10
 description: >-
   Design wildlife habitat and garden infrastructure — birdhouses, bat houses,
@@ -20,12 +20,15 @@ Generates parametric build packets for wildlife habitat and garden
 infrastructure. Companion skill to `instrument-maker-v4` (instruments) and
 `makerspace` (shop-floor fabrication).
 
-Status: **v0.2** — first working canonical example landed (chickadee laser
-birdhouse). Most habitat types are still scaffolded; see "Open work" below.
+Status: **v0.3** — adds balcony bird-bath support on top of the first
+working canonical example (chickadee laser birdhouse). Some habitat types are
+still scaffolded; see "Open work" below.
 
 ## Trigger phrases
 
 - "design a chickadee birdhouse" / "bluebird box plans" / "bat house build"
+- "design a balcony bird bath" / "bird bath for a hot balcony"
+- "renter-safe bird bath" / "no-drill balcony habitat"
 - "build packet for a [species] birdhouse / bee house / bird feeder"
 - "laser-cut [habitat] for [species]" / "CNC [habitat]"
 - "parametric birdhouse design" / "regenerate the SVG for the birdhouse"
@@ -91,6 +94,31 @@ Every habitat build packet **must** ship:
    material profile was selected, which artifacts were generated vs hand
    authored, what validation was run.
 
+## Bird-bath and balcony packet contract
+
+Bird-bath packets are maintenance-first water-habitat designs, not decorative
+objects. Any bird-bath prompt — especially a balcony or renter prompt — must
+consult [`references/bird-bath-balcony.md`](references/bird-bath-balcony.md)
+and include:
+
+1. **Bird-bath welfare gates** — shallow water depth, textured footing,
+   escape path, dump/scrub cadence, mosquito prevention, water-contact
+   material safety, heat/evaporation plan, and stability.
+2. **Balcony/renter deployment gates** — no-drill anchoring, wind/tip
+   resistance, drip control, window-strike posture, railing and neighbor
+   constraints, and travel-dry behavior.
+3. **Material safety matrix** — known-safe, conditional, and reject guidance
+   for ceramic/glaze, concrete, stone, plastic, stainless steel, copper
+   alloys, galvanized metal, treated wood, paint/sealer, and unknown glaze.
+4. **Compact pass/fail checklist** — enough for a balcony owner to reject an
+   unsafe setup before filling it.
+5. **Optional fill-depth gauge** — a printable or hand-drawn gauge that marks
+   the entry-depth, maximum-depth, and no-overflow fill line.
+
+For hot-climate balcony packets, default to a low, ballasted, removable basin:
+morning sun or bright shade; no railing clamp for v1; no pump/bubbler unless
+the prompt explicitly accepts wiring, splash, cleaning, and evaporation burden.
+
 ## Generator-backed artifacts: when to require them
 
 When a build packet's method is **laser**, **CNC**, **plotter-cut vinyl**,
@@ -128,18 +156,24 @@ artifacts are required only where the geometry actually drives a machine.
   any new species/method packet in this skill: the file layout, the
   parameter schema, the validation gate set, and the agent record format
   are normative.
+- [`references/bird-bath-balcony.md`](references/bird-bath-balcony.md)
+  — normative reference for bird-bath welfare gates, balcony/renter
+  deployment constraints, material safety matrix, and compact fill/deployment
+  checks.
 
-## Open work (v0.2 → v1.0)
+## Open work (v0.3 → v1.0)
 
 - Second canonical example: bluebird box (different cavity size, same
   laser method, different species data) to demonstrate the parameter-driven
   re-generation pattern.
 - Third canonical example: tube bee house (different habitat type entirely;
   exercises the schema for non-cavity habitats).
+- First canonical bird-bath example packet using the balcony/renter reference
+  gates and a bill of materials for a low ballasted removable basin.
 - Species reference loader (pulls from `habitat-reference` repo when that
   repo is seeded with NestWatch-derived data).
 - Method-specific reference docs under `references/` for CNC entrance-hole
-  jigs, slip-cast mold prep, lathe profiles for bird baths.
+  jigs, slip-cast mold prep, and lathe profiles for bird baths.
 - Validation generator: emit the validation-checklist.md programmatically
   from `geometry_params.json` so adding a species automatically updates
   the gate set.
