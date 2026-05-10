@@ -71,10 +71,75 @@ playlist_handoff:
 
 ## Phase notes
 
-- `energy` should describe musical intensity, not pose difficulty alone.
-- `cue_density` helps the playlist skill distinguish sparse teaching sections from more rhythmic flow sections.
+- `energy` should describe musical intensity, not pose difficulty alone. Suggested values: `very-low`, `low`, `low-medium`, `medium`, `medium-high`, `high`.
+- `cue_density` is **required** on every phase of a full-class plan. Allowed values: `sparse`, `moderate`, `rhythmic`, `focused`, `minimal`. See `references/sequencing-principles.md` ("Cue density across the arc") for the default arcs by class length and style.
+- `cue_density` and `energy` are independent. The peak shape is often `high` energy + `focused` cue density (slow, alignment-only cueing). Sun B is often `medium-high` energy + `rhythmic` cueing (one cue per breath cycle). Do not collapse the two fields onto a single intensity scale — playlist-builder uses `cue_density` to avoid pairing lyric-dense tracks with phases where students need quiet for proprioception.
 - Keep `start_min` and `end_min` contiguous so the total plan covers the class cleanly.
 - If the sequence uses breath counts instead of exact minutes, convert them into approximate phase timing before handoff.
+
+## Example: yin class, 60 minutes
+
+```yaml
+class_plan:
+  style: yin
+  length_min: 60
+  level: mixed-level
+  theme: hip and shoulder release
+  peak_pose: supported saddle
+  overall_energy: settle -> long holds -> integrate -> rest
+playlist_handoff:
+  total_length_min: 60
+  phases:
+    - id: arrival
+      label: Arrival and propping
+      start_min: 0
+      end_min: 6
+      energy: very-low
+      cue_density: sparse
+      notes: settle, set up bolsters and blocks
+    - id: hold_1
+      label: First long hold (caterpillar / butterfly)
+      start_min: 6
+      end_min: 18
+      energy: low
+      cue_density: sparse
+      notes: shape set in first minute, then quiet; one prop reminder mid-hold
+    - id: transition_1
+      label: Transition and reset
+      start_min: 18
+      end_min: 22
+      energy: low
+      cue_density: moderate
+      notes: mobilize between holds, brief setup language
+    - id: hold_2
+      label: Second long hold (sphinx / seal)
+      start_min: 22
+      end_min: 34
+      energy: low
+      cue_density: sparse
+      notes: anterior-chain release; let the shape teach
+    - id: hold_3
+      label: Third long hold (supported saddle, peak)
+      start_min: 34
+      end_min: 46
+      energy: low
+      cue_density: sparse
+      notes: heavily propped; teacher voice is minimal once students are in
+    - id: integration
+      label: Reclined integration (twists, knees-to-chest)
+      start_min: 46
+      end_min: 55
+      energy: very-low
+      cue_density: sparse
+      notes: counter the long holds with gentle reset
+    - id: savasana
+      label: Savasana
+      start_min: 55
+      end_min: 60
+      energy: very-low
+      cue_density: minimal
+      notes: quiet landing
+```
 
 ## Export rules
 

@@ -9,6 +9,8 @@ Use this reference when building or checking a class arc.
 - Bilateral symmetry checklist
 - Warm-up guidance
 - Peak-pose ladders
+- Alternate-peak guidance
+- Cue density across the arc
 - Counter-pose rules
 - Mixed-level room defaults
 - Breath-count heuristics
@@ -107,6 +109,96 @@ Use this reference when building or checking a class arc.
 - Standing integration
 - Peak hip opener
 - Neutralizing fold, twist, or reclined reset
+
+## Alternate-peak guidance
+
+A regression is the same peak with less load — back knee down, strap instead of clasp, hand-on-block instead of overhead. An **alternate peak** is a wholly different shape that lands the same theme. Both belong in your back pocket, but they answer different questions.
+
+Plan an alternate peak whenever the default peak has any of:
+
+- a bind or strap-mediated bind
+- a deep twist (revolved triangle, revolved half moon, revolved crescent)
+- a deep backbend (camel, wheel, king pigeon)
+- a balance peak (handstand, side crow, bird of paradise)
+- heavy wrist or shoulder load (firefly, eka pada koundinyasana)
+- known pregnancy contraindications
+
+The alternate peak is what you teach when the room reads tired, new to the studio, pregnancy-heavy, or unusually beat-up. It is **not** "skip the peak"; it is "land the same theme at a different intensity."
+
+### Examples
+
+| Theme / default peak | Alternate peak | Why it lands the same theme |
+|---|---|---|
+| Gentle twists + shoulder opening / Bound Side Angle | Crescent prayer twist with open-arm option | Same lateral length and gentle rotation, no bind |
+| Hip opening / Bird of Paradise | Standing figure-four with chair-pose squat | Same external rotation + standing strength, no balance load |
+| Backbend / Camel | Supported bridge with block under sacrum | Same anterior-chain opening, no neck or wrist load |
+| Arm balance / Crow | Boat-pose holds with knee-to-elbow drills | Same compression and core demand, no wrist-bearing balance |
+| Deep twist / Revolved Triangle | Supine twist with knees stacked, generous hold | Same thoracic rotation, no SI-joint or balance stress |
+
+When you sequence an alternate peak, mirror the prep ladder for both options — most prep work serves both shapes, and the teacher decides at the door which peak the room can hold.
+
+## Cue density across the arc
+
+Teacher voice is a separate dimension from movement intensity. The peak shape is often where students need the **least** cueing (proprioception time), while the build is where they need landmarks. Plan cue density per phase using this controlled vocabulary:
+
+- **sparse** — one or two anchor cues per phase, long quiet stretches between
+- **moderate** — name the action, then breath, then exit option
+- **rhythmic** — one cue per breath cycle in repeated flows; lets students move with heat
+- **focused** — slow, alignment-and-exit cueing; fewer words, more space
+- **minimal** — only what is necessary; closing line, soft rouse
+
+Pick **2–3 anchor cues** per class and repeat them. Do not invent new cues during the peak.
+
+### Default cue-density arcs
+
+#### Vinyasa, 60 minutes
+
+| Phase | Cue density |
+|---|---|
+| Arrival / breath | sparse |
+| Warm-up / floor prep | moderate |
+| Sun A / Sun B (heat) | rhythmic |
+| Standing build | rhythmic → focused |
+| Peak | focused |
+| Counterpose / cooldown | sparse |
+| Savasana | minimal |
+
+#### Vinyasa, 75 minutes
+Add a second `rhythmic` standing-flow phase before peak.
+
+#### Vinyasa, 90 minutes
+Add a `moderate` phase between counterpose and savasana for integration breathwork.
+
+#### Yin, 60–75 minutes
+
+| Phase | Cue density |
+|---|---|
+| Arrival / settling | sparse |
+| First long hold | sparse → moderate (set the shape, then quiet) |
+| Transition | moderate |
+| Second / third long holds | sparse (hold language is the work) |
+| Reclined integration | sparse |
+| Savasana | minimal |
+
+Yin classes that drift into `rhythmic` cueing during long holds are reading as restless. Trust the shape.
+
+#### Restorative, 60 minutes
+
+| Phase | Cue density |
+|---|---|
+| Arrival / propping | moderate (more setup language) |
+| Each restorative shape | sparse → minimal once propped |
+| Transitions | moderate |
+| Savasana / closing | minimal |
+
+#### Heated power vinyasa, 60 minutes
+Identical to vinyasa 60-min, with an explicit reminder: the peak is **focused**, not loud. Heated rooms reward fewer words.
+
+### Failure modes
+
+- **Over-cueing the peak.** Students stop feeling and start parsing. Drop to `focused` and let the shape teach.
+- **Under-cueing the build.** Mixed-level students lose alignment landmarks. Hold `rhythmic` until the second side is patterned in.
+- **Lyric-dense music during a `focused` phase.** Vocals pull attention out of proprioception. Hand cue density to the playlist via the YAML so the music skill can pair tracks accordingly.
 
 ## Counter-pose rules
 

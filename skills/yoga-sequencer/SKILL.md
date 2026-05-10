@@ -1,5 +1,8 @@
 ---
 name: yoga-sequencer
+metadata:
+  version: 1.1.0
+  last-updated: 2026-05-10
 description: Design vinyasa-first yoga class sequences, peak-pose progressions, anatomical prep, counter-poses, and full class plans with phase timing plus playlist-builder handoff data. Use when planning a yoga class, sequencing for hips, shoulders, twists, or backbends, choosing prep for a peak pose, or turning a class arc into music-ready phases.
 ---
 
@@ -103,6 +106,7 @@ Start from the most demanding shape and work backward.
 - Use `poses.yaml` to identify required actions, likely prep poses, and safer regressions.
 - Build heat, mobility, strength, and pattern recognition before the peak.
 - Include at least one simpler version or exit ramp.
+- If the default peak is **constraint-heavy** — binds, deep twists, deep backbends, heavy wrist load, balance peaks, or anything contraindicated for pregnancy — also include a **teacher-discretion alternate peak**: a wholly different, gentler shape that lands the same theme. This is more than a regression. It is the peak you teach when the room reads tired, brand-new, or pregnancy-heavy. See `references/sequencing-principles.md` for the alternate-peak pattern and worked examples.
 
 ### Anatomical prep lookup
 
@@ -135,6 +139,7 @@ Produce a phase-by-phase plan with:
 - intent
 - pose order
 - notable cues, modifications, or cautions
+- **cue density** — how much teacher voice belongs in the phase: `sparse`, `moderate`, `rhythmic`, `focused`, or `minimal`. See `references/sequencing-principles.md` for default arcs by class length and style.
 
 Always include warm-up, standing build, peak or focal work, counterpose, cooldown, and savasana.
 
@@ -153,6 +158,8 @@ The YAML is part of the contract for any full class plan — see "When to includ
 - If crow, inversion, deep twist, or deep backbend appears, give it runway and recovery.
 - Match breath cadence to the class goal: steadier for grounding, quicker only when the user clearly wants heat.
 - If one side gets extra rounds, state why and re-balance later when possible.
+- Manage teacher voice across the arc. Cue density rises into the peak (focused) and falls into savasana (minimal). Avoid lyric-dense or wordy cueing during focused phases — students need silence for proprioception.
+- When the default peak is constraint-heavy (binds, deep twists, deep backbends, balance peaks, heavy wrist load, pregnancy-contraindicated), include a teacher-discretion alternate peak — a wholly different gentler shape that still lands the theme. This is the peak you teach when the room reads tired, brand-new, or pregnancy-heavy. A regression of the default is not a substitute.
 
 ## Safety and scope
 
@@ -165,10 +172,10 @@ The YAML is part of the contract for any full class plan — see "When to includ
 
 For a full sequence, use this structure unless the user asks for something shorter:
 
-1. Class summary: length, level, theme, peak pose, energy.
-2. Sequence by phase: timing, intent, pose order, brief cues.
+1. Class summary: length, level, theme, peak pose, energy. If the default peak is constraint-heavy, also name the teacher-discretion alternate peak.
+2. Sequence by phase: timing, intent, pose order, brief cues, **cue density** (sparse / moderate / rhythmic / focused / minimal).
 3. Modifications and cautions.
-4. Playlist phase-map YAML block (see rule below).
+4. Playlist phase-map YAML block (see rule below). Each phase should carry both `energy` and `cue_density`.
 
 For lookup requests (counter-pose, anatomical prep, single-pose modifications), return only the smallest useful subset and skip the playlist YAML.
 
@@ -205,3 +212,5 @@ These are optional collaborators, not requirements. The skill should produce a c
 - Is the peak earned rather than dropped in?
 - Is there a believable cooldown?
 - Did you include playlist-ready timing when relevant?
+- Did you map cue density across the arc, and does it ease toward `minimal` for savasana?
+- If the peak is constraint-heavy, did you offer a teacher-discretion alternate peak (not just a regression)?
