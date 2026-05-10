@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.4.3 - 2026-05-18
+
+- Added `scripts/promote_batch_readiness.py`, an offline-first helper that
+  drafts Promote-batch readiness matrices from saved issue JSON, local anchor
+  roots, and archive inventory CSVs (Closes #96).
+- Added `references/promote-batch-readiness.md` with existing-anchor /
+  already-satisfied checks and GitHub query fallback guidance for uneven
+  `gh search` fields or API connectivity.
+- Added a fixture and example output shape in `evals/` so agents can validate
+  matrix generation without live GitHub access.
+
 ## 1.4.2 - 2026-05-17
 
 - Added instrument design-book / yearbook chapter promotion guidance to

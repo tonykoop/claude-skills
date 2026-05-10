@@ -1,0 +1,31 @@
+[
+  {
+    "number": 55,
+    "title": "Weather Balloon Camera Vessel - recover and scaffold repo",
+    "url": "https://github.com/tonykoop/claude-skills/issues/55",
+    "labels": [
+      {"name": "capture"},
+      {"name": "promote"},
+      {"name": "maker"}
+    ]
+  },
+  {
+    "number": 53,
+    "title": "Full inventory pass of D archive",
+    "url": "https://github.com/tonykoop/claude-skills/issues/53",
+    "labels": [
+      {"name": "capture"},
+      {"name": "ready-now"},
+      {"name": "skills"}
+    ]
+  },
+  {
+    "number": 62,
+    "title": "Verify sundials actually exist in archive",
+    "url": "https://github.com/tonykoop/claude-skills/issues/62",
+    "labels": [
+      {"name": "capture"},
+      {"name": "needs-clarification"}
+    ]
+  }
+]
