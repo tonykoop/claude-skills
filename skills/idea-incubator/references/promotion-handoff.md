@@ -66,6 +66,14 @@ ZIPs, PDFs, or any asset likely to exceed 100 MB (GitHub's per-file hard
 limit). The order matters: LFS rules MUST be committed before the first
 large file lands, or the import has to be rewritten with `git lfs migrate`.
 
+For private media, family archives, photo albums, scanned documents, and
+personal video, run this section plus the privacy-first checklist in
+[`private-media-family-archive.md`](private-media-family-archive.md) before
+drafting the downstream issue. Those promotions default to a private repo,
+one curated pilot batch, explicit reviewer/consent boundaries, EXIF/GPS
+strip-or-quarantine handling, and `Refs #N` until the scaffold and ledgers
+exist.
+
 1. Does the target repo already exist? If yes, does it have `.gitattributes`
    with LFS rules covering the expected extensions?
 2. Are large files staged already, or do they still need copying from a
@@ -125,3 +133,19 @@ PROVISIONAL until reviewed.
 | Source capture is itself a tracking issue that the user wants to keep open. | `Refs #N` |
 
 Default to `Refs` whenever a recovery cluster is involved.
+
+## Private media / family archive promotions
+
+Use [`private-media-family-archive.md`](private-media-family-archive.md) when
+a capture proposes photo albums, family archives, scanned documents, personal
+video, memorial/family-history projects, or image-gen assisted private album
+work. The downstream handoff must protect privacy and provenance before it
+optimizes for visual polish:
+
+- private repo by default;
+- one curated pilot batch, not a full archive import;
+- `.gitattributes` / Git LFS rules before media import;
+- privacy boundary and reviewer/consent plan before publishing or sharing;
+- EXIF/GPS strip-or-quarantine policy for derived review artifacts;
+- source/evidence ledger that separates observed archive facts from captions,
+  memories, and inferred story claims.
