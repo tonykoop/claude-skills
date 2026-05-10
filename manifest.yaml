@@ -42,7 +42,7 @@ skills:
       Current Codex tmux sprint driver. v3 evolution is tracked by issues.
 
   tmux-sprint:
-    canonical_version: 2.1.0
+    canonical_version: 2.2.0
     runtime: claude
     repo_path: claude/skills/tmux-sprint
     last_updated: 2026-05-10

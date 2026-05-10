@@ -1,6 +1,6 @@
 ---
 name: tmux-sprint
-version: 2.1.0
+version: 2.2.0
 last-updated: 2026-05-10
 description: >-
   Transactional sprint-round dispatch, liveness probing, and codex-session
@@ -270,6 +270,24 @@ mixed rounds. The manager owns metrics and orchestration. Agents must not
 self-report elapsed time, context remaining, usage remaining, or pane status;
 capture those from tmux/statusline telemetry instead.
 
+### Phase 0: Plan-first dispatch
+
+Use Plan-first dispatch for implementation rounds or any task that may create
+repo changes. The assignment should say "Plan first" and the persona must
+summarize intended files, tests, and PR scope before editing. The manager then
+presses Enter or sends a short approval nudge. Only after that gate should the
+persona create worktrees, edit files, commit, push, or open a PR.
+
+For long instructions, write the full prompt to a file and dispatch a short
+one-liner such as:
+
+```text
+Read /tmp/r9i-dan.md and execute. Plan first.
+```
+
+This avoids `tmux send-keys -l` hangs on large prompts while preserving a
+readable contract file for recovery after `/compact`.
+
 ### Phase 1: blind dispatch
 
 Use `references/twingrid-blind-handoff-template.md` to generate one assignment
@@ -285,6 +303,30 @@ For content-generation rounds, the output folder can be under `/tmp`. For
 skill-development rounds, each side must receive an assigned branch/worktree
 and should open a draft PR only after concrete repo changes.
 
+Before Partner Peek, each side must freeze the blind pass by writing
+`ready_for_peek.json` in its own output folder. Use
+`scripts/twingrid_contracts.py freeze` where possible:
+
+```bash
+python3 claude/skills/tmux-sprint/scripts/twingrid_contracts.py freeze \
+  --round 9 \
+  --lane elsa \
+  --side A \
+  --runtime gpt55-window-13 \
+  --task "Yaybahar resonance test rig" \
+  --output-folder /tmp/twingrid-r9-gpt55-elsa-yaybahar-test-rig
+```
+
+The freeze record state is `BLIND_FROZEN` and includes the output folder,
+artifact summary/validation/skill findings paths when present, a blind
+artifact manifest, and SHA256 receipts. Do not read partner output or modify
+existing blind artifacts before writing it.
+
+Canonical skill findings filename: `skill_findings.md`. Existing aliases
+`skill-improvement-findings.md` and `skill-improvement-recommendation.md` are
+accepted for backwards compatibility, but new handoffs should ask for
+`skill_findings.md`.
+
 ### Phase 2: Partner Peek reveal
 
 After both sides finish the blind pass, the manager writes a compact reveal
@@ -292,7 +334,28 @@ brief and uses `references/twingrid-partner-peek-template.md`. The reveal must
 include the partner output path, a manager comparison, any newly available
 tools, and the instruction to preserve the original blind artifact while adding
 v2 supplements such as `partner-peek-improvements.md`, `v2-*`, validation logs,
-and a Partner Peek record.
+`combine_recommendation.md`, and a Partner Peek record.
+
+For structured Partner Peek records, use
+`scripts/twingrid_contracts.py peek-record` as a starter and then fill in the
+adopted ideas, validation, PR/issues, and manager notes:
+
+```bash
+python3 claude/skills/tmux-sprint/scripts/twingrid_contracts.py peek-record \
+  --round 9 \
+  --lane elsa \
+  --side A \
+  --runtime gpt55-window-13 \
+  --task "Yaybahar resonance test rig" \
+  --output-folder /tmp/twingrid-r9-gpt55-elsa-yaybahar-test-rig \
+  --partner-folder /tmp/twingrid-r9-gpt54-elsa-yaybahar-test-rig
+```
+
+If a pane disappears or is restarted after producing artifacts, first inspect
+its existing output folder. A valid `ready_for_peek.json` with `BLIND_FROZEN`
+and matching SHA256 receipts is enough to recover from the folder rather than
+rerunning the blind pass. Launch a fresh pane only for the missing Partner Peek
+or implementation continuation, and point it at the frozen folder.
 
 ### Manager matrix
 
@@ -308,9 +371,10 @@ python3 claude/skills/tmux-sprint/scripts/twingrid_matrix.py \
 
 The matrix reports lane, side, runtime, output folder, blind artifacts, v2
 artifacts, validations run, PR/issue status, skill-improvement
-recommendations, and pane-block findings. It detects common blockers in pane
-capture text, including local command approval prompts, missing tool requests,
-and command-not-found/install hints. See
+recommendations, freeze state, canonical/alias skill findings filenames, and
+pane-block findings. It detects common blockers in pane capture text,
+including local command approval prompts, missing tool requests, and
+command-not-found/install hints. See
 `references/twingrid-manager-matrix.md` for the JSON shape and manager
 workflow.
 
