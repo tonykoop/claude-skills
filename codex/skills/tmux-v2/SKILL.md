@@ -1,5 +1,7 @@
 ---
 name: tmux-v2
+version: 2.0.0
+last-updated: 2026-05-08
 description: Launch, probe, steer, and revive WRFCoin persona agents in a tmux grid from Codex. Use when the user wants a 2x3 persona dashboard, a mixed Claude and Codex pane layout, `tmux send-keys` steering, pane liveness checks, or recovery from a dead `codex resume` or idle bash pane.
 ---
 

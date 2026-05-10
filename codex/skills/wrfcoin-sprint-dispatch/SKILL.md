@@ -1,5 +1,7 @@
 ---
 name: wrfcoin-sprint-dispatch
+version: 1.0.0
+last-updated: 2026-05-08
 description: Refresh a WRFCoin sprint from the current sprint doc and live GitHub issue or PR state, rewrite persona handoff markdown files, sync the sprint doc and persona-launch manifest, launch the tmux sprint window, and send kickoff nudges into the panes. Use when the user asks to pick up a sprint where the team left off, rewrite handoffs for Alice/Bob/Cindy/Dan, or restart the tmux sprint dashboard from current state.
 ---
 

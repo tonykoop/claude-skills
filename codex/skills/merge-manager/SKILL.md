@@ -1,5 +1,7 @@
 ---
 name: merge-manager
+version: 1.0.0
+last-updated: 2026-05-08
 description: "Use when acting as sprint merge-manager across one or more repos: review PRs against their referenced GitHub issues, make small follow-up fixes when warranted, request changes on larger gaps, merge in dependency order, keep a sprint document current, post issue or PR comments, and generate next handoff prompts for agent lanes"
 ---
 
