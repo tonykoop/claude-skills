@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+- Added observation-camera mode contract with explicit enum values:
+  `none`, `interior_view`, `exterior_approach`, and
+  `interior_plus_exterior_approach`.
+- Added `references/observation-camera-modes.md` with welfare gates for
+  electronics isolation, heat, light, moisture, cable routing, service
+  independence, and non-disturbance.
+- Added `examples/chickadee-camera-observation-contract/` as a short
+  machine-readable example for primary interior-view camera mode plus optional
+  exterior approach camera mode.
+- Added `scripts/validate_camera_modes.py` and tests for camera-mode contract
+  validation and manifest expectations.
 - Clarified that a four-chamber bat-house layout is suitable for a canonical
   skill-package example, but is not an implicit requirement for every
   `bat-houses` scaffold.
@@ -41,6 +52,7 @@
 - Added a bird-bath material safety matrix and optional fill-depth gauge
   template for compact balcony packets.
 - Added smoke-test coverage for the new bird-bath reference and skill routing.
+
 
 ## 0.2.0 — 2026-05-10
 

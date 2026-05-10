@@ -26,10 +26,12 @@ import tempfile
 import unittest
 import xml.etree.ElementTree as ET
 from pathlib import Path
+from unittest import mock
 
 
 SKILL_DIR = Path(__file__).resolve().parent.parent
 PACKET_DIR = SKILL_DIR / "examples" / "chickadee-laser-baltic-birch"
+CAMERA_PACKET_DIR = SKILL_DIR / "examples" / "chickadee-camera-observation-contract"
 GENERATOR = SKILL_DIR / "scripts" / "generate_chickadee_packet.py"
 SKILL_MD = SKILL_DIR / "SKILL.md"
 BIRD_BATH_REFERENCE = SKILL_DIR / "references" / "bird-bath-balcony.md"
@@ -37,6 +39,8 @@ BAT_BEE_REFERENCE = (
     SKILL_DIR / "references" / "bat-bee-observation-hive-welfare.md"
 )
 WELFARE_GATE_SCHEMA = SKILL_DIR / "references" / "welfare-gate-schema.md"
+CAMERA_VALIDATOR = SKILL_DIR / "scripts" / "validate_camera_modes.py"
+
 
 
 REQUIRED_WELFARE_GATES = {
@@ -417,6 +421,61 @@ class TestWelfareGateSchemaReference(unittest.TestCase):
         ]
         for term in required:
             self.assertIn(term, self.skill)
+
+class TestCameraObservationContract(unittest.TestCase):
+    """Camera-mode packets declare welfare-critical mode and manifest data."""
+
+    def setUp(self) -> None:
+        self.params = json.loads((CAMERA_PACKET_DIR / "geometry_params.json").read_text())
+
+    def test_camera_mode_enum_and_secondary_mode(self) -> None:
+        obs = self.params["camera_observation"]
+        self.assertEqual(obs["mode"], "interior_plus_exterior_approach")
+        self.assertEqual(obs["primary"]["mode"], "interior_view")
+        self.assertTrue(obs["secondary"]["enabled"])
+        self.assertEqual(obs["secondary"]["mode"], "exterior_approach")
+
+    def test_camera_welfare_gates_present(self) -> None:
+        gates = set(self.params.get("welfare_gates", {}).keys())
+        expected = {
+            "electronics_isolation",
+            "interior_heat",
+            "interior_light",
+            "moisture_control",
+            "cable_routing",
+            "service_independence",
+            "non_disturbance",
+        }
+        self.assertFalse(expected - gates)
+
+    def test_camera_validator_accepts_example(self) -> None:
+        result = subprocess.run(
+            [sys.executable, str(CAMERA_VALIDATOR), "--packet", str(CAMERA_PACKET_DIR)],
+            capture_output=True, text=True, check=False,
+        )
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertIn("camera-mode validation passed", result.stdout)
+
+    def test_camera_validator_rejects_unknown_mode(self) -> None:
+        import importlib.util
+
+        spec = importlib.util.spec_from_file_location(
+            "validate_camera_modes", CAMERA_VALIDATOR
+        )
+        self.assertIsNotNone(spec)
+        module = importlib.util.module_from_spec(spec)
+        assert spec is not None and spec.loader is not None
+        sys.modules[spec.name] = module
+        spec.loader.exec_module(module)
+
+        bad = dict(self.params)
+        bad["camera_observation"] = dict(self.params["camera_observation"])
+        bad["camera_observation"]["mode"] = "nestcam_surprise"
+
+        with mock.patch.object(module, "load_json", return_value=bad):
+            findings = module.validate_packet(CAMERA_PACKET_DIR)
+        self.assertTrue(any("camera_observation.mode" == f.path for f in findings))
+
 
 
 if __name__ == "__main__":

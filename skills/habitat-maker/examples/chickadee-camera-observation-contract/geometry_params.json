@@ -1,0 +1,94 @@
+{
+  "schema_version": "1.0",
+  "packet": "chickadee-camera-observation-contract",
+  "skill": "habitat-maker",
+  "units": "mm",
+  "target_species": [
+    "Black-capped Chickadee (Poecile atricapillus)",
+    "Carolina Chickadee (Poecile carolinensis)"
+  ],
+  "material": {
+    "primary": {
+      "name": "Exterior cedar plywood or solid cedar",
+      "panel_thickness_mm": 12.0
+    }
+  },
+  "cavity_dimensions_mm": {
+    "floor_interior_x": 120,
+    "floor_interior_y": 120,
+    "interior_height_floor_to_roof_underside": 250,
+    "entrance_diameter": 29.0,
+    "entrance_center_above_interior_floor_top": 185
+  },
+  "camera_observation": {
+    "mode": "interior_plus_exterior_approach",
+    "primary": {
+      "mode": "interior_view",
+      "mount": "sealed_roof_pod",
+      "view_path": "camera looks through sealed polycarbonate viewport from exterior pod",
+      "camera_envelope_mm": {
+        "w": 55,
+        "h": 40,
+        "d": 35
+      },
+      "electronics_inside_cavity": false,
+      "cable_route_enters_cavity": false,
+      "service_requires_opening_nest_cavity": false,
+      "max_continuous_dissipation_w": 3.0,
+      "visible_light_into_cavity": false,
+      "status_led_visible_to_cavity": false,
+      "moisture_barriers": [
+        "sealed optical window",
+        "gasketed pod lid",
+        "rear cable gland",
+        "downward cable drip loop"
+      ],
+      "disturbance_controls": [
+        "commission before nesting season",
+        "do not open pod during active nesting",
+        "service from exterior pod only"
+      ],
+      "validation_tests": [
+        "dark_room_light_leak",
+        "30_min_heat",
+        "spray_test",
+        "service_independence",
+        "cable_drip_loop"
+      ]
+    },
+    "secondary": {
+      "enabled": true,
+      "mode": "exterior_approach",
+      "mount": "exterior_rail_under_roof_overhang",
+      "view_path": "camera watches entrance and approach zone only",
+      "electronics_inside_cavity": false,
+      "cable_route_enters_cavity": false,
+      "service_requires_opening_nest_cavity": false,
+      "disturbance_controls": [
+        "no close-range adjustment during active nesting",
+        "remove if repeated alarm behavior is observed"
+      ],
+      "validation_tests": [
+        "dark_room_light_leak",
+        "30_min_heat",
+        "cable_drip_loop"
+      ]
+    }
+  },
+  "welfare_gates": {
+    "no_perch": "REQUIRED",
+    "no_interior_finish": "REQUIRED",
+    "drainage": "REQUIRED",
+    "ventilation": "REQUIRED",
+    "fledgling_grip": "REQUIRED",
+    "predator_baffle": "REQUIRED",
+    "cleanout_access": "REQUIRED",
+    "electronics_isolation": "REQUIRED",
+    "interior_heat": "REQUIRED",
+    "interior_light": "REQUIRED",
+    "moisture_control": "REQUIRED",
+    "cable_routing": "REQUIRED",
+    "service_independence": "REQUIRED",
+    "non_disturbance": "REQUIRED"
+  }
+}
