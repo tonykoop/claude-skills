@@ -1,8 +1,8 @@
 ---
 name: reverse-engineer
 metadata:
-  version: 1.0.0
-  last-updated: 2026-05-09
+  version: 1.1.0
+  last-updated: 2026-05-10
 description: >-
   Analyze objects, photos, video, sketches, descriptions, and
   named-but-unseen artifacts into disciplined reverse-engineering notes:
@@ -45,14 +45,24 @@ Never present inferred dimensions, materials, mechanisms, internal structure, or
 
 ## Workflow
 
+0. **Image-access preflight (mandatory).** Before producing any analysis, decide which `image_access_mode` applies and record it. Allowed values:
+   - `direct` — the runtime can render the image inline and the agent has actually seen pixels.
+   - `file-path` — a local file path was supplied that the agent can read with its tooling (verify with a `Read` or equivalent before claiming this mode).
+   - `description-only` — the user provided prose, voice, or a name for the object; the agent has not seen the image.
+   - `missing` — the user referred to an image that did not arrive (stripped attachment, broken link, expired upload).
+   - `partial` — multiple images were referenced; some are viewable and some are not.
+
+   If the mode is `missing` or `partial`, ask **once** for recovery using the prompts in `references/image-access-recovery.md`. If the user declines recovery or the runtime cannot accept files, proceed under `description-only` with the mode noted and the user's choice recorded.
+
+   Emit the standardized **degraded-mode banner** (see "Degraded-Mode Banner" below) as the first line of every output artifact whenever `image_access_mode` is anything other than `direct`. Do not paraphrase it — downstream automation parses the exact pattern.
 1. Define the analysis mode:
    - **Photo/object observation** for visual inventories, visible features, and image limits.
    - **Dimension inference** for scale estimates, proportions, tolerances, and missing views.
    - **Mechanism explanation** for motion, force paths, assemblies, hidden components, and failure modes.
    - **Material/process inference** for likely materials, finish, tooling, wear, manufacturing traces, and assembly sequence.
    - **Handoff-to-builder** when there is enough data for `maker-engineering`, `makerspace`, or `instrument-maker`.
-2. Inventory the inputs. Note images, sketches, links, user-provided dimensions, known scale references, object access, measurement tools, and usage context. If the runtime can't render attached images (Codex CLI without vision, Gemini CLI text mode, mobile zip-upload that strips media, or any pasted-link-only workflow), say so up front and switch to one of the no-vision intake modes below — don't pretend to see what you can't.
-3. Create the observation ledger using `references/observation-template.md`. Fill observed facts before making inferences.
+2. Inventory the inputs. Note images, sketches, links, user-provided dimensions, known scale references, object access, measurement tools, and usage context. The preflight result from step 0 belongs in the input inventory: record `image_access_mode`, count of images referenced, count actually viewable, and the user's recovery decision.
+3. Create the observation ledger using `references/observation-template.md`. The template's `intake:` YAML block must be filled in before any other section. Fill observed facts before making inferences.
 4. Mark every claim as one of:
    - `observed`: directly visible or user-stated as measured.
    - `measured`: supplied by the user or derived from a reliable measurement tool.
@@ -68,6 +78,18 @@ Never present inferred dimensions, materials, mechanisms, internal structure, or
    - `maker-engineering`: turn verified analysis into engineered design choices, tolerances, simulations, or trade studies.
    - `makerspace`: fabricate fixtures, shop plans, cut lists, toolpaths, or physical parts.
    - `instrument-maker`: create instrument design/build packets after critical acoustic and dimensional data is validated.
+
+## Degraded-Mode Banner
+
+When `image_access_mode` is anything other than `direct`, the **first paragraph** of every analysis artifact (notes, builder handoff, agent record summary) must be the following banner. Use the exact wording so downstream tooling can detect it; only fill the bracketed fields:
+
+```text
+> **Image-access mode: <mode>.** This analysis was produced without analyst-verified pixels of [N] referenced image(s). All "observed" claims below are transcriptions of the user's prose, name, voice, or sketch — not pixel-verified. Dimensional confidence is capped per `references/confidence-language.md`. Builder handoffs derived from this analysis are **provisional** by default.
+```
+
+Where `<mode>` is one of `description-only`, `missing`, `partial`, `file-path` (when the file is present but pixels were not actually rendered by the runtime), or `named-object`.
+
+Pair the banner with the `intake:` YAML block at the top of the observation ledger so a script can both render the warning to a human and parse the structured field.
 
 ## Image Handling
 
@@ -124,11 +146,14 @@ Emit a builder-ready handoff only when all of these are true:
 - Safety, legal, and product-boundary risks have been surfaced.
 - Remaining unknowns are non-critical or are explicitly assigned to a test/prototype.
 
+When `image_access_mode` is `description-only`, `missing`, `partial`, or `named-object`, the builder handoff is **provisional by default**. The header must read `Handoff status: provisional` and the assumptions list must mark each chosen dimension as `assumed (intake degraded)` with a retire-by step. Do not flip to `builder-ready` without either (a) the user explicitly accepting provisional outputs or (b) a follow-up pass with `image_access_mode == direct` or measured values supplied.
+
 If a user asks to reproduce a proprietary product for commercial use, pause and ask for legal review before writing a production handoff. You may still provide learning-focused analysis, noncommercial repair notes, or high-level functional explanation.
 
 ## Reference Map
 
-- `references/observation-template.md`: Claim ledger, dimension table, mechanism notes, and unknown register.
+- `references/observation-template.md`: Claim ledger, dimension table, mechanism notes, and unknown register. Includes the required `intake:` YAML block.
 - `references/measurement-request-checklist.md`: Follow-up photo and measurement checklist by object type.
-- `references/confidence-language.md`: Approved confidence terms and phrases to avoid.
-- `references/builder-handoff-template.md`: Compact handoff format for `maker-engineering`, `makerspace`, and `instrument-maker`.
+- `references/confidence-language.md`: Approved confidence terms and phrases to avoid. Includes the dimensional-confidence cap for degraded-intake modes.
+- `references/builder-handoff-template.md`: Compact handoff format for `maker-engineering`, `makerspace`, and `instrument-maker`. Includes the provisional-by-default rule for degraded intake.
+- `references/image-access-recovery.md`: Per-runtime recovery prompts when an image arrived but cannot be rendered (Claude Code, Codex CLI, web vision, Gemini CLI text mode, mobile zip-upload).

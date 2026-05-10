@@ -120,12 +120,12 @@ skills:
     notes: Portable snapshot from the standalone makerspace repo. v1.1.0 adds structured-shop-artifacts reference, CSV schemas, steam-bending gate table, and `validate_packet.py --schemas-only`.
 
   reverse-engineer:
-    canonical_version: 1.0.0
+    canonical_version: 1.1.0
     runtime: shared
     repo_path: skills/reverse-engineer
-    last_updated: 2026-05-08
+    last_updated: 2026-05-10
     status: active
-    notes: Portable snapshot from reverse-engineering/skills/v1/reverse-engineer for cross-platform review.
+    notes: Portable snapshot from reverse-engineering/skills/v1/reverse-engineer for cross-platform review. v1.1.0 adds image-access preflight and degraded-mode banner (#70).
 
   habitat-maker:
     canonical_version: 0.2.0

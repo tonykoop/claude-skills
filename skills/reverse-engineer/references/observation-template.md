@@ -2,6 +2,23 @@
 
 Use this template for reverse-engineering notes. Keep facts and inferences apart even when the answer is obvious to a human.
 
+## Intake (required)
+
+Fill this YAML block before any other section. Downstream tooling parses it.
+
+```yaml
+intake:
+  image_access_mode: direct      # one of: direct | file-path | description-only | missing | partial | named-object
+  images_referenced: 0           # count of images the user pointed at
+  images_viewable: 0             # count the runtime actually rendered
+  recovery_path: not-needed      # one of: not-needed | requested-and-supplied | requested-and-declined | not-applicable
+  source_qualifiers: []          # e.g. [user-prose, named-class, dictated, sketch, video-still]
+  confidence_ceiling: full       # one of: full | provisional | speculative
+  notes: ""                      # free-form: link to recovery transcript, runtime, etc.
+```
+
+When `image_access_mode` is anything other than `direct`, the analysis must also lead with the standardized degraded-mode banner from `SKILL.md`.
+
 ## Input Inventory
 
 | Input | Source | Reliability | Notes |
