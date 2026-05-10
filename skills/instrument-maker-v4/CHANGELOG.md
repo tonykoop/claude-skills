@@ -294,6 +294,60 @@ as bench-rig packets first.
       instrument, performance prototype, and production packet.
 - [x] Validation focuses on repeatable measurement and staged expansion.
 
+## v4.5.0 — 2026-05-10 (issue #106)
+
+Round 9 TwinGrid lanes Cindy and Dan exposed a repeated need for a
+standard bowed-string packet layer: bass tagelharpa with inlay and yayli
+tambur segmented-bowl studies both needed bridge crown, afterlength,
+bow-clearance, top/head load path, string schedule, source-posture, and
+SolidWorks skeleton guidance.
+
+### Added
+
+- `references/bowed-string-packets.md` — reusable packet reference for
+  bowed lyres/tagelharpa and long-neck bowl instruments. Includes packet
+  shape, source-posture tags, construction branch decisions,
+  bowed-string setup gates, top/head deflection checks, SolidWorks
+  skeleton checklist, and decorative no-carve-zone guidance.
+- `assets/templates/bowed-string-schedule.csv` — helper template for
+  pitch, scale, material/gauge, estimated tension, retuning factor,
+  percent breaking, and risk flags.
+- `assets/templates/bowed-source-posture.csv` — claim ledger template
+  for `sourced`, `prototype_assumption`, and `TBD` notes so traditional
+  instrument packets do not overclaim unsupported details.
+- `assets/templates/decorative-no-carve-zone.csv` — planning template
+  for inlay, engraving, soundboard patches, bridge patches, and other
+  exclusion zones.
+- `examples/bowed-string/tagelharpa-string-schedule.csv` — example
+  schedule preserving Round 9's 720 mm bass / 620 mm compact variants
+  without averaging them.
+- `examples/bowed-string/yayli-source-posture.csv` — example source
+  posture ledger for yayli tambur branch decisions.
+
+### Acceptance criteria (issue #106)
+
+- [x] Future tagelharpa/yayli/rebab/kemenche-adjacent prompts get a
+      consistent packet shape.
+- [x] Bowed lyre/tagelharpa guidance covers bridge crown, afterlength,
+      tailpiece load path, soundboard patch, bow clearance, and top
+      deflection.
+- [x] Long-neck bowl guidance covers source posture, bowl branch, top
+      or head mode, bridge/action, neck reinforcement, and
+      active/sympathetic string staging.
+- [x] String schedule helper includes pitch, scale, material/gauge,
+      estimated tension, retuning factor, and risk flags.
+- [x] SolidWorks checklist includes string paths, bow sweep, rim/head/top
+      planes, neck projection, and bridge crown gauge.
+- [x] Decorative no-carve-zone and inlay coupon guidance is explicit.
+
+### Known limits
+
+- This is a packet-support reference and template layer, not a new
+  generator or string-tension calculator. It standardizes the fields a
+  future generator should consume.
+- No SolidWorks files, DXF files, or physical validation coupons are
+  included. The reference defines the gates future packets must satisfy.
+
 ## v4.4.1 — 2026-05-10 (issue #109)
 
 Round 9 TwinGrid lane Alice recommended making free-reed/khaen work an
