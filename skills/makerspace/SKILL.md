@@ -1,8 +1,8 @@
 ---
 name: makerspace
 metadata:
-  version: 0.1.0
-  last-updated: 2026-05-09
+  version: 0.2.0
+  last-updated: 2026-05-10
 description: >-
   Plan shop-floor fabrication for jigs, fixtures, workholding, molds, machine
   setups, and make/order/buy/borrow decisions. Use when the user asks to
@@ -87,6 +87,13 @@ Add optional artifacts only when the prompt calls for them:
 - `risks.md`
 - `response.md`
 
+Add structured CSV artifacts (`cut-list.csv`, `validation.csv`,
+`process-schedule.csv`) when the packet has more than five distinct
+parts or more than five go/no-go gates. For curved primary features,
+also generate a parametric SVG sanity check. See
+`references/structured-shop-artifacts.md` for schemas and the
+`scripts/validate_packet.py --schemas-only` validator.
+
 Read `references/repeatable-shop-packets.md` before choosing the output
 shape.
 
@@ -130,6 +137,11 @@ needs a temporary profile instead of a canonical `spaces/<slug>/` entry.
 
 - `references/repeatable-shop-packets.md`
   Read first when choosing artifacts.
+- `references/structured-shop-artifacts.md`
+  Read when the packet has more than five distinct parts or more than
+  five go/no-go gates, or when the work involves steam bending. Defines
+  CSV schemas for cut-list/validation/process-schedule, the SVG sanity-
+  check workflow, and the steam-bending gate table.
 - `references/jig-decision-matrix.md`
   Read when comparing fixture strategies or deciding whether to custom-make,
   adapt, purchase, or borrow.

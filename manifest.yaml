@@ -112,12 +112,12 @@ skills:
     notes: Vinyasa-first shared class-sequencing skill with playlist-builder handoff output.
 
   makerspace:
-    canonical_version: 1.0.0
+    canonical_version: 1.1.0
     runtime: shared
     repo_path: skills/makerspace
-    last_updated: 2026-05-08
+    last_updated: 2026-05-10
     status: active
-    notes: Portable snapshot from the standalone makerspace repo for cross-platform review.
+    notes: Portable snapshot from the standalone makerspace repo. v1.1.0 adds structured-shop-artifacts reference, CSV schemas, steam-bending gate table, and `validate_packet.py --schemas-only`.
 
   reverse-engineer:
     canonical_version: 1.0.0
