@@ -1,0 +1,280 @@
+{
+  "schema_version": "1.0",
+  "skill": "habitat-maker",
+  "skill_version": "0.3.0",
+  "packet": "temperate-na-four-chamber-bat-house",
+  "created": "2026-05-10",
+  "units": "mm",
+  "imperial_equivalents_provided": true,
+  "target_roosting_group": [
+    "Small-to-medium North American crevice-roosting colonial bats"
+  ],
+  "example_species_only_not_species_locked": [
+    "Big brown bat (Eptesicus fuscus)",
+    "Little brown bat (Myotis lucifugus)",
+    "Evening bat (Nycticeius humeralis)",
+    "Mexican free-tailed bat (Tadarida brasiliensis) in suitable warm regions"
+  ],
+  "explicitly_not_for": [
+    "Tree-mount-first installations in shaded woods",
+    "Large solitary foliage-roosting species",
+    "Sites with extreme summer heat and no shade or paired thermal option"
+  ],
+  "references": [
+    {
+      "name": "Bat Conservation International - Bat Houses",
+      "url": "https://www.batcon.org/about-bats/bat-houses/",
+      "fields_consumed": [
+        "four_chamber_preference",
+        "roughened_surfaces",
+        "no_mesh",
+        "no_interior_finish",
+        "thermal_color_guidance",
+        "paired_thermal_options",
+        "mounting_height",
+        "tree_mount_discouraged"
+      ]
+    },
+    {
+      "name": "Batweek - How to Install a Bat House",
+      "url": "https://batweek.org/install-bat-house/",
+      "fields_consumed": [
+        "building_or_pole_mounting",
+        "tree_mount_discouraged",
+        "open_drop_space",
+        "sun_exposure",
+        "predator_and_branch_clearance"
+      ]
+    }
+  ],
+  "materials": {
+    "primary": {
+      "back_and_front_faces": "12.7 mm exterior plywood or MDO",
+      "partitions": "9.5 mm exterior plywood",
+      "sides_spacers_roof_battens": "19 mm rot-resistant cedar",
+      "fasteners": "Exterior-rated screws, washers, and lag hardware",
+      "adhesive": "Exterior wood glue or sealant only where squeeze-out cannot enter roost chambers",
+      "interior_finish": "none",
+      "exterior_finish": "Water-based exterior paint or stain on exterior only"
+    },
+    "alternate": {
+      "all_exterior_surfaces": "19 mm cedar boards, edge-joined as needed",
+      "tradeoff": "Better outdoor durability, slower fabrication, more joinery and seasonal movement management"
+    }
+  },
+  "climate_profiles": {
+    "cool_to_mild": {
+      "avg_july_high_f": "< 85",
+      "exterior_color": "dark brown or black",
+      "sun_exposure": "6-8+ hours direct sun",
+      "venting": "baseline vents"
+    },
+    "warm": {
+      "avg_july_high_f": "85-95",
+      "exterior_color": "medium brown or medium gray",
+      "sun_exposure": "morning to mid-day sun; avoid full late-afternoon bake",
+      "venting": "vents required"
+    },
+    "very_hot": {
+      "avg_july_high_f": "> 95",
+      "exterior_color": "light tan, light gray, or off-white",
+      "sun_exposure": "morning sun plus afternoon shade or paired thermal alternatives",
+      "venting": "vents required; site-specific overheating check required",
+      "note": "Do not deploy the default package in extreme heat without thermal tuning."
+    }
+  },
+  "overall_dimensions_mm": {
+    "overall_width": 508,
+    "back_panel_height": 914,
+    "front_visible_height_to_roofline": 865,
+    "external_body_depth": 130,
+    "roof_panel_depth": 178,
+    "roof_overhang_front": 51,
+    "roof_overhang_side_each": 25,
+    "roof_flush_back": true
+  },
+  "imperial_reference_dimensions": {
+    "overall_width": "20 in",
+    "back_panel_height": "36 in",
+    "body_height": "34 in",
+    "external_body_depth": "about 5.1 in",
+    "roof_panel_depth": "7 in",
+    "landing_extension": "6 in",
+    "roost_gap_each": "3/4 in",
+    "partition_passage_hole_diameter": "1-1/2 in"
+  },
+  "chamber_geometry_mm": {
+    "chamber_count": 4,
+    "clear_internal_width": 470,
+    "clear_chamber_depth_each": 19,
+    "partition_thickness": 9.5,
+    "clear_roost_height_above_open_bottom": 762,
+    "landing_extension_below_lower_front": 152,
+    "open_bottom_height": 102,
+    "partition_passage_holes_per_panel": 2,
+    "partition_passage_hole_diameter": 38
+  },
+  "venting_mm": {
+    "split_front_vent_gap": 13,
+    "front_vent_slot_clear_width": 470,
+    "front_vent_slot_bottom_above_back_bottom": 280,
+    "side_vent_slot_height": 13,
+    "side_vent_slot_length": 152,
+    "side_vent_slot_bottom_above_back_bottom": 267
+  },
+  "roughening": {
+    "method": "horizontal saw kerfs or dense router grooves",
+    "spacing_range_mm": [6, 13],
+    "depth_range_mm": [1, 2],
+    "required_surfaces": [
+      "inside face of back panel",
+      "both faces of all partitions",
+      "inside face of lower front panel",
+      "all exposed landing surfaces below the lower front"
+    ],
+    "explicitly_forbidden": [
+      "plastic mesh",
+      "metal mesh",
+      "stapled screen",
+      "slick interior coatings"
+    ]
+  },
+  "weather_and_finish": {
+    "top_seams": "Seal exterior roof and top-edge seams.",
+    "bottom": "Leave fully open; do not caulk shut.",
+    "interior_seams": "Avoid squeeze-out that creates slick surfaces.",
+    "flashing": "Optional thin cap over roof for wet climates.",
+    "paint_interior": false,
+    "stain_interior": false
+  },
+  "mounting": {
+    "preferred": "Building wall or masonry",
+    "alternate": "Back-to-back pole pair with predator baffle and no branch access",
+    "disallowed_default": [
+      "tree mount",
+      "low fence mount",
+      "metal building wall without thermal backing",
+      "site with branch or roof access for predators",
+      "site with no clear drop space below exit"
+    ],
+    "tree_mount_recommended": false,
+    "minimum_height_ft": 12,
+    "preferred_height_ft": "15-20",
+    "minimum_clear_drop_below_ft": 12,
+    "solar_exposure_hours_min": 6,
+    "distance_to_branches_ft_min": 20,
+    "near_water_preferred": true,
+    "orientation_note": "Prioritize morning sun and stable daytime warmth; adjust azimuth to regional climate."
+  },
+  "maintenance": {
+    "inspection_timing": "Inspect and repair when bats are absent, typically winter or after local maternity season.",
+    "do_not_disturb": "Do not open, clean, or rework an occupied roost.",
+    "guano": "Plan for guano below the open bottom; do not mount above doors, seating, grills, or food prep."
+  },
+  "panel_schedule": [
+    {
+      "part": "back_panel",
+      "qty": 1,
+      "material": "12.7 mm exterior plywood or MDO",
+      "shape": "rectangle",
+      "width_mm": 508,
+      "height_mm": 914,
+      "thickness_mm": 12.7
+    },
+    {
+      "part": "upper_front_panel",
+      "qty": 1,
+      "material": "12.7 mm exterior plywood or MDO",
+      "shape": "rectangle",
+      "width_mm": 508,
+      "height_mm": 572,
+      "thickness_mm": 12.7
+    },
+    {
+      "part": "lower_front_panel",
+      "qty": 1,
+      "material": "12.7 mm exterior plywood or MDO",
+      "shape": "rectangle",
+      "width_mm": 508,
+      "height_mm": 178,
+      "thickness_mm": 12.7
+    },
+    {
+      "part": "roof_panel",
+      "qty": 1,
+      "material": "19 mm cedar",
+      "shape": "rectangle",
+      "width_mm": 559,
+      "height_mm": 178,
+      "thickness_mm": 19
+    },
+    {
+      "part": "side_wall",
+      "qty": 2,
+      "material": "19 mm cedar",
+      "shape": "trapezoid",
+      "depth_mm": 105,
+      "rear_height_mm": 914,
+      "front_height_mm": 865,
+      "thickness_mm": 19
+    },
+    {
+      "part": "partition",
+      "qty": 3,
+      "material": "9.5 mm exterior plywood",
+      "shape": "rectangle",
+      "width_mm": 470,
+      "height_mm": 813,
+      "thickness_mm": 9.5
+    },
+    {
+      "part": "side_spacer_strip",
+      "qty": 8,
+      "material": "19 mm cedar",
+      "shape": "rectangle",
+      "width_mm": 19,
+      "height_mm": 813,
+      "thickness_mm": 19
+    },
+    {
+      "part": "top_spacer_strip",
+      "qty": 4,
+      "material": "19 mm cedar",
+      "shape": "rectangle",
+      "width_mm": 470,
+      "height_mm": 19,
+      "thickness_mm": 19
+    },
+    {
+      "part": "building_mount_batten_optional",
+      "qty": 2,
+      "material": "19 mm cedar",
+      "shape": "rectangle",
+      "width_mm": 64,
+      "height_mm": 762,
+      "thickness_mm": 19
+    }
+  ],
+  "validation_targets": {
+    "minimum_house_height_mm": 610,
+    "minimum_house_width_mm": 356,
+    "target_chamber_depth_range_mm": [19, 25],
+    "minimum_landing_extension_mm": 76,
+    "minimum_mount_height_mm": 3657,
+    "roughening_required_on_all_roost_surfaces": true,
+    "mesh_allowed": false,
+    "interior_finish_allowed": false
+  },
+  "welfare_gates": {
+    "four_chambers": "REQUIRED",
+    "roost_gap": "REQUIRED: 19-25 mm clear chamber gaps; default 19 mm.",
+    "roughened_landing": "REQUIRED: roughened landing and roost surfaces.",
+    "venting": "REQUIRED: front and side venting unless a cold-climate variant documents why vents are omitted.",
+    "clear_drop_space": "REQUIRED: at least 12 ft clear drop below exit.",
+    "no_mesh": "FORBIDDEN: no stapled mesh, screen, or netting on roost surfaces.",
+    "no_interior_finish": "FORBIDDEN: no paint, stain, oil, or sealer inside.",
+    "no_treated_interior_lumber": "FORBIDDEN: treated or chemically finished interior lumber.",
+    "tree_mount_discouraged": "REQUIRED: tree mount is disallowed as the default recommendation.",
+    "maintenance_timing": "REQUIRED: inspect or repair only when bats are absent."
+  }
+}

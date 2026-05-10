@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "habitat-maker outdoor habitat validation report",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "packet",
+    "habitat_type",
+    "validated_by",
+    "result",
+    "gates"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string"
+    },
+    "packet": {
+      "type": "string"
+    },
+    "habitat_type": {
+      "type": "string"
+    },
+    "validated_by": {
+      "type": "string"
+    },
+    "result": {
+      "type": "string",
+      "enum": ["pass", "fail", "pending_site"]
+    },
+    "site_profile": {
+      "type": "object"
+    },
+    "gates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "status", "evidence"],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["pass", "fail", "pending_site"]
+          },
+          "evidence": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "notes": {
+      "type": "string"
+    }
+  }
+}
+

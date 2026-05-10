@@ -1,0 +1,56 @@
+{
+  "schema_version": "1.0",
+  "packet": "temperate-na-four-chamber-bat-house",
+  "habitat_type": "bat_house",
+  "validated_by": "habitat-maker smoke packet",
+  "result": "pending_site",
+  "site_profile": {
+    "climate_profile": "pending_site",
+    "mounting_substrate": "pending_site",
+    "paired_thermal_option": "pending_site"
+  },
+  "gates": [
+    {
+      "id": "four_chambers",
+      "status": "pass",
+      "evidence": "geometry_params.json declares chamber_count 4"
+    },
+    {
+      "id": "roost_gap",
+      "status": "pass",
+      "evidence": "geometry_params.json declares 19 mm clear chamber gaps"
+    },
+    {
+      "id": "roughened_landing",
+      "status": "pass",
+      "evidence": "roughening.required_surfaces includes landing and roost surfaces"
+    },
+    {
+      "id": "venting",
+      "status": "pass",
+      "evidence": "front split vent and side vents are declared"
+    },
+    {
+      "id": "clear_drop_space",
+      "status": "pending_site",
+      "evidence": "mounting worksheet requires field confirmation"
+    },
+    {
+      "id": "no_mesh",
+      "status": "pass",
+      "evidence": "welfare gate forbids mesh, screen, and netting"
+    },
+    {
+      "id": "no_interior_finish",
+      "status": "pass",
+      "evidence": "interior finish is none; paint_interior and stain_interior are false"
+    },
+    {
+      "id": "tree_mount_discouraged",
+      "status": "pass",
+      "evidence": "tree_mount_recommended is false and tree mount is disallowed as default"
+    }
+  ],
+  "notes": "Packet geometry and welfare gates pass; deployment remains pending site-specific thermal, mounting, and guano checks."
+}
+

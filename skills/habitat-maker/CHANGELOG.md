@@ -57,6 +57,21 @@
 - Added a bird-bath material safety matrix and optional fill-depth gauge
   template for compact balcony packets.
 - Added smoke-test coverage for the new bird-bath reference and skill routing.
+- Added `examples/temperate-na-four-chamber-bat-house/`: a canonical
+  builder-facing bat-house packet with `geometry_params.json`, human shop
+  packet docs, climate/site presets, mounting worksheet, bat-specific welfare
+  gates, validation-report schema, and example validation report.
+- Added `scripts/generate_bat_house_packet.py`: reads the bat-house parameter
+  file and emits `four-chamber-bat-house-layout.svg` plus
+  `generated-cut-list.csv` deterministically.
+- SKILL.md: documented bat-house-specific gates for four chambers, roost gap,
+  roughened landing, venting, clear drop space, no mesh, no interior finish,
+  no treated interior lumber, tree-mount discouragement, and maintenance
+  timing.
+- Extended smoke tests to cover the bat-house packet, generator, generated SVG
+  groups, validation-report JSON shape, and required packet files.
+- Provenance: distilled from the Round 9 TwinGrid Frank blind run,
+  Partner Peek pass, and issue `tonykoop/claude-skills#102`.
 
 
 ## 0.2.0 — 2026-05-10

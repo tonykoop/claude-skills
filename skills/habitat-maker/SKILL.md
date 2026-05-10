@@ -96,6 +96,27 @@ Cavity-habitat and generator-backed packets **must** ship:
    as the shared record shape when copying these checks into
    `geometry_params.json`, generated checklists, or future
    `habitat-reference` sourced packets.
+
+   Bat-house packets use a bat-specific gate set instead of birdhouse gates:
+   - **Four chambers.** Multi-chamber roosts are the default for the canonical
+     temperate North America packet.
+   - **Roost gap.** Clear chamber gaps must stay in the documented target
+     range, defaulting to 19 mm / 3/4 in.
+   - **Roughened landing and roost surfaces.** Kerfs, grooves, or rough-sawn
+     wood are required anywhere bats need claw grip.
+   - **Venting and thermal tuning.** Climate/site presets drive exterior
+     color, sun exposure, venting, shade, and paired-house recommendations.
+   - **Clear drop space.** Mounting worksheets must confirm open drop space
+     below exits before deployment.
+   - **No mesh.** Do not staple mesh, screen, or netting to roost surfaces.
+   - **No interior finish.** Interior paint, stain, oil, and sealer are
+     forbidden.
+   - **No treated interior lumber.** Chemically treated interior wood is
+     forbidden.
+   - **Tree-mount discouraged.** Building wall or paired pole/post frame is
+     preferred; tree mount is not the default recommendation.
+   - **Maintenance timing.** Inspection and repair happen only when bats are
+     absent.
 4. **Cut list and BOM** — derived from the parameter file, dimensioned in
    the file's declared units, including kerf-test coupon.
 5. **Safety notes** — laser/CNC operation, glue/finish, child-build
@@ -248,6 +269,10 @@ artifacts are required only where the geometry actually drives a machine.
   — normative reference for bird-bath welfare gates, balcony/renter
   deployment constraints, material safety matrix, and compact fill/deployment
   checks.
+- [`examples/temperate-na-four-chamber-bat-house/`](examples/temperate-na-four-chamber-bat-house/)
+  — generator-backed four-chamber bat-house packet with climate/site
+  presets, mounting worksheet, bat-specific welfare gates, validation-report
+  schema, generated SVG layout sanity check, and generated cut-list CSV.
 - [`references/bat-bee-observation-hive-welfare.md`](references/bat-bee-observation-hive-welfare.md)
   — normative reference for bat house, native bee house, observation-hive
   preflight, and camera/electronics welfare gates.
@@ -260,7 +285,7 @@ artifacts are required only where the geometry actually drives a machine.
 
 ## Open work (v0.4 → v1.0)
 
-- Second canonical example: bluebird box (different cavity size, same
+- Second birdhouse example: bluebird box (different cavity size, same
   laser method, different species data) to demonstrate the parameter-driven
   re-generation pattern.
 - Third canonical example: tube bee house (different habitat type entirely;

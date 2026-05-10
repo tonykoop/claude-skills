@@ -2,12 +2,10 @@
 Smoke tests for habitat-maker v0.4.
 
 Asserts:
-  1. The canonical example's geometry_params.json parses, has the
-     required schema sections, and declares all seven welfare gates.
-  2. The generator script emits a chickadee-panels.svg that contains the
-     expected panel groups and class layers.
-  3. The example packet has all the files the v0.2 build-packet contract
-     requires.
+  1. Canonical examples parse, have required schema sections, and declare
+     their welfare gates.
+  2. Generator scripts emit deterministic SVG/CSV artifacts.
+  3. Example packets have the files their build-packet contracts require.
 
 Run from repo root:
     python3 -m unittest discover -s skills/habitat-maker/tests
@@ -43,6 +41,8 @@ CAMERA_VALIDATOR = SKILL_DIR / "scripts" / "validate_camera_modes.py"
 OBSERVATION_HIVE_PREFLIGHT_GATES = (
     SKILL_DIR / "references" / "observation-hive-preflight-gates.json"
 )
+BAT_PACKET_DIR = SKILL_DIR / "examples" / "temperate-na-four-chamber-bat-house"
+BAT_GENERATOR = SKILL_DIR / "scripts" / "generate_bat_house_packet.py"
 
 
 REQUIRED_WELFARE_GATES = {
@@ -64,6 +64,34 @@ REQUIRED_PACKET_FILES = {
     "safety-notes.md",
     "agent-record.md",
     "chickadee-panels.svg",
+}
+
+REQUIRED_BAT_WELFARE_GATES = {
+    "four_chambers",
+    "roost_gap",
+    "roughened_landing",
+    "venting",
+    "clear_drop_space",
+    "no_mesh",
+    "no_interior_finish",
+    "no_treated_interior_lumber",
+    "tree_mount_discouraged",
+    "maintenance_timing",
+}
+
+REQUIRED_BAT_PACKET_FILES = {
+    "README.md",
+    "geometry_params.json",
+    "cut-list.md",
+    "BOM.md",
+    "mounting-worksheet.md",
+    "validation-checklist.md",
+    "validation-report.schema.json",
+    "validation-report.json",
+    "safety-notes.md",
+    "agent-record.md",
+    "generated-cut-list.csv",
+    "four-chamber-bat-house-layout.svg",
 }
 
 
@@ -148,7 +176,7 @@ class TestGenerator(unittest.TestCase):
             tree = ET.parse(out)
             root = tree.getroot()
             ns = {"svg": "http://www.w3.org/2000/svg"}
-            group_ids = {g.get("id") for g in root.findall(".//svg:g", ns)}
+            group_ids = {g.get("id") for g in root.findall(".//svg:g", ns) if g.get("id")}
             expected = {"front", "back", "sideL", "sideR", "floor",
                         "roof", "kerf", "guard"}
             self.assertEqual(group_ids, expected,
@@ -561,6 +589,117 @@ class TestObservationHivePreflightGateContract(unittest.TestCase):
             "fabrication_authority",
         ]:
             self.assertIn(gate_id, electronics["required_if_electronics_present"])
+
+
+class TestBatHouseGeometryParams(unittest.TestCase):
+    """The bat-house JSON must carry bat-specific welfare and site rules."""
+
+    def setUp(self) -> None:
+        self.params = json.loads((BAT_PACKET_DIR / "geometry_params.json").read_text())
+
+    def test_schema_version(self) -> None:
+        self.assertEqual(self.params.get("schema_version"), "1.0")
+        self.assertEqual(self.params.get("skill"), "habitat-maker")
+        self.assertEqual(self.params.get("packet"), "temperate-na-four-chamber-bat-house")
+
+    def test_references_have_urls(self) -> None:
+        refs = self.params.get("references", [])
+        self.assertGreaterEqual(len(refs), 2)
+        for r in refs:
+            self.assertIn("url", r)
+            self.assertTrue(r["url"].startswith("http"))
+
+    def test_all_bat_welfare_gates_present(self) -> None:
+        gates = set(self.params.get("welfare_gates", {}).keys())
+        missing = REQUIRED_BAT_WELFARE_GATES - gates
+        self.assertFalse(missing, f"missing bat welfare gates: {missing}")
+
+    def test_four_chamber_geometry_consistency(self) -> None:
+        chamber = self.params["chamber_geometry_mm"]
+        self.assertEqual(chamber["chamber_count"], 4)
+        self.assertGreaterEqual(chamber["clear_chamber_depth_each"], 19)
+        self.assertLessEqual(chamber["clear_chamber_depth_each"], 25)
+        self.assertGreaterEqual(
+            chamber["landing_extension_below_lower_front"],
+            self.params["validation_targets"]["minimum_landing_extension_mm"],
+        )
+        self.assertFalse(self.params["validation_targets"]["mesh_allowed"])
+        self.assertFalse(self.params["validation_targets"]["interior_finish_allowed"])
+
+    def test_climate_and_mounting_presets(self) -> None:
+        profiles = self.params["climate_profiles"]
+        self.assertIn("cool_to_mild", profiles)
+        self.assertIn("warm", profiles)
+        self.assertIn("very_hot", profiles)
+        mounting = self.params["mounting"]
+        self.assertFalse(mounting["tree_mount_recommended"])
+        self.assertGreaterEqual(mounting["minimum_clear_drop_below_ft"], 12)
+
+
+class TestBatHouseGenerator(unittest.TestCase):
+    """The bat-house generator must refresh generated artifacts from JSON."""
+
+    def test_generator_runs_and_writes_svg_and_csv(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_packet = Path(tmp) / "bat-house"
+            shutil.copytree(BAT_PACKET_DIR, tmp_packet)
+            (tmp_packet / "four-chamber-bat-house-layout.svg").unlink(missing_ok=True)
+            (tmp_packet / "generated-cut-list.csv").unlink(missing_ok=True)
+
+            result = subprocess.run(
+                [sys.executable, str(BAT_GENERATOR), "--packet", str(tmp_packet)],
+                capture_output=True, text=True, check=False,
+            )
+            self.assertEqual(result.returncode, 0,
+                             f"generator exit={result.returncode}; "
+                             f"stderr={result.stderr}")
+
+            svg_out = tmp_packet / "four-chamber-bat-house-layout.svg"
+            csv_out = tmp_packet / "generated-cut-list.csv"
+            self.assertTrue(svg_out.is_file())
+            self.assertTrue(csv_out.is_file())
+            self.assertGreater(svg_out.stat().st_size, 1000)
+            self.assertIn("back_panel", csv_out.read_text())
+
+            tree = ET.parse(svg_out)
+            root = tree.getroot()
+            ns = {"svg": "http://www.w3.org/2000/svg"}
+            group_ids = {g.get("id") for g in root.findall(".//svg:g", ns) if g.get("id")}
+            expected = {
+                "back_panel",
+                "upper_front_panel",
+                "lower_front_panel",
+                "roof_panel",
+                "side_wall",
+                "partition",
+                "side_spacer_strip",
+                "top_spacer_strip",
+                "building_mount_batten_optional",
+            }
+            self.assertEqual(group_ids, expected,
+                             f"unexpected group ids: {group_ids}")
+
+
+class TestBatHousePacketShape(unittest.TestCase):
+    """Every required artifact is present in the bat-house example."""
+
+    def test_required_files_present(self) -> None:
+        present = {p.name for p in BAT_PACKET_DIR.iterdir() if p.is_file()}
+        missing = REQUIRED_BAT_PACKET_FILES - present
+        self.assertFalse(missing, f"missing required files: {missing}")
+
+    def test_validation_report_shape(self) -> None:
+        schema = json.loads((BAT_PACKET_DIR / "validation-report.schema.json").read_text())
+        report = json.loads((BAT_PACKET_DIR / "validation-report.json").read_text())
+        for key in schema["required"]:
+            self.assertIn(key, report)
+        self.assertIn(report["result"], {"pass", "fail", "pending_site"})
+        self.assertGreaterEqual(len(report["gates"]), 6)
+        for gate in report["gates"]:
+            self.assertIn("id", gate)
+            self.assertIn("status", gate)
+            self.assertIn(gate["status"], {"pass", "fail", "pending_site"})
+            self.assertIn("evidence", gate)
 
 
 if __name__ == "__main__":
