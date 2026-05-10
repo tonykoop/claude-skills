@@ -24,6 +24,7 @@ description: >-
 - `set up an experiment` / `design of experiments`
 - `hybrid project` / `this touches fabrication and acoustics`
 - `multi-specialist handoff`
+- human-carrying, body-load, climbable, floatable, or on-water prototype
 
 ## Do not trigger for
 
@@ -54,6 +55,8 @@ path, and produce crisp handoffs.
 4. Read the relevant reference only when needed:
    - Routing rules: [`references/routing-decision-tree.md`](references/routing-decision-tree.md)
    - DoE scaffold: [`references/doe-template.md`](references/doe-template.md)
+   - Human-carrying or floatable-object gate:
+     [`references/human-carrying-floatable-gate.md`](references/human-carrying-floatable-gate.md)
    - Specialist registry: [`references/specialist-registry.md`](references/specialist-registry.md)
 5. Produce the smallest useful output: a project brief, route decision, DoE matrix, pattern-search summary, or specialist handoff prompts.
 
@@ -98,11 +101,28 @@ handoffs with shared assumptions and integration checkpoints. Do not merge
 acoustic, fabrication, reverse-engineering, and experiment outputs into one
 muddled packet.
 
+### Human-Carrying / Floatable Gate
+
+Use this gate before final build packets, shop handoffs, or first-use advice
+for kayaks, canoes, rafts, chairs, stools, ladders, climbing/play structures,
+wearable supports, and other objects whose failure can injure a person or put
+someone in water. Read
+[`references/human-carrying-floatable-gate.md`](references/human-carrying-floatable-gate.md)
+and include the gate output before routing fixture, toolpath, or shop execution
+details to `makerspace`.
+
+This gate does not certify the object. It records assumptions, excluded uses,
+load cases, staged validation, assisted first-use protocol, re-validation
+triggers, and specialist boundaries.
+
 ## Output Rules
 
 - Name the chosen route and the reason in the first few lines.
 - Keep boundaries explicit: what this umbrella skill decided versus what a specialist must produce.
 - For hybrid work, create one handoff per specialist plus a short integration note.
 - For DoE work, include factors, response metrics, controls, trial matrix, logging fields, and stop conditions.
+- For human-carrying, body-load, or floatable objects, include explicit
+  "not a certification" language and run the human-carrying / floatable gate
+  before final build or first-use guidance.
 - Keep handoff prompts runtime-agnostic: name the specialist by its canonical name and describe the work, but do not embed runtime-specific invocation syntax (such as `$skill` or slash-command markers). The user may carry the prompt to a different runtime where the specialist is installed.
 - Do not generate full instrument packets, CNC toolpaths, BOMs, shop drawings, or acoustic calculations here.

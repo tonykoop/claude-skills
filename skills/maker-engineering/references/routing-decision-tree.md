@@ -25,6 +25,11 @@ Choose the primary axis by the user's next needed deliverable.
 | Parameter sweep, tuning study, prototype comparison, validation plan | Stay in `maker-engineering` DoE mode unless a specialist calculation dominates |
 | Mixed or unclear route | Stay in `maker-engineering` intake/routing mode |
 
+If the object carries, supports, restrains, lifts, climbs, or floats a person,
+run the human-carrying / floatable-object gate before producing final build
+guidance or specialist handoffs. See
+[`human-carrying-floatable-gate.md`](human-carrying-floatable-gate.md).
+
 ## 3. Hybrid Split Rules
 
 Split into separate handoffs when two or more specialist outputs would be
