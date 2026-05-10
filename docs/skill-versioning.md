@@ -47,11 +47,21 @@ desktop installs.
 
 ## Drift Checks
 
-The planned `skills-meta` skill should compare installed skill frontmatter
-against `manifest.yaml` and report:
+The `skills-meta` helper compares installed skill frontmatter against
+`manifest.yaml` and reports:
 
 - missing version fields;
 - installed version older than canonical;
 - canonical skill missing locally;
 - local skill not present in the manifest;
-- stale `last-updated` dates.
+- stale `last-updated` dates;
+- missing per-skill changelog coverage.
+
+Use strict mode when a sprint manager or CI job should fail on drift:
+
+```bash
+python3 skills/skills-meta/scripts/skills-meta.py --mode drift --strict
+```
+
+See [Manifest Drift Checks](manifest-drift-checks.md) for fixture smoke tests
+and limitations.

@@ -17,6 +17,10 @@
 - Captured verbatim `quick_validate.py` evidence in the follow-ups doc so
   the manifest-as-canonical decision is auditable.
 - Bumped `manifest.yaml` `last_updated` to 2026-05-09.
+- Added strict manifest drift checks to `skills-meta`, including changelog-gap
+  detection and fixture smoke coverage.
+- Documented sprint-manager and CI commands for manifest/frontmatter drift
+  checks.
 
 ## 2026-05-08
 
@@ -25,4 +29,3 @@
 - Added canonical skill manifest and skill ecosystem docs.
 - Began tracking skill versioning, controls, benchmarks, and public-release
   readiness as first-class GitHub issues.
-
