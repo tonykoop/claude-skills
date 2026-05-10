@@ -15,6 +15,8 @@ This doc is the canonical spec for what's in it, file by file.
 ├── safety-notes.md        # Material/tool/cert risks (Tier 1+)
 ├── sourcing.csv           # Vendors, SKUs, lead times (Tier 2+)
 ├── validation.csv         # How to verify (Tier 2+)
+├── process-schedule.csv   # Time-sensitive processes (optional)
+├── bending-schedule.csv   # Steam/lamination schedules (optional)
 ├── assembly-manual.md     # Step-by-step build (Tier 2+)
 ├── risks.md               # Failure modes + tests (Tier 2+)
 ├── photo-shotlist.md      # Photos to take (Tier 3+)
@@ -155,6 +157,14 @@ v003, finish coverage, "no bare spots", n/a, "raking light inspection", after fi
 
 `pass_fail` starts at `pending` and the maker fills in `pass`/`fail`
 during/after the build. Old runs become a maintenance log.
+
+### `process-schedule.csv` / `bending-schedule.csv` (optional)
+
+Use `process-schedule.csv` for time-sensitive work such as heat, glue,
+cure, soak, pressing, casting, or finishing schedules. Use
+`bending-schedule.csv` when steam bending or bent laminations are central
+to the packet. See `structured-shop-artifacts.md` for the minimum schemas
+and validation gates.
 
 ### `assembly-manual.md` (Tier 2)
 

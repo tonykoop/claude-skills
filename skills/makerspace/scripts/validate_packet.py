@@ -6,6 +6,9 @@ validate_packet.py
 Verifier-as-script. Walk a build packet, check it against the tier
 contract, and emit a findings report.
 
+Also validates the structured shop CSV schemas documented in
+references/structured-shop-artifacts.md when those files are present.
+
 Usage:
     # Check only (default) — emits findings, doesn't change files
     python3 scripts/validate_packet.py \\
@@ -87,6 +90,67 @@ DRAWING_OPTIONS = ["drawing-brief.md", "drawings"]
 TIER_3_OPTIONAL_PAIRS = [
     ("deck.pptx", "deck.pptx.placeholder"),
     ("print-packet.pdf", "print-packet.pdf.placeholder"),
+]
+
+# Structured artifact schemas documented in
+# references/structured-shop-artifacts.md. These are minimum required
+# columns; packets may add project-specific columns.
+CSV_SCHEMAS: dict[str, list[str]] = {
+    "cut-list.csv": [
+        "part_id",
+        "part_name",
+        "qty",
+        "material",
+        "stock_id",
+        "length_in",
+        "width_in",
+        "thickness_in",
+        "grain_dir",
+        "kerf_in",
+        "notes",
+    ],
+    "validation.csv": [
+        "check_id",
+        "check_name",
+        "target",
+        "tolerance",
+        "method",
+        "when_to_check",
+        "pass_fail",
+        "notes",
+    ],
+    "process-schedule.csv": [
+        "step_id",
+        "part",
+        "process",
+        "stock",
+        "prep",
+        "process_time",
+        "working_window",
+        "fixture",
+        "release_time",
+        "go_no_go",
+    ],
+    "bending-schedule.csv": [
+        "step_id",
+        "part",
+        "option",
+        "stock",
+        "prep",
+        "heat_or_glue_time",
+        "bend_or_clamp_window",
+        "fixture",
+        "release_time",
+        "go_no_go",
+    ],
+}
+
+STEAM_BENDING_TERMS = [
+    "steam bend",
+    "steam-bend",
+    "steam bending",
+    "steam-bending",
+    "bending-schedule.csv",
 ]
 
 
@@ -202,6 +266,109 @@ def check_bom_internal_consistency(report: Report) -> None:
                     )
     except OSError:
         pass
+
+
+def _read_packet_text(report: Report) -> str:
+    """Return lowercased packet text for lightweight gate checks."""
+    chunks: list[str] = []
+    for path in report.packet.rglob("*"):
+        if not path.is_file():
+            continue
+        if path.suffix.lower() not in {".md", ".csv", ".txt"}:
+            continue
+        try:
+            chunks.append(path.read_text().lower())
+        except (UnicodeDecodeError, OSError):
+            continue
+    return "\n".join(chunks)
+
+
+def check_structured_csv_schemas(report: Report) -> None:
+    """Check known structured CSV artifacts for parseability and headers."""
+    for filename, required in CSV_SCHEMAS.items():
+        path = report.packet / filename
+        if not path.exists():
+            continue
+        try:
+            with path.open(newline="") as f:
+                reader = csv.reader(f)
+                header = next(reader, None)
+                rows = list(reader)
+        except csv.Error as exc:
+            report.add(
+                "red",
+                f"`{filename}` is not parseable CSV: {exc}",
+                location=str(path),
+            )
+            continue
+        except OSError:
+            continue
+
+        if not header:
+            report.add(
+                "red",
+                f"`{filename}` is empty; expected structured CSV headers.",
+                location=str(path),
+            )
+            continue
+
+        missing = [col for col in required if col not in header]
+        if missing:
+            report.add(
+                "yellow",
+                f"`{filename}` missing required column(s): "
+                + ", ".join(f"`{col}`" for col in missing),
+                location=str(path),
+            )
+
+        expected_len = len(header)
+        for row_num, row in enumerate(rows, start=2):
+            if not row or all(not cell.strip() for cell in row):
+                continue
+            if len(row) != expected_len:
+                report.add(
+                    "yellow",
+                    f"`{filename}` row {row_num} has {len(row)} fields; "
+                    f"header has {expected_len}.",
+                    location=f"{path}:row {row_num}",
+                )
+
+
+def check_steam_bending_gates(report: Report) -> None:
+    """Steam-bending packets need explicit material/process/safety gates."""
+    text = _read_packet_text(report)
+    if not any(term in text for term in STEAM_BENDING_TERMS):
+        return
+
+    gates = [
+        (
+            "moisture content gate for bending stock",
+            ["moisture", "% mc", " mc "],
+        ),
+        (
+            "compression strap or equivalent anti-fracture strategy",
+            ["compression strap"],
+        ),
+        (
+            "working window / transfer-time gate",
+            ["working window", "transfer", "60 sec", "60 second"],
+        ),
+        (
+            "breakage threshold for failed bends",
+            ["crack", "split", "fracture", "breakage", "tear-out"],
+        ),
+        (
+            "oil-rag or finish fire check",
+            ["oil rag", "oil-rag", "spontaneous combustion", "fire"],
+        ),
+    ]
+    for description, terms in gates:
+        if not any(term in text for term in terms):
+            report.add(
+                "yellow",
+                f"Steam-bending packet missing {description}.",
+                location=str(report.packet),
+            )
 
 
 def check_op_seq_uses_known_tools(report: Report) -> None:
@@ -424,9 +591,11 @@ def main(argv: list[str] | None = None) -> int:
     report = Report(tier=args.tier, packet=args.packet, space=args.space)
     check_tier_completeness(report)
     check_unmarked_unknowns(report)
+    check_structured_csv_schemas(report)
     check_bom_internal_consistency(report)
     check_op_seq_uses_known_tools(report)
     check_risks_have_tests(report)
+    check_steam_bending_gates(report)
 
     if args.fix:
         attempt_fixes(report)

@@ -83,12 +83,20 @@ Add optional artifacts only when the prompt calls for them:
 
 - `drawing-brief.md`
 - `bom.csv`
+- `cut-list.csv`
+- `validation.csv`
+- `process-schedule.csv` or `bending-schedule.csv`
 - `sourcing.csv`
 - `risks.md`
 - `response.md`
 
 Read `references/repeatable-shop-packets.md` before choosing the output
 shape.
+
+When the setup has repeated parts, timed processes, steam bending,
+laminations, human-load objects, or safety-critical gates, also read
+`references/structured-shop-artifacts.md` and include the relevant CSV
+schemas and go/no-go gates.
 
 ## Gather the minimum inputs
 
@@ -130,6 +138,10 @@ needs a temporary profile instead of a canonical `spaces/<slug>/` entry.
 
 - `references/repeatable-shop-packets.md`
   Read first when choosing artifacts.
+- `references/structured-shop-artifacts.md`
+  Read when a packet needs structured CSV artifacts, timed process
+  schedules, SVG/PNG sanity checks, steam-bending gates, or human-load
+  object validation.
 - `references/jig-decision-matrix.md`
   Read when comparing fixture strategies or deciding whether to custom-make,
   adapt, purchase, or borrow.

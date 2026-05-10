@@ -16,6 +16,8 @@ setup.
 - Dust, smoke, fumes, chips, or coolant behavior considered
 - Protective films, adhesives, coatings, or galvanizing checked for hazards
 - Heat, melt, or ignition risk considered
+- For solid steam bending: stock moisture content, grain runout, knots,
+  checks, and bending species are screened before final blanks are used
 
 ## Setup
 
@@ -23,6 +25,8 @@ setup.
 - Clamp handles and hold-downs stay clear of tool motion
 - Part retention is defined for the final contour or breakthrough moment
 - First-article prove-out plan exists before batch production
+- Steam-bending setups identify compression strap/end-block retention,
+  working window from steam box to form, and breakage stop thresholds
 
 ## Operator
 
@@ -38,3 +42,5 @@ State what should stop the run immediately:
 - slipping or lifting workholding
 - unexpected heat, smoke, flame, or vibration
 - tool wear or breakage signs
+- steam-box leaks, pressure buildup, strap slip, bend cracking, or oil-rag
+  fire risk
