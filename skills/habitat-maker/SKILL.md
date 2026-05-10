@@ -59,9 +59,9 @@ still scaffolded; see "Open work" below.
 - Build packet output that mirrors instrument-maker-v4 conventions (BOM, cut
   list, dimensioned drawings, validation, agent record).
 
-## Build packet contract (v0.2)
+## Build packet contract (v0.3)
 
-Every habitat build packet **must** ship:
+Cavity-habitat and generator-backed packets **must** ship:
 
 1. **A single source-of-truth parameter file** — `geometry_params.json` —
    that lists species assumptions, material profile(s), cavity dimensions,
@@ -69,8 +69,8 @@ Every habitat build packet **must** ship:
 2. **Generator-backed geometry artifacts** — when the build method involves
    laser, CNC, or other digitally-driven fabrication, the SVG/DXF must be
    produced by a script that reads `geometry_params.json` and emits the
-   geometry deterministically. Hand-edited SVGs drift from the prose and
-   are forbidden in v0.2 packets.
+   geometry deterministically. Hand-edited SVGs drift from the prose and are
+   forbidden in v0.3 packets.
 3. **A welfare-integrated validation checklist** — each acceptance item is a
    pass/fail gate, not a suggestion. The required species-agnostic checks
    are:
@@ -93,6 +93,11 @@ Every habitat build packet **must** ship:
 6. **Agent record** — provenance: which species data fed the packet, which
    material profile was selected, which artifacts were generated vs hand
    authored, what validation was run.
+
+Bird-bath and other non-cavity, non-generator-backed water-habitat packets do
+not need `geometry_params.json` unless the output includes machine-driven
+geometry. For those packets, the maintenance-first reference contract below is
+the source of truth.
 
 ## Bird-bath and balcony packet contract
 

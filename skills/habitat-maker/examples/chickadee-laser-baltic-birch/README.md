@@ -60,7 +60,7 @@ jq -e . geometry_params.json > /dev/null
 rsvg-convert -o /tmp/preview.png chickadee-panels.svg
 
 # Smoke test from repo root
-python3 -m unittest discover skills/habitat-maker/tests
+python3 -m unittest discover -s skills/habitat-maker/tests
 ```
 
 ## Material variant

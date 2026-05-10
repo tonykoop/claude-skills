@@ -10,7 +10,7 @@ Asserts:
      requires.
 
 Run from repo root:
-    python3 -m unittest discover skills/habitat-maker/tests
+    python3 -m unittest discover -s skills/habitat-maker/tests
 
 Pure-stdlib (json, pathlib, subprocess, unittest, xml.etree). No
 third-party deps required.
@@ -159,12 +159,17 @@ class TestBirdBathReference(unittest.TestCase):
 
     def setUp(self) -> None:
         self.skill = SKILL_MD.read_text()
+        self.skill_one_line = " ".join(self.skill.split())
         self.reference = BIRD_BATH_REFERENCE.read_text()
 
     def test_skill_routes_bird_bath_prompts(self) -> None:
         self.assertIn("design a balcony bird bath", self.skill)
         self.assertIn("Bird-bath and balcony packet contract", self.skill)
         self.assertIn("references/bird-bath-balcony.md", self.skill)
+        self.assertIn(
+            "do not need `geometry_params.json` unless the output includes machine-driven",
+            self.skill_one_line,
+        )
 
     def test_required_welfare_gates_present(self) -> None:
         required = [
