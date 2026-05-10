@@ -1,0 +1,4 @@
+member_id,target_hz,target_note,scale_label,predicted_length_in,wood_species,k_constant,k2_correction,notes
+TNG-S-D4,294.0,D4,Pentatonic D minor,8.0,Padauk,24438,0,Small drum (magazine baseline)
+TNG-M-A3,220.0,A3,Pentatonic D minor,12.0,Padauk,24438,0,Medium drum
+TNG-L-D3,147.0,D3,Pentatonic D minor,16.0,Padauk,24438,0,Large drum
