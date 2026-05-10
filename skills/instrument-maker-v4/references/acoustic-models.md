@@ -85,6 +85,22 @@ The `acoustic_law` field accepts exactly these values; the validator rejects any
 
 `open_open` is for edge-tone flutes (NAF, transverse, shakuhachi) and remains the default for that family. `closed_open`, `stopped_pipe`, `side_branch_reed`, and `free_reed_coupled_pipe` cover the free-reed cases. `empirical_only` and `unknown_requires_measurement` are honest-uncertainty escape hatches; both must come with a justifying note in the packet's `design.md`.
 
+### Exploration packet guard
+
+For khaen/khen, sheng, sho, and donor-reed experiments, read
+`references/free-reed-khaen-exploration.md` before creating CAD. A planning
+packet may ship with `acoustic_law=unknown_requires_measurement`, but a
+family-true packet must measure a P0 reed coupon, choose `side_branch_reed` or
+`closed_open`, and pass `scripts/validate_acoustic_law.py` before pipe lengths
+are treated as build dimensions.
+
+Unsupported pipe-law claims must be caught in one of two places:
+
+- `family-spec.csv` uses the controlled `acoustic_law` values above, and the
+  validator rejects invented values such as `quarter_wave_closed_open`.
+- Prose, DXF notes, and drawing briefs must use the same vocabulary so a
+  mouth-organ drawing cannot quietly claim a different law than the CSV.
+
 ### Why this exists
 
 Round 7 TwinGrid lane Irene blind A/B run produced two khaen packets with different governing models. Both passed self-review. Without a machine-checkable invariant, the divergence was undetectable from the deliverables alone. By forcing the model choice into a typed field that the validator checks against the actual computed dimensions (see `scripts/validate_acoustic_law.py`), this class of "silent wrong physics" error is caught at packet generation time instead of at first-build time.

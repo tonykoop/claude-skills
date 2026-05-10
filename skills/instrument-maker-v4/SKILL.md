@@ -1,6 +1,6 @@
 ---
 name: instrument-maker-v4
-version: 4.4.0
+version: 4.4.1
 last-updated: 2026-05-10
 partial-skill: true
 canonical-install: ~/.claude/skills/instrument-maker-v4
@@ -8,9 +8,10 @@ description: >-
   Design, document, validate, and ship musical instruments end-to-end —
   woodwinds, strings, drums, percussion, idiophones, hybrid acoustic/electric.
   This repository entry hosts the v4.4 acoustic-law/reed boundary-condition
-  enhancement (issue #73). The full skill body lives in the canonical install
+  enhancement (issue #73) plus the v4.4.1 free-reed/khaen exploration
+  template (issue #109). The full skill body lives in the canonical install
   directory; this folder contains only the additive references, validator,
-  tests, fixtures, and examples that v4.4 introduces.
+  tests, fixtures, and examples that these changes introduce.
 ---
 
 # instrument-maker-v4 — partial-skill entry (v4.4 acoustic-law enhancement)
@@ -22,7 +23,9 @@ on Tony's installs and is not yet versioned in this repository.
 
 What lives here is the **v4.4 acoustic-law / reed boundary-condition
 enhancement** that closes
-[issue #73](https://github.com/tonykoop/claude-skills/issues/73):
+[issue #73](https://github.com/tonykoop/claude-skills/issues/73), plus the
+**v4.4.1 free-reed/khaen exploration template** for
+[issue #109](https://github.com/tonykoop/claude-skills/issues/109):
 
 ```
 skills/instrument-maker-v4/
@@ -30,14 +33,19 @@ skills/instrument-maker-v4/
 ├── CHANGELOG.md                                ← v4.4 entry only
 ├── references/
 │   ├── acoustic-models.md                      ← canonical + new "Reed boundary-condition decision tree" section
-│   └── family-aware-design.md                  ← canonical + new family-spec.csv schema (acoustic_law, end_condition, dimension_provenance)
+│   ├── family-aware-design.md                  ← canonical + new family-spec.csv schema (acoustic_law, end_condition, dimension_provenance)
+│   └── free-reed-khaen-exploration.md          ← P0 reed coupon / control-build template
 ├── scripts/
 │   └── validate_acoustic_law.py                ← new in v4.4; focused validator
 ├── tests/
 │   ├── test_validate_acoustic_law.py           ← 16 unit tests
 │   └── fixtures/family-spec/{pass,fail}/       ← 4 pass + 4 fail fixtures
 └── examples/
-    └── khaen/family-spec.csv                   ← combined traditional + sister + planning rows
+    └── khaen/
+        ├── family-spec.csv                     ← combined traditional + sister + planning rows
+        ├── p0-reed-coupon-log.csv             ← reed-alone pitch, pull-down, onset, blow/draw log
+        ├── mouth-organ-dxf-checklist.csv       ← reed window / socket / gasket / windchest checklist
+        └── free-reed-sourcing.csv              ← source_status values for unstable reed stock
 ```
 
 ## Why this is a partial skill
@@ -60,6 +68,8 @@ cp -r skills/instrument-maker-v4/references/*.md \
       ~/.claude/skills/instrument-maker-v4/references/
 cp     skills/instrument-maker-v4/scripts/validate_acoustic_law.py \
       ~/.claude/skills/instrument-maker-v4/scripts/
+cp -r skills/instrument-maker-v4/examples/khaen \
+      ~/.claude/skills/instrument-maker-v4/examples/
 ```
 
 ## How to validate a packet's family-spec.csv
@@ -80,6 +90,11 @@ This stub does **not** add new trigger phrases. The canonical
 instrument-maker-v4 skill keeps its existing triggers; the v4.4 changes
 are invisible to the user except as a hard validator gate at packet
 generation time.
+
+For free-reed / khaen work in the canonical skill, load
+`references/free-reed-khaen-exploration.md` before drafting CAD. The first
+build should be a reed coupon and single-pipe control unless measured coupon
+data already exists.
 
 ## Tests
 
