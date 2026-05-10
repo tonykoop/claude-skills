@@ -1,0 +1,29 @@
+{
+  "id": "yoga-power-sustained",
+  "name": "Sustained Power Flow (60-min)",
+  "description": "60-minute power vinyasa with longer holds and a dedicated drill block. Five-block structure: Integration → Sun A & B → Core/Drills → Standing Peak → Cool Down → Savasana. Higher coaching demand than basic power vinyasa.",
+  "duration_min": 60,
+  "duration_acceptable": [58, 64],
+  "padding_default_min": 3,
+  "track_count_target": [14, 17],
+  "music_pedagogy": {
+    "beat": "Sustained holds need steady, sustained rhythmic support — not just build-and-drop patterns.",
+    "voice": "More cueing per minute than basic power flow (alignment work, drill counts). Vocal density of tracks should be lowest during the drill block.",
+    "count": "8-count countdowns are common in drills (e.g. boat-pose pulses, bicycle twists)."
+  },
+  "phases": [
+    { "name": "Integration",          "bank": "A", "min_tracks": 1, "max_tracks": 2, "window_min": [0, 7],   "energy": 2, "notes": "Meditative, atmospheric. Integrating onto the mat." },
+    { "name": "Sun A & B (Build)",    "bank": "B", "min_tracks": 3, "max_tracks": 4, "window_min": [7, 25],  "energy": 6, "notes": "Increasing energy and tempo for breath-to-movement flows." },
+    { "name": "Core & Drills",        "bank": "D", "min_tracks": 1, "max_tracks": 2, "window_min": [25, 32], "energy": 9, "notes": "High-energy, beat-driven. Repetitive, tempo-locked.", "bpm_target": [110, 130] },
+    { "name": "Standing Series",      "bank": "D", "min_tracks": 3, "max_tracks": 4, "window_min": [32, 47], "energy": 8, "notes": "Warriors, balances, peak posture. Sustained intensity." },
+    { "name": "Cool Down",            "bank": "E", "min_tracks": 2, "max_tracks": 3, "window_min": [47, 55], "energy": 4, "notes": "Floor work, hip openers, forward folds." },
+    { "name": "Savasana",             "bank": "A", "min_tracks": 1, "max_tracks": 2, "window_min": [55, 64], "energy": 1, "notes": "Very low energy or ambient. Supports 2+ minutes of silence in savasana — a track may end before silence falls." }
+  ],
+  "theme_anchor": {
+    "bank": "C",
+    "window_min": [25, 35],
+    "tracks": 1,
+    "rationale": "Lyrics land at the drill-block transition or just after — peak emotional + physical intensity."
+  },
+  "content_filter": "Filter explicit lyrics by default for studio-friendliness."
+}

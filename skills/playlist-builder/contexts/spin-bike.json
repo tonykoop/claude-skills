@@ -1,0 +1,24 @@
+{
+  "id": "spin-bike",
+  "name": "Spin / Indoor Cycling (40-min)",
+  "description": "40-minute indoor cycling class. Two distinct peak waves separated by a recovery dip. Trance / progressive-house / EDM aesthetic. Tracks tend to be long (5-7 min) so each block of climb/sprint can ride a single extended remix.",
+  "duration_min": 40,
+  "duration_acceptable": [35, 50],
+  "padding_default_min": 2,
+  "track_count_target": [6, 9],
+  "music_pedagogy": {
+    "beat": "Cadence-locked. Climbs sit at 60-80 BPM (heavy resistance, slow turnover); sprints at 130-150 BPM. The track's BPM IS the rider's cadence — pick deliberately.",
+    "voice": "Spin instructors cue cadence and resistance rapidly. Vocal-heavy tracks crowd the cue space. Long instrumental builds are valuable.",
+    "count": "8-count and 16-count are common for resistance changes. EDM build-and-drop structures map naturally to climbs (build) and sprints (drop)."
+  },
+  "phases": [
+    { "name": "Warmup",       "bank": "B", "min_tracks": 1, "max_tracks": 1, "window_min": [0, 4],   "energy": 4, "bpm_target": [90, 105], "notes": "Single 3-4 min track, mid energy, no surprises." },
+    { "name": "Build",        "bank": "B", "min_tracks": 1, "max_tracks": 2, "window_min": [4, 12],  "energy": 6, "bpm_target": [105, 120], "notes": "Progressive house build. Resistance is climbing." },
+    { "name": "Peak Wave 1",  "bank": "D", "min_tracks": 1, "max_tracks": 2, "window_min": [12, 22], "energy": 9, "bpm_target": [125, 140], "notes": "First sprint / climb peak. Use long extended-mix trance or EDM anthems." },
+    { "name": "Recovery",     "bank": "E", "min_tracks": 1, "max_tracks": 1, "window_min": [22, 27], "energy": 5, "bpm_target": [95, 110], "notes": "Brief comedown. Riders catch breath. ~3-5 min track." },
+    { "name": "Peak Wave 2",  "bank": "D", "min_tracks": 1, "max_tracks": 2, "window_min": [27, 36], "energy": 10, "bpm_target": [128, 150], "notes": "Bigger peak than wave 1. Final sprint. Bring the anthem." },
+    { "name": "Cool Down / Anthem", "bank": "E", "min_tracks": 1, "max_tracks": 2, "window_min": [36, 45], "energy": 4, "bpm_target": [80, 105], "notes": "Balearic / chill-out / emotional closer. Often ends on a vocal anthem." }
+  ],
+  "theme_anchor": null,
+  "_inspiration": "Structure derived from Tony Koop's Spin-1, Spin-2, Spin-3 public playlists (spotify.com/user/tonykoop). Track choices in those playlists are 2011-2012 era; the structural pattern is what's portable. New playlists should reach for current-era artists in the same lanes (prog house, trance, EDM)."
+}
