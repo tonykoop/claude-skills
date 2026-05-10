@@ -104,12 +104,12 @@ skills:
     notes: Umbrella routing skill for physical making projects and specialist handoffs.
 
   yoga-sequencer:
-    canonical_version: 1.0.0
+    canonical_version: 1.1.0
     runtime: shared
     repo_path: skills/yoga-sequencer
-    last_updated: 2026-05-08
+    last_updated: 2026-05-10
     status: active
-    notes: Vinyasa-first shared class-sequencing skill with playlist-builder handoff output.
+    notes: Vinyasa-first shared class-sequencing skill with playlist-builder handoff output. v1.1.0 adds cue-density arcs and alternate-peak guidance.
 
   makerspace:
     canonical_version: 1.0.0
