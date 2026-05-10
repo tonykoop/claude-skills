@@ -10,5 +10,8 @@ interface:
     - "review my ideas"
     - "does this connect to anything"
     - "promote idea #N"
+    - "promote the cluster"
+    - "batch promote"
+    - "review the cluster"
 policy:
   allow_implicit_invocation: true
