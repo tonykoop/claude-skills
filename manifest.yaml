@@ -110,18 +110,19 @@ skills:
     notes: Umbrella routing skill for physical making projects and specialist handoffs. v1.1 adds the human-carrying / floatable-object safety gate.
 
   instrument-maker-v4:
-    canonical_version: 4.4.0
+    canonical_version: 4.4.1
     runtime: shared
     repo_path: skills/instrument-maker-v4
     last_updated: 2026-05-10
     status: partial
     notes: |
       Partial-skill repo entry hosting the v4.4 acoustic-law / reed
-      boundary-condition enhancement (issue #73). The full skill body
+      boundary-condition enhancement (issue #73) and v4.4.1 free-reed/khaen
+      exploration template (issue #109). The full skill body
       lives in the canonical install at ~/.claude/skills/instrument-maker-v4
       and is not yet versioned in this repo. This entry contains the
       additive references, validator, tests, fixtures, and examples that
-      v4.4 introduces. See skills/instrument-maker-v4/SKILL.md for the
+      v4.4/v4.4.1 introduce. See skills/instrument-maker-v4/SKILL.md for the
       partial-skill contract.
 
   yoga-sequencer:

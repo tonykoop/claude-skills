@@ -123,6 +123,12 @@ This example distinguishes the *traditional long-pipe side-branch* khaen
 from the *compact quarter-wave experimental* sister build — exactly the
 pair Round 7 lane Irene exposed.
 
+For a new free-reed/khaen exploration, start with
+`references/free-reed-khaen-exploration.md`. Use
+`acoustic_law=unknown_requires_measurement` for donor reeds until the P0 reed
+coupon records reed-alone pitch, pull-down cents, onset pressure, and blow/draw
+behavior.
+
 ### Example (idiophone family — tongue drum, no `acoustic_law` requirement)
 
 For non-pipe instruments (idiophones, membranes, strings), `acoustic_law`
