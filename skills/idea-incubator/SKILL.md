@@ -1,7 +1,7 @@
 ---
 name: idea-incubator
 metadata:
-  version: 1.2.0
+  version: 1.3.0
   last-updated: 2026-05-10
 description: >-
   Capture, classify, connect, review, and promote speculative ideas into a
@@ -61,7 +61,10 @@ Gemini CLI) hit them as reliably as Claude does.
    [`references/promotion-handoff.md`](references/promotion-handoff.md) before
    selecting a single issue, and run the **binary-asset / LFS prompts** when
    the capture mentions CAD, media, ZIPs, PDFs, audio, video, or any asset
-   likely to exceed 100 MB.
+   likely to exceed 100 MB. When the idea involves private media, family
+   archives, photo albums, scanned documents, or personal video, also run the
+   privacy-first checklist in
+   [`references/private-media-family-archive.md`](references/private-media-family-archive.md).
 6. **Promote-batch** - cluster-aware promotion. Use when multiple capture
    issues share a recovery, archive, intake-dump, or thematic root and should
    be triaged as a unit instead of one-by-one. See the dedicated section
@@ -135,6 +138,9 @@ When in doubt for a recovery/import cluster, default to `Refs`.
 - [`references/label-schema.md`](references/label-schema.md)
 - [`references/issue-template.md`](references/issue-template.md)
 - [`references/promotion-handoff.md`](references/promotion-handoff.md)
+- [`references/private-media-family-archive.md`](references/private-media-family-archive.md)
+  - Privacy-first promotion template for family archives, photo albums,
+    scanned documents, and personal video.
 - [`references/promote-batch-example.md`](references/promote-batch-example.md)
   - Worked example: legacy-import / Weather Balloon Camera Vessel cluster.
 

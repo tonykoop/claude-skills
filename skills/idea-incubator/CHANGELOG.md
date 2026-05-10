@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.3.0 - 2026-05-10
+
+- Added private media / family archive promotion guidance for photo albums,
+  scanned documents, personal video, and image-gen-assisted private album work.
+- New reference: `references/private-media-family-archive.md` with private-repo
+  default, one curated pilot batch, privacy boundary, reviewer/consent checks,
+  EXIF/GPS strip-or-quarantine policy, source/evidence ledger templates, repo
+  scaffold hints, and media LFS defaults.
+- `promotion-handoff.md` now routes private media captures through the
+  privacy-first checklist before drafting downstream issues.
+- Added round-3 eval expectations for promoting a family photo archive idea.
+
 ## 1.2.0 - 2026-05-10
 
 - Added Promote-batch (mode 6) for cluster-aware promotion of recovery /
