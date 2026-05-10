@@ -2,6 +2,23 @@
 
 Use this only when the builder-ready gate passes or when the user explicitly wants a provisional prototype plan. Label provisional handoffs clearly.
 
+## Intake (required)
+
+Carry the `intake:` block from the observation ledger forward verbatim:
+
+```yaml
+intake:
+  image_access_mode: direct      # one of: direct | file-path | description-only | missing | partial | named-object
+  images_referenced: 0
+  images_viewable: 0
+  recovery_path: not-needed
+  source_qualifiers: []
+  confidence_ceiling: full       # full | provisional | speculative
+  notes: ""
+```
+
+**Provisional-by-default rule.** If `image_access_mode` is anything other than `direct`, the `Handoff status` field below must read `provisional` unless the user has explicitly accepted a different status with full knowledge of the degraded intake. Do not silently promote to `builder-ready`.
+
 ## Handoff Header
 
 ```text
