@@ -1,6 +1,13 @@
 ---
 name: yoga-sequencer
-description: Design vinyasa-first yoga class sequences, peak-pose progressions, anatomical prep, counter-poses, and full class plans with phase timing plus playlist-builder handoff data. Use when planning a yoga class, sequencing for hips, shoulders, twists, or backbends, choosing prep for a peak pose, or turning a class arc into music-ready phases.
+version: 1.1.0
+last-updated: 2026-05-10
+description: >-
+  Design vinyasa-first yoga class sequences, peak-pose progressions,
+  anatomical prep, counter-poses, and full class plans with phase timing plus
+  playlist-builder handoff data. Use when planning a yoga class, sequencing
+  for hips, shoulders, twists, or backbends, choosing prep for a peak pose, or
+  turning a class arc into music-ready phases.
 ---
 
 # Yoga Sequencer
@@ -32,7 +39,9 @@ These references are bundled but not all are needed every time. Pull only what t
 - `references/poses.yaml`
   Query for specific lookups: prep ladder for a peak pose, counter-pose ideas, or constraint-aware substitutions. For a routine class plan that only uses the staple poses listed below, you usually do not need to open this file at all.
 - `references/sequencing-principles.md`
-  Open when you need the default arc by class length, peak-pose ladders, or the bilateral symmetry checklist.
+  Open when you need the default arc by class length, cue-density defaults,
+  peak-pose ladders, alternate peak guidance, or the bilateral symmetry
+  checklist.
 - `references/playlist-builder-handoff.md`
   Open when the user wants music or a phase-timing export.
 
@@ -103,6 +112,9 @@ Start from the most demanding shape and work backward.
 - Use `poses.yaml` to identify required actions, likely prep poses, and safer regressions.
 - Build heat, mobility, strength, and pattern recognition before the peak.
 - Include at least one simpler version or exit ramp.
+- If the peak has a bind, deep twist, heavy wrist load, or other
+  constraint-heavy demand, name a teacher-discretion alternate peak that keeps
+  the class theme without requiring the risky feature.
 
 ### Anatomical prep lookup
 
@@ -133,10 +145,14 @@ Produce a phase-by-phase plan with:
 - phase name
 - approximate minutes or breath counts
 - intent
+- cue density using the controlled values `sparse`, `moderate`, `rhythmic`,
+  `focused`, or `minimal`
 - pose order
 - notable cues, modifications, or cautions
 
 Always include warm-up, standing build, peak or focal work, counterpose, cooldown, and savasana.
+When the main peak involves binds, deep twists, or heavy wrist load, include an
+alternate peak or explicit exit route for mixed-level teaching.
 
 ### Playlist handoff
 
@@ -151,6 +167,8 @@ The YAML is part of the contract for any full class plan — see "When to includ
 - Do not let one joint action dominate too long without relief.
 - Keep floor-to-stand and stand-to-floor transitions intentional instead of fussy.
 - If crow, inversion, deep twist, or deep backbend appears, give it runway and recovery.
+- If a peak includes a bind, deep twist, or heavy wrist load, give students a
+  steady-breath alternate peak that preserves the theme at lower risk.
 - Match breath cadence to the class goal: steadier for grounding, quicker only when the user clearly wants heat.
 - If one side gets extra rounds, state why and re-balance later when possible.
 
@@ -166,7 +184,7 @@ The YAML is part of the contract for any full class plan — see "When to includ
 For a full sequence, use this structure unless the user asks for something shorter:
 
 1. Class summary: length, level, theme, peak pose, energy.
-2. Sequence by phase: timing, intent, pose order, brief cues.
+2. Sequence by phase: timing, intent, cue density, pose order, brief cues.
 3. Modifications and cautions.
 4. Playlist phase-map YAML block (see rule below).
 

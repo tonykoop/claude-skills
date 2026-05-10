@@ -21,6 +21,7 @@ class_plan:
   level: mixed-level
   theme: hip-opening with steady grounding
   peak_pose: crow
+  alternate_peak: squat hold or plank
   overall_energy: warm -> focused -> lift -> settle
 playlist_handoff:
   total_length_min: 60
@@ -72,7 +73,11 @@ playlist_handoff:
 ## Phase notes
 
 - `energy` should describe musical intensity, not pose difficulty alone.
-- `cue_density` helps the playlist skill distinguish sparse teaching sections from more rhythmic flow sections.
+- `cue_density` helps the playlist skill distinguish sparse teaching sections
+  from more rhythmic flow sections. Use the controlled values `sparse`,
+  `moderate`, `rhythmic`, `focused`, or `minimal`.
+- `focused` peak work often needs less lyrically dense music than a `rhythmic`
+  flow phase, even when the pose intensity is higher.
 - Keep `start_min` and `end_min` contiguous so the total plan covers the class cleanly.
 - If the sequence uses breath counts instead of exact minutes, convert them into approximate phase timing before handoff.
 

@@ -8,7 +8,9 @@ Use this reference when building or checking a class arc.
 - Class-building heuristics
 - Bilateral symmetry checklist
 - Warm-up guidance
+- Cue-density arcs
 - Peak-pose ladders
+- Alternate peak and exit-route rules
 - Counter-pose rules
 - Mixed-level room defaults
 - Breath-count heuristics
@@ -47,6 +49,14 @@ Use this reference when building or checking a class arc.
 - Peak or focal work: 10 to 14 minutes
 - Cooldown and savasana: 18 to 20 minutes
 
+### 90 minutes
+
+- Arrival and breath: 6 to 8 minutes
+- Warm-up and floor prep: 15 to 18 minutes
+- Standing flow and build: 32 to 38 minutes
+- Peak or focal work: 12 to 16 minutes
+- Cooldown and savasana: 20 to 24 minutes
+
 ## Class-building heuristics
 
 - Choose one main story: anatomical region, energetic tone, or peak pose.
@@ -68,6 +78,44 @@ Use this reference when building or checking a class arc.
 - For wrist-heavy or shoulder-heavy classes, build load progressively before plank, chaturanga, or crow work.
 - For backbend themes, warm the legs, glutes, thoracic spine, and shoulders before asking for deep range.
 - For hip-opening themes, blend mobility with standing strength so the class does not collapse into passive stretching.
+
+## Cue-density arcs
+
+Use cue density to describe how much teaching voice a phase needs. It is
+separate from pose intensity and separate from musical energy. A peak alignment
+phase may need `focused` cueing with less busy music; a simple flow phase may be
+energetic but only need `rhythmic` cueing.
+
+Controlled values:
+
+- `sparse`: enough language to orient students, then space to feel.
+- `moderate`: active teaching with room for breath and transitions.
+- `rhythmic`: concise breath-led cues, useful for repeated vinyasa flow.
+- `focused`: precise alignment, safety, or choice-point cueing.
+- `minimal`: final rest or very quiet integration.
+
+Default vinyasa arc:
+
+| Class length | Arrival | Warm-up | Standing build | Peak/focal work | Cooldown | Savasana |
+| --- | --- | --- | --- | --- | --- | --- |
+| 60 min | sparse | moderate | rhythmic | focused | sparse | minimal |
+| 75 min | sparse | moderate | rhythmic | focused | sparse | minimal |
+| 90 min | sparse | moderate | rhythmic | focused | sparse | minimal |
+
+For 75- and 90-minute vinyasa classes, the longer time usually expands the
+warm-up, standing build, and cooldown. Do not keep adding cue density just
+because the class is longer.
+
+Common yin/restorative arc:
+
+| Class style | Arrival | First shape | Middle holds | Transitions | Final rest |
+| --- | --- | --- | --- | --- | --- |
+| Yin | sparse | moderate | sparse | moderate | minimal |
+| Restorative | sparse | moderate | sparse | sparse | minimal |
+
+For yin or restorative plans, cue density should usually drop after the setup of
+each shape. Music choices should avoid dense lyrics during `moderate` setup
+sections and stay unobtrusive during `sparse` or `minimal` holds.
 
 ## Peak-pose ladders
 
@@ -107,6 +155,28 @@ Use this reference when building or checking a class arc.
 - Standing integration
 - Peak hip opener
 - Neutralizing fold, twist, or reclined reset
+
+## Alternate peak and exit-route rules
+
+Some peaks are constraint-heavy even when they are common in public vinyasa
+classes. If the main peak uses a bind, deep twist, heavy wrist load, strong
+neck position, or deep backbend, include both:
+
+- an alternate peak that preserves the class theme at lower risk
+- an exit route students can take during the peak phase without feeling off-plan
+
+Useful pairings:
+
+| Constraint-heavy peak | Lower-risk alternate peak | Exit route |
+| --- | --- | --- |
+| Crow or arm balance | Squat hold, plank, or toes-on-block crow prep | Child's Pose or wrist unloading |
+| Bound Side Angle | Side Angle with top hand on hip or strap half-bind | Warrior II, then Down Dog |
+| Revolved Crescent | Low Lunge Twist or Crescent with hands at heart | Low Lunge with hands on blocks |
+| Revolved Triangle | Triangle with hand on block and neutral gaze | Pyramid or Mountain reset |
+| Camel | Supported Bridge or hands-to-low-back Camel prep | Kneeling neutral, then Child's Pose |
+
+The alternate peak is not a consolation prize. Cue it as the same teaching
+intent with less load or fewer constraints.
 
 ## Counter-pose rules
 

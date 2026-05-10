@@ -1,0 +1,74 @@
+---
+class_plan:
+  title: Wring Open, Stay Spacious
+  style: heated_power_vinyasa
+  length_min: 60
+  level: mixed-level
+  theme: gentle twists and shoulder opening
+  peak_pose: side_angle_half_bind_ladder
+  alternate_peak: side_angle_with_top_hand_on_hip_or_strap_half_bind
+  exit_route: warrior_ii_to_down_dog_or_childs_pose
+  overall_energy: >-
+    slow landing -> steady heat -> rhythmic strength -> focused peak ->
+    downshift -> protected rest
+playlist_handoff:
+  total_length_min: 60
+  phases:
+    - id: arrival
+      label: Arrival and breath
+      start_min: 0
+      end_min: 4
+      energy: low
+      cue_density: sparse
+      notes: rib breath and gentle seated twist
+    - id: warmup
+      label: Shoulder and spine warm-up
+      start_min: 4
+      end_min: 10
+      energy: low-medium
+      cue_density: moderate
+      notes: cat-cow, scapular push-ups, thread the needle
+    - id: sun_a
+      label: Sun A heat layer
+      start_min: 10
+      end_min: 16
+      energy: medium
+      cue_density: rhythmic
+      notes: repeated salutations with cobra and optional knees-down plank
+    - id: sun_b
+      label: Sun B with twist preview
+      start_min: 16
+      end_min: 24
+      energy: medium-high
+      cue_density: rhythmic
+      notes: chair twist, warrior I, humble warrior option
+    - id: standing_build
+      label: Standing build
+      start_min: 24
+      end_min: 39
+      energy: high
+      cue_density: rhythmic
+      notes: crescent twist, warrior II, side angle, triangle
+    - id: peak
+      label: Side Angle shoulder-opening ladder
+      start_min: 39
+      end_min: 48
+      energy: medium-high
+      cue_density: focused
+      notes: >-
+        top hand on hip, overhead reach, half-bind, or strap bind; exit through
+        warrior II to down dog
+    - id: downshift
+      label: Counterpose and floor downshift
+      start_min: 48
+      end_min: 55
+      energy: low
+      cue_density: sparse
+      notes: child pose, half split, bridge, reclined figure four
+    - id: savasana
+      label: Savasana
+      start_min: 55
+      end_min: 60
+      energy: very-low
+      cue_density: minimal
+      notes: quiet landing
