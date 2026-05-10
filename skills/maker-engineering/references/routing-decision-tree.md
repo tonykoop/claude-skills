@@ -12,6 +12,25 @@ repair, measurement rig, acoustic object, or manufactured artifact.
 Do not activate for generic software, UI, branding, writing, or product strategy
 unless the user connects it to a buildable object or making workflow.
 
+## 1a. Safety-Critical Object Check
+
+Before choosing a route, ask: does this object carry a person, float with a
+person aboard, or sit above a person? If yes, the project is safety-critical.
+Run `references/human-carrying-safety-gate.md` and produce its eight required
+sub-sections (intended environment, exclusions, anthropometric envelope, load
+cases, prototype-vs-final boundary, staged validation, assisted first use,
+re-validation triggers, plus the verbatim "not a certification" clause)
+**before** issuing any final build packet or specialist handoff.
+
+The gate is owned by `maker-engineering`. `makerspace`,
+`instrument-maker`, and `reverse-engineer` all assume the gate has already
+been run and will rely on its outputs.
+
+Triggers for the gate include but are not limited to: kayak, canoe, boat,
+raft, paddleboard, dock float, life-buoy, bike frame, treehouse, climbing
+rig, ladder, scaffold, swing, hammock stand, child seat, lift platform,
+suspended overhead fixture above a workstation.
+
 ## 2. Primary Axis
 
 Choose the primary axis by the user's next needed deliverable.
@@ -42,6 +61,11 @@ Examples:
 - Build a router jig for repeated tone-hole drilling:
   - `instrument-maker`: tone-hole datum requirements.
   - `makerspace`: jig/workholding/toolpath implementation.
+- Steam-bent skin-on-frame kayak (safety-critical, human-carrying, floatable):
+  - `maker-engineering`: safety-gate sub-sections, parametric schema,
+    DoE matrix for steam-bend trials and float trials.
+  - `makerspace`: steam plant, bending forms, strongback, station molds.
+  - The gate runs first; specialist handoffs reference its outputs.
 
 Do not ask one specialist to absorb another specialist's deliverable. Cross-link
 the handoffs instead.

@@ -96,12 +96,12 @@ skills:
     notes: Promote-batch mode; readiness matrix, evidence-ledger, LFS prompts for recovery/import.
 
   maker-engineering:
-    canonical_version: 1.0.0
+    canonical_version: 1.1.0
     runtime: shared
     repo_path: skills/maker-engineering
-    last_updated: 2026-05-08
+    last_updated: 2026-05-10
     status: active
-    notes: Umbrella routing skill for physical making projects and specialist handoffs.
+    notes: Umbrella routing skill for physical making projects and specialist handoffs. v1.1 adds the human-carrying / floatable-object safety gate.
 
   yoga-sequencer:
     canonical_version: 1.1.0
