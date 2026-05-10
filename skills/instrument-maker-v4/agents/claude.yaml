@@ -1,0 +1,63 @@
+interface:
+  display_name: "Instrument Maker v4.3"
+  short_description: "Design instruments end-to-end with guided intake, CNC setup plans, Wolfram packages, specialists, catalog database, build-log site, and public-readiness triage"
+  default_prompt: "Use the instrument-maker-v4 skill to design a musical instrument with guided intake if needed, a parametric design sheet, sourcing packet, CNC operation/setup plan, dimensioned drawings, Wolfram model package, visual BOM, resources index, jig decision table, capstone slide deck (.pptx), printable shop packet (.pdf), build-log static site, and validation plan. Dispatch to the right specialist sub-agent (acoustician / manufacturing-planner / documentarian / verifier / red-team) for each phase."
+  triggers:
+    # Primary
+    - "design a new musical instrument"
+    - "create a build packet for [instrument]"
+    - "make me a capstone deck for [instrument]"
+    - "produce a printable shop packet for [instrument]"
+    - "calculate tongue/bar/string/bore dimensions for [target]"
+    - "extend Flutes-AI.xlsx with a [instrument] sheet"
+    - "extend Musical Instruments V2 with a new [family] sheet"
+    # Family-only
+    - "design a new vessel-flute family"
+    - "size a stave drum"
+    - "tune a marimba bar"
+    - "scale a tongue drum"
+    # Sub-task
+    - "draw the title block"
+    - "size the bore for an A4 NAF"
+    - "what miter angle for a 16-segment ashiko"
+    - "what bits do I need for tongue slits"
+    - "publish a build-log page"
+    - "record a measurement"
+    - "audit this design"
+    - "what could go wrong with this packet"
+    - "run guided design intake"
+    - "generate a CNC operation plan"
+    - "generate a Wolfram packet"
+    - "make a public-ready resources index"
+    - "decide whether this jig should be made, ordered, bought, or borrowed"
+    # New instrument families v4 covers
+    - "design a handpan"
+    - "design a steel pan"
+    - "design tubular bells"
+    - "design a cajón"
+    - "design a glockenspiel"
+    - "design a great highland bagpipe"
+    - "design a duntong"
+    # v4-specific
+    - "promote the catalog to a database"
+    - "query the catalog"
+    - "migrate this packet from v3 to v4"
+    - "ingest measured tuner data"
+    - "regenerate predictions for the cherry tongue drums"
+deliverables:
+  - "Parametric design sheet (.xlsx)"
+  - "Build packet folder (design.md, bom.csv, sourcing.csv, cut-list.csv, validation.csv, assembly-manual.md, supplier-rfq.md, visual-bom-brief.md, drawing-brief.md, wolfram-starter.wl, risks.md, photo-shotlist.md, resources.md, jig-decision.md)"
+  - "Guided design intake (design-intake.json, design-input-row.csv)"
+  - "CNC operation/setup plan (cnc-plan.json, operations.csv, setup-sheet.md)"
+  - "Dimensioned drawings (per-family-member SVGs in drawings/)"
+  - "Capstone slide deck (.pptx)"
+  - "Printable shop packet (.pdf)"
+  - "Build-log static site (site/)"
+  - "Catalog SQLite database (catalog.sqlite)"
+  - "Wolfram model package (.wl)"
+specialists:
+  - acoustician
+  - manufacturing-planner
+  - documentarian
+  - verifier
+  - red-team

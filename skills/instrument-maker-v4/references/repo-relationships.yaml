@@ -1,0 +1,315 @@
+# Cross-repo sister-repo registry for the tonykoop musical-instrument catalogue.
+#
+# Used by capstone deck + README generators to auto-link related repos.
+# When generating a packet for instrument X, the generator queries this
+# file with X's slug and emits links to all sisters in X's `sisters` list.
+#
+# Adding a new repo: append an entry under the appropriate group, then
+# add the new slug to the `sisters` list of any related instrument.
+# Groups are descriptive only — they don't constrain link generation.
+#
+# Schema:
+#   <slug>:
+#     name:        Human-readable instrument name
+#     family:      Acoustic family (vessel-flute | duct-flute | open-pipe |
+#                                  cantilever-idiophone | drum-cavity |
+#                                  string-plucked | string-bowed | reed |
+#                                  drum-skin | hybrid)
+#     pipeline:    Shop pipeline (slip-cast | laser-cut | cnc-lathe |
+#                                segmented-turning | drum-skin | hybrid)
+#     status:      built | in-progress | partial-packet | scaffold | queued
+#     sisters:     List of other slugs that share physics, lineage, or
+#                  shop pipeline with this instrument
+#     notes:       Optional one-line context
+
+# ---------- Slip-cast ceramic vessel resonators ----------
+ocarina:
+  name: Ocarina (slip-cast Alto C 12-hole + family)
+  family: vessel-flute
+  pipeline: slip-cast
+  status: built
+  sisters: [udu, gemshorn, transverse-flute, kena, ceramic-tongue-drum]
+  notes: Single-Helmholtz vessel; canonical ocarina form.
+
+udu:
+  name: Udu drum family (S/M/L/XL)
+  family: drum-cavity
+  pipeline: slip-cast
+  status: built
+  sisters: [ocarina, gemshorn, transverse-flute, ceramic-electric-violin, djembe]
+  notes: Dual-Helmholtz vessel drum, Igbo lineage.
+
+gemshorn:
+  name: Gemshorn slip-cast horn-flute family
+  family: vessel-flute
+  pipeline: slip-cast
+  status: built
+  sisters: [ocarina, transverse-flute, kena, andean-duct-flutes]
+  notes: Closest-in-shape comparison for ocarina; canonical slip-cast horn form.
+
+transverse-flute:
+  name: Slip-cast transverse flute family
+  family: open-pipe
+  pipeline: slip-cast
+  status: built
+  sisters: [ocarina, gemshorn, kena, irish-flute, shakuhachi, fujara]
+  notes: Slip-cast bore, transverse embouchure.
+
+kena:
+  name: Kena (Andean notched-end vessel/duct flute)
+  family: duct-flute
+  pipeline: slip-cast
+  status: scaffold
+  sisters: [ocarina, gemshorn, transverse-flute, andean-duct-flutes, siku-zampona]
+  notes: Slip-cast viable; Andean tradition.
+
+ceramic-tongue-drum:
+  name: Ceramic tongue drum
+  family: cantilever-idiophone
+  pipeline: slip-cast
+  status: scaffold
+  sisters: [tongue-drum, udu, ocarina, handpan]
+  notes: Slip-cast variant of the wooden tongue-drum design study.
+
+ceramic-electric-violin:
+  name: Ceramic electric violin (slip-cast body + pickup)
+  family: hybrid
+  pipeline: slip-cast
+  status: scaffold
+  sisters: [acoustic-violin, electric-violin, udu, ocarina]
+  notes: Hybrid acoustic/electric; slip-cast body, contact pickup.
+
+andean-duct-flutes:
+  name: Andean duct flute family (siku, zampona, moseno, pistalka)
+  family: duct-flute
+  pipeline: slip-cast
+  status: queued
+  sisters: [kena, gemshorn, transverse-flute, siku-zampona, moseno, pistalka]
+  notes: Family of related duct flutes; slip-cast adaptation.
+
+handpan:
+  name: Handpan (steel-tongue idiophone)
+  family: cantilever-idiophone
+  pipeline: hybrid
+  status: queued
+  sisters: [tongue-drum, ceramic-tongue-drum]
+  notes: Steel rather than ceramic; tonal-vessel adjacent.
+
+# ---------- Laser-cut + wooden idiophones ----------
+tongue-drum:
+  name: Tongue drum (wooden box, magazine baseline + 2 originals)
+  family: cantilever-idiophone
+  pipeline: laser-cut
+  status: built
+  sisters: [ceramic-tongue-drum, handpan, marimba, glockenspiel]
+  notes: DoE study reference; canonical wooden tongue drum.
+
+marimba:
+  name: Marimba (tuned wooden bars + resonators)
+  family: cantilever-idiophone
+  pipeline: laser-cut
+  status: scaffold
+  sisters: [glockenspiel, tongue-drum, kalimba]
+  notes: Bar tuning + Helmholtz resonator coupling.
+
+glockenspiel:
+  name: Glockenspiel (tuned metal bars)
+  family: cantilever-idiophone
+  pipeline: laser-cut
+  status: scaffold
+  sisters: [marimba, tongue-drum]
+
+# ---------- Open-pipe woodwinds (CNC + lathe) ----------
+flutes:
+  name: Native American style flutes (NAF family with K2 corrections)
+  family: open-pipe
+  pipeline: cnc-lathe
+  status: built
+  sisters: [shakuhachi, irish-flute, fujara, kena, transverse-flute]
+  notes: Empirical NAF K2 bore corrections from 150+ flutes.
+
+shakuhachi:
+  name: Shakuhachi
+  family: open-pipe
+  pipeline: cnc-lathe
+  status: scaffold
+  sisters: [flutes, irish-flute, fujara]
+
+irish-flute:
+  name: Irish flute
+  family: open-pipe
+  pipeline: cnc-lathe
+  status: scaffold
+  sisters: [flutes, shakuhachi, transverse-flute]
+
+fujara:
+  name: Fujara (Slovak overtone flute)
+  family: open-pipe
+  pipeline: cnc-lathe
+  status: scaffold
+  sisters: [flutes, didgeridoo, shakuhachi]
+
+duduk:
+  name: Duduk (Armenian double-reed)
+  family: reed
+  pipeline: cnc-lathe
+  status: scaffold
+  sisters: [chalumeau, great-highland-bagpipe]
+
+didgeridoo:
+  name: Didgeridoo
+  family: open-pipe
+  pipeline: cnc-lathe
+  status: scaffold
+  sisters: [fujara]
+
+chalumeau:
+  name: Chalumeau (single-reed precursor to clarinet)
+  family: reed
+  pipeline: cnc-lathe
+  status: scaffold
+  sisters: [duduk, great-highland-bagpipe]
+
+great-highland-bagpipe:
+  name: Great Highland Bagpipe
+  family: reed
+  pipeline: cnc-lathe
+  status: scaffold
+  sisters: [chalumeau, duduk]
+
+# ---------- Strings (CNC + lathe / luthiery) ----------
+acoustic-violin:
+  name: Acoustic violin
+  family: string-bowed
+  pipeline: cnc-lathe
+  status: scaffold
+  sisters: [electric-violin, ceramic-electric-violin, lyre]
+
+electric-violin:
+  name: Electric violin
+  family: string-bowed
+  pipeline: cnc-lathe
+  status: scaffold
+  sisters: [acoustic-violin, ceramic-electric-violin, electric-guitar-bodies]
+
+cnc-guitar-bodies:
+  name: CNC guitar bodies
+  family: string-plucked
+  pipeline: cnc-lathe
+  status: built
+  sisters: [electric-guitar-bodies, lyre]
+
+electric-guitar-bodies:
+  name: Electric guitar bodies
+  family: string-plucked
+  pipeline: cnc-lathe
+  status: built
+  sisters: [cnc-guitar-bodies, electric-violin]
+
+lyre:
+  name: Lyre
+  family: string-plucked
+  pipeline: cnc-lathe
+  status: scaffold
+  sisters: [kora, ngoni, stave-lute-oud]
+
+kora:
+  name: Kora (West African 21-string harp-lute)
+  family: string-plucked
+  pipeline: hybrid
+  status: queued
+  sisters: [ngoni, lyre, stave-lute-oud]
+
+ngoni:
+  name: Ngoni (West African lute)
+  family: string-plucked
+  pipeline: hybrid
+  status: queued
+  sisters: [kora, lyre, stave-lute-oud]
+
+stave-lute-oud:
+  name: Stave-construction lute / oud
+  family: string-plucked
+  pipeline: segmented-turning
+  status: scaffold
+  sisters: [lyre, kora, ngoni]
+
+floor-harp:
+  name: Floor harp
+  family: string-plucked
+  pipeline: cnc-lathe
+  status: scaffold
+  sisters: [lyre, kora]
+
+# ---------- Drum shells + skins ----------
+djembe:
+  name: Djembe
+  family: drum-skin
+  pipeline: segmented-turning
+  status: built
+  sisters: [conga, ashiko-drum-workshop, dundun, udu]
+  notes: Helmholtz cavity-resonance treatment originally derived here.
+
+conga:
+  name: Conga
+  family: drum-skin
+  pipeline: segmented-turning
+  status: scaffold
+  sisters: [djembe, ashiko-drum-workshop]
+
+dundun:
+  name: Dundun (West African talking drum)
+  family: drum-skin
+  pipeline: segmented-turning
+  status: scaffold
+  sisters: [djembe, conga, duntong]
+
+duntong:
+  name: Duntong
+  family: drum-skin
+  pipeline: segmented-turning
+  status: scaffold
+  sisters: [dundun]
+
+ashiko-drum-workshop:
+  name: Ashiko drum (workshop docs + visual BOM reference)
+  family: drum-skin
+  pipeline: segmented-turning
+  status: built
+  sisters: [djembe, conga]
+
+frame-drum:
+  name: Frame drum
+  family: drum-skin
+  pipeline: laser-cut
+  status: scaffold
+  sisters: [ashiko-drum-workshop]
+
+# ---------- Multi-instrument family / queue ----------
+siku-zampona:
+  name: Siku / zampona (Andean panpipes)
+  family: open-pipe
+  pipeline: laser-cut
+  status: scaffold
+  sisters: [andean-duct-flutes, kena, moseno]
+
+moseno:
+  name: Moseno
+  family: open-pipe
+  pipeline: cnc-lathe
+  status: scaffold
+  sisters: [andean-duct-flutes, siku-zampona]
+
+pistalka:
+  name: Pistalka (Slavic shepherd flute)
+  family: open-pipe
+  pipeline: cnc-lathe
+  status: scaffold
+  sisters: [andean-duct-flutes, fujara]
+
+gemshorn-historical:  # placeholder for future split
+  name: Gemshorn (historically informed builds)
+  family: vessel-flute
+  pipeline: cnc-lathe  # natural horn build, not slip-cast
+  status: queued
+  sisters: [gemshorn, ocarina]

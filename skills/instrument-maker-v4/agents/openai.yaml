@@ -1,0 +1,22 @@
+interface:
+  display_name: "Instrument Maker v4.3"
+  short_description: >-
+    Design and validate instrument build packets with acoustic-law, CNC,
+    Wolfram, CAD, and family-aware gates
+  default_prompt: >-
+    Use $instrument-maker-v4 to design a musical instrument with guided intake
+    if needed, a parametric design sheet, acoustic-law record, sourcing packet,
+    CNC operation plan, dimensioned drawings, Wolfram model package, visual BOM,
+    capstone deck, printable shop packet, build-log site, and validation plan.
+  triggers:
+    - "design a new musical instrument"
+    - "create a build packet"
+    - "extend Musical Instruments V2 with a new family"
+    - "promote the catalog to a database"
+    - "record a measurement"
+    - "publish a build-log page"
+    - "audit this design"
+    - "run guided design intake"
+    - "generate a CNC operation plan"
+    - "generate a Wolfram packet"
+    - "validate acoustic law"
