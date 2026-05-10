@@ -149,12 +149,12 @@ skills:
     notes: Portable snapshot from reverse-engineering/skills/v1/reverse-engineer for cross-platform review. v1.1.0 adds image-access preflight and degraded-mode banner (#70).
 
   habitat-maker:
-    canonical_version: 0.2.0
+    canonical_version: 0.3.0
     runtime: shared
     repo_path: skills/habitat-maker
     last_updated: 2026-05-10
     status: active
-    notes: First canonical example (chickadee laser packet) with generator-backed SVG and JSON. Promoted from v0.1 scaffold.
+    notes: Bird-bath/balcony support plus first canonical example (chickadee laser packet) with generator-backed SVG and JSON.
 
   playlist-builder:
     canonical_version: 0.1.0

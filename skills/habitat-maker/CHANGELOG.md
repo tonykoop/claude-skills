@@ -1,5 +1,16 @@
 # habitat-maker — CHANGELOG
 
+## 0.3.0 — 2026-05-10
+
+- Added bird-bath and balcony/renter support to `SKILL.md`, including
+  maintenance-first welfare gates and deployment requirements.
+- Added `references/bird-bath-balcony.md` with shallow-depth, textured
+  footing, escape, dump/scrub, mosquito, material-safety, heat/evaporation,
+  stability, no-drill, drip, window-strike, and travel-dry checks.
+- Added a bird-bath material safety matrix and optional fill-depth gauge
+  template for compact balcony packets.
+- Added smoke-test coverage for the new bird-bath reference and skill routing.
+
 ## 0.2.0 — 2026-05-10
 
 - First working canonical example landed: `examples/chickadee-laser-baltic-birch/`.
