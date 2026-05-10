@@ -1,0 +1,12 @@
+# Changelog — skills-meta
+
+## v1.0.0 — 2026-05-09
+
+- Stable release: drift audit, inventory, sync, and fix-duplicates modes.
+- Cross-platform root handling: Windows, WSL, and macOS install roots.
+- Unreadable root reporting with provenance tracking.
+- Duplicate detection with canonical-copy selection.
+- `--strict` flag: exits 1 when drift or missing manifest skills are found.
+- `changelog_path` tracking: surfaces `missing-changelog` and `changelog-missing-version` issues.
+- PyYAML fallback parser for hosts without site packages.
+- Manifest drift test fixtures (pass/fail) and `docs/manifest-drift-checks.md`.
