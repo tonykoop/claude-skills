@@ -106,6 +106,13 @@ def draw_panel(panel: dict[str, Any], x: float, y: float, params: dict[str, Any]
         rear = float(panel["rear_height_mm"])
         front = float(panel["front_height_mm"])
         elems.append(polygon([(x, y), (x + depth, y + rear - front), (x + depth, y + rear), (x, y + rear)]))
+        if part == "side_wall":
+            vent = params["venting_mm"]
+            slot_h = float(vent["side_vent_slot_height"])
+            slot_w = min(float(vent["side_vent_slot_length"]), max(20.0, depth - 20.0))
+            slot_x = x + (depth - slot_w) / 2
+            slot_y = y + rear - float(vent["side_vent_slot_bottom_above_back_bottom"]) - slot_h
+            elems.append(rect(slot_x, slot_y, slot_w, slot_h, "vent side-vent-slot"))
         h = rear
     else:
         w = float(panel["width_mm"])
@@ -186,4 +193,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

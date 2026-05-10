@@ -8,7 +8,7 @@ Use this as a pass/fail gate before publishing, building, or deploying.
 | Roost gap | Clear chamber gaps are 19-25 mm | pass |
 | Roughened landing | Landing and roost surfaces have kerfs/grooves | pass |
 | Venting | Front split vent and side vents are documented | pass |
-| Clear drop space | Mounting worksheet requires at least 12 ft below exit | pass |
+| Clear drop space | Mounting worksheet requires at least 12 ft below exit | pending site |
 | No mesh | Mesh, screen, and netting are forbidden | pass |
 | No interior finish | Paint, stain, oil, and sealer are forbidden inside | pass |
 | No treated interior lumber | Interior lumber must be untreated | pass |
@@ -26,4 +26,3 @@ Use this as a pass/fail gate before publishing, building, or deploying.
 - A mount below the required clear drop height.
 - A tree-mounted default plan.
 - A site with high summer heat and no shade, venting, or paired thermal option.
-

@@ -678,6 +678,15 @@ class TestBatHouseGenerator(unittest.TestCase):
             }
             self.assertEqual(group_ids, expected,
                              f"unexpected group ids: {group_ids}")
+            side_wall = root.find(".//svg:g[@id='side_wall']", ns)
+            self.assertIsNotNone(side_wall)
+            side_vents = [
+                elem for elem in side_wall.findall(".//svg:rect", ns)
+                if "side-vent-slot" in (elem.get("class") or "")
+            ]
+            self.assertEqual(len(side_vents), 1)
+            self.assertGreater(float(side_vents[0].get("width", "0")), 0)
+            self.assertGreater(float(side_vents[0].get("height", "0")), 0)
 
 
 class TestBatHousePacketShape(unittest.TestCase):
