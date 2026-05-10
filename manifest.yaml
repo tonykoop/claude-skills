@@ -125,12 +125,12 @@ skills:
       partial-skill contract.
 
   yoga-sequencer:
-    canonical_version: 1.1.0
+    canonical_version: 1.2.0
     runtime: shared
     repo_path: skills/yoga-sequencer
     last_updated: 2026-05-10
     status: active
-    notes: Vinyasa-first shared class-sequencing skill with playlist-builder handoff output. v1.1.0 adds cue-density arcs and alternate-peak guidance.
+    notes: Vinyasa-first shared class-sequencing skill with playlist-builder handoff output. v1.2.0 adds heated-room safety checklist and hot-room cue-volume guidance.
 
   makerspace:
     canonical_version: 1.1.0

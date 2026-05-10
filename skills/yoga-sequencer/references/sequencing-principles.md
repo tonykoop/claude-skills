@@ -11,6 +11,7 @@ Use this reference when building or checking a class arc.
 - Peak-pose ladders
 - Alternate-peak guidance
 - Cue density across the arc
+- Heated-room cue volume
 - Counter-pose rules
 - Mixed-level room defaults
 - Breath-count heuristics
@@ -194,10 +195,34 @@ Yin classes that drift into `rhythmic` cueing during long holds are reading as r
 #### Heated power vinyasa, 60 minutes
 Identical to vinyasa 60-min, with an explicit reminder: the peak is **focused**, not loud. Heated rooms reward fewer words.
 
+### Heated-room cue volume
+
+For hot power and other heated public classes, cue density also functions as heat management. The hotter and more repetitive the room gets, the less novelty teacher voice should add.
+
+- Teach the safety contract and effort cap early: downshift options, breath-quality gate, hydration, and heat-distress signs.
+- Use `moderate` cueing in warm-up for wrists, shoulders, spine, knees, and pacing.
+- Use `rhythmic` cueing only while students are learning the repeated pattern.
+- On the second pass of a standing flow, reduce toward `focused`: repeat anchor cues instead of adding new alignment language.
+- During peak work, cue the setup and exit, then leave quiet attempt space.
+- After peak work, drop to `sparse` quickly so breath and nervous-system recovery can lead.
+
+Good heat-room arc for a 60-minute power class:
+
+| Window | Phase | Cue density | Cue-volume note |
+|---|---|---|---|
+| 0-5 | Arrival / heat contract | sparse | one safety line, one breath cue, one theme cue |
+| 5-12 | Warm-up / prep | moderate | landmarks and effort pacing |
+| 12-20 | Sun A heat | rhythmic | breath-to-movement patterning |
+| 20-34 | Repeated standing build | rhythmic -> focused | teach first pass, quiet second pass |
+| 34-44 | Peak or focus work | focused | setup, exit, quiet attempts |
+| 44-56 | Counterpose / cooldown | sparse | unload and downshift |
+| 56-60 | Savasana | minimal | quiet landing |
+
 ### Failure modes
 
 - **Over-cueing the peak.** Students stop feeling and start parsing. Drop to `focused` and let the shape teach.
 - **Under-cueing the build.** Mixed-level students lose alignment landmarks. Hold `rhythmic` until the second side is patterned in.
+- **Hot-room narration.** Constant talking can make an already intense room feel more frantic. In heated classes, use fewer words as repetition increases.
 - **Lyric-dense music during a `focused` phase.** Vocals pull attention out of proprioception. Hand cue density to the playlist via the YAML so the music skill can pair tracks accordingly.
 
 ## Counter-pose rules
