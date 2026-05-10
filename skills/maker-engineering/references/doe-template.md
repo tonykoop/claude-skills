@@ -74,3 +74,12 @@ If the DoE needs a specialist deliverable, route that part separately:
 - Fixture, toolpath, workholding, or shop operation: `makerspace`.
 - Measurement extraction from an existing object: `reverse-engineer`.
 - Early concept selection before experiments: `idea-incubator`.
+
+## Safety-Critical Objects
+
+If the experiment is on a human-carrying, floatable, or
+overhead-of-person object, the validation matrix lives in DoE mode but
+the **gate definition** (load cases, anthropometric envelope, "not a
+certification" clause, re-validation triggers) lives in
+`references/human-carrying-safety-gate.md`. Run that gate first; let
+its staged-validation table drive the DoE trial matrix.

@@ -2,7 +2,7 @@
 # Update this file whenever a skill version is bumped, packaged, or deprecated.
 
 schema_version: 1
-last_updated: 2026-05-09
+last_updated: 2026-05-10
 
 install_roots:
   windows:
@@ -96,12 +96,12 @@ skills:
     notes: Cross-platform pass; Python label bootstrap companion and platform notes.
 
   maker-engineering:
-    canonical_version: 1.0.0
+    canonical_version: 1.1.0
     runtime: shared
     repo_path: skills/maker-engineering
-    last_updated: 2026-05-08
+    last_updated: 2026-05-10
     status: active
-    notes: Umbrella routing skill for physical making projects and specialist handoffs.
+    notes: Umbrella routing skill for physical making projects and specialist handoffs. v1.1 adds the human-carrying / floatable-object safety gate.
 
   yoga-sequencer:
     canonical_version: 1.0.0
