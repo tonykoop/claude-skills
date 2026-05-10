@@ -127,6 +127,14 @@ skills:
     status: active
     notes: Portable snapshot from reverse-engineering/skills/v1/reverse-engineer for cross-platform review.
 
+  habitat-maker:
+    canonical_version: 0.2.0
+    runtime: shared
+    repo_path: skills/habitat-maker
+    last_updated: 2026-05-10
+    status: active
+    notes: First canonical example (chickadee laser packet) with generator-backed SVG and JSON. Promoted from v0.1 scaffold.
+
 planned_skills:
   energy-management:
     status: issue-handoff
