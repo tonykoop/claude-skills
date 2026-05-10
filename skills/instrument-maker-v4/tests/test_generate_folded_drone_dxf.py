@@ -38,9 +38,48 @@ class FoldedDroneDxfTests(unittest.TestCase):
         self.assertIn("Breath path requires cured non-toxic finish", dxf)
         self.assertIn("Reserve 180 mm removable/trim tail", dxf)
 
+    def test_fixture_length_matches_e2_target_plus_tuning_tail(self):
+        csv_path = EXAMPLES_DIR / "centerline-stations.csv"
+        stations = g.load_stations(csv_path, default_height_mm=42.0)
+        summary = g.build_summary(
+            stations,
+            target_hz=82.41,
+            playing_temperature_c=33.0,
+            room_temperature_c=20.0,
+            tuning_tail_mm=180.0,
+        )
+        expected_untrimmed = (
+            summary.warm_straight_reference_length_mm + summary.tuning_tail_mm
+        )
+        self.assertAlmostEqual(
+            summary.centerline_length_mm, expected_untrimmed, delta=20.0)
+
     def test_equivalent_diameter_uses_rectangular_area(self):
         d_eq = g.equivalent_diameter_mm(52.0, 42.0)
         self.assertAlmostEqual(d_eq, 52.73, places=2)
+
+    def test_wall_points_are_continuous_at_fold_joins(self):
+        csv_path = EXAMPLES_DIR / "centerline-stations.csv"
+        stations = g.load_stations(csv_path, default_height_mm=42.0)
+        for side in (1.0, -1.0):
+            wall = g.continuous_wall_points(stations, side)
+            self.assertEqual(len(wall), len(stations))
+            for point in wall:
+                self.assertTrue(all(isinstance(coord, float) for coord in point))
+
+            # A 90-degree bend should miter to one shared point, not leave
+            # separate previous-end and next-start offsets.
+            prev_start, prev_end = g.offset_segment_points(
+                stations[0], stations[1], side)
+            next_start, next_end = g.offset_segment_points(
+                stations[1], stations[2], side)
+            independent_gap = (
+                (prev_end[0] - next_start[0]) ** 2 +
+                (prev_end[1] - next_start[1]) ** 2
+            ) ** 0.5
+            self.assertGreater(independent_gap, 1.0)
+            self.assertEqual(wall[1], g.line_intersection(
+                prev_start, prev_end, next_start, next_end))
 
     def test_cli_writes_dxf(self):
         csv_path = EXAMPLES_DIR / "centerline-stations.csv"

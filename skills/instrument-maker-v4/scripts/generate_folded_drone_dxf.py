@@ -225,6 +225,13 @@ def dxf_text(layer: str, x: float, y: float, text: str,
 
 
 def offset_segment(a: Station, b: Station, side: float) -> tuple[float, float, float, float]:
+    p1, p2 = offset_segment_points(a, b, side)
+    return (p1[0], p1[1], p2[0], p2[1])
+
+
+def offset_segment_points(a: Station, b: Station,
+                          side: float) -> tuple[tuple[float, float],
+                                                 tuple[float, float]]:
     dx = b.x_mm - a.x_mm
     dy = b.y_mm - a.y_mm
     length = math.hypot(dx, dy)
@@ -233,11 +240,68 @@ def offset_segment(a: Station, b: Station, side: float) -> tuple[float, float, f
     nx = -dy / length
     ny = dx / length
     return (
-        a.x_mm + nx * (a.width_mm / 2.0) * side,
-        a.y_mm + ny * (a.width_mm / 2.0) * side,
-        b.x_mm + nx * (b.width_mm / 2.0) * side,
-        b.y_mm + ny * (b.width_mm / 2.0) * side,
+        (a.x_mm + nx * (a.width_mm / 2.0) * side,
+         a.y_mm + ny * (a.width_mm / 2.0) * side),
+        (b.x_mm + nx * (b.width_mm / 2.0) * side,
+         b.y_mm + ny * (b.width_mm / 2.0) * side),
     )
+
+
+def line_intersection(a1: tuple[float, float], a2: tuple[float, float],
+                      b1: tuple[float, float], b2: tuple[float, float],
+                      tolerance: float = 1e-9) -> tuple[float, float] | None:
+    x1, y1 = a1
+    x2, y2 = a2
+    x3, y3 = b1
+    x4, y4 = b2
+    denom = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4)
+    if abs(denom) < tolerance:
+        return None
+    px = ((x1 * y2 - y1 * x2) * (x3 - x4) -
+          (x1 - x2) * (x3 * y4 - y3 * x4)) / denom
+    py = ((x1 * y2 - y1 * x2) * (y3 - y4) -
+          (y1 - y2) * (x3 * y4 - y3 * x4)) / denom
+    return (px, py)
+
+
+def continuous_wall_points(stations: list[Station],
+                           side: float) -> list[tuple[float, float]]:
+    """Return a miter-joined wall polyline for one duct side.
+
+    Each centerline segment has its own offset because width can vary by
+    station. At interior stations, intersect the previous and next offset
+    lines so the emitted DXF has continuous wall geometry through bends
+    rather than independent, gapped wall stubs.
+    """
+    if len(stations) < 2:
+        raise ValueError("at least two stations are required")
+
+    first_start, _ = offset_segment_points(stations[0], stations[1], side)
+    points = [first_start]
+    for index in range(1, len(stations) - 1):
+        prev_start, prev_end = offset_segment_points(
+            stations[index - 1], stations[index], side)
+        next_start, next_end = offset_segment_points(
+            stations[index], stations[index + 1], side)
+        joined = line_intersection(prev_start, prev_end, next_start, next_end)
+        if joined is None:
+            joined = (
+                (prev_end[0] + next_start[0]) / 2.0,
+                (prev_end[1] + next_start[1]) / 2.0,
+            )
+        points.append(joined)
+
+    _, last_end = offset_segment_points(stations[-2], stations[-1], side)
+    points.append(last_end)
+    return points
+
+
+def dxf_polyline_segments(layer: str,
+                          points: list[tuple[float, float]]) -> list[str]:
+    return [
+        dxf_line(layer, a[0], a[1], b[0], b[1])
+        for a, b in zip(points, points[1:])
+    ]
 
 
 def generate_dxf(stations: list[Station], source_label: str,
@@ -246,8 +310,11 @@ def generate_dxf(stations: list[Station], source_label: str,
 
     for a, b in zip(stations, stations[1:]):
         entities.append(dxf_line("DUCT_CENTERLINE", a.x_mm, a.y_mm, b.x_mm, b.y_mm))
-        entities.append(dxf_line("DUCT_LEFT_WALL", *offset_segment(a, b, 1.0)))
-        entities.append(dxf_line("DUCT_RIGHT_WALL", *offset_segment(a, b, -1.0)))
+
+    entities.extend(dxf_polyline_segments(
+        "DUCT_LEFT_WALL", continuous_wall_points(stations, 1.0)))
+    entities.extend(dxf_polyline_segments(
+        "DUCT_RIGHT_WALL", continuous_wall_points(stations, -1.0)))
 
     for station in stations[1:-1]:
         if station.bend_radius_mm > 0 or station.role.lower() == "fold":

@@ -1,8 +1,7 @@
 station_id,x_mm,y_mm,width_mm,height_mm,bend_radius_mm,role,note
 S0,0,0,52,42,0,mouthpiece,removable mouthpiece/start of acoustic path
-S1,520,0,52,42,75,fold,first long run
-S2,520,160,54,42,75,fold,turn upward with service radius
-S3,70,160,54,42,75,fold,return run
-S4,70,320,56,42,75,fold,second fold
-S5,620,320,56,42,75,tuning_tail,straight removable tuning tail begins
-S6,800,320,56,42,0,closed_end,temporary closed-end tail cap
+S1,360,0,52,42,75,fold,first long run
+S2,360,160,54,42,75,fold,turn upward with service radius
+S3,20,160,54,42,75,fold,return run
+S4,20,320,56,42,75,tuning_tail,straight removable tuning tail begins near warm E2 target
+S5,200,320,56,42,0,closed_end,temporary closed-end tail cap with trim allowance

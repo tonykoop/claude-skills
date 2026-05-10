@@ -66,9 +66,11 @@ The folded-bore DXF helper expects at least:
 ```csv
 station_id,x_mm,y_mm,width_mm
 S0,0,0,52
-S1,520,0,52
-S2,520,160,54
-S3,70,160,54
+S1,360,0,52
+S2,360,160,54
+S3,20,160,54
+S4,20,320,56
+S5,200,320,56
 ```
 
 Optional columns:
