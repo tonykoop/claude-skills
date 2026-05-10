@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.4.2 - 2026-05-17
+
+- Added instrument design-book / yearbook chapter promotion guidance to
+  `references/promotion-handoff.md` (Refs #104).
+- Promote mode now routes instrument chapter ideas through the readiness mirror
+  rule before drafting downstream work in `tonykoop/instrument-maker`.
+- Downstream issue pattern uses `Refs #100`, not `Closes #100`, until the
+  chapter scaffold and one L2+ pilot scaffold are proven; build-ready claims
+  stay gated to L3+ and measured/empirical claims stay gated to L4.
+
 ## 1.4.1 - 2026-05-10
 
 - Added a focused photo-album/private-media pilot workflow with source-photo

@@ -100,12 +100,12 @@ skills:
     status: active
 
   idea-incubator:
-    canonical_version: 1.4.1
+    canonical_version: 1.4.2
     runtime: shared
     repo_path: skills/idea-incubator
-    last_updated: 2026-05-10
+    last_updated: 2026-05-17
     status: active
-    notes: Promote-batch mode; readiness matrix, evidence-ledger, LFS prompts for recovery/import; private media/family archive promotion template; yearbook/design-book rollout workflow with pilot edition, consent/proof gates, image-gen derivative boundaries, EXIF/GPS handling, provenance-ledger defaults, and photo-album/private-media pilot source-photo rules.
+    notes: Promote-batch mode; readiness matrix, evidence-ledger, LFS prompts for recovery/import; private media/family archive promotion template; yearbook/design-book rollout workflow with pilot edition, consent/proof gates, image-gen derivative boundaries, EXIF/GPS handling, provenance-ledger defaults, and photo-album/private-media pilot source-photo rules; instrument design-book/yearbook/portfolio chapter promotion pattern.
 
   maker-engineering:
     canonical_version: 1.1.0
@@ -116,10 +116,10 @@ skills:
     notes: Umbrella routing skill for physical making projects and specialist handoffs. v1.1 adds the human-carrying / floatable-object safety gate.
 
   instrument-maker:
-    canonical_version: 4.4.6
+    canonical_version: 4.4.7
     runtime: shared
     repo_path: skills/instrument-maker-v4
-    last_updated: 2026-05-11
+    last_updated: 2026-05-17
     status: partial
     notes: |
       Official public invocation is instrument-maker. The repo path remains
@@ -132,15 +132,16 @@ skills:
       boundary-condition enhancement (issue #73), v4.4.1 free-reed/khaen
       exploration template (issue #109), and v4.4.2 sheng/hulusi/chalumeau
       validation guardrail, plus the v4.4.3 prototype validation-loop upgrade
-      template, v4.4.4 repo-first bare-bones packet readiness template, and
-      v4.4.5 DXF/image-gen-2 visual authority guard. The full skill body
-      lives in the canonical install at ~/.claude/skills/instrument-maker
+      template, v4.4.4 repo-first bare-bones packet readiness template,
+      v4.4.5 DXF/image-gen-2 visual authority guard, and the v4.4.7
+      instrument design-book chapter contract (issue #104). The full skill
+      body lives in the canonical install at ~/.claude/skills/instrument-maker
       and is not yet versioned in this repo. Existing
       ~/.claude/skills/instrument-maker-v4 and
       ~/.codex/skills/instrument-maker-v4 installs may remain as compatibility
       aliases until runtime roots are migrated. This entry contains the
       additive references, validators, tests, fixtures, and examples that
-      v4.4/v4.4.1/v4.4.2/v4.4.3/v4.4.4/v4.4.5/v4.4.6 introduce. See
+      v4.4/v4.4.1/v4.4.2/v4.4.3/v4.4.4/v4.4.5/v4.4.6/v4.4.7 introduce. See
       skills/instrument-maker-v4/SKILL.md for the partial-skill contract.
 
   yoga-sequencer:
