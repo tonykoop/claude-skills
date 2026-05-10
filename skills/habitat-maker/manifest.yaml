@@ -1,0 +1,31 @@
+name: habitat-maker
+version: 0.2.0
+description: |
+  Wildlife habitat and garden infrastructure design skill with
+  generator-backed example packets for species-specific laser/CNC/manual
+  builds.
+authors:
+  - name: Tony Koop
+license: MIT
+homepage: https://github.com/tonykoop/claude-skills
+keywords:
+  - habitat
+  - birdhouse
+  - wildlife
+  - garden
+  - laser
+  - cnc
+  - maker
+  - validation
+compatibility:
+  cowork: ">=0.1"
+  claude-code: ">=0.1"
+  features:
+    - bash
+    - file-write
+artifacts:
+  - SKILL.md
+  - scripts/
+  - references/
+  - agents/
+  - evals/

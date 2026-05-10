@@ -1,0 +1,8 @@
+part,finished_quantity,laser_ply_quantity,width_in,height_or_depth_in,features
+Front wall,1,3,7.0,9.5,"1.125 inch entrance; interior fledgling grip score lines"
+Back wall,1,3,7.0,11.5,"two mounting pilot holes"
+Side wall,2,6,5.5,"9.5 front / 10.25 rear","three protected vent slots per side"
+Floor,1,3,5.5,5.5,"four 0.375 x 0.375 inch corner drainage notches"
+Roof,1,3,10.0,10.25,"underside drip score lines"
+Optional entrance guard,1,1-3,2.5,2.5,"1.125 inch hole; do not enlarge entry"
+Kerf test coupon,1,1,1.0,1.0,"measure before production cuts"

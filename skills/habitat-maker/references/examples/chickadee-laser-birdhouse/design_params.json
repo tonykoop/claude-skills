@@ -1,0 +1,194 @@
+{
+  "packet": {
+    "name": "chickadee-laser-birdhouse",
+    "title": "Laser-Cut Chickadee Birdhouse",
+    "version": "1.0.0",
+    "units": "inches",
+    "source": "TwinGrid Round 7 Alice synthesis"
+  },
+  "species": {
+    "target": [
+      "Black-capped Chickadee",
+      "Carolina Chickadee",
+      "Mountain Chickadee",
+      "Chestnut-backed Chickadee",
+      "Boreal Chickadee"
+    ],
+    "assumptions": [
+      "Small cavity-nesting chickadees using residential edge, open woodland, or mixed woody habitat.",
+      "Nest box is mounted 5 to 15 feet above ground and within about 30 feet of woody cover.",
+      "Entrance faces away from prevailing storm wind; east or southeast is a good default when local conditions allow."
+    ],
+    "constraints": {
+      "entrance_diameter": {
+        "value": 1.125,
+        "tolerance_plus": 0.0,
+        "tolerance_minus": 0.02,
+        "reason": "Larger entrances admit bigger competitors and make predator access easier."
+      },
+      "interior_floor": [5.5, 5.5],
+      "interior_depth_front": 8.0,
+      "entrance_center_above_floor": 6.0,
+      "no_perch": true,
+      "cleanout_required": true,
+      "interior_climb_grip_required": true,
+      "interior_finish": "none"
+    }
+  },
+  "material_profiles": {
+    "cedar_laminate": {
+      "description": "Preferred wildlife-first laser profile: untreated cedar laminated from three 1/4 inch laser-cut plies.",
+      "sheet_material": "untreated solid cedar",
+      "ply_thickness": 0.25,
+      "plies_per_finished_panel": 3,
+      "finished_wall_thickness": 0.75,
+      "finish_inside": "none",
+      "finish_outside": "raw or light exterior water-based finish outside only",
+      "notes": [
+        "Confirm cedar is allowed on the specific laser; resinous stock can flare.",
+        "Sand loose char from interior faces and let adhesive cure fully before field use."
+      ]
+    },
+    "exterior_plywood": {
+      "description": "Laser-friendly fallback when the shop confirms exterior plywood adhesive is safe to cut.",
+      "sheet_material": "known laser-safe exterior plywood",
+      "ply_thickness": 0.25,
+      "plies_per_finished_panel": 3,
+      "finished_wall_thickness": 0.75,
+      "finish_inside": "none",
+      "finish_outside": "light exterior water-based finish outside only",
+      "notes": [
+        "Do not use MDF, pressure-treated stock, painted stock, unknown reclaimed wood, PVC, or interior plywood with unknown glue.",
+        "Treat plywood lifespan as shorter than solid cedar and inspect annually for delamination."
+      ]
+    }
+  },
+  "selected_material_profile": "cedar_laminate",
+  "fabrication": {
+    "method": "laser_cut_laminated_panels",
+    "kerf_test_square": 1.0,
+    "cut_order": [
+      "score fledgling grip and roof drip lines",
+      "cut entrance, vent slots, drain notches, and mounting holes",
+      "cut outer panel profiles"
+    ]
+  },
+  "panels": {
+    "front": {
+      "quantity": 1,
+      "laser_ply_quantity": 3,
+      "width": 7.0,
+      "height": 9.5,
+      "entrance_center": [3.5, 6.75],
+      "fledgling_grip": {
+        "line_count": 5,
+        "line_length": 2.8,
+        "spacing": 0.3,
+        "center": [3.5, 4.85]
+      }
+    },
+    "back": {
+      "quantity": 1,
+      "laser_ply_quantity": 3,
+      "width": 7.0,
+      "height": 11.5,
+      "mount_holes": [
+        [3.5, 0.75],
+        [3.5, 10.75]
+      ],
+      "mount_hole_diameter": 0.1875
+    },
+    "side": {
+      "quantity": 2,
+      "laser_ply_quantity_total": 6,
+      "depth": 5.5,
+      "front_height": 9.5,
+      "rear_height": 10.25,
+      "vent_slots_per_side": 3,
+      "vent_slot_width": 1.8,
+      "vent_slot_height": 0.18
+    },
+    "floor": {
+      "quantity": 1,
+      "laser_ply_quantity": 3,
+      "width": 5.5,
+      "depth": 5.5,
+      "corner_notch": [0.375, 0.375]
+    },
+    "roof": {
+      "quantity": 1,
+      "laser_ply_quantity": 3,
+      "width": 10.0,
+      "depth": 10.25,
+      "front_overhang": 2.25,
+      "side_overhang": 1.5,
+      "rear_overhang": 1.0
+    },
+    "entrance_guard_optional": {
+      "quantity": 1,
+      "laser_ply_quantity": "1-3",
+      "width": 2.5,
+      "height": 2.5,
+      "hole_diameter": 1.125
+    }
+  },
+  "mounting": {
+    "recommended_height_ft": [5, 15],
+    "preferred_height_ft_with_baffle": [5, 7],
+    "distance_to_woody_cover_ft_max": 30,
+    "orientation": "away from prevailing wind; east or southeast when practical",
+    "predator_protection": "smooth metal pole plus stovepipe or cone baffle preferred",
+    "perch": false
+  },
+  "validation_checks": [
+    {
+      "id": "wildlife-no-perch",
+      "gate": "no-perch",
+      "target": "No exterior perch present",
+      "method": "visual inspection",
+      "fail_remedy": "Remove perch and seal exterior-only fastener holes."
+    },
+    {
+      "id": "wildlife-interior-finish",
+      "gate": "interior-finish",
+      "target": "Bare unfinished interior",
+      "method": "visual and touch inspection before assembly",
+      "fail_remedy": "Reject finished interior parts or recut untreated plies."
+    },
+    {
+      "id": "wildlife-drainage",
+      "gate": "drainage",
+      "target": "Four corner drain notches remain open",
+      "method": "250 mL water clears visible pooling within 60 seconds",
+      "fail_remedy": "Reopen notches and clear glue/char."
+    },
+    {
+      "id": "wildlife-ventilation",
+      "gate": "ventilation",
+      "target": "Three protected side vent slots per side",
+      "method": "Smoke or fog near entrance visibly exits side vents",
+      "fail_remedy": "Clear vent slots or recut side plies."
+    },
+    {
+      "id": "wildlife-fledgling-grip",
+      "gate": "fledgling-grip",
+      "target": "Horizontal grip scores below entrance on inside front",
+      "method": "visual inspection before assembly",
+      "fail_remedy": "Add shallow horizontal grooves before closing box."
+    },
+    {
+      "id": "wildlife-predator-baffle",
+      "gate": "predator-baffle",
+      "target": "Pole mount includes stovepipe or cone baffle where possible",
+      "method": "field install inspection",
+      "fail_remedy": "Install baffle before nesting season."
+    },
+    {
+      "id": "wildlife-cleanout",
+      "gate": "cleanout-access",
+      "target": "Side or roof opens for annual cleanout and latches securely",
+      "method": "open/close/latch test",
+      "fail_remedy": "Adjust hinge/latch before field use."
+    }
+  ]
+}

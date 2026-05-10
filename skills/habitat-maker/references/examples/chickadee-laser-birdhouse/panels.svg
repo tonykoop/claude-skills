@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="36.0in" height="24.0in" viewBox="0 0 36.0 24.0">
+<defs><style>
+.cut { fill: none; stroke: #cc0000; stroke-width: 0.01; }
+.score { fill: none; stroke: #008000; stroke-width: 0.01; }
+.engrave { fill: none; stroke: #0066cc; stroke-width: 0.01; }
+.label { font-family: Arial, sans-serif; font-size: 0.22px; fill: #333333; }
+.note { font-family: Arial, sans-serif; font-size: 0.18px; fill: #333333; }
+</style></defs>
+<title>Laser-Cut Chickadee Birdhouse panel templates</title>
+<desc>Generator-backed habitat-maker example. Cut red, score green, engrave blue/text.</desc>
+<g id="front-wall" transform="translate(0.500 0.500)">
+<text class="label" x="0.000" y="-0.120">P1 FRONT - cut 3 plies - entry hard max 1.125 in</text>
+<rect class="cut" x="0.000" y="0.000" width="7.000" height="9.500"/>
+<circle class="cut" cx="3.500" cy="2.750" r="0.562"/>
+<line class="score" x1="2.100" y1="4.050" x2="4.900" y2="4.050"/>
+<line class="score" x1="2.100" y1="4.350" x2="4.900" y2="4.350"/>
+<line class="score" x1="2.100" y1="4.650" x2="4.900" y2="4.650"/>
+<line class="score" x1="2.100" y1="4.950" x2="4.900" y2="4.950"/>
+<line class="score" x1="2.100" y1="5.250" x2="4.900" y2="5.250"/>
+<text class="note" x="0.250" y="8.950">inside face: rough/score below entry</text>
+</g>
+<g id="back-wall" transform="translate(8.250 0.500)">
+<text class="label" x="0.000" y="-0.120">P2 BACK - cut 3 plies - mounting pilots</text>
+<rect class="cut" x="0.000" y="0.000" width="7.000" height="11.500"/>
+<circle class="cut" cx="3.500" cy="10.750" r="0.094"/>
+<circle class="cut" cx="3.500" cy="0.750" r="0.094"/>
+<text class="note" x="0.250" y="10.500">mount on baffled pole when possible</text>
+</g>
+<g id="side-wall" transform="translate(16.000 0.500)">
+<text class="label" x="0.000" y="-0.120">P3/P4 SIDE - cut 6 plies - protected slot vents</text>
+<path class="cut" d="M 0,-0.750 L 5.500,0 L 5.500,10.250 L 0,9.500 Z"/>
+<rect class="cut" x="0.350" y="1.050" width="1.800" height="0.180" rx="0.090" ry="0.090"/>
+<rect class="cut" x="1.850" y="0.850" width="1.800" height="0.180" rx="0.090" ry="0.090"/>
+<rect class="cut" x="3.350" y="0.650" width="1.800" height="0.180" rx="0.090" ry="0.090"/>
+<text class="note" x="0.200" y="8.950">3 slots per side; keep clear</text>
+</g>
+<g id="floor" transform="translate(22.250 0.500)">
+<text class="label" x="0.000" y="-0.120">P5 FLOOR - cut 3 plies - corner drainage notches</text>
+<path class="cut" d="M 0.375,0.000 L 5.125,0.000 L 5.500,0.375 L 5.500,5.125 L 5.125,5.500 L 0.375,5.500 L 0.000,5.125 L 0.000,0.375 Z"/>
+<text class="note" x="0.350" y="2.750">corner notches resist clogging</text>
+</g>
+<g id="entrance-guard" transform="translate(28.500 0.500)">
+<text class="label" x="0.000" y="-0.120">OPTIONAL GUARD - keep entry 1.125 in</text>
+<rect class="cut" x="0.000" y="0.000" width="2.500" height="2.500"/>
+<circle class="cut" cx="1.250" cy="1.250" r="0.562"/>
+</g>
+<g id="kerf-test" transform="translate(31.750 0.500)">
+<text class="label" x="0.000" y="-0.120">KERF TEST</text>
+<rect class="cut" x="0.000" y="0.000" width="1.000" height="1.000"/>
+<circle class="cut" cx="0.500" cy="1.450" r="0.562"/>
+</g>
+<g id="roof" transform="translate(0.500 13.000)">
+<text class="label" x="0.000" y="-0.120">P6 ROOF - cut 3 plies - underside drip scores</text>
+<rect class="cut" x="0.000" y="0.000" width="10.000" height="10.250"/>
+<line class="score" x1="0.375" y1="0.375" x2="9.625" y2="0.375"/>
+<line class="score" x1="0.375" y1="0.375" x2="0.375" y2="9.875"/>
+<line class="score" x1="9.625" y1="0.375" x2="9.625" y2="9.875"/>
+</g>
+<g id="welfare-notes" transform="translate(11.250 14.000)">
+<text class="label" x="0.000" y="0.000">Welfare gates: no perch, bare interior, cleanout, grip, baffle, woody cover.</text>
+<text class="label" x="0.000" y="0.400">Drainage: corner notches. Ventilation: side slots. Validate with water and smoke tests.</text>
+<text class="label" x="0.000" y="0.800">Cut red paths. Score green paths. Units are inches.</text>
+<text class="label" x="0.000" y="1.200">Derived vent area per side: 0.972 sq in.</text>
+</g>
+</svg>

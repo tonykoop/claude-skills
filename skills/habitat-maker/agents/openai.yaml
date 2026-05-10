@@ -1,0 +1,7 @@
+version: 1
+agents:
+  default:
+    instructions: |
+      Use habitat-maker to keep species welfare requirements upstream of
+      fabrication. For laser/CNC packets, prefer generator-backed SVG/JSON
+      artifacts and run available render/schema validation before handoff.
