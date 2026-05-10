@@ -36,6 +36,56 @@ packet after measurements exist.
 - [x] Ceramic shell versus removable acoustic-core guidance is documented.
 - [x] Sourcing `source_status` values are documented for free-reed parts.
 
+## v4.4.1 — 2026-05-10 (issue #108)
+
+Round 9 TwinGrid Bob produced a folded, laser-laminated stopped-pipe
+drone proof mule. The manager synthesis called for a reusable template
+so future folded drone prompts produce DXF-first, leak-testable packets
+without hand-inventing the structure every time.
+
+### Added
+
+- `references/folded-stopped-pipe-drone.md` — packet template for
+  compact folded stopped-pipe drones, didgeridoo-inspired proof mules,
+  rectangular labyrinth bores, breath-contact safety, removable tuning
+  tails, straight reference tube validation, and public-language
+  guidance.
+- `references/acoustic-models.md` — new folded stopped-pipe drone
+  subsection under **Stopped Pipes** covering rectangular duct
+  area-equivalent diameter, bend-loss assumptions, warm playing
+  temperature, leak testing, and no-CAM DXF layers.
+- `references/family-aware-design.md` — folded stopped-pipe drone
+  scaling law and example `family-spec.csv` / centerline station CSV.
+- `scripts/generate_folded_drone_dxf.py` — focused CSV-to-DXF helper for
+  centerline stations plus width schedule. Emits R12-style millimeter
+  DXF layers for centerline, wall offsets, bend zones, tuning tail,
+  leak-test notes, breath-contact safety, and no-cut assumptions.
+- `examples/folded-drone/centerline-stations.csv` — compact E2
+  proof-mule starter fixture.
+- `tests/test_generate_folded_drone_dxf.py` — unit tests for the helper,
+  fixture, equivalent-diameter calculation, CLI write path, and malformed
+  CSV handling.
+
+### Changed
+
+- `scripts/validate_acoustic_law.py` now treats `FDR` and `DRN`
+  member-id prefixes as wind/drone families, so folded-drone
+  `family-spec.csv` files must declare `acoustic_law`, `end_condition`,
+  and `dimension_provenance`.
+
+### Acceptance criteria (issue #108)
+
+- [x] Folded-drone / labyrinth stopped-pipe packet template exists.
+- [x] Template documents rectangular duct area-equivalent diameter,
+      bend-loss assumptions, warm-playing-temperature tuning, and
+      removable tuning tail.
+- [x] CSV-to-DXF helper accepts centerline stations plus width schedule.
+- [x] Validation guidance requires a straight reference tube comparison.
+- [x] Breath-contact safety checks cover cured finishes, cleanability,
+      moisture drainage, and removable mouthpiece materials.
+- [x] Public-language guidance distinguishes didgeridoo-inspired
+      experiments from traditional didgeridoo builds.
+
 ## v4.4.0 — 2026-05-10 (issue #73)
 
 Round 7 TwinGrid lane Irene exposed that two specialist agents

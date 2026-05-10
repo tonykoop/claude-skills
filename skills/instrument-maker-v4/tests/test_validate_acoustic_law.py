@@ -66,6 +66,12 @@ class FailFixtures(unittest.TestCase):
         self.assertIn("MISSING_COLUMN_end_condition", codes)
         self.assertIn("MISSING_COLUMN_dimension_provenance", codes)
 
+    def test_folded_drone_prefix_requires_acoustic_law_columns(self):
+        rows = [{"member_id": "FDR-E2", "target_hz": "82.41"}]
+        rep = v.validate_rows(rows)
+        codes = {f.code for f in rep.errors}
+        self.assertIn("MISSING_COLUMN_acoustic_law", codes)
+
     def test_bad_vocabulary_fails(self):
         rep = v.validate_rows(load_fail("khaen-bad-vocabulary.csv"))
         bad = [f for f in rep.errors if f.code == "INVALID_acoustic_law"]

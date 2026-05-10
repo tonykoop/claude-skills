@@ -171,6 +171,51 @@ f = c / (4 * L_eff)
 - Duduk: root note = key_name − 3 semitones; body_length ≈ 2412 / freq (inches).
 - Document target fundamental and expected higher resonances on the design sheet.
 
+### Folded stopped-pipe drone / labyrinth bore template
+
+> Added in v4.4.1 to close [#108](https://github.com/tonykoop/claude-skills/issues/108). Round 9 Bob showed that folded, laser-laminated drone concepts need an explicit template so future prompts produce a DXF-first, leak-testable packet instead of a prose-only maze.
+
+Use this template for didgeridoo-inspired proof mules, compact stopped-pipe drones, folded breath drones, and rectangular labyrinth bores. Treat these as **didgeridoo-inspired acoustic experiments**, not traditional didgeridoo builds, unless the user provides cultural/source guidance and provenance.
+
+Required packet sections:
+
+- **Governing model:** `acoustic_law = stopped_pipe` or `closed_open`; first-pass `L_eff = c / (4f)`. Use the warm playing temperature, not only room temperature.
+- **Warm tuning assumption:** compute speed of sound from `T_C`; use 30-35 C for breath-warmed ducts unless measured otherwise. Include a cooler-room comparison row.
+- **Straight reference tube:** include the same target note, equivalent diameter, theoretical length, trim allowance, and validation rows for a straight PVC/cardboard/wood tube. The folded packet is not complete without this control.
+- **Folded centerline:** provide a station CSV with `station_id,x_mm,y_mm,width_mm` and optional `height_mm,bend_radius_mm,role,note`.
+- **Rectangular duct equivalent diameter:** `area = width * height`; `d_eq = 2 * sqrt(area / pi)`. Use `d_eq` for end-correction sanity checks, while documenting that bend losses and wall friction make it only a first-order approximation.
+- **Bend-loss assumptions:** list bend count, minimum bend radius, inside-corner radius/fillet strategy, expected turbulence risk, and which bends are deliberately over-wide or serviceable.
+- **Removable tuning tail:** reserve a straight final segment or sleeve with at least 100-200 mm trim/slide range on bass drones. Do not bury all tuning in inaccessible folds.
+- **Leak-test plan:** include low-pressure air test, smoke/incense or soapy-water seam check where safe, and a post-finish retest.
+- **Breath-contact safety:** specify cured finish, cleanability, moisture drainage, removable mouthpiece, non-toxic adhesive/finish choices, and no raw porous interior in wet breath zones.
+
+DXF layers for folded-bore helpers:
+
+| Layer | Purpose |
+| --- | --- |
+| `DUCT_CENTERLINE` | Fabrication datum and measured acoustic path |
+| `DUCT_LEFT_WALL` / `DUCT_RIGHT_WALL` | Offset duct boundaries from the width schedule |
+| `FOLD_BEND_ZONE` | Bend centers, bend-radius callouts, turbulence watch points |
+| `TUNING_TAIL` | Removable/trim tail allowance and witness marks |
+| `LEAK_TEST_NOTES` | Pressure-test and cleanability notes; no cut geometry |
+| `BREATH_SAFETY_NOTES` | Mouth-contact material and finish warnings; no cut geometry |
+| `NOTES_NO_CUT` | Model assumptions, units, source CSV, and "DXF starter, not CAM" warning |
+
+Validation rows to include in `validation.csv`:
+
+- straight reference tube fundamental at room temperature and breath-warmed temperature
+- folded body fundamental before final trim
+- folded body fundamental after removable tail trim
+- leak-test pass/fail before finish and after finish
+- moisture drainage check after five minutes of playing
+- mouthpiece removal/cleaning check
+
+Public language guidance:
+
+- Prefer "folded stopped-pipe drone", "didgeridoo-inspired drone", or "compact lip-buzz drone proof mule".
+- Avoid presenting the output as a traditional didgeridoo unless the design is intentionally grounded in a specific tradition, maker/source permissions, and cultural context.
+- Keep the skill's default posture technical and transparent: acoustic experiment, validation mule, breath-contact safety first.
+
 ## Conical And Reed Bores
 
 Use caution for bagpipe chanters, shawms, oboes, and tapered folk winds.

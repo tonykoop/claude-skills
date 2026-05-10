@@ -74,7 +74,7 @@ DIMENSION_PROVENANCE_VOCAB = {
 # wind/free-reed pattern as a wind/free-reed family. Idiophones (TNG, MAR,
 # GLK, KAL, RNS) and string/membrane families are skipped.
 WIND_OR_REED_PREFIX_RE = re.compile(
-    r"^(KHN|SNG|SHO|HAR|MEL|ACC|BAW|HUL|HRM|FLU|NAF|TRF|GMS|OCA|UDU|FUJ|DID|PNF|QNA|XIO|TIN|SHK)\b",
+    r"^(KHN|SNG|SHO|HAR|MEL|ACC|BAW|HUL|HRM|FLU|NAF|TRF|GMS|OCA|UDU|FUJ|DID|FDR|DRN|PNF|QNA|XIO|TIN|SHK)\b",
     re.IGNORECASE,
 )
 
