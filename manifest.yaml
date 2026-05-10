@@ -2,7 +2,7 @@
 # Update this file whenever a skill version is bumped, packaged, or deprecated.
 
 schema_version: 1
-last_updated: 2026-05-09
+last_updated: 2026-05-10
 
 install_roots:
   windows:
@@ -88,12 +88,12 @@ skills:
     status: active
 
   idea-incubator:
-    canonical_version: 1.1.0
+    canonical_version: 1.2.0
     runtime: shared
     repo_path: skills/idea-incubator
-    last_updated: 2026-05-08
+    last_updated: 2026-05-10
     status: active
-    notes: Cross-platform pass; Python label bootstrap companion and platform notes.
+    notes: Promote-batch mode; readiness matrix, evidence-ledger, LFS prompts for recovery/import.
 
   maker-engineering:
     canonical_version: 1.0.0

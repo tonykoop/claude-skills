@@ -1,8 +1,8 @@
 ---
 name: idea-incubator
 metadata:
-  version: 0.1.0
-  last-updated: 2026-05-09
+  version: 1.2.0
+  last-updated: 2026-05-10
 description: >-
   Capture, classify, connect, review, and promote speculative ideas into a
   searchable GitHub issue inbox. Use when the user says "new idea", "incubate
@@ -29,6 +29,9 @@ into specialist handoffs.
 - `review my ideas`
 - `does this connect to anything`
 - `promote idea #N`
+- `promote the cluster`
+- `batch promote`
+- `review the cluster`
 
 The phrases are kept punctuation-free so substring-matching agents (Codex,
 Gemini CLI) hit them as reliably as Claude does.
@@ -54,7 +57,67 @@ Gemini CLI) hit them as reliably as Claude does.
    by the downstream work. Route to `maker-engineering` for physical builds,
    to a domain specialist (`instrument-maker`, `makerspace`, `reverse-engineer`)
    when the scope is clear, or to a project repo when the idea belongs in an
-   existing backlog.
+   existing backlog. Always include the **promotion-readiness matrix** from
+   [`references/promotion-handoff.md`](references/promotion-handoff.md) before
+   selecting a single issue, and run the **binary-asset / LFS prompts** when
+   the capture mentions CAD, media, ZIPs, PDFs, audio, video, or any asset
+   likely to exceed 100 MB.
+6. **Promote-batch** - cluster-aware promotion. Use when multiple capture
+   issues share a recovery, archive, intake-dump, or thematic root and should
+   be triaged as a unit instead of one-by-one. See the dedicated section
+   below; the worked example is in
+   [`references/promote-batch-example.md`](references/promote-batch-example.md).
+
+## Promote-batch mode
+
+Use Promote-batch when N capture issues share enough structure that promoting
+them one at a time would re-do the same triage work N times.
+
+### Cluster detection heuristics
+
+A capture cluster is worth Promote-batch treatment when **any two** of the
+following hold:
+
+- **Burst:** N >= 5 `capture`-labeled issues opened within a 48-hour window.
+- **Shared root:** issues share a substring in title or body (e.g. `archive`,
+  `recovery`, `legacy`, a folder path, a specific event/source).
+- **Shared template:** issue bodies follow the same `Capture / What this is /
+  Why it matters / Next step / Promotion target` skeleton verbatim.
+- **Shared blocker:** a single prerequisite (an inventory pass, a provenance
+  decision, a repo-naming decision) gates all of them.
+
+Clusters smaller than 5 are usually fine to promote individually with the
+Promote mode's readiness matrix.
+
+### Required Promote-batch outputs
+
+1. **Promotion-readiness matrix** across the whole cluster (see
+   [`references/promotion-handoff.md`](references/promotion-handoff.md)).
+2. **Already-satisfied flagging** - mark any issue whose deliverable already
+   exists in the repo, working dir, or upstream system. Recommend `close`,
+   not `promote`, for those.
+3. **One-promote-first recommendation** so the first promotion sets the
+   shared scaffold conventions (LFS rules, label set, milestone naming, README
+   structure) the rest mirror. This avoids a rebase wave when sibling lanes
+   land in parallel.
+4. **Binary-asset / LFS pass** - run the prompts from `promotion-handoff.md`
+   for every cluster member that mentions binary or large-asset content.
+5. **Provenance notes** - for recovery/import clusters, every promoted issue
+   gets an `evidence-ledger` entry in the target repo separating archive
+   facts from inferred claims. The ledger template is in
+   `promotion-handoff.md`.
+
+### When to use `Refs #N` vs `Closes #N`
+
+- Use **`Closes #N`** when the downstream work fully delivers the captured
+  idea and there is no reason to keep the source issue open as a provenance
+  anchor.
+- Use **`Refs #N`** when the source capture should remain open until the
+  downstream evidence ledger or scaffold review lands - common for archive
+  recovery, legacy import, and any promotion where provenance discipline
+  outranks closing speed.
+
+When in doubt for a recovery/import cluster, default to `Refs`.
 
 ## Operating rules
 
@@ -72,6 +135,8 @@ Gemini CLI) hit them as reliably as Claude does.
 - [`references/label-schema.md`](references/label-schema.md)
 - [`references/issue-template.md`](references/issue-template.md)
 - [`references/promotion-handoff.md`](references/promotion-handoff.md)
+- [`references/promote-batch-example.md`](references/promote-batch-example.md)
+  - Worked example: legacy-import / Weather Balloon Camera Vessel cluster.
 
 ## Optional helpers
 
