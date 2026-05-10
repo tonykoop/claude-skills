@@ -67,6 +67,98 @@ class TwinGridContractsTests(unittest.TestCase):
         self.assertTrue(data["paths"]["artifact_summary"].endswith("artifact_summary.md"))
         self.assertTrue(data["paths"]["skill_findings"].endswith("skill_findings.md"))
 
+    def test_freeze_record_reads_markdown_agent_record(self):
+        module = load_module()
+        with tempfile.TemporaryDirectory() as tmp:
+            folder = pathlib.Path(tmp)
+            (folder / "agent_record.md").write_text(
+                "\n".join(
+                    [
+                        "# Agent Record",
+                        "",
+                        "- Lane: elsa",
+                        "- Side: B",
+                        "- Runtime: gpt54-window-12",
+                        "- Task: Yaybahar resonance test rig",
+                    ]
+                ),
+                encoding="utf-8",
+            )
+
+            data = module.freeze_record(
+                argparse.Namespace(
+                    output_folder=str(folder),
+                    round=9,
+                    lane="",
+                    side="",
+                    runtime="",
+                    task="",
+                )
+            )
+
+        self.assertEqual(data["lane"], "elsa")
+        self.assertEqual(data["side"], "B")
+        self.assertEqual(data["runtime"], "gpt54-window-12")
+        self.assertEqual(data["task"], "Yaybahar resonance test rig")
+
+    def test_freeze_record_recurses_nested_artifacts(self):
+        module = load_module()
+        with tempfile.TemporaryDirectory() as tmp:
+            folder = pathlib.Path(tmp)
+            nested = folder / "drawings"
+            nested.mkdir()
+            (nested / "plate.svg").write_text("<svg />\n", encoding="utf-8")
+
+            data = module.freeze_record(
+                argparse.Namespace(
+                    output_folder=str(folder),
+                    round=9,
+                    lane="dan",
+                    side="A",
+                    runtime="gpt55",
+                    task="nested manifest",
+                )
+            )
+
+        self.assertIn("drawings/plate.svg", data["blind_artifact_sha256"])
+        self.assertEqual(
+            [entry["name"] for entry in data["blind_artifact_manifest"]],
+            ["drawings/plate.svg"],
+        )
+
+    def test_peek_record_includes_combine_recommendation_schema(self):
+        module = load_module()
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            own = root / "own"
+            partner = root / "partner"
+            own.mkdir()
+            partner.mkdir()
+            (partner / "ready_for_peek.json").write_text(
+                json.dumps({"state": "BLIND_FROZEN"}),
+                encoding="utf-8",
+            )
+            (own / "combine_recommendation.md").write_text("# combine\n", encoding="utf-8")
+
+            exit_code = module.cmd_peek_record(
+                argparse.Namespace(
+                    output_folder=str(own),
+                    partner_folder=str(partner),
+                    round=9,
+                    lane="dan",
+                    side="A",
+                    runtime="gpt55",
+                    task="peek schema",
+                    force=False,
+                )
+            )
+            data = json.loads((own / "partner-peek-record.json").read_text(encoding="utf-8"))
+
+        self.assertEqual(exit_code, 0)
+        self.assertIn("combine_recommendation", data)
+        self.assertEqual(data["combine_recommendation"], "")
+        self.assertIn("combine_recommendation.md", data["files_added_or_changed"])
+
 
 if __name__ == "__main__":
     unittest.main()

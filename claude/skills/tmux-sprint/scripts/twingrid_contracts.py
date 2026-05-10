@@ -8,6 +8,7 @@ import datetime as dt
 import hashlib
 import json
 import pathlib
+import re
 import sys
 from typing import Any
 
@@ -59,23 +60,55 @@ def relpath(path: pathlib.Path, folder: pathlib.Path) -> str:
 
 def manifest(folder: pathlib.Path, exclude: set[str]) -> list[dict[str, str]]:
     entries: list[dict[str, str]] = []
-    for path in sorted(folder.iterdir()):
-        if not path.is_file() or path.name in exclude:
+    for path in sorted(folder.rglob("*")):
+        relative = relpath(path, folder)
+        if not path.is_file() or path.name in exclude or relative in exclude:
             continue
         entries.append(
             {
                 "path": str(path.resolve()),
-                "name": path.name,
+                "name": relative,
                 "sha256": sha256_file(path),
             }
         )
     return entries
 
 
+def normalize_record_key(raw: str) -> str:
+    return re.sub(r"[^a-z0-9]+", "_", raw.strip().lower()).strip("_")
+
+
+def parse_markdown_record(path: pathlib.Path) -> dict[str, str]:
+    try:
+        text = path.read_text(encoding="utf-8")
+    except OSError:
+        return {}
+
+    record: dict[str, str] = {}
+    key_aliases = {
+        "lane": "lane",
+        "side": "side",
+        "runtime": "runtime",
+        "actual_model": "actual_model",
+        "task": "task",
+        "output_folder": "output_folder",
+    }
+    for line in text.splitlines():
+        match = re.match(r"^\s*(?:[-*]\s*)?([A-Za-z][A-Za-z0-9 _/-]*?)\s*:\s*(.+?)\s*$", line)
+        if not match:
+            continue
+        key = key_aliases.get(normalize_record_key(match.group(1)))
+        if key and key not in record:
+            record[key] = match.group(2).strip().strip("`")
+    return record
+
+
 def load_record(folder: pathlib.Path, candidates: list[str]) -> dict[str, Any]:
     path = first_existing(folder, candidates)
-    if path is None or path.suffix != ".json":
+    if path is None:
         return {}
+    if path.suffix.lower() in {".md", ".markdown"}:
+        return parse_markdown_record(path)
     try:
         data = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError):
@@ -190,6 +223,7 @@ def cmd_peek_record(args: argparse.Namespace) -> int:
         "pr_or_issues_opened": "",
         "combined_ab_should_feed_skill_improvement": True,
         "skill_improvement_recommendation": "",
+        "combine_recommendation": "",
         "notes_for_manager": "",
         "generated_at_utc": utc_now(),
     }
