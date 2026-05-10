@@ -36,4 +36,3 @@ python3 -m unittest discover skills/habitat-maker/tests
 
 The tests parse the JSON, run the generator, parse the generated SVG, confirm
 required bat welfare gates, and verify packet file shape.
-

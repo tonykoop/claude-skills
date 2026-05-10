@@ -46,4 +46,3 @@ Complete this worksheet before final builder sign-off.
 Inspect, repair, or repaint only when bats are absent. In many regions this
 means winter or after the local maternity season. Never open or rework an
 occupied roost.
-

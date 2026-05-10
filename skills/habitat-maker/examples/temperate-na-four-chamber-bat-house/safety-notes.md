@@ -31,4 +31,3 @@
   movement.
 - Use a predator baffle on pole installations where climbing predators are a
   realistic risk.
-

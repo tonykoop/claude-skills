@@ -22,4 +22,3 @@ machine-readable cut list. This file is the human shop note.
 - Cut roughening grooves before final assembly.
 - Keep glue and sealant squeeze-out out of the roosting path.
 - Leave the bottom open for bat entry and guano drop.
-

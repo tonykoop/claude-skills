@@ -20,4 +20,3 @@
 - No interior paint, stain, oil, or sealer.
 - No mesh, screen, or netting on roost surfaces.
 - No metal, smooth plastic, or slick interior panels.
-

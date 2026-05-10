@@ -85,4 +85,3 @@ python3 -m unittest discover skills/habitat-maker/tests
 The smoke tests parse the parameter file, confirm bat welfare gates, run
 the generator in a temporary packet copy, parse the emitted SVG, and verify
 the validation-report schema/report pair.
-

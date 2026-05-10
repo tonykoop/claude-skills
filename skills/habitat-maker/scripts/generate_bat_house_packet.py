@@ -54,7 +54,7 @@ def write_cut_list(packet_dir: Path, params: dict[str, Any]) -> Path:
         "thickness_mm",
     ]
     with out.open("w", newline="") as fh:
-        writer = csv.DictWriter(fh, fieldnames=fields)
+        writer = csv.DictWriter(fh, fieldnames=fields, lineterminator="\n")
         writer.writeheader()
         for panel in params["panel_schedule"]:
             writer.writerow({field: panel.get(field, "") for field in fields})
