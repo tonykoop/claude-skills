@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.2.0 - 2026-05-10
+
+- Added Promote-batch / cluster mode for ranking related capture issues before
+  selecting a promotion candidate.
+- Added promotion-readiness matrix guidance, recovery/import provenance fields,
+  binary-asset Git LFS prompts, and `Refs` versus `Closes` handling.
+- Added a Weather Balloon Camera Vessel worked example for archive-recovery
+  clusters with CAD/media import risk.
+
 ## 1.1.0 - 2026-05-08
 
 - Cross-platform compatibility pass for Claude Code, Claude Desktop, Codex,

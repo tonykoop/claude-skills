@@ -1,17 +1,19 @@
 ---
 name: idea-incubator
 metadata:
-  version: 0.1.0
-  last-updated: 2026-05-09
+  version: 1.2.0
+  last-updated: 2026-05-10
 description: >-
   Capture, classify, connect, review, and promote speculative ideas into a
   searchable GitHub issue inbox. Use when the user says "new idea", "incubate
   this", "add this to my inbox", "process my Telegram dump", "review my
-  ideas", "does this connect to anything?", "promote idea #N", or wants to
-  turn a rough note, voice fragment, or URL into a tracked issue. Telegram
-  Saved Messages is the quick-capture layer; GitHub issues are the durable
-  layer. Do not use for ideas that are already scoped and ready to build —
-  route those directly to maker-engineering or the relevant specialist.
+  ideas", "does this connect to anything?", "promote idea #N", "promote this
+  cluster", "rank these captures", or wants to turn a rough note, voice
+  fragment, URL, or related capture batch into a tracked issue or promotion
+  handoff. Telegram Saved Messages is the quick-capture layer; GitHub issues
+  are the durable layer. Do not use for ideas that are already scoped and ready
+  to build — route those directly to maker-engineering or the relevant
+  specialist.
 ---
 
 # Idea Incubator
@@ -29,6 +31,8 @@ into specialist handoffs.
 - `review my ideas`
 - `does this connect to anything`
 - `promote idea #N`
+- `promote this cluster`
+- `rank these captures`
 
 The phrases are kept punctuation-free so substring-matching agents (Codex,
 Gemini CLI) hit them as reliably as Claude does.
@@ -55,6 +59,15 @@ Gemini CLI) hit them as reliably as Claude does.
    to a domain specialist (`instrument-maker`, `makerspace`, `reverse-engineer`)
    when the scope is clear, or to a project repo when the idea belongs in an
    existing backlog.
+6. **Promote-batch / cluster** - use when promotion candidates are related
+   captures rather than one isolated issue. Treat a cluster as present when at
+   least five related captures appear inside a 48-hour window, or when fewer
+   issues share a strong signal such as the same archive source, repo target,
+   label set, project name, asset folder, or campaign. Rank candidates with the
+   promotion-readiness matrix in
+   [`references/promotion-handoff.md`](references/promotion-handoff.md) before
+   choosing a winner. Flag already-satisfied candidates, duplicates, and
+   provenance anchors before drafting new work.
 
 ## Operating rules
 
@@ -66,6 +79,12 @@ Gemini CLI) hit them as reliably as Claude does.
 - Do not hard-code repository ownership or visibility when the target repo is
   unknown. Use a placeholder or ask the user first.
 - Do not auto-close ideas, and do not invent ideas that the user did not capture.
+- For recovery/import work, preserve source provenance and distinguish observed
+  archive facts from inferred claims.
+- For CAD, media, ZIP, PDF, audio, video, or other large binary assets, ask
+  whether Git LFS must be configured before the first import commit.
+- Use `Refs #N` instead of `Closes #N` when the source capture should remain a
+  provenance anchor until the downstream evidence ledger or import lands.
 
 ## Bundled references
 

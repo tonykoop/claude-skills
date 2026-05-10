@@ -1,7 +1,12 @@
 interface:
   display_name: "Idea Incubator"
-  short_description: "Capture, connect, review, and promote ideas via GitHub issues"
-  default_prompt: "Use $idea-incubator to turn rough notes, Telegram dumps, and idea fragments into GitHub issue drafts, related-issue links, and promotion handoffs."
+  short_description: >-
+    Capture, connect, review, and promote ideas or capture clusters via GitHub
+    issues
+  default_prompt: >-
+    Use $idea-incubator to turn rough notes, Telegram dumps, idea fragments,
+    and related capture clusters into GitHub issue drafts, related-issue links,
+    promotion-readiness matrices, and promotion handoffs.
   triggers:
     - "new idea"
     - "incubate this"
@@ -10,5 +15,7 @@ interface:
     - "review my ideas"
     - "does this connect to anything"
     - "promote idea #N"
+    - "promote this cluster"
+    - "rank these captures"
 policy:
   allow_implicit_invocation: true
