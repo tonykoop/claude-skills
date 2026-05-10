@@ -246,6 +246,48 @@ and measurement status agree.
 - Partner Peek v2 adds a visual-authority checkpoint for reed/free-reed
   packets that use generated concept images.
 
+## v4.5.0 — 2026-05-10 (issue #107)
+
+Round 9 TwinGrid lane Elsa showed that yaybahar-style prompts can tempt
+the skill into designing a finished performance instrument before the
+coupled string/spring/membrane behavior has been measured. v4.5 adds an
+experiment-first acoustic rig template so uncertain coupled systems ship
+as bench-rig packets first.
+
+### Added
+
+- `references/experimental-acoustic-rigs.md` — routing rule and packet
+  contract for coupled string-spring-membrane systems, with a warning
+  against over-predicting behavior from isolated string, spring, or
+  membrane formulas.
+- `assets/templates/experimental-acoustic-rig/variable-matrix.csv` —
+  standard variable matrix for staged experiments.
+- `assets/templates/experimental-acoustic-rig/measurement-log-template.csv`
+  — repeatable measurement log with sensor/capture fields.
+- `assets/templates/experimental-acoustic-rig/sensor-capture-checklist.md`
+  — mic distance, gain, contact mic mounting, environment, excitation
+  method, and subjective descriptor checklist.
+- `assets/templates/experimental-acoustic-rig/stored-energy-safety-checklist.md`
+  — spring/string stored-energy safety gates.
+- `tests/test_experimental_rig_templates.py` — content/schema smoke tests
+  for the new reference and templates.
+
+### Acceptance criteria (issue #107)
+
+- [x] Future yaybahar-style prompts route to a bench-rig packet before a
+      performance-instrument packet.
+- [x] Coupled string/spring/membrane guidance warns against isolated
+      formula overreach.
+- [x] Standard `variable-matrix.csv` and
+      `measurement-log-template.csv` outputs are present.
+- [x] Sensor/capture checklist covers mic distance, gain, contact mic
+      mounting, environment, excitation method, and subjective
+      descriptors.
+- [x] Stored-energy safety checklist covers spring/string systems.
+- [x] Prototype maturity labels cover concept, bench rig, alpha
+      instrument, performance prototype, and production packet.
+- [x] Validation focuses on repeatable measurement and staged expansion.
+
 ## v4.4.1 — 2026-05-10 (issue #109)
 
 Round 9 TwinGrid lane Alice recommended making free-reed/khaen work an
