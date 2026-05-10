@@ -11,8 +11,10 @@ Partner Peek, and before opening skill-development PRs.
 | side | record field or folder naming fallback |
 | runtime | record field or folder naming fallback |
 | blind output folder | output folder path |
-| blind artifacts | `artifacts_produced`, or files present before Partner Peek |
-| v2 artifacts | `partner-peek-improvements.md`, `v2-*`, partner records |
+| freeze state | `ready_for_peek.json` |
+| blind artifacts | `ready_for_peek.json` manifest, `artifacts_produced`, or files present before Partner Peek |
+| skill findings file | canonical `skill_findings.md`, or accepted aliases |
+| v2 artifacts | `partner-peek-improvements.md`, `partner-feedback.md`, `combine_recommendation.md`, `v2-*`, partner records |
 | validation run | record `validation_run` plus detected validation logs |
 | PR/issues opened | partner record or PR handoff field |
 | skill recommendation | partner record recommendation fields |
@@ -32,6 +34,39 @@ Pane captures should be scanned for:
 
 The detector should report the phrase family and pane/capture filename; the
 manager decides whether to interrupt, approve, install, or re-dispatch.
+
+## Freeze helper
+
+Before Partner Peek, each lane side should write:
+
+```bash
+python3 claude/skills/tmux-sprint/scripts/twingrid_contracts.py freeze \
+  --round 9 \
+  --lane elsa \
+  --side A \
+  --runtime gpt55-window-13 \
+  --task "Yaybahar resonance test rig" \
+  --output-folder /tmp/twingrid-r9-gpt55-elsa-yaybahar-test-rig
+```
+
+This creates `ready_for_peek.json` with `BLIND_FROZEN`, manifest entries, and
+SHA256 receipts. The manager should treat that file as the blind-pass recovery
+contract. If the pane disappears after this point, recover from the frozen
+folder instead of rerunning the blind work.
+
+## Dispatch hygiene notes
+
+- Rename panes before dispatch with `/rename <agent>_r<round>_<topic>` when
+  the runtime supports it. Use the same topic slug as the assignment,
+  worktree, or branch when possible.
+- Prefer short file-based prompts for long assignments.
+- Batch artifact-only work by idle runtime; dispatch code-changing,
+  approval-heavy, or network-heavy tasks one pane at a time.
+- Choose stronger models for implementation, review gates, and ambiguous
+  architecture decisions. Choose lighter models for bounded summary,
+  extraction, and validation-only work.
+- Do not include blocked panes in the next batch until the manager resolves
+  approval, auth, missing-tool, or long-running-command findings.
 
 ## Script
 
@@ -59,6 +94,9 @@ runtime.
       "side": "B",
       "runtime": "codex",
       "output_folder": "/tmp/twingrid-r7-codex-henry-pack-basket",
+      "freeze_state": "BLIND_FROZEN",
+      "ready_for_peek": true,
+      "skill_findings_file": "skill_findings.md",
       "blind_artifacts": ["reverse_engineering_report.md"],
       "v2_artifacts": ["partner-peek-improvements.md"],
       "validation_run": ["jq . partner-peek-record.json"],

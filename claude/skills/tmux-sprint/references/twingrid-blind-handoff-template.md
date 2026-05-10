@@ -4,6 +4,14 @@ Use this template for Phase 1 of a TwinGrid round. Generate one assignment per
 lane side. The Claude side is usually side A and the Codex side is usually side
 B, but the template should name the actual runtime explicitly.
 
+For implementation rounds, use Plan-first dispatch: the agent must describe
+intended files, tests, and PR scope, then wait for manager approval before
+editing or creating worktrees.
+
+Before dispatch, rename the pane/session when supported:
+`/rename {{lane}}_r{{round_id}}_{{topic_slug}}`. The name should match the
+assignment and branch/worktree topic so recovery and `/resume` are legible.
+
 ```markdown
 # TwinGrid Blind Dispatch
 
@@ -33,8 +41,12 @@ your partner's output or shared reveal materials during the blind pass.
   repo change.
 - Do not open a PR unless you make concrete repo changes.
 - Preserve evidence and validation logs.
+- For implementation tasks, plan first and wait for the manager implementation
+  gate before editing.
 - Do not self-report elapsed time, context remaining, usage remaining, or
   pane status. The manager captures those from tmux/statusline telemetry.
+- Record the actual runtime/model in the agent record so model-picker choices
+  remain visible after archive/peek.
 - If a required tool is missing, name the exact command/tool and install hint.
 - If the task references an image or file that is not available in this
   runtime, state the limitation at the top of the artifact and continue only
@@ -46,12 +58,19 @@ For content-generation rounds:
 
 - Primary artifact(s) requested by the task.
 - `agent_record.json` or `agent_record.md`.
+- `ready_for_peek.json` after the blind pass is complete and before Partner
+  Peek. Use `scripts/twingrid_contracts.py freeze` when available.
+- `skill_findings.md` for repeatable skill/project improvements. The legacy
+  names `skill-improvement-findings.md` and
+  `skill-improvement-recommendation.md` are accepted aliases only.
 
 For skill-development rounds:
 
 - Focused repo change in the assigned worktree.
 - Validation output.
 - Commit and draft PR when concrete repo changes are made.
+- `ready_for_peek.json` for blind A/B implementation comparisons before
+  Partner Peek.
 
 ## Agent Record
 
@@ -72,6 +91,27 @@ Finish with a TwinGrid agent record containing:
 Do not include elapsed time, context remaining, usage remaining, or token
 claims in the agent record.
 ```
+
+## Short file-based dispatch
+
+When the assignment is long, write it to a stable file and send only a short
+pane prompt:
+
+```text
+Read /tmp/r9i-dan.md and execute. Plan first.
+```
+
+This avoids long `tmux send-keys -l` payloads and makes recovery easier if the
+manager or persona pane compacts.
+
+## Batching and model selection
+
+Managers should batch low-risk artifact-only prompts more aggressively and
+dispatch code-changing or review-gate prompts more conservatively. Use the
+stronger available model for implementation, merge review, and ambiguous
+architecture calls; use lighter models for bounded extraction, summary,
+matrix, and validation-only work. Keep the selected runtime/model explicit in
+the handoff to preserve A/B comparison value.
 
 ## Content-generation versus skill-development knobs
 

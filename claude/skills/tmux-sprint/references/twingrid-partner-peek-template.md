@@ -26,10 +26,13 @@ erasing blind-run evidence.
 ## Rules
 
 - Read only your lane section in the reveal brief.
+- Read the partner `ready_for_peek.json` first and confirm `BLIND_FROZEN`
+  before reading summaries or artifacts.
 - Do not edit your partner's output folder.
 - Keep original blind outputs intact where practical.
 - Add clearly named v2 artifacts such as `partner-peek-improvements.md`,
-  `v2-*`, validation logs, or supplemental structured records.
+  `v2-*`, validation logs, `combine_recommendation.md`, or supplemental
+  structured records.
 - Do not self-report elapsed time, context remaining, usage remaining, or pane
   status.
 - If you make repo or skill changes, use the assigned isolated worktree and
@@ -43,6 +46,8 @@ erasing blind-run evidence.
 - `partner-peek-improvements.md` describing what was preserved, adopted, and
   rejected.
 - A Partner Peek record as JSON or Markdown.
+- `combine_recommendation.md` saying whether the combined deliverable should
+  be hybrid, A-led, B-led, or preserve-both.
 - Validation command list and result summary.
 - A concrete skill-improvement recommendation when the combined A/B result
   exposes a repeatable process or skill gap.
@@ -60,6 +65,7 @@ Finish with a Partner Peek record containing:
 - `pr_or_issues_opened`
 - `combined_ab_should_feed_skill_improvement`
 - `skill_improvement_recommendation`
+- `combine_recommendation`
 - `notes_for_manager`
 
 Do not include elapsed time, context remaining, usage remaining, or token
@@ -72,3 +78,8 @@ Each lane section should include both output paths, a two-to-four sentence
 manager comparison, and the specific second-pass ask. Keep it compact so
 agents use partner artifacts as evidence rather than rereading the whole round
 transcript.
+
+If a pane disappeared after producing a valid freeze record, the reveal brief
+should say so and point the replacement pane at the frozen output folder. Do
+not ask the replacement pane to recreate blind artifacts that already have
+SHA256 receipts.

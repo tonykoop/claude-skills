@@ -94,6 +94,43 @@ class TwinGridMatrixTests(unittest.TestCase):
             "missing_tool",
         ])
 
+    def test_collects_freeze_manifest_and_skill_findings_alias(self):
+        module = load_module()
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            out = root / "twingrid-r9-gpt54-elsa-yaybahar-test-rig"
+            out.mkdir()
+            (out / "ready_for_peek.json").write_text(
+                json.dumps(
+                    {
+                        "lane": "elsa",
+                        "side": "B",
+                        "runtime": "gpt54-window-12",
+                        "state": "BLIND_FROZEN",
+                        "blind_artifact_manifest": [
+                            {
+                                "path": str(out / "packet.md"),
+                                "name": "packet.md",
+                                "sha256": "abc",
+                            }
+                        ],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (out / "skill-improvement-findings.md").write_text("# findings\n", encoding="utf-8")
+            (out / "combine_recommendation.md").write_text("# combine\n", encoding="utf-8")
+
+            lanes = module.scan_outputs(str(root / "twingrid-r9-*"))
+
+        self.assertEqual(len(lanes), 1)
+        lane = lanes[0]
+        self.assertTrue(lane["ready_for_peek"])
+        self.assertEqual(lane["freeze_state"], "BLIND_FROZEN")
+        self.assertEqual(lane["blind_artifacts"], ["packet.md"])
+        self.assertEqual(lane["skill_findings_file"], "skill-improvement-findings.md")
+        self.assertIn("combine_recommendation.md", lane["v2_artifacts"])
+
 
 if __name__ == "__main__":
     unittest.main()

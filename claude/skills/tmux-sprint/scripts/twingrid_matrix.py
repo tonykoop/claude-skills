@@ -59,6 +59,13 @@ def first_existing_json(folder: pathlib.Path, names: list[str]) -> dict[str, Any
     return {}
 
 
+def first_existing_file(folder: pathlib.Path, names: list[str]) -> str:
+    for name in names:
+        if (folder / name).is_file():
+            return name
+    return ""
+
+
 def infer_from_name(folder: pathlib.Path) -> dict[str, str]:
     parts = folder.name.split("-")
     inferred = {"lane": "", "side": "", "runtime": ""}
@@ -97,6 +104,7 @@ def list_names(folder: pathlib.Path, patterns: list[str]) -> list[str]:
 
 def collect_lane(folder: pathlib.Path) -> dict[str, Any]:
     blind = first_existing_json(folder, ["agent_record.json", "twingrid_agent_record.json"])
+    freeze = first_existing_json(folder, ["ready_for_peek.json"])
     peek = first_existing_json(folder, ["partner-peek-record.json", "partner_peek_record.json"])
     inferred = infer_from_name(folder)
 
@@ -121,16 +129,54 @@ def collect_lane(folder: pathlib.Path) -> dict[str, Any]:
         or ""
     )
 
+    freeze_manifest = freeze.get("blind_artifact_manifest") or []
+    if freeze_manifest and all(isinstance(item, str) for item in freeze_manifest):
+        blind_artifacts = sorted(str(item) for item in freeze_manifest)
+    elif freeze_manifest and all(isinstance(item, dict) for item in freeze_manifest):
+        blind_artifacts = sorted(
+            str(item.get("name") or pathlib.Path(str(item.get("path", ""))).name)
+            for item in freeze_manifest
+            if item.get("name") or item.get("path")
+        )
+    else:
+        blind_artifacts = blind.get("artifacts_produced") or list_names(
+            folder,
+            [
+                "agent_record.*",
+                "*report*.md",
+                "*handoff*.md",
+                "artifact_summary.md",
+                "validation*.md",
+                "skill_findings.md",
+                "skill-improvement-findings.md",
+            ],
+        )
+
     return {
-        "lane": blind.get("lane") or peek.get("lane") or inferred["lane"],
-        "side": blind.get("side") or peek.get("side") or inferred["side"],
-        "runtime": blind.get("runtime") or peek.get("runtime") or inferred["runtime"],
+        "lane": blind.get("lane") or freeze.get("lane") or peek.get("lane") or inferred["lane"],
+        "side": blind.get("side") or freeze.get("side") or peek.get("side") or inferred["side"],
+        "runtime": blind.get("runtime") or freeze.get("runtime") or peek.get("runtime") or inferred["runtime"],
         "output_folder": str(folder),
-        "blind_artifacts": blind.get("artifacts_produced") or list_names(
-            folder, ["agent_record.*", "*report*.md", "*handoff*.md"]
+        "freeze_state": freeze.get("state", ""),
+        "ready_for_peek": bool(freeze),
+        "skill_findings_file": first_existing_file(
+            folder,
+            [
+                "skill_findings.md",
+                "skill-improvement-findings.md",
+                "skill-improvement-recommendation.md",
+            ],
         ),
+        "blind_artifacts": blind_artifacts,
         "v2_artifacts": list_names(
-            folder, ["partner-peek-improvements.md", "partner-peek-record.*", "v2-*"]
+            folder,
+            [
+                "partner-peek-improvements.md",
+                "partner-feedback.md",
+                "partner-peek-record.*",
+                "combine_recommendation.md",
+                "v2-*",
+            ],
         ),
         "validation_run": validation,
         "skill_recommendation": skill_recommendation,
