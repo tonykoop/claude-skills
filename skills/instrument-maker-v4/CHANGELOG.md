@@ -269,8 +269,14 @@ as bench-rig packets first.
   method, and subjective descriptor checklist.
 - `assets/templates/experimental-acoustic-rig/stored-energy-safety-checklist.md`
   — spring/string stored-energy safety gates.
+- `assets/templates/experimental-acoustic-rig/README.md`,
+  `validation-plan.md`, and `risks.md` — seed files for the full
+  minimum bench-rig packet contract.
+- `scripts/apply_experimental_rig_runtime_patch.py` — idempotent helper
+  that inserts the v4.5 bench-rig-first routing rule into the canonical
+  runtime `SKILL.md`.
 - `tests/test_experimental_rig_templates.py` — content/schema smoke tests
-  for the new reference and templates.
+  for the new reference, templates, and runtime patch helper.
 
 ### Acceptance criteria (issue #107)
 

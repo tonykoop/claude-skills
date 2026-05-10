@@ -77,8 +77,9 @@ skills/instrument-maker-v4/
 │   ├── repo-first-bare-bones-packet.md         ← minimal public repo-first packet contract
 │   └── instrument-design-book-chapter-contract.md ← public chapter readiness / asset-ledger contract
 ├── assets/
-│   └── templates/experimental-acoustic-rig/    ← variable matrix, measurement log, sensor and safety checklists
+│   └── templates/experimental-acoustic-rig/    ← README, validation plan, risks, matrix, log, sensor/safety checklists
 ├── scripts/
+│   ├── apply_experimental_rig_runtime_patch.py  ← idempotently patches canonical SKILL.md routing guidance
 │   ├── generate_folded_drone_dxf.py            ← CSV-to-DXF folded bore helper
 │   ├── validate_acoustic_law.py                ← new in v4.4; focused validator
 │   └── validate_visual_authority.py            ← new in v4.4.5; DXF/image-gen-2 authority validator
@@ -127,6 +128,8 @@ cp -r skills/instrument-maker-v4/references/*.md \
       ~/.claude/skills/instrument-maker/references/
 cp -r skills/instrument-maker-v4/assets/templates/experimental-acoustic-rig \
       ~/.claude/skills/instrument-maker/assets/templates/
+cp     skills/instrument-maker-v4/scripts/apply_experimental_rig_runtime_patch.py \
+      ~/.claude/skills/instrument-maker/scripts/
 cp     skills/instrument-maker-v4/scripts/validate_acoustic_law.py \
       ~/.claude/skills/instrument-maker/scripts/
 cp     skills/instrument-maker-v4/scripts/validate_visual_authority.py \
@@ -141,7 +144,14 @@ cp -r skills/instrument-maker-v4/examples/hulusi-bawu \
       ~/.claude/skills/instrument-maker/examples/
 cp -r skills/instrument-maker-v4/examples/repo-first-bare-bones-packet \
       ~/.claude/skills/instrument-maker/examples/
+python3 ~/.claude/skills/instrument-maker/scripts/apply_experimental_rig_runtime_patch.py \
+      ~/.claude/skills/instrument-maker/SKILL.md
 ```
+
+The final command updates the runtime-facing canonical `SKILL.md` with
+the v4.5 bench-rig-first routing block. Copying only the reference and
+template files is not sufficient for issue #107, because the invoked
+slash-command behavior lives in the canonical skill body.
 
 ## How to validate a packet's family-spec.csv
 
@@ -205,6 +215,9 @@ and seed the packet with:
 - `measurement-log-template.csv`
 - `sensor-capture-checklist.md`
 - `stored-energy-safety-checklist.md`
+- `README.md`
+- `validation-plan.md`
+- `risks.md`
 
 For free-reed / khaen work in the canonical skill, load
 `references/free-reed-khaen-exploration.md` before drafting CAD. The first
