@@ -29,6 +29,7 @@ class BowedStringManifest(unittest.TestCase):
     def test_manifest_exposes_bowed_string_reference(self):
         paths = {entry["path"] for entry in self.manifest["references"]}
         self.assertIn("references/bowed-string-packets.md", paths)
+        self.assertIn("references/free-reed-khaen-exploration.md", paths)
 
     def test_manifest_exposes_templates_and_examples(self):
         template_paths = {entry["path"] for entry in self.manifest["templates"]}
@@ -45,6 +46,9 @@ class BowedStringManifest(unittest.TestCase):
             "examples/bowed-string/yayli-source-posture.csv",
             example_paths,
         )
+        self.assertIn("examples/khaen/p0-reed-coupon-log.csv", example_paths)
+        self.assertIn("examples/khaen/mouth-organ-dxf-checklist.csv", example_paths)
+        self.assertIn("examples/khaen/free-reed-sourcing.csv", example_paths)
 
     def test_manifest_paths_exist_in_partial_skill(self):
         sections = ("references", "templates", "examples", "scripts", "tests")

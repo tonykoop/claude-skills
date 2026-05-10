@@ -15,6 +15,9 @@ triggers:
   acoustic_law:
     - "khaen acoustic law"
     - "free reed boundary condition"
+    - "free-reed exploration"
+    - "reed coupon"
+    - "mouth-organ dxf checklist"
     - "validate acoustic_law"
     - "family-spec.csv acoustic_law"
   bowed_string:
@@ -35,6 +38,9 @@ references:
   - path: references/family-aware-design.md
     purpose: "family-spec.csv schema including acoustic_law, end_condition, and dimension_provenance"
     load_when: "Generating or validating family-aware packet rows"
+  - path: references/free-reed-khaen-exploration.md
+    purpose: "Free-reed/khaen exploration template with P0 reed coupon, control-build, sourcing, and DXF checklist guidance"
+    load_when: "Prompt mentions khaen/khen, sheng, sho, free reeds, reed coupons, mouth-organ DXF, windchest, or free-reed sourcing"
   - path: references/bowed-string-packets.md
     purpose: "Bowed-string packet shape for tagelharpa, yayli tambur, rebab, kemenche-adjacent studies"
     load_when: "Prompt mentions bowed strings, bridge crown, bow clearance, active/sympathetic string staging, long-neck bowl instruments, or inlay/no-carve zones"
@@ -50,6 +56,12 @@ templates:
 examples:
   - path: examples/khaen/family-spec.csv
     purpose: "v4.4 acoustic_law family-spec example"
+  - path: examples/khaen/p0-reed-coupon-log.csv
+    purpose: "P0 reed coupon worksheet for reed-alone pitch, onset, pull-down, and blow/draw observations"
+  - path: examples/khaen/mouth-organ-dxf-checklist.csv
+    purpose: "DXF checklist for reed window, socket pitch map, gasket layer, windchest section, and service access"
+  - path: examples/khaen/free-reed-sourcing.csv
+    purpose: "Free-reed sourcing template with source_status values for unstable supplier data"
   - path: examples/bowed-string/tagelharpa-string-schedule.csv
     purpose: "Bass tagelharpa bowed-string schedule example with separate 720 mm and 620 mm variants"
   - path: examples/bowed-string/yayli-source-posture.csv
