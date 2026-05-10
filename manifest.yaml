@@ -135,6 +135,14 @@ skills:
     status: active
     notes: First canonical example (chickadee laser packet) with generator-backed SVG and JSON. Promoted from v0.1 scaffold.
 
+  playlist-builder:
+    canonical_version: 0.1.0
+    runtime: shared
+    repo_path: skills/playlist-builder
+    last_updated: 2026-05-10
+    status: active
+    notes: "Initial snapshot with catalog/auth-state preflight (issue 72) for honest sparse-catalog output."
+
 planned_skills:
   energy-management:
     status: issue-handoff

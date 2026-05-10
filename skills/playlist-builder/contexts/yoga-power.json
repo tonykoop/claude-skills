@@ -1,0 +1,28 @@
+{
+  "id": "yoga-power",
+  "name": "Power Vinyasa (60-min, heated)",
+  "description": "60-minute heated power vinyasa. Steady build through Sun A, peak through Sun B with strong standing series, gentle descent, full savasana. Generic power-flow format used at most heated-yoga studios.",
+  "duration_min": 60,
+  "duration_acceptable": [58, 65],
+  "padding_default_min": 5,
+  "track_count_target": [13, 17],
+  "music_pedagogy": {
+    "beat": "Beat is clear and consistent so the instructor cues actions and breath on the beat. Two full reps of a movement or breath cycle should land cleanly on bars.",
+    "voice": "Middle of tracks (especially during peak intensity) leaves headroom for the teacher's voice. Avoid dense vocal pile-ups at the top of the arc.",
+    "count": "Tracks have predictable structure supporting an 8-count or 4-count countdown for pose transitions."
+  },
+  "phases": [
+    { "name": "Opening / Centering", "bank": "A", "min_tracks": 1, "max_tracks": 2, "window_min": [0, 5],   "energy": 1, "notes": "Ambient, no percussion. Students arriving and centering on the mat." },
+    { "name": "Sun A (Rising)",      "bank": "B", "min_tracks": 2, "max_tracks": 3, "window_min": [5, 18],  "energy": 4, "notes": "Sun salutation A around minute 5. Steady, rising tempo. Teacher does intention talk during this window." },
+    { "name": "Sun B (Peak)",        "bank": "D", "min_tracks": 4, "max_tracks": 5, "window_min": [18, 42], "energy": 9, "notes": "Sun B sequences, warriors, balances, peak posture. Highest energy of the class." },
+    { "name": "Cool Down (Descent)", "bank": "E", "min_tracks": 3, "max_tracks": 4, "window_min": [42, 55], "energy": 4, "notes": "Floor work, hip openers, twists, forward folds." },
+    { "name": "Savasana (Closing)",  "bank": "A", "min_tracks": 1, "max_tracks": 2, "window_min": [55, 65], "energy": 1, "notes": "Savasana. No percussion. 5-min meditation buffer if class runs long." }
+  ],
+  "theme_anchor": {
+    "bank": "C",
+    "window_min": [20, 40],
+    "tracks": 1,
+    "rationale": "Lyrics land after the teacher's 15-min intention talk, during peak energy in the Sun B block."
+  },
+  "content_filter": "Filter explicit lyrics by default for studio-friendliness. User can opt in to allow."
+}
