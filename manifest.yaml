@@ -2,7 +2,7 @@
 # Update this file whenever a skill version is bumped, packaged, or deprecated.
 
 schema_version: 1
-last_updated: 2026-05-09
+last_updated: 2026-05-10
 
 install_roots:
   windows:
@@ -30,20 +30,25 @@ skills:
     notes: Portable drift-audit skill for Claude, Codex, Gemini, and desktop installs.
 
   tmux-v2:
-    canonical_version: 2.0.0
+    canonical_version: 2.1.0
     runtime: codex
     repo_path: codex/skills/tmux-v2
-    last_updated: 2026-05-08
+    last_updated: 2026-05-10
     status: active
-    notes: Current Codex tmux sprint driver. v3 evolution is tracked by issues.
+    notes: |
+      Codex tmux sprint driver. v2.1 adds the TwinGrid + Partner Peek round
+      mode contract (docs/twingrid/, scripts/twingrid/). v3 evolution is
+      tracked by issues.
 
   tmux-sprint:
-    canonical_version: 2.0.0
+    canonical_version: 2.1.0
     runtime: claude
     repo_path: claude/skills/tmux-sprint
-    last_updated: 2026-05-08
+    last_updated: 2026-05-10
     status: active
-    notes: Claude-side tmux sprint counterpart.
+    notes: |
+      Claude-side tmux sprint counterpart. v2.1 adds the TwinGrid + Partner
+      Peek round mode contract (docs/twingrid/, scripts/twingrid/).
 
   merge-review:
     canonical_version: 1.0.0

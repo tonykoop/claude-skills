@@ -1,5 +1,20 @@
 # Changelog
 
+## 2026-05-10
+
+- Added native **TwinGrid + Partner Peek** round mode to `tmux-sprint` and
+  `tmux-v2` (Refs #65). Contract lives at `docs/twingrid/` (README, blind
+  and Partner Peek handoff templates, agent-record schema and example,
+  partner-peek-record schema, lane-matrix row schema). Manager helpers live
+  at `scripts/twingrid/`: `twingrid-lane-matrix.sh` builds the per-round
+  A/B matrix; `twingrid-detect-blocked.sh` surfaces panes blocked on
+  approval prompts, missing tools, or BLOCKED.txt markers. Agents are
+  explicitly told **not** to self-report manager-owned telemetry
+  (`elapsed_time`, `context_remaining`, `usage_remaining`,
+  `blocked_state`); the lane-matrix script ignores those fields if they
+  appear. Bumped `tmux-sprint` and `tmux-v2` to 2.1.0 and updated
+  `manifest.yaml` `last_updated`.
+
 ## 2026-05-09
 
 - Added `docs/pr-review-gate.md`: sprint-manager PR readiness and issue-closure

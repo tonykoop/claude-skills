@@ -1,0 +1,56 @@
+---
+# TwinGrid Partner Peek record schema.
+# Both YAML and JSON serializations are accepted; field names are identical.
+# Documents the contract; not consumed as a JSON Schema.
+
+required:
+  - lane
+  - side
+  - runtime
+  - actual_model
+  - phase                      # always "2-partner-peek"
+  - partner_output_reviewed
+  - files_added_phase2
+  - files_unchanged
+  - partner_ideas_adopted
+  - partner_ideas_rejected
+  - validation_run
+  - prs_or_issues_opened
+  - pr_recommendations
+  - should_feed_skill_improvement
+  - skill_improvement_summary
+  - subjective_quality_notes
+  - ab_comparison_for_manager
+
+forbidden:
+  - elapsed_time
+  - context_remaining
+  - usage_remaining
+  - blocked_state
+
+field_notes:
+  partner_output_reviewed: Absolute path to the partner's per-lane folder.
+  files_added_phase2: |
+    List of basenames added during Partner Peek. Originals from the blind
+    pass MUST NOT be modified.
+  files_unchanged: |
+    List of basenames preserved unchanged from the blind pass. Used by the
+    manager to verify the "no rewrite" rule.
+  partner_ideas_adopted: |
+    List of {id, idea, where_applied}. Use stable IDs (P-01, P-02, ...) so
+    cross-lane synthesis is possible.
+  partner_ideas_rejected: |
+    List of {idea, reason}. Capture rejections so the synthesis pass does
+    not re-propose them.
+  validation_run: |
+    Same shape as the blind agent record's validation_run. At least one
+    entry is required and must reflect a command that was actually run.
+  prs_or_issues_opened: |
+    List of URLs or GH numbers. Empty list when artifact-only.
+  pr_recommendations: |
+    List of {target, type, summary, rationale, full_diff_in}. Use when the
+    improvement is too large for an artifact-only memo.
+  should_feed_skill_improvement: true | false.
+  skill_improvement_summary: |
+    One-paragraph statement of what the skill should change and why,
+    derived from blind+peek evidence.

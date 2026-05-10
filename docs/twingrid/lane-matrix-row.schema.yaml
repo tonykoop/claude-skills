@@ -1,0 +1,42 @@
+---
+# One row of the manager-owned TwinGrid lane matrix.
+# Produced by scripts/twingrid/twingrid-lane-matrix.sh.
+
+required:
+  - round
+  - lane
+  - a_runtime
+  - a_output_folder
+  - a_artifact_count
+  - a_agent_record_present
+  - b_runtime
+  - b_output_folder
+  - b_artifact_count
+  - b_agent_record_present
+  - a_partner_peek_record_present
+  - b_partner_peek_record_present
+  - a_skill_improvement_recommended
+  - b_skill_improvement_recommended
+  - a_blocked_marker_present
+  - b_blocked_marker_present
+  - notes
+
+field_notes:
+  round: Integer. Round number.
+  lane: String. Lane name.
+  a_runtime / b_runtime: One of claude-code | codex | gemini | other.
+  a_output_folder / b_output_folder: |
+    Absolute path. May be missing if the side did not run.
+  a_artifact_count / b_artifact_count: |
+    Integer count of files in the output folder. Useful for fast triage.
+  a_agent_record_present / b_agent_record_present: |
+    Boolean. True if any of {agent_record.json, agent_record.yaml,
+    *agent_record*.md, 09_*agent_record*.md} exists.
+  a_partner_peek_record_present / b_partner_peek_record_present: |
+    Boolean. True if {partner-peek-record.{json,yaml}} exists.
+  a_skill_improvement_recommended / b_skill_improvement_recommended: |
+    Boolean. True if a skill-improvement-proposal file is present in the
+    folder.
+  a_blocked_marker_present / b_blocked_marker_present: |
+    Boolean. True if BLOCKED.txt exists in the folder.
+  notes: Free-text. Manager-added per-lane synthesis hint.

@@ -1,0 +1,47 @@
+---
+# TwinGrid blind-pass agent record schema.
+# Both YAML and JSON serializations are accepted; field names are identical.
+# This file documents the contract; it is not consumed as a JSON Schema.
+
+required:
+  - lane
+  - side
+  - runtime
+  - actual_model
+  - task
+  - output_folder
+  - artifacts_produced
+  - validation_run
+  - subjective_quality_notes
+  - would_route_here_again
+  - ab_comparison_notes_for_manager
+
+forbidden:
+  # These fields are owned by the manager. Self-reporting them is unreliable
+  # and will be discarded by the lane-matrix script.
+  - elapsed_time
+  - context_remaining
+  - usage_remaining
+  - blocked_state
+
+field_notes:
+  lane: One of the round's lane names (alice, bob, ..., henry, irene).
+  side: A or B.
+  runtime: claude-code | codex | gemini | other.
+  actual_model: Self-reported model identifier (e.g., claude-opus-4-7).
+  task: Verbatim assignment text.
+  output_folder: Absolute path to the per-lane folder.
+  artifacts_produced: List of file basenames written under output_folder.
+  validation_run: |
+    List of validation commands and pass/fail results. Use one entry per
+    command. Example item:
+      - command: yamllint partner-peek-record.yaml
+        purpose: schema validate the YAML record
+        result: pass
+  subjective_quality_notes: |
+    Free-text. Strengths, weaknesses, things skipped on purpose.
+  would_route_here_again: true | false (with one-line reasoning).
+  ab_comparison_notes_for_manager: |
+    Free-text. Things the manager should look for when comparing your output
+    to the partner's. Phrased so the manager can act on it without re-reading
+    your full deliverable.

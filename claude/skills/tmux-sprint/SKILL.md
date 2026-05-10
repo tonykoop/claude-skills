@@ -302,6 +302,49 @@ Invoke this skill when the user says any of:
 - "check which personas are idle" / "who is free for more work"
 - "send alice this assignment" / "hand bob this md file"
 
+## TwinGrid + Partner Peek round mode
+
+A reusable round mode that pairs every lane with a twin runtime (Claude
+**A** vs Codex **B**), runs a blind A/B pass, then a structured Partner Peek
+pass. Use whenever the user says "TwinGrid", "blind A/B round", "partner
+peek round", "twin run", or "A/B-then-peek".
+
+**Phases:**
+
+1. **Blind A/B dispatch.** Manager writes one handoff per pane from
+   [`docs/twingrid/blind-handoff-template.md`](../../../docs/twingrid/blind-handoff-template.md)
+   and dispatches with the existing `dispatch` subcommand. Each side writes
+   to `/tmp/twingrid-r<N>-<runtime>-<lane>-<slug>/` and finishes with an
+   agent record matching
+   [`docs/twingrid/agent-record.schema.yaml`](../../../docs/twingrid/agent-record.schema.yaml).
+2. **Reveal brief.** Manager writes one shared
+   `/tmp/twingrid-r<N>-partner-peek.md` with per-lane partner paths and a
+   one-paragraph A/B comparison.
+3. **Partner Peek dispatch.** Manager dispatches handoffs from
+   [`docs/twingrid/partner-peek-handoff-template.md`](../../../docs/twingrid/partner-peek-handoff-template.md).
+4. **Lane matrix.** Manager runs
+   [`scripts/twingrid/twingrid-lane-matrix.sh --round N`](../../../scripts/twingrid/twingrid-lane-matrix.sh)
+   to build the matrix of A/B paths, v2 paths, agent-record presence, and
+   skill-improvement recommendations.
+5. **Block sweep.** Manager runs
+   [`scripts/twingrid/twingrid-detect-blocked.sh --tmux sprint:0 --folders /tmp --round N`](../../../scripts/twingrid/twingrid-detect-blocked.sh)
+   to surface blocked panes (approval prompts, missing tools, BLOCKED.txt
+   markers).
+
+**Manager-owned vs agent-owned data.** The manager owns process telemetry
+(elapsed time, context remaining, usage remaining, blocked state) — these
+are scraped from tmux and the statusline. Agents own content evidence
+(artifacts, validations, partner-idea adoption). Agents must **not**
+self-report manager-owned fields; the lane-matrix script ignores them if
+they appear.
+
+The mode supports both **content-generation rounds** (e.g., reverse-engineer
+an object, design an instrument) and **skill-development rounds** (e.g.,
+implement an issue against a skill). Only the assignment text varies.
+
+See [`docs/twingrid/README.md`](../../../docs/twingrid/README.md) for the
+contract, schemas, and Round 7 provenance.
+
 ## Related skills
 
 - **`handoff`** *(forthcoming in this repo)* — generates the per-persona

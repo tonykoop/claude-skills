@@ -150,10 +150,40 @@ bash ~/.codex/skills/tmux-v2/scripts/restart.sh --persona bob
 
 `restart.sh` uses the persona config to relaunch the correct runtime, model, effort, and working directory for either Claude or Codex panes.
 
+## TwinGrid + Partner Peek round mode
+
+A reusable round mode that pairs every lane with a twin runtime (Claude **A**
+vs Codex **B**), runs a blind A/B pass, then a structured Partner Peek pass.
+Use whenever the user says "TwinGrid", "blind A/B round", "partner peek
+round", "twin run", or "A/B-then-peek".
+
+Phases (Codex-side view):
+
+1. Blind dispatch via `dispatch.sh` using the per-pane handoff from
+   `docs/twingrid/blind-handoff-template.md` (in the repo root, not under
+   the skill folder).
+2. Each pane writes to `/tmp/twingrid-r<N>-<runtime>-<lane>-<slug>/` and
+   finishes with an agent record matching
+   `docs/twingrid/agent-record.schema.yaml`.
+3. Manager writes the shared `/tmp/twingrid-r<N>-partner-peek.md` reveal
+   brief, then dispatches `docs/twingrid/partner-peek-handoff-template.md`.
+4. Manager runs `scripts/twingrid/twingrid-lane-matrix.sh --round N` for
+   the matrix and `scripts/twingrid/twingrid-detect-blocked.sh` for block
+   detection.
+
+Manager-owned vs agent-owned data: the manager scrapes elapsed time,
+context remaining, usage remaining, and blocked state from tmux/the
+statusline. Agents must not self-report those fields. Agents own artifacts,
+validations, partner-idea adoption, and skill-improvement recommendations.
+
+Supports both content-generation rounds and skill-development rounds. See
+`docs/twingrid/README.md` for the contract, schemas, and Round 7 provenance.
+
 ## References
 
 - Read `references/codex-handling.md` before troubleshooting Codex pane behavior.
 - Read `references/persona-config.md` before editing the persona JSON.
+- Read `docs/twingrid/README.md` for the TwinGrid + Partner Peek round mode.
 
 ## Implementation note (for this public repo)
 
