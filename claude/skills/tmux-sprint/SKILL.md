@@ -1,15 +1,18 @@
 ---
 name: tmux-sprint
+version: 2.1.0
+last-updated: 2026-05-10
 description: >-
   Transactional sprint-round dispatch, liveness probing, and codex-session
   revival for persona agents running in a tmux grid. Use whenever the user
   mentions tmux-sprint, round dispatch, preflight sprint panes, persona dispatch,
   restart a dead codex pane, frank pane is stuck at codex resume, dispatch a
-  sprint round, send an assignment to alice/bob/cindy/dan/elsa/frank, or wants
-  to reliably hand out per-persona assignment markdown files across a mixed
-  claude+codex tmux sprint session. Replaces fragile `tmux send-keys` patterns
-  with structured primitives that verify submission, rate-limit by pane type,
-  and persist round state across `/compact`.
+  sprint round, TwinGrid blind A/B, Partner Peek reveal, send an assignment to
+  alice/bob/cindy/dan/elsa/frank, or wants to reliably hand out per-persona
+  assignment markdown files across a mixed claude+codex tmux sprint session.
+  Replaces fragile `tmux send-keys` patterns with structured primitives that
+  verify submission, rate-limit by pane type, and persist round state across
+  `/compact`.
 ---
 
 # tmux-sprint — Sprint Driver
@@ -254,6 +257,62 @@ Walks the state machine:
 4. **Report** the new state
 
 No user interaction needed unless the codex binary itself prompts for auth.
+
+## TwinGrid mode - blind A/B plus Partner Peek
+
+Use TwinGrid mode when the manager wants paired Claude/Codex lanes to solve
+the same task independently, reveal partner outputs only after the blind pass,
+and turn the combined result into a skill-improvement recommendation or PR.
+
+TwinGrid is a manager-owned protocol layered on top of normal `preflight` and
+`dispatch`; it can run content-generation rounds, skill-development rounds, or
+mixed rounds. The manager owns metrics and orchestration. Agents must not
+self-report elapsed time, context remaining, usage remaining, or pane status;
+capture those from tmux/statusline telemetry instead.
+
+### Phase 1: blind dispatch
+
+Use `references/twingrid-blind-handoff-template.md` to generate one assignment
+per side/lane. The template requires:
+
+- lane, side, runtime, task, and output folder
+- named skill(s) to load
+- isolated worktree/output-path guardrails
+- no partner-output visibility
+- a required agent record without self-reported runtime metrics
+
+For content-generation rounds, the output folder can be under `/tmp`. For
+skill-development rounds, each side must receive an assigned branch/worktree
+and should open a draft PR only after concrete repo changes.
+
+### Phase 2: Partner Peek reveal
+
+After both sides finish the blind pass, the manager writes a compact reveal
+brief and uses `references/twingrid-partner-peek-template.md`. The reveal must
+include the partner output path, a manager comparison, any newly available
+tools, and the instruction to preserve the original blind artifact while adding
+v2 supplements such as `partner-peek-improvements.md`, `v2-*`, validation logs,
+and a Partner Peek record.
+
+### Manager matrix
+
+Use `scripts/twingrid_matrix.py` after the blind pass or Partner Peek pass to
+scan output folders and optional pane captures:
+
+```bash
+python3 claude/skills/tmux-sprint/scripts/twingrid_matrix.py \
+  --outputs-glob '/tmp/twingrid-r7-*' \
+  --pane-captures-dir /tmp/twingrid-r7-pane-captures \
+  --format markdown
+```
+
+The matrix reports lane, side, runtime, output folder, blind artifacts, v2
+artifacts, validations run, PR/issue status, skill-improvement
+recommendations, and pane-block findings. It detects common blockers in pane
+capture text, including local command approval prompts, missing tool requests,
+and command-not-found/install hints. See
+`references/twingrid-manager-matrix.md` for the JSON shape and manager
+workflow.
 
 ## Persona config
 

@@ -1,3 +1,4 @@
+---
 # Canonical version manifest for agentic skills.
 # Update this file whenever a skill version is bumped, packaged, or deprecated.
 
@@ -27,7 +28,9 @@ skills:
     repo_path: skills/skills-meta
     last_updated: 2026-05-08
     status: active
-    notes: Portable drift-audit skill for Claude, Codex, Gemini, and desktop installs.
+    notes: >-
+      Portable drift-audit skill for Claude, Codex, Gemini, and desktop
+      installs.
 
   tmux-v2:
     canonical_version: 2.0.0
@@ -35,15 +38,18 @@ skills:
     repo_path: codex/skills/tmux-v2
     last_updated: 2026-05-08
     status: active
-    notes: Current Codex tmux sprint driver. v3 evolution is tracked by issues.
+    notes: >-
+      Current Codex tmux sprint driver. v3 evolution is tracked by issues.
 
   tmux-sprint:
-    canonical_version: 2.0.0
+    canonical_version: 2.1.0
     runtime: claude
     repo_path: claude/skills/tmux-sprint
-    last_updated: 2026-05-08
+    last_updated: 2026-05-10
     status: active
-    notes: Claude-side tmux sprint counterpart.
+    notes: >-
+      Claude-side tmux sprint counterpart with TwinGrid blind A/B and Partner
+      Peek templates.
 
   merge-review:
     canonical_version: 1.0.0
