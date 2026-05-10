@@ -105,6 +105,8 @@ bowed instruments.
   decoration or body outline.
 - Record afterlength from bridge witness point to tailpiece witness
   point.
+- Document the tailpiece load path from strings into the body, rim, or
+  end block before drilling any anchor holes.
 - Document whether the bridge is fixed, floating, or partially captured.
 
 ### Bridge and top load path
@@ -166,6 +168,8 @@ Before choosing dimensions, record:
 - top/head mode,
 - active string count,
 - sympathetic or drone staging,
+- neck reinforcement strategy: plain wood, laminate, spline, carbon
+  fiber, truss rod, or `TBD`,
 - player support posture: lap, stand, strap, endpin, or table fixture.
 
 ### Bowl construction branch
