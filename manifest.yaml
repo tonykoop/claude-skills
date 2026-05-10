@@ -2,7 +2,7 @@
 # Update this file whenever a skill version is bumped, packaged, or deprecated.
 
 schema_version: 1
-last_updated: 2026-05-09
+last_updated: 2026-05-10
 
 install_roots:
   windows:
@@ -126,6 +126,14 @@ skills:
     last_updated: 2026-05-08
     status: active
     notes: Portable snapshot from reverse-engineering/skills/v1/reverse-engineer for cross-platform review.
+
+  playlist-builder:
+    canonical_version: 0.1.0
+    runtime: shared
+    repo_path: skills/playlist-builder
+    last_updated: 2026-05-10
+    status: active
+    notes: "Initial snapshot with catalog/auth-state preflight (issue 72) for honest sparse-catalog output."
 
 planned_skills:
   energy-management:
