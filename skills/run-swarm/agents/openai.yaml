@@ -1,0 +1,13 @@
+interface:
+  display_name: "Run Swarm"
+  short_description: "Launch read-only specialist audit swarms"
+  default_prompt: "Use $run-swarm to audit my current workspace with specialist agents, file or draft high-quality issues, and summarize the next implementation queue."
+  triggers:
+    - "/run-swarm"
+    - "run the swarm"
+    - "audit sweep"
+    - "what are we missing"
+    - "seed the backlog"
+    - "launch audit agents"
+policy:
+  allow_implicit_invocation: true
