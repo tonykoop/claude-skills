@@ -54,6 +54,20 @@ SHA256 receipts. The manager should treat that file as the blind-pass recovery
 contract. If the pane disappears after this point, recover from the frozen
 folder instead of rerunning the blind work.
 
+## Dispatch hygiene notes
+
+- Rename panes before dispatch with `/rename <agent>_r<round>_<topic>` when
+  the runtime supports it. Use the same topic slug as the assignment,
+  worktree, or branch when possible.
+- Prefer short file-based prompts for long assignments.
+- Batch artifact-only work by idle runtime; dispatch code-changing,
+  approval-heavy, or network-heavy tasks one pane at a time.
+- Choose stronger models for implementation, review gates, and ambiguous
+  architecture decisions. Choose lighter models for bounded summary,
+  extraction, and validation-only work.
+- Do not include blocked panes in the next batch until the manager resolves
+  approval, auth, missing-tool, or long-running-command findings.
+
 ## Script
 
 Use the bundled script for a first-pass matrix:

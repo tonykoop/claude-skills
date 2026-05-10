@@ -288,6 +288,33 @@ Read /tmp/r9i-dan.md and execute. Plan first.
 This avoids `tmux send-keys -l` hangs on large prompts while preserving a
 readable contract file for recovery after `/compact`.
 
+Rename each pane/session before dispatch when the runtime supports it:
+
+```text
+/rename <agent>_r<round>_<topic>
+```
+
+Examples: `dan_r9_twingrid-contracts`, `elsa_r9_yaybahar-rig`. This makes
+`/resume`, pane recovery, PR review, and archive inspection line up with the
+assignment. For Claude panes with touchy login/API state, wait a few seconds
+between `/rename`, `/new`, and the handoff send.
+
+### Smart batching and model picker notes
+
+Batch dispatch by runtime and risk:
+
+- Send short file-based prompts to all Claude panes in small groups when the
+  panes are idle and the work is artifact-only.
+- Send Codex panes sequentially with the existing rate limit, especially when
+  the task involves edits, tests, network tools, or repo state.
+- Give implementation, merge, review-gate, and ambiguous architecture work to
+  the stronger available model; use lighter models for bounded artifact
+  generation, transcription, simple matrix reads, and no-code validation.
+- Keep blind A/B independence by recording the actual runtime/model in the
+  handoff and agent record rather than changing expectations mid-round.
+- If a pane is blocked on approval, auth, missing tools, or a long-running
+  command, skip it in the next batch and let the manager recover it explicitly.
+
 ### Phase 1: blind dispatch
 
 Use `references/twingrid-blind-handoff-template.md` to generate one assignment

@@ -7,6 +7,8 @@
 - Documented Plan-first implementation dispatch, short file-based prompt
   dispatch, pane recovery from frozen artifacts, and canonical
   `skill_findings.md` naming.
+- Documented pane `/rename`, smart batching, and model-picker notes for
+  TwinGrid dispatch hygiene.
 - Extended the manager matrix to read freeze state, SHA256 manifests,
   canonical/alias skill findings files, `partner-feedback.md`, and
   `combine_recommendation.md`.
