@@ -257,6 +257,179 @@ def check_op_seq_uses_known_tools(report: Report) -> None:
             )
 
 
+# Structured-artifact schemas. Adding a new schema here is the only
+# place to declare it; check_csv_schemas walks this dict.
+CSV_SCHEMAS: dict[str, list[str]] = {
+    "cut-list.csv": [
+        "part_id", "part_name", "qty", "rough_dimensions",
+        "finished_dimensions", "material", "operation_notes",
+    ],
+    "validation.csv": [
+        "check_id", "check_name", "target", "tolerance", "method",
+        "when_to_check", "pass_fail", "notes",
+    ],
+    "process-schedule.csv": [
+        "step_id", "part", "option", "stock", "prep",
+        "heat_or_glue_time", "bend_or_clamp_window", "fixture",
+        "release_time", "go_no_go",
+    ],
+    "bom.csv": [
+        "item_id", "category", "description", "qty", "unit",
+        "unit_cost_usd", "extended_usd", "vendor_class",
+        "lead_time", "notes",
+    ],
+}
+
+# Steam-bending packets must cover these gates in validation.csv.
+# Each entry is (canonical check_id, list of keyword fallbacks against
+# check_name). A row matches a gate if its check_id equals the
+# canonical id OR its check_name lowercased contains all keywords.
+STEAM_BENDING_GATES: list[tuple[str, list[str]]] = [
+    ("VAL-MOIST", ["moisture"]),
+    ("VAL-GRAIN", ["grain"]),
+    ("VAL-BOX-T", ["steam", "temp"]),
+    ("VAL-STRAP", ["strap"]),
+    ("VAL-WIN", ["window"]),
+    ("VAL-CRACK", ["crack"]),
+    ("VAL-COOL", ["cool"]),
+    ("VAL-OIL", ["oil", "rag"]),
+]
+
+
+def check_csv_schemas(report: "Report") -> None:
+    """For each known CSV in the packet, verify header and column count.
+
+    Skips any file that is not present. Reports one yellow per
+    column-count mismatch row (cap at 5 reports per file). Reports red
+    on header mismatch — that means the file does not satisfy the
+    documented schema at all.
+
+    A renamed process-schedule (e.g. bending-schedule.csv) is detected
+    via filename suffix and validated against the process-schedule
+    schema.
+    """
+    for filename, expected_cols in CSV_SCHEMAS.items():
+        candidates = [report.packet / filename]
+        if filename == "process-schedule.csv":
+            # also accept *-schedule.csv variants (bending, welding, etc.)
+            for p in report.packet.glob("*-schedule.csv"):
+                if p.name not in {c.name for c in candidates}:
+                    candidates.append(p)
+        for path in candidates:
+            if not path.exists():
+                continue
+            try:
+                with path.open(newline="") as f:
+                    rows = list(csv.reader(f))
+            except OSError as exc:
+                report.add(
+                    "yellow",
+                    f"Could not read `{path.name}`: {exc}",
+                    location=str(path),
+                )
+                continue
+            if not rows:
+                report.add(
+                    "yellow",
+                    f"`{path.name}` is empty.",
+                    location=str(path),
+                )
+                continue
+            header = rows[0]
+            if header != expected_cols:
+                report.add(
+                    "red",
+                    f"`{path.name}` header does not match documented "
+                    f"schema. Expected {expected_cols}; got {header}.",
+                    location=f"{path}:1",
+                )
+                continue
+            ncols = len(expected_cols)
+            mismatches = [
+                (i + 1, len(r))
+                for i, r in enumerate(rows[1:], start=1)
+                if len(r) != ncols
+            ]
+            for row_num, got_cols in mismatches[:5]:
+                report.add(
+                    "yellow",
+                    f"`{path.name}` row {row_num} has {got_cols} "
+                    f"columns; expected {ncols}.",
+                    location=f"{path}:row {row_num}",
+                )
+            if len(mismatches) > 5:
+                report.add(
+                    "yellow",
+                    f"`{path.name}` has {len(mismatches)} rows with "
+                    "wrong column count (only first 5 reported).",
+                    location=str(path),
+                )
+
+
+def check_steam_bending_gates(report: "Report") -> None:
+    """If the packet looks like a steam-bending packet, require the
+    eight standard gate check_ids in validation.csv.
+
+    Detection is heuristic: any *-schedule.csv whose name contains
+    'bend' or whose rows mention 'steam' triggers the gate check.
+    """
+    sched_paths = list(report.packet.glob("*-schedule.csv"))
+    is_steam = False
+    for p in sched_paths:
+        if "bend" in p.name.lower():
+            is_steam = True
+            break
+        try:
+            text = p.read_text().lower()
+        except OSError:
+            continue
+        if "steam" in text:
+            is_steam = True
+            break
+    if not is_steam:
+        return
+    val_path = report.packet / "validation.csv"
+    if not val_path.exists():
+        report.add(
+            "red",
+            "Steam-bending packet detected but validation.csv missing. "
+            "See references/structured-shop-artifacts.md.",
+            location=str(report.packet),
+        )
+        return
+    try:
+        with val_path.open(newline="") as f:
+            rows = list(csv.reader(f))
+    except OSError:
+        return
+    if not rows:
+        return
+    try:
+        id_idx = rows[0].index("check_id")
+        name_idx = rows[0].index("check_name")
+    except ValueError:
+        return  # header check already complains
+    seen_ids = {r[id_idx] for r in rows[1:] if len(r) > id_idx}
+    seen_names = [
+        r[name_idx].lower() for r in rows[1:] if len(r) > name_idx
+    ]
+    missing = []
+    for canonical_id, keywords in STEAM_BENDING_GATES:
+        if canonical_id in seen_ids:
+            continue
+        if any(all(kw in name for kw in keywords) for name in seen_names):
+            continue
+        missing.append(canonical_id)
+    if missing:
+        report.add(
+            "red",
+            "Steam-bending packet missing required gates in "
+            f"validation.csv: {missing}. See references/"
+            "structured-shop-artifacts.md (steam-bending gate table).",
+            location=str(val_path),
+        )
+
+
 def check_risks_have_tests(report: Report) -> None:
     """Tier 2+: every risk in risks.md should have a 'Test:' line."""
     if report.tier < 2:
@@ -387,6 +560,16 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         help="Validate only the named space profile (skip packet check).",
     )
     p.add_argument(
+        "--schemas-only",
+        action="store_true",
+        help=(
+            "Validate only the structured CSV schemas in the packet. "
+            "Skips tier completeness, BOM math, op-sequence, and risk "
+            "checks. Use this for packets that don't follow the full "
+            "tier contract but should still produce schema-correct CSVs."
+        ),
+    )
+    p.add_argument(
         "--fix",
         action="store_true",
         help="Apply deterministic auto-fixes.",
@@ -422,11 +605,18 @@ def main(argv: list[str] | None = None) -> int:
         return 2
 
     report = Report(tier=args.tier, packet=args.packet, space=args.space)
-    check_tier_completeness(report)
-    check_unmarked_unknowns(report)
-    check_bom_internal_consistency(report)
-    check_op_seq_uses_known_tools(report)
-    check_risks_have_tests(report)
+
+    if args.schemas_only:
+        check_csv_schemas(report)
+        check_steam_bending_gates(report)
+    else:
+        check_tier_completeness(report)
+        check_unmarked_unknowns(report)
+        check_bom_internal_consistency(report)
+        check_op_seq_uses_known_tools(report)
+        check_risks_have_tests(report)
+        check_csv_schemas(report)
+        check_steam_bending_gates(report)
 
     if args.fix:
         attempt_fixes(report)
