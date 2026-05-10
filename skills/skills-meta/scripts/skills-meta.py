@@ -376,9 +376,14 @@ def scan_roots(repo_root: Path, resolved: list[tuple[Path, RootSpec]]) -> list[S
             frontmatter = read_frontmatter(skill_md)
         except (PermissionError, OSError):
             continue
+        metadata = (
+            frontmatter.get("metadata")
+            if isinstance(frontmatter.get("metadata"), dict)
+            else {}
+        )
         name = str(frontmatter.get("name") or skill_md.parent.name)
-        version = frontmatter.get("version")
-        last_updated = frontmatter.get("last-updated")
+        version = frontmatter.get("version", metadata.get("version"))
+        last_updated = frontmatter.get("last-updated", metadata.get("last-updated"))
         description = frontmatter.get("description")
         changelog_path = changelog_for(skill_md)
         records.append(

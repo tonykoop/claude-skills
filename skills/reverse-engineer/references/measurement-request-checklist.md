@@ -4,6 +4,7 @@ Ask for the fewest new measurements that would change the analysis. Prefer measu
 
 ## Universal Photo Requests
 
+- If the task referenced images that are absent or unavailable, first request a recovery route from `image-routing-recovery.md` and ask whether to pause for images or proceed in `description-only` mode.
 - Add a ruler, caliper jaws, coin, grid mat, known fastener, or other scale reference in the same plane as the feature.
 - Capture front, back, left, right, top, and bottom views with the camera centered and far enough away to reduce perspective distortion.
 - Add close-ups of seams, joints, fasteners, labels, wear marks, hinges, springs, pivots, ports, cracks, repairs, and material transitions.

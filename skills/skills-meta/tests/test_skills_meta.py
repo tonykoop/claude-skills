@@ -60,6 +60,24 @@ def write_skill(path: Path, name: str, version: str | None, last_updated: str | 
     (path / "SKILL.md").write_text(body, encoding="utf-8")
 
 
+def write_skill_with_metadata(path: Path, name: str, version: str, last_updated: str) -> None:
+    path.mkdir(parents=True, exist_ok=True)
+    body = textwrap.dedent(
+        f"""\
+        ---
+        name: {name}
+        metadata:
+          version: {version}
+          last-updated: {last_updated}
+        description: fixture
+        ---
+
+        body
+        """
+    )
+    (path / "SKILL.md").write_text(body, encoding="utf-8")
+
+
 def write_manifest(repo_root: Path, skills: dict[str, dict]) -> None:
     """Tiny manifest writer; YAML-compatible enough for safe_load."""
     lines = ["schema_version: 1", "skills:"]
@@ -152,6 +170,63 @@ class SingleModeDeterminismTests(unittest.TestCase):
             self.tmp / "gemini" / "duped" / "SKILL.md",
         ):
             self.assertIn(str(path), out, msg=out)
+
+
+class MetadataFrontmatterTests(unittest.TestCase):
+    """Skills using the validator-compatible metadata block should still
+    satisfy manifest drift checks."""
+
+    def setUp(self) -> None:
+        self.tmp = Path(tempfile.mkdtemp(prefix="skills-meta-metadata-"))
+        self.addCleanup(shutil.rmtree, self.tmp, ignore_errors=True)
+        self.repo = self.tmp / "repo"
+        (self.repo / "skills").mkdir(parents=True)
+        write_manifest(
+            self.repo,
+            {
+                "meta-skill": {
+                    "canonical_version": "1.2.3",
+                    "runtime": "shared",
+                    "repo_path": "skills/meta-skill",
+                    "last_updated": "2026-05-10",
+                    "status": "active",
+                }
+            },
+        )
+        write_skill_with_metadata(
+            self.repo / "skills" / "meta-skill",
+            "meta-skill",
+            "1.2.3",
+            "2026-05-10",
+        )
+        (self.repo / "skills" / "meta-skill" / "CHANGELOG.md").write_text(
+            "## v1.2.3\n",
+            encoding="utf-8",
+        )
+
+    def test_nested_metadata_version_and_date_are_read(self) -> None:
+        os.chdir(self.repo)
+        argv = [
+            "skills-meta.py",
+            "--mode",
+            "single",
+            "--skill",
+            "meta-skill",
+            "--root",
+            "skills",
+        ]
+        old_argv, sys.argv = sys.argv, argv
+        buf = io.StringIO()
+        try:
+            with redirect_stdout(buf):
+                rc = sm.main()
+        finally:
+            sys.argv = old_argv
+        out = buf.getvalue()
+        self.assertEqual(rc, 0, msg=out)
+        self.assertIn("installed: v1.2.3", out, msg=out)
+        self.assertIn("last-updated: 2026-05-10", out, msg=out)
+        self.assertIn("status: ok", out, msg=out)
 
 
 class SyncSymlinkSafetyTests(unittest.TestCase):

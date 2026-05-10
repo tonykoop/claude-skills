@@ -47,6 +47,14 @@ Use confidence language to protect uncertainty. Confidence is about the claim, n
 - Separate nominal target from tolerance: "Target 25 mm; tolerance unknown" is better than a naked "25 mm."
 - For proportional estimates, say "about 0.42x the overall length" instead of inventing absolute units.
 
+## Image-Access Confidence Ceilings
+
+When `image_access_mode` is `description-only`, no claim about absolute dimensions, colors, surface finish, material, fastener type, wear, damage, or hidden construction may exceed `low` confidence unless it is supplied as a user measurement. Topology and named features from the user's prose may reach `medium` when the wording is explicit, but mark the evidence as `observed-by-user`, not analyst-verified.
+
+When `image_access_mode` is `missing`, do not analyze visual facts. Ask for recovery or explicit approval to continue from class knowledge or prose. Any class-knowledge claim is `inferred` and capped at `low` unless independently sourced or measured.
+
+When `image_access_mode` is `partial`, confidence only applies to the evidence actually visible. Claims about missing views, occluded regions, or sibling images inherit the `description-only` ceiling.
+
 ## Confidence Note Pattern
 
 ```text

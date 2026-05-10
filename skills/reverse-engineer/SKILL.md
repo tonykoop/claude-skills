@@ -1,8 +1,8 @@
 ---
 name: reverse-engineer
 metadata:
-  version: 1.0.0
-  last-updated: 2026-05-09
+  version: 1.1.0
+  last-updated: 2026-05-10
 description: >-
   Analyze objects, photos, video, sketches, descriptions, and
   named-but-unseen artifacts into disciplined reverse-engineering notes:
@@ -51,25 +51,46 @@ Never present inferred dimensions, materials, mechanisms, internal structure, or
    - **Mechanism explanation** for motion, force paths, assemblies, hidden components, and failure modes.
    - **Material/process inference** for likely materials, finish, tooling, wear, manufacturing traces, and assembly sequence.
    - **Handoff-to-builder** when there is enough data for `maker-engineering`, `makerspace`, or `instrument-maker`.
-2. Inventory the inputs. Note images, sketches, links, user-provided dimensions, known scale references, object access, measurement tools, and usage context. If the runtime can't render attached images (Codex CLI without vision, Gemini CLI text mode, mobile zip-upload that strips media, or any pasted-link-only workflow), say so up front and switch to one of the no-vision intake modes below — don't pretend to see what you can't.
-3. Create the observation ledger using `references/observation-template.md`. Fill observed facts before making inferences.
-4. Mark every claim as one of:
+2. Run the **image-access preflight** before analysis whenever the prompt names or implies visual evidence ("Image 3", "photo above", "attached", "screenshot", "reference image", "in the conversation"). Record:
+   - `image_access_mode`: `direct`, `file-path`, `partial`, `description-only`, or `missing`.
+   - `images_referenced_in_prompt`: count or `unknown`.
+   - `images_actually_viewable`: count or `unknown`.
+   - `source_qualifier`: `analyst-verified`, `file-verified`, `partial-verified`, `observed-by-user`, or `not-provided`.
+   Read `references/image-routing-recovery.md` when recovery wording or runtime-specific routing matters.
+3. Put a standardized image-access banner as the first line of the report before any analysis:
+   - `Mode: VISION-GROUNDED — image_access_mode=direct; images rendered and analyzed directly.`
+   - `Mode: FILE-VERIFIED — image_access_mode=file-path; local image file(s) were available and verified before analysis.`
+   - `Mode: DEGRADED (partial image) — image_access_mode=partial; only N of M referenced image(s) were viewable. Missing views: ___.`
+   - `Mode: DEGRADED (description-only) — image_access_mode=description-only; analysis uses user prose, not analyst-verified pixels.`
+   - `Mode: BLOCKED (missing image) — image_access_mode=missing; referenced image(s) are absent. Request recovery or explicit approval to continue in description-only mode.`
+4. Inventory the inputs. Note images, sketches, links, user-provided dimensions, known scale references, object access, measurement tools, and usage context. If the runtime can't render attached images (Codex CLI without vision, Gemini CLI text mode, mobile zip-upload that strips media, or any pasted-link-only workflow), say so up front, request a recovery route once, and switch to one of the no-vision intake modes below only when the user approves or the task explicitly permits description-only analysis. Don't pretend to see what you can't.
+5. Create the observation ledger using `references/observation-template.md`. Fill observed facts before making inferences. When evidence is user prose about an unavailable image, use `source_qualifier: observed-by-user` and note that the claim is not analyst-verified.
+6. Mark every claim as one of:
    - `observed`: directly visible or user-stated as measured.
    - `measured`: supplied by the user or derived from a reliable measurement tool.
    - `inferred`: reasoned from visible evidence, proportions, comparable parts, physics, or known construction methods.
    - `assumed`: chosen to continue analysis, not evidenced enough to rely on.
    - `unknown`: needed, but not available from current evidence.
-5. Attach confidence language from `references/confidence-language.md` to inferred or assumed claims.
-6. Ask for only the measurements that would materially reduce risk. Use `references/measurement-request-checklist.md`.
-7. If the user asks to build, repair, clone, or commission the thing, decide whether the evidence is builder-ready:
+7. Attach confidence language from `references/confidence-language.md` to inferred or assumed claims. Respect the confidence ceiling for `description-only` and `missing` image modes.
+8. Ask for only the measurements that would materially reduce risk. Use `references/measurement-request-checklist.md`.
+9. If the user asks to build, repair, clone, or commission the thing, decide whether the evidence is builder-ready:
    - If enough: write a handoff with `references/builder-handoff-template.md`.
    - If not enough: write a "blocked from builder handoff" note with the minimum measurements or tests needed.
-8. Route the next phase:
+   - If the core visual evidence is `description-only` or `missing`, mark builder handoffs `provisional` by default. Use `builder-ready` only when independent measurements, verified files, or explicit user confirmation retire the builder-critical unknowns.
+10. Route the next phase:
    - `maker-engineering`: turn verified analysis into engineered design choices, tolerances, simulations, or trade studies.
    - `makerspace`: fabricate fixtures, shop plans, cut lists, toolpaths, or physical parts.
    - `instrument-maker`: create instrument design/build packets after critical acoustic and dimensional data is validated.
 
 ## Image Handling
+
+Before describing image content, establish `image_access_mode`:
+
+- `direct`: images are rendered to the model/toolchain and can be analyzed directly.
+- `file-path`: local image files are available and the runtime can inspect or render them. Cite filenames and any validation command used.
+- `partial`: some referenced images/views are visible and some are missing. Separate claims by source.
+- `description-only`: no image is visible, but the user supplied prose describing it.
+- `missing`: the prompt references image evidence, but no image or usable description is available.
 
 When images are available, be explicit about viewpoint limits. Report visible features and occlusions separately. If no scale reference exists, estimate only proportions, ratios, counts, and qualitative geometry; ask for a ruler, caliper, coin, grid mat, known fastener, or known object in the next image before claiming absolute dimensions.
 
@@ -95,6 +116,8 @@ In every no-vision mode, state the mode at the top of the analysis ("intake mode
 
 ## Output Shape
 
+Start every normal analysis with the image-access banner from Workflow step 3. The degraded-mode banners are required whenever image access is not `direct`. Include an `intake` block from `references/observation-template.md` when the output is more than a quick answer.
+
 For a normal analysis, produce these sections:
 
 1. `Input Inventory`
@@ -113,6 +136,8 @@ For a normal analysis, produce these sections:
 
 For quick questions, compress the sections but keep the claim labels and confidence notes.
 
+If producing an agent record or handoff record, include `image_access_mode`, `images_referenced_in_prompt`, `images_actually_viewable`, and `source_qualifiers` so downstream managers and builder skills can detect degraded evidence without rereading prose.
+
 ## Builder-Ready Gate
 
 Emit a builder-ready handoff only when all of these are true:
@@ -129,6 +154,7 @@ If a user asks to reproduce a proprietary product for commercial use, pause and 
 ## Reference Map
 
 - `references/observation-template.md`: Claim ledger, dimension table, mechanism notes, and unknown register.
+- `references/image-routing-recovery.md`: Image-access preflight modes, degraded banners, and runtime-specific recovery prompts.
 - `references/measurement-request-checklist.md`: Follow-up photo and measurement checklist by object type.
 - `references/confidence-language.md`: Approved confidence terms and phrases to avoid.
 - `references/builder-handoff-template.md`: Compact handoff format for `maker-engineering`, `makerspace`, and `instrument-maker`.

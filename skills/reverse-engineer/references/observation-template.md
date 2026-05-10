@@ -2,11 +2,32 @@
 
 Use this template for reverse-engineering notes. Keep facts and inferences apart even when the answer is obvious to a human.
 
+## Intake Header
+
+Use this block for any normal analysis. It makes degraded image access parseable by downstream tools.
+
+```yaml
+intake:
+  image_access_mode: direct | file-path | partial | description-only | missing
+  images_referenced_in_prompt: 0
+  images_actually_viewable: 0
+  source_qualifiers:
+    - analyst-verified      # direct model/toolchain observation
+    - file-verified         # local file exists and was inspected/rendered
+    - partial-verified      # some referenced visual evidence is missing
+    - observed-by-user      # user prose describes an unavailable image/object
+    - not-provided          # expected visual evidence is absent
+  recovery_path: not-needed | requested | declined | bypassed
+  confidence_ceiling: confirmed | provisional | speculative
+```
+
+For `description-only` or `missing` image modes, the first report line must be the degraded-mode banner from `SKILL.md`; do not bury it in this YAML block.
+
 ## Input Inventory
 
 | Input | Source | Reliability | Notes |
 | --- | --- | --- | --- |
-| Photo / sketch / link / user statement | filename, URL, or user | high / medium / low | Viewpoint, scale reference, date, access limits |
+| Photo / sketch / link / user statement | filename, URL, or user | high / medium / low | Viewpoint, scale reference, date, access limits, source qualifier |
 
 ## Observed Facts
 
@@ -14,7 +35,7 @@ Only list what is directly visible or explicitly supplied by the user.
 
 | ID | Fact | Evidence | Claim type | Confidence | Notes |
 | --- | --- | --- | --- | --- | --- |
-| O-001 |  | image/file/user statement | observed | high |  |
+| O-001 |  | image/file/user statement | observed | high | Include `analyst-verified`, `file-verified`, or `observed-by-user`; user-described unavailable images are not pixel-verified. |
 
 ## Measured Values
 

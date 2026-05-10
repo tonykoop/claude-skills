@@ -7,11 +7,15 @@ Use this only when the builder-ready gate passes or when the user explicitly wan
 ```text
 Project:
 Source evidence:
+Image access mode: direct / file-path / partial / description-only / missing
+Source qualifiers: analyst-verified / file-verified / partial-verified / observed-by-user / not-provided
 Goal:
 Target skill: maker-engineering / makerspace / instrument-maker-v4
 Handoff status: builder-ready / provisional / blocked
 Date:
 ```
+
+If `Image access mode` is `description-only` or `missing`, default `Handoff status` to `provisional` or `blocked`. Use `builder-ready` only when independent measurements, verified files, or explicit user confirmation retire builder-critical unknowns.
 
 ## Summary
 
@@ -24,7 +28,7 @@ Date:
 
 | Claim | Type | Confidence | Evidence | Builder impact |
 | --- | --- | --- | --- | --- |
-|  | observed / measured / inferred / assumed | high / medium / low |  | critical / useful / non-critical |
+|  | observed / measured / inferred / assumed | high / medium / low | Include source qualifier: analyst-verified, file-verified, partial-verified, observed-by-user, or not-provided | critical / useful / non-critical |
 
 ## Critical Dimensions
 
