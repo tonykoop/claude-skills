@@ -23,6 +23,11 @@ class RepoFirstBareBonesTemplate(unittest.TestCase):
             "future authority unless measured geometry already exists",
             "Do not publish private family, child, location, or media details.",
             "Do not use generated images as dimensional or fabrication authority.",
+            "visual-output-register.csv",
+            "String and Spike-Fiddle Starters",
+            "qianjin-to-bridge span",
+            "380-420 mm",
+            "membrane/soundboard interface",
             "Do not nest this packet under `build-packets/`",
             "validation-loop upgrade",
         ):

@@ -73,6 +73,40 @@ measurement boundary before any CAD/DXF authority claim.
   resonator interface, neck/spike alignment, and future DXF/CAD authority.
 - Contract tests for the variant guidance and example fields.
 
+## v4.4.6 — 2026-05-11
+
+Round 12 TwinGrid lane Cindy-B tightened the visual-authority boundary learned
+from erhu/huqin bare-bones routing: early concept visuals should be registered
+before they can accidentally become dimensional hints.
+
+### Added
+
+- `references/drawing-and-visual-authority.md` now says to create a
+  `visual-output-register.csv` or JSON equivalent before the first concept
+  image, SVG preview, drawing PDF, rendered preview, visual BOM plate, photo
+  reference, or image-gen-2 prompt/output is accepted into a packet, even when
+  no fabrication-authority DXF/CAD exists yet.
+- `references/drawing-and-visual-authority.md` adds string/spike-fiddle
+  visual-authority gates for qianjin-to-bridge speaking length, bridge
+  placement, qianjin setup, neck/spike alignment, peg/string path, resonator
+  geometry, and membrane/soundboard interface.
+- `references/repo-first-bare-bones-packet.md` now requires early visual
+  registers for non-authority visuals and adds a compact string/spike-fiddle
+  starter checklist with the assumption-only `380-420 mm` erhu/huqin setup
+  range.
+- Contract tests now lock the early visual-register trigger and spike-fiddle
+  measurement-risk language.
+
+### Acceptance criteria
+
+- [x] Concept/pre-CAD visuals trigger a register before they appear in packet
+      README/design/drawing-brief material.
+- [x] Bare-bones packets keep generated images, SVG previews, renders, and
+      photo references non-authoritative unless backed by reviewed drawings or
+      measured templates.
+- [x] Spike-fiddle starters name membrane/soundboard interface and string-path
+      geometry as measurement-required gates.
+
 ## v4.4.5 — 2026-05-11
 
 Round 10 TwinGrid lane Elsa-B focused on visual authority: generated images
