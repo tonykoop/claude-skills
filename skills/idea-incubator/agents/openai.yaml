@@ -13,5 +13,7 @@ interface:
     - "promote the cluster"
     - "batch promote"
     - "review the cluster"
+    - "yearbook rollout"
+    - "design book rollout"
 policy:
   allow_implicit_invocation: true

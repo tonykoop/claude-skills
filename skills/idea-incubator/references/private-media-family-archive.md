@@ -5,6 +5,10 @@ scanned documents, personal video, memorial projects, private image-gen album
 work, or any media collection involving identifiable people, homes, schools,
 events, locations, or family history.
 
+For yearbooks, design books, cohort books, school archives, team/class books,
+or print-book rollouts, use this privacy-first baseline plus the rollout gates
+in [`yearbook-design-book-rollout.md`](yearbook-design-book-rollout.md).
+
 The promotion goal is a repo-ready downstream issue that protects privacy and
 provenance before it optimizes for visual polish.
 
