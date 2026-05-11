@@ -200,6 +200,12 @@ welfare-critical features. See
 `references/observation-camera-modes.md` and
 `examples/chickadee-camera-observation-contract/`.
 
+Observation-hive preflight packets must also satisfy the small machine-readable
+contract in
+[`references/observation-hive-preflight-gates.json`](references/observation-hive-preflight-gates.json):
+they remain `concept/preflight only; not approved for live colony use`, include
+all six required observation-hive gate ids, preserve evidence fields, and route
+live beekeeping decisions away from public packet content.
 
 ## Generator-backed artifacts: when to require them
 
@@ -249,6 +255,9 @@ artifacts are required only where the geometry actually drives a machine.
 - [`references/welfare-gate-schema.md`](references/welfare-gate-schema.md)
   — shared pass/fail welfare-gate schema for packet-local records and the
   future `habitat-reference` import workflow.
+- [`references/observation-hive-preflight-gates.json`](references/observation-hive-preflight-gates.json)
+  — machine-readable required-gate contract for concept/preflight-only
+  observation-hive packets.
 
 ## Open work (v0.4 → v1.0)
 
