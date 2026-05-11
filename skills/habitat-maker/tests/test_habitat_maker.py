@@ -30,6 +30,9 @@ from unittest import mock
 SKILL_DIR = Path(__file__).resolve().parent.parent
 PACKET_DIR = SKILL_DIR / "examples" / "chickadee-laser-baltic-birch"
 CAMERA_PACKET_DIR = SKILL_DIR / "examples" / "chickadee-camera-observation-contract"
+OBSHIVE_PREFLIGHT_DIR = (
+    SKILL_DIR / "examples" / "observation-hive-preflight-template"
+)
 GENERATOR = SKILL_DIR / "scripts" / "generate_chickadee_packet.py"
 SKILL_MD = SKILL_DIR / "SKILL.md"
 BIRD_BATH_REFERENCE = SKILL_DIR / "references" / "bird-bath-balcony.md"
@@ -590,7 +593,6 @@ class TestObservationHivePreflightGateContract(unittest.TestCase):
         ]:
             self.assertIn(gate_id, electronics["required_if_electronics_present"])
 
-
 class TestBatHouseGeometryParams(unittest.TestCase):
     """The bat-house JSON must carry bat-specific welfare and site rules."""
 
@@ -709,6 +711,93 @@ class TestBatHousePacketShape(unittest.TestCase):
             self.assertIn("status", gate)
             self.assertIn(gate["status"], {"pass", "fail", "pending_site"})
             self.assertIn("evidence", gate)
+
+
+class TestObservationHivePreflightTemplate(unittest.TestCase):
+    """The observation-hive example must stay preflight-only."""
+
+    def setUp(self) -> None:
+        self.skill = SKILL_MD.read_text()
+        self.readme = (OBSHIVE_PREFLIGHT_DIR / "README.md").read_text()
+        self.checklist = (
+            OBSHIVE_PREFLIGHT_DIR / "welfare-checklist.md"
+        ).read_text()
+        self.packet_plan = (
+            OBSHIVE_PREFLIGHT_DIR / "packet-plan.md"
+        ).read_text()
+        self.combined = "\n".join(
+            [self.readme, self.checklist, self.packet_plan]
+        )
+
+    def test_template_files_present(self) -> None:
+        required = {"README.md", "welfare-checklist.md", "packet-plan.md"}
+        present = {p.name for p in OBSHIVE_PREFLIGHT_DIR.iterdir()
+                   if p.is_file()}
+        self.assertEqual(required, present)
+
+    def test_skill_lists_template_as_canonical_example(self) -> None:
+        self.assertIn("observation-hive-preflight-template", self.skill)
+        self.assertIn("concept/preflight only", self.skill)
+        self.assertIn(
+            "live beekeeping decisions away from public packet content",
+            self.skill,
+        )
+
+    def test_template_blocks_live_colony_and_fabrication_claims(self) -> None:
+        required = [
+            "not approved for live colony use",
+            "not a fabrication-ready hive plan",
+            "Do not add `geometry_params.json`",
+            "CAD/DXF/JSON or reviewed",
+            "drawings remain the only fabrication authority",
+            "Concept images may support discussion",
+        ]
+        for term in required:
+            self.assertIn(term, self.combined)
+
+    def test_route_outs_and_privacy_boundary_present(self) -> None:
+        required = [
+            "qualified beekeeper review",
+            "local legal compliance",
+            "live bee handling",
+            "colony sourcing",
+            "private family details",
+            "Public/Private Boundary",
+            "unreleased co-design material",
+        ]
+        for term in required:
+            self.assertIn(term, self.readme)
+
+    def test_required_observation_hive_gates_present(self) -> None:
+        required = [
+            "`qualified_keeper_review`",
+            "`secure_containment`",
+            "`ventilation_thermal_management`",
+            "`escape_proof_service_access`",
+            "`public_privacy_safety`",
+            "`route_out_colony_decisions`",
+        ]
+        for term in required:
+            self.assertIn(term, self.checklist)
+
+    def test_camera_and_authority_gates_present(self) -> None:
+        required = [
+            "`no_contact_protrusions`",
+            "`no_exposed_wires`",
+            "`low_heat_load`",
+            "`weatherproof_external_routing`",
+            "`service_without_disturbance`",
+            "`species_safe_sensing`",
+            "`fabrication_authority`",
+        ]
+        for term in required:
+            self.assertIn(term, self.checklist)
+
+    def test_packet_plan_keeps_makerspace_downstream(self) -> None:
+        self.assertIn("When To Route To Makerspace", self.packet_plan)
+        self.assertIn("Route to `makerspace` only after", self.packet_plan)
+        self.assertIn("maximum unattended display assumptions",
+                      self.packet_plan)
 
 
 if __name__ == "__main__":
