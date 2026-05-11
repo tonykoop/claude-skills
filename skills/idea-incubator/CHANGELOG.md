@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.4.1 - 2026-05-10
+
+- Added a focused photo-album/private-media pilot workflow with source-photo
+  rules, LFS-first import gates, privacy/metadata blockers, and imagegen
+  derivative boundaries.
+- Added proof/export gates for watermarked review proofs, proof-review signoff,
+  consent/off-limits review, and vendor/public/family-share export boundaries.
+- Updated skill routing and promotion handoff guidance so pilot requests use
+  the source-photo workflow before downstream repo work.
+
 ## 1.4.0 - 2026-05-10
 
 - Added yearbook/design-book rollout promotion guidance for yearbooks, cohort
