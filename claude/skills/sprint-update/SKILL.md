@@ -102,7 +102,74 @@ Update the sprint row with new PR count and key milestones.
 
 Update "What's working" and "What's blocking launch" if merges changed the picture.
 
-### 6. Dispatch Prompt Patterns (always include)
+### 6. Stale issue refresh
+
+Before promoting queued work or regenerating dispatch prompts, refresh any Active
+or Queue row whose state may be stale:
+
+- issue or PR state was last checked in a previous sprint day;
+- the row says `next`, `blocked`, `changes-req`, `stale`, `parked`, or similar;
+- the description references a branch, PR, artifact, or dependency that may have
+  moved since the sprint doc was written;
+- an issue is duplicated, superseded, closed, or already satisfied by a recent
+  merge.
+
+Use GitHub as the source of truth, then update the sprint doc rather than
+copying stale table text forward:
+
+```bash
+gh issue view <num> --repo wrfcoin/<repo> \
+  --json number,title,state,labels,updatedAt,closedAt,url
+gh pr list --repo wrfcoin/<repo> --state all --search "#<num>" \
+  --json number,state,isDraft,mergedAt,title,headRefName,url
+```
+
+Apply these outcomes:
+
+- **Open and still actionable**: keep the row, refresh the title/description if
+  it drifted, and preserve priority unless current labels clearly changed it.
+  For personal GitHub sprint queues, also preserve any `Label`, `Model`, or
+  `Batch` columns already present; refresh stale values, but do not drop the
+  routing metadata during cleanup.
+- **Closed as completed or merged**: move it to Completed if it belongs to the
+  sprint ledger, with PR and SHA when available.
+- **Duplicate, superseded, or no longer useful**: remove it from dispatchable
+  Queue/Active work and note the reason in launch readiness or velocity notes.
+- **Blocked by another issue/PR**: keep it queued only if the blocker is explicit
+  and dispatch prompts name the prerequisite.
+
+If a row cannot be refreshed because GitHub is unavailable, leave the row in
+place, mark the validation gap in the sprint notes, and do not promote it ahead
+of freshly verified work.
+
+### 7. Archive follow-up
+
+During each sprint update, check whether recent sprint artifacts need durable
+follow-through:
+
+- swarm reports, blind summaries, merge-review notes, or dispatch outputs under
+  `/tmp`, sprint archive folders, or linked PR artifacts;
+- strong implementation ideas that were written to summaries but never promoted
+  to an issue, PR, or sprint queue row;
+- completed work whose proof should be linked from the sprint doc before the
+  temporary artifact disappears.
+
+For each artifact worth preserving, choose one public-safe action:
+
+- add or update a sprint Queue row that points at the artifact and names the next
+  engineering action, preserving label/model/batch metadata when the sprint doc
+  uses personal GitHub queue columns;
+- file or link a GitHub issue when the work belongs in a repo backlog;
+- add the artifact path/PR URL to Completed or velocity notes when it is only
+  evidence for work already done;
+- explicitly skip it when it is obsolete, duplicate, private, or not actionable.
+
+Privacy boundary: do not publish private family/media details, raw archive
+contents, EXIF/GPS data, private source paths, or personal names into public
+issues or sprint docs. Use a redacted summary, a private-repo pointer, or a
+private handoff note when the artifact is useful but not public-safe.
+
+### 8. Dispatch Prompt Patterns (always include)
 
 After updating counts and tables, generate **themed dispatch prompt patterns** for
 each persona that has queued work. These go into the sprint doc as a new subsection
