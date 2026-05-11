@@ -36,6 +36,7 @@ BIRD_BATH_REFERENCE = SKILL_DIR / "references" / "bird-bath-balcony.md"
 BAT_BEE_REFERENCE = (
     SKILL_DIR / "references" / "bat-bee-observation-hive-welfare.md"
 )
+WELFARE_GATE_SCHEMA = SKILL_DIR / "references" / "welfare-gate-schema.md"
 
 
 REQUIRED_WELFARE_GATES = {
@@ -310,6 +311,65 @@ class TestBatBeeObservationHiveReference(unittest.TestCase):
         ]
         for term in required:
             self.assertIn(term, self.reference)
+
+
+class TestWelfareGateSchemaReference(unittest.TestCase):
+    """Shared welfare gates must stay machine-readable enough to reuse."""
+
+    def setUp(self) -> None:
+        self.skill = SKILL_MD.read_text()
+        self.reference = WELFARE_GATE_SCHEMA.read_text()
+
+    def test_skill_routes_to_shared_welfare_schema(self) -> None:
+        self.assertIn("references/welfare-gate-schema.md", self.skill)
+        self.assertIn("habitat-reference", self.skill)
+        self.assertIn("geometry_params.json", self.skill)
+
+    def test_reference_defines_required_fields(self) -> None:
+        required = [
+            "`gate_id`",
+            "`label`",
+            "`applies_to`",
+            "`severity`",
+            "`pass_condition`",
+            "`fail_remedy`",
+            "`evidence`",
+            "`source_ref`",
+        ]
+        for term in required:
+            self.assertIn(term, self.reference)
+
+    def test_reference_preserves_cavity_baseline_gates(self) -> None:
+        for gate_id in REQUIRED_WELFARE_GATES:
+            self.assertIn(f"`{gate_id}`", self.reference)
+
+    def test_reference_documents_habitat_reference_workflow(self) -> None:
+        self.assertIn("Habitat-reference workflow", self.reference)
+        self.assertIn("habitat-reference", self.reference)
+        self.assertIn("drop a gate", self.reference)
+
+    def test_reference_connects_concrete_gate_families(self) -> None:
+        required = [
+            "`bat_house`",
+            "`native_bee_house`",
+            "`observation_hive_preflight`",
+            "`camera_electronics`",
+            "`fabrication_authority`",
+            "private family/media details",
+        ]
+        for term in required:
+            self.assertIn(term, self.reference)
+
+    def test_skill_routes_preflight_without_colony_operations(self) -> None:
+        required = [
+            "native bee house",
+            "observation hive design preflight",
+            "camera/electronics prompts use the same welfare-gate schema",
+            "colony management, legal compliance, or live",
+            "fabrication authority",
+        ]
+        for term in required:
+            self.assertIn(term, self.skill)
 
 
 if __name__ == "__main__":
