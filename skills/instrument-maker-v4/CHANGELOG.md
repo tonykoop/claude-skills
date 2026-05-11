@@ -107,6 +107,34 @@ before they can accidentally become dimensional hints.
 - [x] Spike-fiddle starters name membrane/soundboard interface and string-path
       geometry as measurement-required gates.
 
+## Unreleased — Round 12 skill-dev follow-up
+
+Round 12 Bob-B adds hulusi/bawu-specific stopped-pipe free-reed guidance from
+the Round 11 live validation of `hulusi` issue #1.
+
+### Added
+
+- `references/hulusi-bawu-stopped-pipe-free-reed.md` — readiness-gated
+  guidance for hulusi/bawu prototype repos, including HUL-P0 reed coupon,
+  HUL-P1 single-pipe, `unknown_requires_measurement`, visual authority, and
+  validation-loop boundaries.
+- `examples/hulusi-bawu/` — small scaffold with `family-spec.csv`,
+  `validation-loop.csv`, and `visual-output-register.csv` showing how to keep
+  stopped-pipe free-reed claims measurement-required before empirical data.
+- `tests/test_hulusi_bawu_guidance.py` — contract tests for the new reference,
+  acoustic-law example, visual authority register, and skill stub wiring.
+
+### Acceptance criteria
+
+- [x] Hulusi/bawu examples do not inherit traditional `side_branch_reed`
+      assumptions.
+- [x] HUL-P0/HUL-P1 measurement gates are explicit before boundary-condition
+      claims or family scaling.
+- [x] Example visual artifacts keep concept imagery out of fabrication
+      authority.
+- [x] Existing free-reed guidance points agents to the stopped-pipe
+      hulusi/bawu reference when applicable.
+
 ## v4.4.5 — 2026-05-11
 
 Round 10 TwinGrid lane Elsa-B focused on visual authority: generated images

@@ -5,6 +5,14 @@ hulusi, harmonica, melodica, accordion, chalumeau-style reed pipe, or other
 mouth-organ / reed-coupled pipe experiment. This is an exploration template,
 not a finished instrument packet.
 
+For hulusi, bawu, or other stopped-pipe free-reed prototype repos that already
+have packet artifacts, also load
+`references/hulusi-bawu-stopped-pipe-free-reed.md`. That reference keeps the
+route at `L1_packet -> measurement_required`, separates hulusi/bawu from
+traditional `side_branch_reed` mouth-organ assumptions, and requires HUL-P0
+reed coupon plus HUL-P1 single-pipe evidence before boundary-condition or
+DXF/CAD authority claims.
+
 ## First Build Rule
 
 Start with a **P0 reed coupon**, not full CAD.

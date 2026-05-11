@@ -1,0 +1,4 @@
+member_id,target_hz,target_note,acoustic_law,end_condition,dimension_provenance,predicted_L_geom_mm,wood_species,notes
+HUL-P0-REED-F4,349.23,F4,unknown_requires_measurement,n_a_empirical,measurement_required,,n_a,HUL-P0 reed coupon only; no pipe-length claim
+HUL-P1-MEL-F4,349.23,F4,unknown_requires_measurement,one_end_closed_reed,measurement_required,,Pakkawood,HUL-P1 single-pipe control before family scaling
+BAW-P1-MEL-G4,392.00,G4,unknown_requires_measurement,one_end_closed_reed,measurement_required,,Bamboo,Bawu-style single-pipe control before boundary-condition claim

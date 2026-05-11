@@ -18,10 +18,11 @@ description: >-
   guardrail, plus the v4.4.3 prototype validation-loop upgrade template and
   v4.4.4 repo-first bare-bones packet readiness template, the v4.4.5
   DXF/image-gen-2 visual authority guard, the v4.4.6 invocation rename and
-  early visual-register trigger, and the v4.4.7 instrument design-book
-  chapter contract (issue #104). The full skill body lives in the canonical
-  install directory; this folder contains only the additive references,
-  validators, tests, fixtures, and examples that these changes introduce.
+  early visual-register trigger, the v4.4.7 instrument design-book chapter
+  contract (issue #104), and Round 12 hulusi/bawu stopped-pipe free-reed
+  validation guidance. The full skill body lives in the canonical install
+  directory; this folder contains only the additive references, validators,
+  tests, fixtures, and examples that these changes introduce.
 ---
 
 # instrument-maker - partial-skill entry (v4 readiness additions)
@@ -54,7 +55,8 @@ tracking, plus a **v4.4.4 repo-first bare-bones packet readiness template**,
 plus a **v4.4.5 DXF/image-gen-2 visual authority guard**, plus the
 **v4.4.6 public invocation rename and early visual-register trigger**, plus the
 **v4.4.7 instrument design-book chapter contract**
-([issue #104](https://github.com/tonykoop/claude-skills/issues/104)):
+([issue #104](https://github.com/tonykoop/claude-skills/issues/104)),
+plus Round 12 **hulusi/bawu stopped-pipe free-reed validation guidance**:
 
 ```
 skills/instrument-maker-v4/
@@ -66,6 +68,7 @@ skills/instrument-maker-v4/
 │   ├── family-aware-design.md                  ← canonical + new family-spec.csv schema (acoustic_law, end_condition, dimension_provenance)
 │   ├── free-reed-khaen-exploration.md          ← P0 reed coupon / control-build template
 │   ├── folded-stopped-pipe-drone.md            ← folded drone packet template
+│   ├── hulusi-bawu-stopped-pipe-free-reed.md   ← stopped-pipe free-reed HUL-P0/HUL-P1 gates
 │   ├── prototype-validation-loop-upgrade.md     ← upgrade path for existing prototype packets
 │   ├── repo-first-bare-bones-packet.md         ← minimal public repo-first packet contract
 │   └── instrument-design-book-chapter-contract.md ← public chapter readiness / asset-ledger contract
@@ -86,6 +89,7 @@ skills/instrument-maker-v4/
     ├── repo-first-bare-bones-packet/           ← readiness:bare-bones starter packet
     │   └── string-spike-fiddle/                ← erhu/huqin bare-bones guardrail variant
     ├── folded-drone/centerline-stations.csv    ← compact folded E2 proof-mule fixture
+    ├── hulusi-bawu/                            ← stopped-pipe free-reed validation scaffold
     └── khaen/
         ├── family-spec.csv                     ← combined traditional + sister + planning rows
         ├── p0-reed-coupon-log.csv             ← reed-alone pitch, pull-down, onset, blow/draw log
@@ -122,6 +126,8 @@ cp     skills/instrument-maker-v4/scripts/generate_folded_drone_dxf.py \
 cp -r skills/instrument-maker-v4/examples/khaen \
       ~/.claude/skills/instrument-maker/examples/
 cp -r skills/instrument-maker-v4/examples/folded-drone \
+      ~/.claude/skills/instrument-maker/examples/
+cp -r skills/instrument-maker-v4/examples/hulusi-bawu \
       ~/.claude/skills/instrument-maker/examples/
 cp -r skills/instrument-maker-v4/examples/repo-first-bare-bones-packet \
       ~/.claude/skills/instrument-maker/examples/
@@ -181,6 +187,13 @@ For free-reed / khaen work in the canonical skill, load
 `references/free-reed-khaen-exploration.md` before drafting CAD. The first
 build should be a reed coupon and single-pipe control unless measured coupon
 data already exists.
+
+For hulusi, bawu, or stopped-pipe free-reed prototype repos, also load
+`references/hulusi-bawu-stopped-pipe-free-reed.md`. Keep the route
+readiness-gated at `L1_packet -> measurement_required`, use HUL-P0 reed coupon
+and HUL-P1 single-pipe checks before boundary-condition claims, and do not
+promote concept visuals or unmeasured workbook rows into build-ready DXF/CAD
+authority.
 
 If a reed/free-reed packet includes generated concept images, keep those
 images out of the fabrication authority chain. Record the governing DXF, CAD,
