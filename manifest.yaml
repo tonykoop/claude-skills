@@ -59,11 +59,14 @@ skills:
     status: active
 
   sprint-update:
-    canonical_version: 1.0.0
+    canonical_version: 1.1.0
     runtime: claude
     repo_path: claude/skills/sprint-update
-    last_updated: 2026-05-08
+    last_updated: 2026-05-10
     status: active
+    notes: >-
+      Adds personal GitHub sprint Queue columns for label, model, and batch
+      metadata while preserving themed dispatch grouping.
 
   disk-cleanup:
     canonical_version: 1.0.0
