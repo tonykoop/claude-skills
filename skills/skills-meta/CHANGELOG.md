@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Added `--version` to the skills-meta helper so sprint panes have a
+  deterministic fallback when no `skills-meta` PATH shim is installed.
 - Added runtime direction labels to sync drift plans and JSON output.
 - Deduped scan roots by resolved path so explicit roots do not double-count repo defaults.
 - Added cleanup reporting for manifest-marked deprecated, obsolete, and retired skills.
