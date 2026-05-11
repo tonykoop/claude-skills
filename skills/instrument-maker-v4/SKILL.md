@@ -1,6 +1,6 @@
 ---
 name: instrument-maker-v4
-version: 4.4.2
+version: 4.4.3
 last-updated: 2026-05-11
 partial-skill: true
 canonical-install: ~/.claude/skills/instrument-maker-v4
@@ -10,12 +10,13 @@ description: >-
   This repository entry hosts the v4.4 acoustic-law/reed boundary-condition
   enhancement (issue #73), the v4.4.1 free-reed/khaen exploration
   template (issue #109), and the v4.4.2 sheng/hulusi/chalumeau validation
-  guardrail. The full skill body lives in the canonical install directory;
-  this folder contains only the additive references, validator, tests,
-  fixtures, and examples that these changes introduce.
+  guardrail, plus the v4.4.3 prototype validation-loop upgrade template. The
+  full skill body lives in the canonical install
+  directory; this folder contains only the additive references, validator,
+  tests, fixtures, and examples that these changes introduce.
 ---
 
-# instrument-maker-v4 — partial-skill entry (v4.4 acoustic-law enhancement)
+# instrument-maker-v4 - partial-skill entry (v4.4 acoustic-law enhancement)
 
 This folder is **not** a complete copy of the `instrument-maker-v4` skill.
 The canonical skill body (SKILL.md, agents/, full references/, full
@@ -27,7 +28,10 @@ enhancement** that closes
 [issue #73](https://github.com/tonykoop/claude-skills/issues/73), plus the
 **v4.4.1 free-reed/khaen exploration template** for
 [issue #109](https://github.com/tonykoop/claude-skills/issues/109), plus
-the **v4.4.2 sheng/hulusi/chalumeau validation guardrail**:
+the **v4.4.2 sheng/hulusi/chalumeau validation guardrail**, plus a
+**v4.4.3 prototype validation-loop upgrade template** for repos that already
+have instrument packets but still need empirical measurement and iteration
+tracking:
 
 ```
 skills/instrument-maker-v4/
@@ -36,7 +40,8 @@ skills/instrument-maker-v4/
 ├── references/
 │   ├── acoustic-models.md                      ← canonical + new "Reed boundary-condition decision tree" section
 │   ├── family-aware-design.md                  ← canonical + new family-spec.csv schema (acoustic_law, end_condition, dimension_provenance)
-│   └── free-reed-khaen-exploration.md          ← P0 reed coupon / control-build template
+│   ├── free-reed-khaen-exploration.md          ← P0 reed coupon / control-build template
+│   └── prototype-validation-loop-upgrade.md     ← upgrade path for existing prototype packets
 ├── scripts/
 │   └── validate_acoustic_law.py                ← new in v4.4; focused validator
 ├── tests/
@@ -47,7 +52,8 @@ skills/instrument-maker-v4/
         ├── family-spec.csv                     ← combined traditional + sister + planning rows
         ├── p0-reed-coupon-log.csv             ← reed-alone pitch, pull-down, onset, blow/draw log
         ├── mouth-organ-dxf-checklist.csv       ← reed window / socket / gasket / windchest checklist
-        └── free-reed-sourcing.csv              ← source_status values for unstable reed stock
+        ├── free-reed-sourcing.csv              ← source_status values for unstable reed stock
+        └── prototype-validation-loop.csv        ← validation-loop upgrade CSV example
 ```
 
 ## Why this is a partial skill
@@ -102,6 +108,12 @@ If a reed/free-reed packet includes generated concept images, keep those
 images out of the fabrication authority chain. Record the governing DXF, CAD,
 design table, or measured template as the build authority, and mark generated
 images as concept/story/visual-BOM support only.
+
+For existing instrument prototype repos that already have packets, load
+`references/prototype-validation-loop-upgrade.md` before editing the repo. Add
+the validation loop without redesigning the instrument, keep CAD/DXF/design
+tables as fabrication authority, and mark generated images as concept/story
+support only.
 
 ## Tests
 
