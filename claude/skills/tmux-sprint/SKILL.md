@@ -1,7 +1,7 @@
 ---
 name: tmux-sprint
-version: 2.2.0
-last-updated: 2026-05-10
+version: 2.3.0
+last-updated: 2026-05-11
 description: >-
   Transactional sprint-round dispatch, liveness probing, and codex-session
   revival for persona agents running in a tmux grid. Use whenever the user
@@ -10,6 +10,8 @@ description: >-
   sprint round, TwinGrid blind A/B, Partner Peek reveal, send an assignment to
   alice/bob/cindy/dan/elsa/frank, or wants to reliably hand out per-persona
   assignment markdown files across a mixed claude+codex tmux sprint session.
+  Includes label-aware sprint batching and smart model-picker routing for
+  GitHub issue queues.
   Replaces fragile `tmux send-keys` patterns with structured primitives that
   verify submission, rate-limit by pane type, and persist round state across
   `/compact`.
@@ -315,6 +317,12 @@ Batch dispatch by runtime and risk:
 - If a pane is blocked on approval, auth, missing tools, or a long-running
   command, skip it in the next batch and let the manager recover it explicitly.
 
+For GitHub-backed sprint queues, preserve issue labels as first-class routing
+inputs. Read `references/label-aware-routing.md` before generating assignment
+headers from issue labels, and use `scripts/plan-label-batches.sh` when you
+have `gh issue list --json number,title,url,labels` output to convert labels
+into batch groups, suggested models, and manager-review notes.
+
 ### Phase 1: blind dispatch
 
 Use `references/twingrid-blind-handoff-template.md` to generate one assignment
@@ -451,6 +459,7 @@ Invoke this skill when the user says any of:
 - "restart frank" / "frank is at codex resume" / "revive the codex pane"
 - "check which personas are idle" / "who is free for more work"
 - "send alice this assignment" / "hand bob this md file"
+- "label-aware sprint batching" / "smart model picker" / "plan label batches"
 
 ## Related skills
 
