@@ -1,7 +1,7 @@
 ---
 name: idea-incubator
-version: 1.4.1
-last-updated: 2026-05-10
+version: 1.4.2
+last-updated: 2026-05-11
 description: >-
   Capture, classify, connect, review, and promote speculative ideas into a
   searchable GitHub issue inbox. Use when the user says "new idea", "incubate
@@ -75,7 +75,10 @@ Gemini CLI) hit them as reliably as Claude does.
    If the user asks for a photo album or private media pilot, use the focused
    workflow in
    [`references/photo-album-private-media-pilot.md`](references/photo-album-private-media-pilot.md)
-   before drafting downstream repo work.
+   before drafting downstream repo work, and surface the compact owner
+   decision stub in
+   [`references/private-media-decision-stub.md`](references/private-media-decision-stub.md)
+   before any downstream repo scaffold, imagegen/layout work, or media import.
 6. **Promote-batch** - cluster-aware promotion. Use when multiple capture
    issues share a recovery, archive, intake-dump, or thematic root and should
    be triaged as a unit instead of one-by-one. See the dedicated section
@@ -159,6 +162,9 @@ When in doubt for a recovery/import cluster, default to `Refs`.
 - [`references/photo-album-private-media-pilot.md`](references/photo-album-private-media-pilot.md)
   - Pilot workflow for private photo albums and media collections, including
     source-photo, LFS, privacy, and imagegen derivative rules.
+- [`references/private-media-decision-stub.md`](references/private-media-decision-stub.md)
+  - Compact owner checklist for photo-album/private-media pilots before
+    downstream repo scaffolds, imagegen/layout studies, or media imports.
 - [`references/promote-batch-example.md`](references/promote-batch-example.md)
   - Worked example: legacy-import / Weather Balloon Camera Vessel cluster.
 

@@ -99,12 +99,12 @@ skills:
     status: active
 
   idea-incubator:
-    canonical_version: 1.4.1
+    canonical_version: 1.4.2
     runtime: shared
     repo_path: skills/idea-incubator
-    last_updated: 2026-05-10
+    last_updated: 2026-05-11
     status: active
-    notes: Promote-batch mode; readiness matrix, evidence-ledger, LFS prompts for recovery/import; private media/family archive promotion template; yearbook/design-book rollout workflow with pilot edition, consent/proof gates, image-gen derivative boundaries, EXIF/GPS handling, provenance-ledger defaults, and photo-album/private-media pilot source-photo rules.
+    notes: Promote-batch mode; readiness matrix, evidence-ledger, LFS prompts for recovery/import; private media/family archive promotion template; yearbook/design-book rollout workflow with pilot edition, consent/proof gates, image-gen derivative boundaries, EXIF/GPS handling, provenance-ledger defaults, photo-album/private-media pilot source-photo rules, and compact private-media owner decision stub.
 
   maker-engineering:
     canonical_version: 1.1.0

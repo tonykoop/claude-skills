@@ -8,6 +8,11 @@ The goal is a small repo-ready pilot that protects source photos, consent
 boundaries, and proof-review integrity before any visual polish, broad import,
 vendor upload, or public-facing storytelling.
 
+Before drafting downstream repo work, surface the compact owner checklist in
+[`private-media-decision-stub.md`](private-media-decision-stub.md). If the
+owner cannot answer it yet, keep those unknowns as blockers instead of
+scaffolding a repo, running imagegen/layout studies, or importing media.
+
 ## Routing Rule
 
 Route here when the capture includes any of these signals:
@@ -26,17 +31,20 @@ media is involved, use the normal `imagegen` skill instead.
 
 1. Pick exactly one pilot batch: one album, folder, event, date range, export,
    or scanned envelope.
-2. Draft the downstream issue with `Refs #N`, not `Closes #N`, until the
+2. Fill or explicitly mark unknowns in
+   [`private-media-decision-stub.md`](private-media-decision-stub.md) before
+   downstream scaffolding, imagegen/layout work, or media import.
+3. Draft the downstream issue with `Refs #N`, not `Closes #N`, until the
    scaffold, privacy boundary, source ledger, and evidence ledger exist.
-3. Default the target repo to private, or write the repo visibility as an
+4. Default the target repo to private, or write the repo visibility as an
    explicit blocker if the user has not chosen it.
-4. Decide the source-photo policy before import: `external-ledger-only`,
+5. Decide the source-photo policy before import: `external-ledger-only`,
    `lfs-original`, `derived-only`, or `exclude`.
-5. Commit `.gitattributes` and `.gitignore` before copying photos, scans,
+6. Commit `.gitattributes` and `.gitignore` before copying photos, scans,
    video, PDFs, ZIPs, or print assets into the repo.
-6. Create review-safe derivatives only after privacy, metadata, consent, and
+7. Create review-safe derivatives only after privacy, metadata, consent, and
    reviewer rules are recorded.
-7. Require watermarked review proofs and a signoff log before any
+8. Require watermarked review proofs and a signoff log before any
    print/vendor/export package.
 
 ## Source-Photo Rules
