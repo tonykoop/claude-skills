@@ -40,7 +40,9 @@ BAT_BEE_REFERENCE = (
 )
 WELFARE_GATE_SCHEMA = SKILL_DIR / "references" / "welfare-gate-schema.md"
 CAMERA_VALIDATOR = SKILL_DIR / "scripts" / "validate_camera_modes.py"
-
+OBSERVATION_HIVE_PREFLIGHT_GATES = (
+    SKILL_DIR / "references" / "observation-hive-preflight-gates.json"
+)
 
 
 REQUIRED_WELFARE_GATES = {
@@ -476,6 +478,89 @@ class TestCameraObservationContract(unittest.TestCase):
             findings = module.validate_packet(CAMERA_PACKET_DIR)
         self.assertTrue(any("camera_observation.mode" == f.path for f in findings))
 
+
+
+class TestObservationHivePreflightGateContract(unittest.TestCase):
+    """Observation-hive packets need a concrete preflight gate contract."""
+
+    REQUIRED_GATE_IDS = {
+        "qualified_keeper_review",
+        "secure_containment",
+        "ventilation_thermal_management",
+        "escape_proof_service_access",
+        "public_privacy_safety",
+        "route_out_colony_decisions",
+    }
+
+    REQUIRED_GATE_FIELDS = {
+        "gate_id",
+        "label",
+        "applies_to",
+        "severity",
+        "pass_condition",
+        "fail_remedy",
+        "evidence",
+        "source_ref",
+    }
+
+    def setUp(self) -> None:
+        self.skill = SKILL_MD.read_text()
+        self.reference = BAT_BEE_REFERENCE.read_text()
+        self.contract = json.loads(OBSERVATION_HIVE_PREFLIGHT_GATES.read_text())
+
+    def test_skill_and_reference_point_to_contract(self) -> None:
+        self.assertIn("observation-hive-preflight-gates.json", self.skill)
+        self.assertIn("observation-hive-preflight-gates.json", self.reference)
+
+    def test_contract_declares_required_gate_ids(self) -> None:
+        self.assertEqual(
+            set(self.contract["required_gate_ids"]),
+            self.REQUIRED_GATE_IDS,
+        )
+        gate_ids = {gate["gate_id"] for gate in self.contract["gates"]}
+        self.assertEqual(gate_ids, self.REQUIRED_GATE_IDS)
+
+    def test_contract_preserves_welfare_gate_record_shape(self) -> None:
+        for gate in self.contract["gates"]:
+            missing = self.REQUIRED_GATE_FIELDS - set(gate)
+            self.assertFalse(missing, f"{gate['gate_id']} missing {missing}")
+            self.assertEqual(gate["severity"], "required")
+            self.assertEqual(gate["applies_to"], ["observation_hive_preflight"])
+            self.assertIsInstance(gate["source_ref"], list)
+            self.assertTrue(gate["pass_condition"].strip())
+            self.assertTrue(gate["fail_remedy"].strip())
+
+    def test_contract_blocks_live_colony_claims(self) -> None:
+        label = self.contract["readiness_label"]
+        self.assertIn("concept/preflight only", label)
+        self.assertIn("not approved for live colony use", label)
+        route_out = " ".join(self.contract["route_out_topics"])
+        for term in [
+            "live colony handling",
+            "legal compliance",
+            "feeding",
+            "disease response",
+            "queen status",
+            "private family or media details",
+        ]:
+            self.assertIn(term, route_out)
+
+    def test_contract_keeps_camera_electronics_external_by_default(self) -> None:
+        electronics = self.contract["camera_electronics_default"]
+        self.assertEqual(
+            electronics["default_posture"],
+            "external observation only for v1",
+        )
+        for gate_id in [
+            "no_contact_protrusions",
+            "no_exposed_wires",
+            "low_heat_load",
+            "weatherproof_external_routing",
+            "service_without_disturbance",
+            "species_safe_sensing",
+            "fabrication_authority",
+        ]:
+            self.assertIn(gate_id, electronics["required_if_electronics_present"])
 
 
 if __name__ == "__main__":

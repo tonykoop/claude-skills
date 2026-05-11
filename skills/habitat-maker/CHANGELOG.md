@@ -16,6 +16,11 @@
 - Clarified that a four-chamber bat-house layout is suitable for a canonical
   skill-package example, but is not an implicit requirement for every
   `bat-houses` scaffold.
+- Added a machine-readable observation-hive preflight gate contract that keeps
+  public packets concept/preflight-only, requires all six observation-hive
+  gate ids, preserves evidence fields, and routes live colony decisions out of
+  `habitat-maker` content.
+- Added smoke-test coverage for the observation-hive preflight contract.
 
 ## 0.4.0 — 2026-05-11
 

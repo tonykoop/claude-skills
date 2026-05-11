@@ -93,6 +93,12 @@ beekeeping welfare decisions, live colony handling, legal compliance,
 transport, feeding, disease, and seasonal management to the observation-hive
 project path or a qualified local keeper.
 
+Machine-readable packet fixtures and validators should start from
+[`observation-hive-preflight-gates.json`](observation-hive-preflight-gates.json).
+That contract keeps public observation-hive packets `concept/preflight only;
+not approved for live colony use`, preserves the required evidence fields, and
+locks the six required gate ids before any downstream fabrication planning.
+
 | Gate | Pass condition | Fail remedy |
 | --- | --- | --- |
 | Qualified keeper review | Packet requires review by a qualified beekeeper before any live colony use. | Mark as concept-only until reviewed. |
