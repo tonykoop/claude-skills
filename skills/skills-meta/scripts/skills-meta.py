@@ -238,7 +238,7 @@ def dedupe_specs(specs: list[RootSpec]) -> list[RootSpec]:
     priority = {"cli": 3, "env": 2, "manifest": 1, "default": 0}
     by_path: dict[str, RootSpec] = {}
     for spec in specs:
-        key = str(spec.path.expanduser())
+        key = str(spec.path.expanduser().resolve(strict=False))
         existing = by_path.get(key)
         if existing is None or priority[spec.origin] > priority[existing.origin]:
             by_path[key] = RootSpec(path=Path(key), origin=spec.origin)
@@ -815,6 +815,8 @@ class SyncEntry:
     source: Path
     target: Path
     state: str
+    source_runtime: str
+    target_runtime: str
     note: str = ""
     symlink_target: Path | None = None
 
@@ -862,13 +864,33 @@ def build_sync_plan(
         repo_path = entry.get("repo_path")
         if not repo_path:
             entries.append(
-                SyncEntry(name, repo_root / str(key), target / name, "source-missing", "no repo_path in manifest")
+                SyncEntry(
+                    name,
+                    repo_root / str(key),
+                    target / name,
+                    "source-missing",
+                    "configured",
+                    infer_runtime(repo_root, target),
+                    "no repo_path in manifest",
+                )
             )
             continue
         source = (repo_root / str(repo_path)).resolve()
         dest = target / name
+        source_runtime = infer_runtime(repo_root, source)
+        target_runtime = infer_runtime(repo_root, target)
         if not source.exists():
-            entries.append(SyncEntry(name, source, dest, "source-missing", f"{source} not on disk"))
+            entries.append(
+                SyncEntry(
+                    name,
+                    source,
+                    dest,
+                    "source-missing",
+                    source_runtime,
+                    target_runtime,
+                    f"{source} not on disk",
+                )
+            )
             continue
         symlink_target: Path | None = None
         if dest.is_symlink():
@@ -879,11 +901,20 @@ def build_sync_plan(
         source_hash = hash_dir(source)
         dest_hash = hash_dir(dest)
         if dest_hash is None and not dest.is_symlink():
-            entries.append(SyncEntry(name, source, dest, "missing"))
+            entries.append(SyncEntry(name, source, dest, "missing", source_runtime, target_runtime))
         elif source_hash == dest_hash:
             note = f"symlinked to {symlink_target}" if symlink_target else ""
             entries.append(
-                SyncEntry(name, source, dest, "in-sync", note, symlink_target=symlink_target)
+                SyncEntry(
+                    name,
+                    source,
+                    dest,
+                    "in-sync",
+                    source_runtime,
+                    target_runtime,
+                    note,
+                    symlink_target=symlink_target,
+                )
             )
         else:
             note = (
@@ -892,7 +923,16 @@ def build_sync_plan(
                 else "target has local changes"
             )
             entries.append(
-                SyncEntry(name, source, dest, "drift", note, symlink_target=symlink_target)
+                SyncEntry(
+                    name,
+                    source,
+                    dest,
+                    "drift",
+                    source_runtime,
+                    target_runtime,
+                    note,
+                    symlink_target=symlink_target,
+                )
             )
     return entries
 
@@ -912,7 +952,10 @@ def render_sync_plan(plan: list[SyncEntry], target: Path, apply: bool, force: bo
             "source-missing": "? skip   ",
         }.get(entry.state, "  ?      ")
         suffix = f"  ({entry.note})" if entry.note else ""
-        lines.append(f"{marker} {entry.name:<22} {entry.source}  ->  {entry.target}{suffix}")
+        runtime_flow = f"[{entry.source_runtime} -> {entry.target_runtime}]"
+        lines.append(
+            f"{marker} {entry.name:<22} {runtime_flow:<24} {entry.source}  ->  {entry.target}{suffix}"
+        )
     lines.append("")
     summary = ", ".join(f"{state}: {n}" for state, n in sorted(counts.items()))
     lines.append(f"summary: {summary}")
@@ -1013,6 +1056,8 @@ def main() -> int:
                         "name": e.name,
                         "source": str(e.source),
                         "target": str(e.target),
+                        "source_runtime": e.source_runtime,
+                        "target_runtime": e.target_runtime,
                         "state": e.state,
                         "note": e.note,
                     }

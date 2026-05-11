@@ -20,6 +20,7 @@ from __future__ import annotations
 
 import importlib.util
 import io
+import json
 import os
 import shutil
 import sys
@@ -152,6 +153,97 @@ class SingleModeDeterminismTests(unittest.TestCase):
             self.tmp / "gemini" / "duped" / "SKILL.md",
         ):
             self.assertIn(str(path), out, msg=out)
+
+
+class SyncRuntimeDriftReportingTests(unittest.TestCase):
+    """Sync drift reports should make cross-runtime direction obvious. A
+    Claude-owned source copied into a Codex install is otherwise easy to
+    misread as ordinary local path drift."""
+
+    def setUp(self) -> None:
+        self.tmp = Path(tempfile.mkdtemp(prefix="skills-meta-runtime-"))
+        self.addCleanup(shutil.rmtree, self.tmp, ignore_errors=True)
+        self.repo = self.tmp / "repo"
+        write_skill(self.repo / "claude" / "skills" / "merge-review", "merge-review", "1.0.0", "2026-05-01")
+        write_manifest(
+            self.repo,
+            {
+                "merge-review": {
+                    "canonical_version": "1.0.0",
+                    "runtime": "claude",
+                    "repo_path": "claude/skills/merge-review",
+                    "last_updated": "2026-05-01",
+                    "status": "active",
+                }
+            },
+        )
+        self.target_root = self.tmp / ".codex" / "skills"
+        write_skill(self.target_root / "merge-review", "merge-review", "0.9.0", "2026-04-01")
+
+    def _run_sync(self, *extra: str) -> tuple[int, str]:
+        os.chdir(self.repo)
+        argv = [
+            "skills-meta.py",
+            "--mode",
+            "sync",
+            "--target",
+            str(self.target_root),
+            "--skill",
+            "merge-review",
+            *extra,
+        ]
+        old_argv, sys.argv = sys.argv, argv
+        buf = io.StringIO()
+        try:
+            with redirect_stdout(buf):
+                rc = sm.main()
+        finally:
+            sys.argv = old_argv
+        return rc, buf.getvalue()
+
+    def test_text_sync_plan_shows_claude_to_codex_drift(self) -> None:
+        rc, out = self._run_sync()
+        self.assertEqual(rc, 0, msg=out)
+        self.assertIn("! drift", out, msg=out)
+        self.assertIn("merge-review", out, msg=out)
+        self.assertIn("[claude -> codex]", out, msg=out)
+        self.assertIn("target has local changes", out, msg=out)
+        self.assertIn("Drifted targets need --apply --force", out, msg=out)
+
+    def test_json_sync_plan_includes_runtime_labels(self) -> None:
+        rc, out = self._run_sync("--json")
+        self.assertEqual(rc, 0, msg=out)
+        plan = json.loads(out)["plan"]
+        self.assertEqual(len(plan), 1, msg=out)
+        self.assertEqual(plan[0]["state"], "drift", msg=out)
+        self.assertEqual(plan[0]["source_runtime"], "claude", msg=out)
+        self.assertEqual(plan[0]["target_runtime"], "codex", msg=out)
+
+
+class RootDedupeTests(unittest.TestCase):
+    """An explicit CLI root that points at a repo-local default should not
+    double-scan the same skill tree under different path spellings."""
+
+    def test_relative_default_and_absolute_cli_root_dedupe(self) -> None:
+        tmp = Path(tempfile.mkdtemp(prefix="skills-meta-roots-"))
+        self.addCleanup(shutil.rmtree, tmp, ignore_errors=True)
+        repo = tmp / "repo"
+        (repo / "skills").mkdir(parents=True)
+
+        old_cwd = Path.cwd()
+        try:
+            os.chdir(repo)
+            specs = sm.dedupe_specs(
+                [
+                    sm.RootSpec(Path("skills"), "default"),
+                    sm.RootSpec(repo / "skills", "cli"),
+                ]
+            )
+        finally:
+            os.chdir(old_cwd)
+
+        self.assertEqual(len(specs), 1, msg=specs)
+        self.assertEqual(specs[0].origin, "cli", msg=specs)
 
 
 class SyncSymlinkSafetyTests(unittest.TestCase):
