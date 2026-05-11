@@ -1,5 +1,11 @@
 # Changelog — skills-meta
 
+## Unreleased
+
+- Added runtime direction labels to sync drift plans and JSON output.
+- Deduped scan roots by resolved path so explicit roots do not double-count repo defaults.
+- Fixed local skill frontmatter to use top-level version metadata.
+
 ## v1.0.0 — 2026-05-09
 
 - Stable release: drift audit, inventory, sync, and fix-duplicates modes.
