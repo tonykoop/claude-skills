@@ -1023,8 +1023,17 @@ def hash_dir(path: Path) -> str | None:
     return h.hexdigest()
 
 
+def resolve_manifest_repo_path(manifest_dir: Path, repo_path: str) -> Path:
+    """Resolve a manifest repo_path from the manifest file's directory."""
+    path = Path(repo_path).expanduser()
+    if path.is_absolute():
+        return path.resolve()
+    return (manifest_dir / path).resolve()
+
+
 def build_sync_plan(
     repo_root: Path,
+    manifest_dir: Path,
     manifest: dict[str, Any],
     target: Path,
     skill_filter: list[str] | None,
@@ -1044,7 +1053,7 @@ def build_sync_plan(
             entries.append(
                 SyncEntry(
                     name,
-                    repo_root / str(key),
+                    manifest_dir / str(key),
                     target / name,
                     "source-missing",
                     "configured",
@@ -1053,9 +1062,9 @@ def build_sync_plan(
                 )
             )
             continue
-        source = (repo_root / str(repo_path)).resolve()
+        source = resolve_manifest_repo_path(manifest_dir, str(repo_path))
         dest = target / name
-        source_runtime = infer_runtime(repo_root, source)
+        source_runtime = infer_runtime(manifest_dir, source)
         target_runtime = infer_runtime(repo_root, target)
         if not source.exists():
             entries.append(
@@ -1250,8 +1259,9 @@ def apply_sync(plan: list[SyncEntry], force: bool) -> tuple[int, int, int]:
 
 def main() -> int:
     args = parse_args()
-    repo_root = Path.cwd()
-    manifest_path = (repo_root / args.manifest).resolve()
+    cwd = Path.cwd()
+    manifest_path = (cwd / args.manifest).resolve()
+    repo_root = manifest_path.parent
     manifest = load_yaml(manifest_path)
 
     if args.version:
@@ -1266,7 +1276,7 @@ def main() -> int:
         skill_filter: list[str] | None = None
         if args.skill:
             skill_filter = [s.strip() for s in args.skill.split(",") if s.strip()]
-        plan = build_sync_plan(repo_root, manifest, target, skill_filter)
+        plan = build_sync_plan(repo_root, manifest_path.parent, manifest, target, skill_filter)
         if args.json:
             payload = {
                 "mode": "sync",
