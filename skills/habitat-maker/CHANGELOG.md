@@ -1,5 +1,11 @@
 # habitat-maker — CHANGELOG
 
+## Unreleased
+
+- Clarified that a four-chamber bat-house layout is suitable for a canonical
+  skill-package example, but is not an implicit requirement for every
+  `bat-houses` scaffold.
+
 ## 0.4.0 — 2026-05-11
 
 - Added bat house, native bee house, observation-hive preflight, and
