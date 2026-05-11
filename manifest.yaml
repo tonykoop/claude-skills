@@ -174,12 +174,12 @@ skills:
     notes: "Initial snapshot with catalog/auth-state preflight (issue 72) for honest sparse-catalog output."
 
   run-swarm:
-    canonical_version: 1.2.0
+    canonical_version: 1.2.1
     runtime: shared
     repo_path: skills/run-swarm
-    last_updated: 2026-05-10
+    last_updated: 2026-05-11
     status: active
-    notes: Adds duplicate-aware issue filing, related-issue handling, gated label creation, manager summary queues, Tony-decision queues, and skill-owner routing while preserving personal GitHub and WRFCoin swarm behavior.
+    notes: Adds duplicate-aware issue filing, related-issue handling, gated label creation, manager summary queues, Tony-decision queues, skill-owner routing, and machine-readable JSON/CSV queue artifacts while preserving personal GitHub and WRFCoin swarm behavior.
 
 planned_skills:
   energy-management:

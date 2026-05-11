@@ -299,4 +299,12 @@ Date:
 - Raw artifacts preserved at:
 - Combined deliverables opened as PRs:
 - Remaining hidden-output risk:
+
+## Machine-Readable Artifacts
+
+- JSON issue landscape:
+- CSV issue landscape:
+- Queue counts:
+- Skill-owner counts:
+- Schema reference: `skills/run-swarm/references/queue-output-schema.md`
 ```
