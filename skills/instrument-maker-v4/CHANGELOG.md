@@ -1,5 +1,30 @@
 # Changelog — instrument-maker-v4
 
+## v4.4.3 — 2026-05-11
+
+Round 10 TwinGrid lane Dan-B added a small upgrade path for prototype repos
+that already have instrument packets but lack an empirical validation loop.
+
+### Added
+
+- `references/prototype-validation-loop-upgrade.md` — template for inventorying
+  existing packet artifacts, assigning L0-L4 readiness, adding
+  `validation-loop.csv`, recording measurements, and closing the next
+  iteration decision without redesigning the instrument.
+- `examples/khaen/prototype-validation-loop.csv` — concrete reusable CSV
+  example for connecting `family-spec.csv`, reed coupon measurements, DXF
+  checklist rows, and playable-prototype tuner results.
+- `tests/test_validation_loop_templates.py` — contract test that checks the
+  new template files and required safety/readiness language.
+
+### Acceptance criteria
+
+- [x] Existing packet repos get a template path instead of a full redesign.
+- [x] Readiness labels and next-action statuses are explicit.
+- [x] Measurements and iteration decisions are captured as structured CSV.
+- [x] CAD/DXF/design tables remain fabrication authority.
+- [x] Generated images are limited to concept/story support.
+
 ## v4.4.2 — 2026-05-11 (Round 10 TwinGrid)
 
 Round 10 tightened the reed/free-reed validation route for sheng, hulusi,
