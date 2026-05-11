@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.1.1 - 2026-05-11
+
+- Added read-only refresh mode guidance for reporting stale sprint counts,
+  open issue/PR pressure, ready/draft/overlap PR clusters, and candidate queue
+  changes without editing the sprint document.
+- Added queue-gating language so `risk:*`, welfare/safety review, privacy/IP,
+  and clarification labels remain manager/Tony decisions even when an item also
+  carries `sprint:implementation-pass`.
+
 ## 1.1.0 - 2026-05-10
 
 - Added personal GitHub sprint Queue guidance with `Label`, `Model`, and

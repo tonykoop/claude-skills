@@ -1,7 +1,7 @@
 ---
 name: sprint-update
-version: 1.1.0
-last-updated: 2026-05-10
+version: 1.1.1
+last-updated: 2026-05-11
 description: >-
   Update the current sprint document with new merge results, persona status changes,
   and velocity stats. Use when the user says "update sprint doc", "sprint update",
@@ -11,6 +11,31 @@ description: >-
 # Sprint Document Update
 
 Update the sprint doc at `docs/plans/<date>_Sprint.md` (or the most recent sprint file).
+
+## Read-only refresh mode
+
+Use read-only refresh mode when the manager needs current sprint telemetry,
+queue drift, or PR pressure before deciding whether to edit the sprint doc.
+This mode is especially useful after a swarm or TwinGrid audit has created
+issue/PR pressure that may make the existing sprint document stale.
+
+Read-only refresh mode must not edit sprint docs, issue labels, PRs, or memory
+files. It produces a manager report or patch plan with:
+
+- current open issue count and open PR count from GitHub;
+- open PR split into `ready`, `draft`, and `overlap/de-dup review` clusters;
+- stale sprint count comparison, naming the sprint doc snapshot versus live
+  GitHub state;
+- candidate queue changes, including items to promote, defer, remove as
+  duplicate/superseded, or route to Tony-decision;
+- personal GitHub routing metadata from live labels: `Label`, `Model`, `Batch`,
+  `risk:*`, `sprint:*`, and owner skill labels;
+- validation gaps when GitHub or artifact reads fail.
+
+Treat read-only output as manager input, not as an applied sprint update. If the
+report finds `risk:ip-privacy`, welfare/safety review labels, or
+`needs-clarification`, keep those items out of automatic implementation
+dispatch even when they also carry `sprint:implementation-pass`.
 
 ## Sprint doc structure
 
@@ -55,6 +80,9 @@ Column meanings:
 
 ## What to update
 
+If the user explicitly asked for read-only refresh, stop after the report or
+patch plan. Otherwise use the same checks below and then edit the sprint doc.
+
 ### 1. Move merged items: Active → Completed
 
 When a PR merges, move its row from the persona's **Active** table to **Completed**:
@@ -93,6 +121,9 @@ Update the top-line counts:
 - Total PRs merged
 - Open PRs (check all repos)
 - Approximate open issues
+
+For read-only refresh, report the current count beside the sprint doc's
+existing snapshot and call out material drift instead of editing the header.
 
 ### 4. Velocity table
 
@@ -142,6 +173,37 @@ If a row cannot be refreshed because GitHub is unavailable, leave the row in
 place, mark the validation gap in the sprint notes, and do not promote it ahead
 of freshly verified work.
 
+In read-only refresh, classify candidate queue changes instead of applying
+them:
+
+- **Promote candidate**: live issue/PR state is open, owner skill is clear,
+  risk labels are absent, and the smallest safe implementation boundary is
+  visible.
+- **Tony-decision / manager-review**: visibility, privacy, IP, welfare, safety,
+  priority, or creative direction must be chosen before dispatch.
+- **Defer or watch**: useful evidence exists, but the item is weakly scoped,
+  blocked, duplicate-looking, or better handled after another issue/PR.
+- **Remove candidate**: the issue is closed, superseded, exact duplicate, or
+  already satisfied by a recent merge.
+
+For personal GitHub sprint queues, preserve live label-derived routing fields
+in the report so a later applied update can keep `Label`, `Model`, and `Batch`
+columns intact.
+
+### PR pressure refresh
+
+When live PR pressure is part of the refresh, split PRs into:
+
+- **Ready**: non-draft PRs that can enter review or merge-manager flow.
+- **Draft**: active implementation work that should not be counted as
+  review-ready throughput.
+- **Overlap/de-dup review**: clusters with similar titles, branches, labels,
+  changed paths, or sprint themes that should be reviewed before launching more
+  related work.
+
+Do not assign new work into an overlap/de-dup cluster until the manager has
+decided whether to merge, close, combine, or retarget the existing PRs.
+
 ### 7. Archive follow-up
 
 During each sprint update, check whether recent sprint artifacts need durable
@@ -174,6 +236,9 @@ private handoff note when the artifact is useful but not public-safe.
 After updating counts and tables, generate **themed dispatch prompt patterns** for
 each persona that has queued work. These go into the sprint doc as a new subsection
 under each persona, right after their Queue table and before Completed:
+
+In read-only refresh mode, generate these as proposed prompt patterns in the
+manager report rather than writing them into the sprint doc.
 
 ```markdown
 ### Dispatch Prompts
