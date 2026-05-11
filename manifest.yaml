@@ -177,7 +177,7 @@ skills:
     repo_path: skills/run-swarm
     last_updated: 2026-05-10
     status: active
-    notes: Adds duplicate-aware issue filing, related-issue handling, and gated label creation while preserving personal GitHub and WRFCoin swarm behavior.
+    notes: Adds duplicate-aware issue filing, related-issue handling, gated label creation, manager summary queues, Tony-decision queues, and skill-owner routing while preserving personal GitHub and WRFCoin swarm behavior.
 
 planned_skills:
   energy-management:

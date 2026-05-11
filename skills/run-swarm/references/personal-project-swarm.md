@@ -194,6 +194,52 @@ Title patterns:
 [swarm/hygiene] Add LFS/provenance guardrails for <repo>
 ```
 
+## Manager Queue Definitions
+
+Use these queues to turn agent findings into sprint-ready work without mixing
+"can implement now" with "Tony needs to choose first."
+
+### Ready For Implementation Swarm
+
+Use for work that has:
+
+- a concrete repo or issue target
+- cited evidence from files, folders, artifacts, PRs, or existing issues
+- a recommended owner skill
+- a small PR/worktree boundary
+- no unresolved privacy, IP, priority, cost, or creative-direction decision
+
+Recommended owner skill examples:
+
+| Finding type | Route to | Implementation boundary |
+| --- | --- | --- |
+| Instrument validation gap | `instrument-maker-v4` | add measurement log, readiness label, or validation issue |
+| Shop packet missing BOM/cut list | `makerspace` | one build-packet PR or one scaffold issue |
+| Habitat welfare or geometry gap | `habitat-maker` | one habitat packet or validation checklist PR |
+| Raw idea cluster ready to promote | `idea-incubator` | one promoted issue with source refs |
+| Presentation asset prompt/provenance gap | `imagegen` | prompt sidecar or visual-brief issue |
+| Public/IP/privacy risk | `file-a-patent` or `idea-incubator` | private packet or public-readiness gate |
+| Skill metadata or package drift | `skills-meta` | metadata audit/fix PR |
+
+### Needs Tony Decision
+
+Use when the manager cannot safely infer the next action. Phrase each item as a
+decision question with a safe default:
+
+- Visibility: keep private, draft public issue, or publish now?
+- Audience: family/story, portfolio, technical build log, or shop packet?
+- Priority: next sprint, backlog, or archive?
+- Ownership: which repo should receive the issue or PR?
+- IP/privacy: prepare private patent/provenance packet before public work?
+- Creative direction: which concept, tone, image style, or narrative arc wins?
+
+### Archive Or Watch
+
+Use when a finding is real but not actionable yet because evidence is thin,
+it is an exact duplicate recorded as `duplicate-of #<number>`, it is a weak
+cluster that needs more evidence, or the output should stay as context rather
+than become a queue item.
+
 ## Manager Summary Template
 
 ```markdown
@@ -214,11 +260,31 @@ Date:
 4.
 5.
 
+## Ready For Implementation Swarm
+
+| Repo | Issue/draft | Owner skill | Boundary | Evidence |
+| --- | --- | --- | --- | --- |
+|  |  |  |  |  |
+
 ## Needs Tony Decision
 
-- 
+| Decision | Options | Safe default | Evidence |
+| --- | --- | --- | --- |
+|  |  |  |  |
 
-## Ready For Implementation Swarm
+## Skill-Owner Routing
+
+| Owner skill | Items | Notes |
+| --- | ---: | --- |
+| `instrument-maker-v4` |  |  |
+| `makerspace` |  |  |
+| `habitat-maker` |  |  |
+| `idea-incubator` |  |  |
+| `imagegen` |  |  |
+| `file-a-patent` |  |  |
+| `skills-meta` |  |  |
+
+## Archive Or Watch
 
 - 
 
