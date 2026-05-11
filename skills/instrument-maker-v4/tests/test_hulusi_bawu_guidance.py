@@ -101,7 +101,8 @@ class HulusiBawuGuidance(unittest.TestCase):
 
     def test_skill_stub_references_hulusi_bawu_guidance(self) -> None:
         skill = (SKILL_DIR / "SKILL.md").read_text(encoding="utf-8")
-        self.assertIn("version: 4.4.5", skill)
+        self.assertIn("name: instrument-maker-v4", skill)
+        self.assertIn("partial-skill: true", skill)
         self.assertIn("hulusi-bawu-stopped-pipe-free-reed.md", skill)
         self.assertIn("examples/hulusi-bawu", skill)
 
