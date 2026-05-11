@@ -32,7 +32,7 @@ downstream issue or PR body.
 ## Specialist pairings
 
 - `maker-engineering` for fabrication and shop ideas.
-- `instrument-maker-v4` for instrument concepts and acoustics.
+- `instrument-maker` for instrument concepts and acoustics.
 - `yoga-sequencer` for class and sequence ideas.
 - `skills-meta` for skill ecosystem or routing ideas.
 

@@ -54,13 +54,20 @@ MANIFEST="$REPO_ROOT/manifest.yaml"
 read_manifest() {
   python3 - "$MANIFEST" "$SKILL_NAME" <<'EOF'
 import sys, yaml
+from pathlib import Path
 manifest_path, skill_name = sys.argv[1], sys.argv[2]
 with open(manifest_path) as f:
     data = yaml.safe_load(f)
 active = data.get("skills", {}) or {}
 entry = active.get(skill_name)
 if not entry:
-    print(f"NOTFOUND", end="")
+    for key, candidate in active.items():
+        repo_path = candidate.get("repo_path") if candidate else None
+        if repo_path and Path(str(repo_path)).name == skill_name:
+            entry = candidate
+            break
+if not entry:
+    print("NOTFOUND", end="")
     sys.exit(1)
 version = entry.get("canonical_version", "")
 repo_path = entry.get("repo_path", "")

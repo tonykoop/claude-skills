@@ -63,7 +63,7 @@ class PrototypeValidationLoopTemplate(unittest.TestCase):
 
     def test_skill_stub_references_upgrade_template(self) -> None:
         skill = (SKILL_DIR / "SKILL.md").read_text(encoding="utf-8")
-        self.assertIn("version: 4.4.5", skill)
+        self.assertIn("version: 4.4.6", skill)
         self.assertIn("prototype-validation-loop-upgrade.md", skill)
         self.assertIn("prototype-validation-loop.csv", skill)
 

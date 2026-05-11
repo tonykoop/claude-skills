@@ -31,7 +31,7 @@ Looks for:
 - prototype readiness overstated as production readiness
 - missing measurement logs or L0-L4 readiness labels
 
-Route to: `instrument-maker-v4`, `sheet-music`, `maker-engineering`.
+Route to: `instrument-maker`, `sheet-music`, `maker-engineering`.
 
 ### 2. CAD, Fabrication, And Shop Packets
 
@@ -44,7 +44,7 @@ Looks for:
 - no workholding, kerf, tolerance, or material notes
 - build packets that cannot be handed to a shop or makerspace
 
-Route to: `makerspace`, `instrument-maker-v4`, `habitat-maker`.
+Route to: `makerspace`, `instrument-maker`, `habitat-maker`.
 
 ### 3. Documentation And Storytelling
 
@@ -58,7 +58,7 @@ Looks for:
 - unclear "why this matters" story
 - confusing split between A/B blind outputs and combined deliverables
 
-Route to: `idea-incubator`, `sprint-archive`, `instrument-maker-v4`.
+Route to: `idea-incubator`, `sprint-archive`, `instrument-maker`.
 
 ### 4. Visual Assets And Presentation
 
@@ -71,7 +71,7 @@ Looks for:
 - generated visuals that imply false dimensions
 - need for real photos, CAD renders, exploded views, or family-safe album design
 
-Route to: `imagegen`, `instrument-maker-v4`, `idea-incubator`.
+Route to: `imagegen`, `instrument-maker`, `idea-incubator`.
 
 ### 5. Repo Hygiene And Data Management
 
@@ -213,7 +213,7 @@ Recommended owner skill examples:
 
 | Finding type | Route to | Implementation boundary |
 | --- | --- | --- |
-| Instrument validation gap | `instrument-maker-v4` | add measurement log, readiness label, or validation issue |
+| Instrument validation gap | `instrument-maker` | add measurement log, readiness label, or validation issue |
 | Shop packet missing BOM/cut list | `makerspace` | one build-packet PR or one scaffold issue |
 | Habitat welfare or geometry gap | `habitat-maker` | one habitat packet or validation checklist PR |
 | Raw idea cluster ready to promote | `idea-incubator` | one promoted issue with source refs |
@@ -276,7 +276,7 @@ Date:
 
 | Owner skill | Items | Notes |
 | --- | ---: | --- |
-| `instrument-maker-v4` |  |  |
+| `instrument-maker` |  |  |
 | `makerspace` |  |  |
 | `habitat-maker` |  |  |
 | `idea-incubator` |  |  |

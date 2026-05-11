@@ -9,14 +9,14 @@ description: >-
   or garden support, generating parametric build packets across
   CNC/woodturning/laser/slip-cast/joinery methods, or pairing a habitat design
   with the makerspace skill for parent/grandparent + child builds. Pairs with
-  `makerspace` for shop-floor planning and follows `instrument-maker-v4`
+  `makerspace` for shop-floor planning and follows `instrument-maker`
   patterns for parametric documentation.
 ---
 
 # habitat-maker
 
 Generates parametric build packets for wildlife habitat and garden
-infrastructure. Companion skill to `instrument-maker-v4` (instruments) and
+infrastructure. Companion skill to `instrument-maker` (instruments) and
 `makerspace` (shop-floor fabrication).
 
 Status: **v0.4** — adds bat, native bee, observation-hive preflight, and
@@ -46,7 +46,7 @@ camera/electronics welfare gates on top of the first working canonical example
   separate personal/family project with its own design path. `habitat-maker`
   may provide only preflight design caveats for public-facing packets.
 - Jig and fixture design — route to `makerspace`.
-- Instrument acoustics — route to `instrument-maker-v4`.
+- Instrument acoustics — route to `instrument-maker`.
 - Reverse-engineering an existing habitat object from photos — start with
   `reverse-engineer`, then route here for the parametric packet.
 
@@ -62,7 +62,7 @@ camera/electronics welfare gates on top of the first working canonical example
     blanks as documented habitat)
 - Cross-references species/material/method data from the `habitat-reference`
   repo when populated.
-- Build packet output that mirrors instrument-maker-v4 conventions (BOM, cut
+- Build packet output that mirrors instrument-maker conventions (BOM, cut
   list, dimensioned drawings, validation, agent record).
 
 ## Build packet contract (v0.4)
@@ -199,7 +199,7 @@ artifacts are required only where the geometry actually drives a machine.
   compliance, or live bee handling for the `observation-hive` project —
   separate path. Keep public packets free of private family/media details.
 - Does not duplicate `makerspace` (jigs / fixtures / workholding) or
-  `instrument-maker-v4` (instrument acoustics) — route accordingly.
+  `instrument-maker` (instrument acoustics) — route accordingly.
 - Public-facing designs intended for makerspace family builds (parent or
   grandparent + child) should be friendly to that audience: chamfered
   edges, no exposed fasteners on the inside, removable cleanout, no specialty

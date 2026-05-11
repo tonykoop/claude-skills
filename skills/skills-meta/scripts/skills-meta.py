@@ -409,9 +409,6 @@ def entry_aliases(key: str, entry: dict[str, Any]) -> set[str]:
 
 
 def canonical_name(key: str, entry: dict[str, Any]) -> str:
-    repo_path = entry.get("repo_path")
-    if repo_path:
-        return Path(str(repo_path)).name
     return str(key)
 
 
@@ -912,7 +909,8 @@ def build_sync_plan(
     for key, raw in active.items():
         entry = raw or {}
         name = canonical_name(str(key), entry)
-        if skill_filter and name not in skill_filter and str(key) not in skill_filter:
+        aliases = entry_aliases(str(key), entry)
+        if skill_filter and name not in skill_filter and aliases.isdisjoint(skill_filter):
             continue
         repo_path = entry.get("repo_path")
         if not repo_path:
