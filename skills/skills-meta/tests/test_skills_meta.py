@@ -155,6 +155,140 @@ class SingleModeDeterminismTests(unittest.TestCase):
             self.assertIn(str(path), out, msg=out)
 
 
+class DeprecatedSkillCleanupTests(unittest.TestCase):
+    """Deprecated/obsolete manifest skills are cleanup candidates when
+    installed, but their absence should not count as manifest drift."""
+
+    def setUp(self) -> None:
+        self.tmp = Path(tempfile.mkdtemp(prefix="skills-meta-deprecated-"))
+        self.addCleanup(shutil.rmtree, self.tmp, ignore_errors=True)
+        self.repo = self.tmp / "repo"
+        (self.repo / "skills").mkdir(parents=True)
+
+    def _run_inventory(self) -> str:
+        os.chdir(self.repo)
+        argv = ["skills-meta.py", "--mode", "inventory", "--root", "skills"]
+        old_argv, sys.argv = sys.argv, argv
+        buf = io.StringIO()
+        try:
+            with redirect_stdout(buf):
+                rc = sm.main()
+        finally:
+            sys.argv = old_argv
+        self.assertEqual(rc, 0, msg=buf.getvalue())
+        return buf.getvalue()
+
+    def test_installed_deprecated_skill_is_flagged_for_cleanup(self) -> None:
+        write_manifest(
+            self.repo,
+            {
+                "old-skill": {
+                    "canonical_version": "1.0.0",
+                    "runtime": "shared",
+                    "repo_path": "skills/old-skill",
+                    "last_updated": "2026-05-01",
+                    "status": "deprecated",
+                }
+            },
+        )
+        write_skill(self.repo / "skills" / "old-skill", "old-skill", "1.0.0", "2026-05-01")
+
+        out = self._run_inventory()
+        self.assertIn("deprecated old-skill", out, msg=out)
+        self.assertIn("cleanup-candidate:deprecated", out, msg=out)
+
+    def test_missing_obsolete_skill_is_not_reported_missing_locally(self) -> None:
+        write_manifest(
+            self.repo,
+            {
+                "old-skill": {
+                    "canonical_version": "1.0.0",
+                    "runtime": "shared",
+                    "repo_path": "skills/old-skill",
+                    "last_updated": "2026-05-01",
+                    "status": "obsolete",
+                }
+            },
+        )
+
+        out = self._run_inventory()
+        self.assertNotIn("manifest missing locally", out, msg=out)
+        self.assertNotIn("- old-skill", out, msg=out)
+
+
+class DuplicateWarningTests(unittest.TestCase):
+    """Duplicate-heavy installs should explain the cleanup choice, not just
+    print remove lines without context."""
+
+    def setUp(self) -> None:
+        self.tmp = Path(tempfile.mkdtemp(prefix="skills-meta-dup-warning-"))
+        self.addCleanup(shutil.rmtree, self.tmp, ignore_errors=True)
+        self.repo = self.tmp / "repo"
+        (self.repo / "skills").mkdir(parents=True)
+        write_manifest(
+            self.repo,
+            {
+                "duped": {
+                    "canonical_version": "1.0.0",
+                    "runtime": "shared",
+                    "repo_path": "skills/duped",
+                    "last_updated": "2026-05-01",
+                    "status": "active",
+                }
+            },
+        )
+        write_skill(self.repo / "skills" / "duped", "duped", "1.0.0", "2026-05-01")
+        write_skill(self.tmp / "install" / "duped", "duped", "1.0.0", "2026-05-01")
+
+    def test_fix_duplicates_plan_explains_keeper_and_shadow_warning(self) -> None:
+        os.chdir(self.repo)
+        argv = [
+            "skills-meta.py",
+            "--mode",
+            "fix-duplicates",
+            "--root",
+            str(self.tmp / "install"),
+        ]
+        old_argv, sys.argv = sys.argv, argv
+        buf = io.StringIO()
+        try:
+            with redirect_stdout(buf):
+                rc = sm.main()
+        finally:
+            sys.argv = old_argv
+        out = buf.getvalue()
+        self.assertEqual(rc, 0, msg=out)
+        self.assertIn("kept because manifest repo_path", out, msg=out)
+        self.assertIn("duplicate skill copies can shadow", out, msg=out)
+
+
+class RootDedupeTests(unittest.TestCase):
+    """A CLI root that names the same directory as a repo-local default should
+    not manufacture duplicates just because one path is relative."""
+
+    def test_relative_and_absolute_roots_dedupe_to_one_spec(self) -> None:
+        os.chdir(SCRIPT.parents[3])
+        tmp = Path(tempfile.mkdtemp(prefix="skills-meta-roots-"))
+        self.addCleanup(shutil.rmtree, tmp, ignore_errors=True)
+        repo = tmp / "repo"
+        (repo / "skills").mkdir(parents=True)
+
+        old_cwd = Path.cwd()
+        try:
+            os.chdir(repo)
+            specs = sm.dedupe_specs(
+                [
+                    sm.RootSpec(Path("skills"), "default"),
+                    sm.RootSpec((repo / "skills"), "cli"),
+                ]
+            )
+        finally:
+            os.chdir(old_cwd)
+
+        self.assertEqual(len(specs), 1, msg=specs)
+        self.assertEqual(specs[0].origin, "cli", msg=specs)
+
+
 class SyncRuntimeDriftReportingTests(unittest.TestCase):
     """Sync drift reports should make cross-runtime direction obvious. A
     Claude-owned source copied into a Codex install is otherwise easy to
@@ -164,7 +298,12 @@ class SyncRuntimeDriftReportingTests(unittest.TestCase):
         self.tmp = Path(tempfile.mkdtemp(prefix="skills-meta-runtime-"))
         self.addCleanup(shutil.rmtree, self.tmp, ignore_errors=True)
         self.repo = self.tmp / "repo"
-        write_skill(self.repo / "claude" / "skills" / "merge-review", "merge-review", "1.0.0", "2026-05-01")
+        write_skill(
+            self.repo / "claude" / "skills" / "merge-review",
+            "merge-review",
+            "1.0.0",
+            "2026-05-01",
+        )
         write_manifest(
             self.repo,
             {
@@ -218,33 +357,6 @@ class SyncRuntimeDriftReportingTests(unittest.TestCase):
         self.assertEqual(plan[0]["state"], "drift", msg=out)
         self.assertEqual(plan[0]["source_runtime"], "claude", msg=out)
         self.assertEqual(plan[0]["target_runtime"], "codex", msg=out)
-
-
-class RootDedupeTests(unittest.TestCase):
-    """An explicit CLI root that points at a repo-local default should not
-    double-scan the same skill tree under different path spellings."""
-
-    def test_relative_default_and_absolute_cli_root_dedupe(self) -> None:
-        tmp = Path(tempfile.mkdtemp(prefix="skills-meta-roots-"))
-        self.addCleanup(shutil.rmtree, tmp, ignore_errors=True)
-        repo = tmp / "repo"
-        (repo / "skills").mkdir(parents=True)
-
-        old_cwd = Path.cwd()
-        try:
-            os.chdir(repo)
-            specs = sm.dedupe_specs(
-                [
-                    sm.RootSpec(Path("skills"), "default"),
-                    sm.RootSpec(repo / "skills", "cli"),
-                ]
-            )
-        finally:
-            os.chdir(old_cwd)
-
-        self.assertEqual(len(specs), 1, msg=specs)
-        self.assertEqual(specs[0].origin, "cli", msg=specs)
-
 
 class SyncSymlinkSafetyTests(unittest.TestCase):
     """The destructive review concern: never rmtree through a symlink, never

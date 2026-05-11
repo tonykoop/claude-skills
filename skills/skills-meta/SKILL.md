@@ -41,7 +41,8 @@ frontmatter.
 1. Inventory installed skills.
 2. Compare each skill's `version` and `last-updated` frontmatter to
    `manifest.yaml`.
-3. Report drift, missing metadata, unknown skills, and stale installs.
+3. Report drift, missing metadata, unknown skills, stale installs, and
+   manifest-marked deprecated/obsolete cleanup candidates.
 4. If asked for fixes, suggest a copy-pasteable frontmatter block only.
 
 Do not edit installed skills unless the user explicitly asks for a separate
@@ -72,15 +73,18 @@ Desktop installs are user-configured. Accept roots via `SKILLS_META_ROOTS` or
 - Drift check: surface only mismatches, missing skills, and stale dates.
 - Frontmatter-fix: print a suggested frontmatter block, never apply it.
 - Fix-duplicates: when a skill name appears at multiple roots, print a
-  keep/remove plan. Default is dry-run; pass `--apply` to confirm each
-  removal interactively. Never deletes without per-copy y/n.
+  keep/remove plan with the reason one copy was chosen as canonical. Default
+  is dry-run; pass `--apply` to confirm each removal interactively. Never
+  deletes without per-copy y/n.
 - Sync: copy manifest skills from their canonical `repo_path` into a
   `--target` install root. Useful for cross-runtime install — e.g.
   making Claude-side skills (`merge-review`, `sprint-update`) available
   to a Codex CLI agent. Dry-run by default; `--apply` copies missing
   skills; `--apply --force` also overwrites targets that have drifted
   from the canonical source. Without `--force`, drifted targets are
-  reported and skipped so local edits aren't clobbered silently.
+  reported and skipped so local edits aren't clobbered silently. Sync
+  output labels source and target runtimes so cross-runtime copies are
+  easy to audit.
 
 ## Sync workflow
 
@@ -135,12 +139,19 @@ and surfaced in inventory/drift output. Use `--mode fix-duplicates` to
 print a keep/remove plan, or `--mode fix-duplicates --apply` to walk
 each removal interactively.
 
+## Deprecated and obsolete skills
+
+Manifest entries with `status: deprecated`, `status: obsolete`, or
+`status: retired` are cleanup candidates. If an installed copy still exists,
+the helper reports it with a `cleanup-candidate:<status>` issue. If it is
+already absent, it is not counted as "manifest missing locally" drift.
+
 ## Output rules
 
 - Keep reports short and mobile-friendly.
 - One skill per line when possible.
 - Prefer status tags like `ok`, `missing`, `drift`, `planned`,
-  `unknown`, `duplicate`.
+  `unknown`, `duplicate`, `deprecated`, and `obsolete`.
 - Summarize counts first, then the top mismatches.
 - If there are many results, cap the initial list and say how many were
   omitted.

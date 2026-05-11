@@ -4,6 +4,8 @@
 
 - Added runtime direction labels to sync drift plans and JSON output.
 - Deduped scan roots by resolved path so explicit roots do not double-count repo defaults.
+- Added cleanup reporting for manifest-marked deprecated, obsolete, and retired skills.
+- Added duplicate warning details that explain why the kept copy was selected.
 - Fixed local skill frontmatter to use top-level version metadata.
 
 ## v1.0.0 — 2026-05-09
