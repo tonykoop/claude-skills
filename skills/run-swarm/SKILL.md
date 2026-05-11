@@ -69,7 +69,8 @@ You are a run-swarm audit agent. Work read-only unless the manager explicitly
 assigns implementation. Search existing issues before filing. Cite concrete
 files, folders, artifacts, PRs, or repo evidence. Prefer one high-quality issue
 over many vague ones. Return a summary table with repo, issue/draft, title,
-severity/readiness, and recommended owner skill.
+severity/readiness, Tony decision needed (if any), recommended owner skill, and
+the smallest safe implementation boundary.
 ```
 
 ## Outputs
@@ -79,8 +80,8 @@ Manager collects:
 - combined issue/report table
 - duplicate/overlap notes
 - top 5 next-sprint recommendations
-- repo or skill owners
-- "ready to implement now" versus "needs Tony decision" split
+- skill-owner routing for each actionable item
+- "ready to implement now" versus "needs Tony decision" split with reasons
 - archive/PR follow-through check so swarm artifacts do not stay hidden in
   `/tmp`
 
@@ -113,6 +114,27 @@ When labels are useful, first list the repo's labels and reuse existing names.
 Create missing standard swarm labels only when the manager has explicitly
 approved GitHub mutation for that repo. If label creation is not approved,
 include a `Suggested labels:` line in the draft or issue body instead.
+
+### Manager Queue Rules
+
+Classify every actionable item into exactly one queue:
+
+- **Ready for implementation swarm**: enough evidence, repo context, owner
+  skill, and acceptance shape exist for an agent to open an isolated worktree
+  and draft a PR without asking Tony for taste, privacy, priority, or scope
+  decisions.
+- **Needs Tony decision**: the next step depends on Tony choosing visibility,
+  audience, priority, cost, family/media privacy, IP/patent handling, or which
+  creative direction to pursue.
+- **Archive or watch**: useful finding, but not ready for issue or
+  implementation because evidence is thin, it is an exact duplicate, it is a
+  weak cluster that needs more evidence, or it should stay as background
+  context.
+
+For each ready item, name the owner skill and implementation boundary, such as
+`makerspace -> one build-packet PR in <repo>` or `skills-meta -> metadata drift
+audit issue only`. For each Tony-decision item, phrase the decision as a direct
+question and name the safe default if no decision is made.
 
 ## Guardrails
 
