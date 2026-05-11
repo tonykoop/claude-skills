@@ -108,7 +108,7 @@ Use this prompt shape when handing an existing repo to an agent:
 ```text
 Upgrade the existing instrument packet in <repo/path> with an empirical
 validation loop. Do not redesign the instrument. Inventory the existing packet,
-assign a readiness label, add validation-loop.csv using the instrument-maker-v4
+assign a readiness label, add validation-loop.csv using the instrument-maker
 template, keep CAD/DXF/design tables as fabrication authority, and record the
 next measurement or iteration decision for each critical acoustic and
 manufacturing check. Do not publish private family/media details.

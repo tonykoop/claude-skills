@@ -114,24 +114,33 @@ skills:
     status: active
     notes: Umbrella routing skill for physical making projects and specialist handoffs. v1.1 adds the human-carrying / floatable-object safety gate.
 
-  instrument-maker-v4:
-    canonical_version: 4.4.5
+  instrument-maker:
+    canonical_version: 4.4.6
     runtime: shared
     repo_path: skills/instrument-maker-v4
     last_updated: 2026-05-11
     status: partial
     notes: |
+      Official public invocation is instrument-maker. The repo path remains
+      skills/instrument-maker-v4 during the staged migration so active PRs and
+      installed aliases can continue to resolve instrument-maker-v4 while
+      user-facing routing moves to the unversioned name. The v4 label is
+      release lineage and implementation history, not the public skill name.
+
       Partial-skill repo entry hosting the v4.4 acoustic-law / reed
       boundary-condition enhancement (issue #73), v4.4.1 free-reed/khaen
       exploration template (issue #109), and v4.4.2 sheng/hulusi/chalumeau
       validation guardrail, plus the v4.4.3 prototype validation-loop upgrade
       template, v4.4.4 repo-first bare-bones packet readiness template, and
       v4.4.5 DXF/image-gen-2 visual authority guard. The full skill body
-      lives in the canonical install at ~/.claude/skills/instrument-maker-v4
-      and is not yet versioned in this repo. This entry contains the
+      lives in the canonical install at ~/.claude/skills/instrument-maker
+      and is not yet versioned in this repo. Existing
+      ~/.claude/skills/instrument-maker-v4 and
+      ~/.codex/skills/instrument-maker-v4 installs may remain as compatibility
+      aliases until runtime roots are migrated. This entry contains the
       additive references, validators, tests, fixtures, and examples that
-      v4.4/v4.4.1/v4.4.2/v4.4.3/v4.4.4/v4.4.5 introduce. See skills/instrument-maker-v4/SKILL.md
-      for the partial-skill contract.
+      v4.4/v4.4.1/v4.4.2/v4.4.3/v4.4.4/v4.4.5/v4.4.6 introduce. See
+      skills/instrument-maker-v4/SKILL.md for the partial-skill contract.
 
   yoga-sequencer:
     canonical_version: 1.1.0

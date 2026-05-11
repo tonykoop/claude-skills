@@ -1,4 +1,29 @@
-# Changelog — instrument-maker-v4
+# Changelog — instrument-maker
+
+## v4.4.6 — 2026-05-11 (invocation rename)
+
+Issue #157 makes `instrument-maker` the official public skill name and keeps
+`instrument-maker-v4` as a staged-migration alias / historical folder name.
+The v4 label now describes release lineage and implementation history, not the
+user-facing invocation.
+
+### Changed
+
+- Skill frontmatter `name` is now `instrument-maker`.
+- Manifest canonical key is now `instrument-maker`, while `repo_path` remains
+  `skills/instrument-maker-v4` to avoid breaking active PRs during migration.
+- Docs and routing language prefer `instrument-maker`; `instrument-maker-v4`
+  is documented as a deprecated compatibility alias.
+
+### Acceptance criteria
+
+- [x] Official skill frontmatter/name and user-facing invocation become
+      `instrument-maker`.
+- [x] Historical `instrument-maker-v4` repo path remains available for staged
+      migration and active PR compatibility.
+- [x] Docs explain that v4 is release lineage / implementation history.
+- [x] Packaging and skills-meta checks continue to resolve the historical
+      repo-path basename as an alias.
 
 ## v4.4.5 — 2026-05-11
 

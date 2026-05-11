@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate visual-output authority records for instrument-maker-v4 packets.
+"""Validate visual-output authority records for instrument-maker packets.
 
 This focused validator makes the DXF/CAD authority rule machine-checkable:
 image-gen-2 prompts and outputs may support concept/story/visual BOM work,
@@ -329,7 +329,7 @@ def load_register(path: Path) -> list[dict]:
 
 def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(
-        description=("Validate instrument-maker-v4 visual-output authority "
+        description=("Validate instrument-maker visual-output authority "
                      "records for DXF/CAD vs image-gen-2 boundaries."))
     p.add_argument("register", type=Path,
                    help="Path to visual-output-register.csv or .json")

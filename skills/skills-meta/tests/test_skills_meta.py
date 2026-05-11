@@ -216,6 +216,86 @@ class DeprecatedSkillCleanupTests(unittest.TestCase):
         self.assertNotIn("- old-skill", out, msg=out)
 
 
+class ManifestAliasNameTests(unittest.TestCase):
+    """A canonical manifest key may differ from the historical repo folder."""
+
+    def setUp(self) -> None:
+        self.tmp = Path(tempfile.mkdtemp(prefix="skills-meta-alias-name-"))
+        self.addCleanup(shutil.rmtree, self.tmp, ignore_errors=True)
+        self.repo = self.tmp / "repo"
+        (self.repo / "skills").mkdir(parents=True)
+
+    def test_manifest_key_is_canonical_even_when_repo_path_is_legacy_alias(self) -> None:
+        write_manifest(
+            self.repo,
+            {
+                "instrument-maker": {
+                    "canonical_version": "4.4.6",
+                    "runtime": "shared",
+                    "repo_path": "skills/instrument-maker-v4",
+                    "last_updated": "2026-05-11",
+                    "status": "partial",
+                }
+            },
+        )
+        write_skill(
+            self.repo / "skills" / "instrument-maker-v4",
+            "instrument-maker",
+            "4.4.6",
+            "2026-05-11",
+        )
+        (self.repo / "skills" / "instrument-maker-v4" / "CHANGELOG.md").write_text(
+            "# Changelog\n\n## v4.4.6\n\nRename public invocation.\n",
+            encoding="utf-8",
+        )
+
+        os.chdir(self.repo)
+        argv = ["skills-meta.py", "--mode", "inventory", "--root", "skills"]
+        old_argv, sys.argv = sys.argv, argv
+        buf = io.StringIO()
+        try:
+            with redirect_stdout(buf):
+                rc = sm.main()
+        finally:
+            sys.argv = old_argv
+
+        out = buf.getvalue()
+        self.assertEqual(rc, 0, msg=out)
+        self.assertIn("instrument-maker", out, msg=out)
+        self.assertNotIn("manifest missing locally", out, msg=out)
+        self.assertNotIn("- instrument-maker-v4", out, msg=out)
+
+    def test_sync_filter_accepts_legacy_repo_path_alias_but_targets_canonical_name(self) -> None:
+        manifest = {
+            "skills": {
+                "instrument-maker": {
+                    "canonical_version": "4.4.6",
+                    "runtime": "shared",
+                    "repo_path": "skills/instrument-maker-v4",
+                    "last_updated": "2026-05-11",
+                    "status": "partial",
+                }
+            }
+        }
+        write_skill(
+            self.repo / "skills" / "instrument-maker-v4",
+            "instrument-maker",
+            "4.4.6",
+            "2026-05-11",
+        )
+
+        plan = sm.build_sync_plan(
+            self.repo,
+            manifest,
+            self.tmp / ".codex" / "skills",
+            ["instrument-maker-v4"],
+        )
+
+        self.assertEqual(len(plan), 1, msg=plan)
+        self.assertEqual(plan[0].name, "instrument-maker")
+        self.assertEqual(plan[0].target.name, "instrument-maker")
+
+
 class DuplicateWarningTests(unittest.TestCase):
     """Duplicate-heavy installs should explain the cleanup choice, not just
     print remove lines without context."""
