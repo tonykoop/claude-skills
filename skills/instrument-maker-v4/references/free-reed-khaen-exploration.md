@@ -1,8 +1,9 @@
 # Free-Reed / Khaen Exploration Template
 
 Use this reference when a prompt asks for a khaen, khen, sheng, sho, bawu,
-hulusi, harmonica, melodica, accordion, or other mouth-organ / free-reed
-experiment. This is an exploration template, not a finished instrument packet.
+hulusi, harmonica, melodica, accordion, chalumeau-style reed pipe, or other
+mouth-organ / reed-coupled pipe experiment. This is an exploration template,
+not a finished instrument packet.
 
 ## First Build Rule
 
@@ -44,7 +45,7 @@ If the branch is unclear, choose `control-build`.
 - Reed source/provenance and coupon data named in the packet.
 - Pipe socket pitch map and windchest section drawing.
 - Notes explaining whether this is traditional side-branch khaen/sheng logic
-  or a compact closed-open control variant.
+  or a compact closed-open/stopped-pipe control variant.
 
 ## P0 Reed Coupon Worksheet
 
@@ -96,6 +97,7 @@ Use these values deliberately:
 | --- | --- | --- |
 | `side_branch_reed` | Traditional khaen/sheng-style pipe with reed in side wall and both pipe ends open. | Requires `end_condition=both_ends_open`; length checks as half-wave. |
 | `closed_open` | Compact control build with reed acting as the closed end and one open pipe end. | Requires one-end-closed condition; length checks as quarter-wave. |
+| `stopped_pipe` | Chalumeau-style beating-reed or reed-pipe layout where the reed/stopped end defines the closed boundary. | Requires one-end-closed condition; length checks as quarter-wave. |
 | `unknown_requires_measurement` | Donor reed, uncertain coupling, or no measured coupon yet. | Emits warning; do not produce final CAD claims. |
 
 Unsupported pipe-law names such as `quarter_wave_closed_open`,
@@ -117,10 +119,21 @@ it into a drawing checklist. A first mouth-organ DXF must identify:
 - Windchest section: air inlet, chamber volume assumption, reed plate seat,
   pressure path, and removable cover.
 - Side-branch/stopped-end note: a no-cut note naming whether each pipe is
-  `side_branch_reed`, `closed_open`, or `unknown_requires_measurement`.
+  `side_branch_reed`, `closed_open`, `stopped_pipe`, or
+  `unknown_requires_measurement`.
 
 The DXF may be a coupon or one-pipe test article. It should not imply a
 complete khaen/sheng family until the P0 coupon and single-pipe control pass.
+
+## Visual Authority Checkpoint
+
+If the packet includes concept images, visual BOM plates, build-log renders, or
+image-gen-2 prompts, add a lightweight visual-output register with each
+artifact's ID, role, authority, and source. The governing reed window, pipe
+length, socket map, stopped-end note, and side-branch layout must trace back to
+DXF, CAD, a design table, or a measured template. Generated images are
+`concept_only` or `reference_only`; they must not claim cut-ready geometry,
+dimensioned reed windows, hole locations, pipe lengths, or toolpaths.
 
 ## Ceramic Shell Versus Removable Acoustic Core
 

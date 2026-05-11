@@ -1,17 +1,18 @@
 ---
 name: instrument-maker-v4
-version: 4.4.1
-last-updated: 2026-05-10
+version: 4.4.2
+last-updated: 2026-05-11
 partial-skill: true
 canonical-install: ~/.claude/skills/instrument-maker-v4
 description: >-
   Design, document, validate, and ship musical instruments end-to-end —
   woodwinds, strings, drums, percussion, idiophones, hybrid acoustic/electric.
   This repository entry hosts the v4.4 acoustic-law/reed boundary-condition
-  enhancement (issue #73) plus the v4.4.1 free-reed/khaen exploration
-  template (issue #109). The full skill body lives in the canonical install
-  directory; this folder contains only the additive references, validator,
-  tests, fixtures, and examples that these changes introduce.
+  enhancement (issue #73), the v4.4.1 free-reed/khaen exploration
+  template (issue #109), and the v4.4.2 sheng/hulusi/chalumeau validation
+  guardrail. The full skill body lives in the canonical install directory;
+  this folder contains only the additive references, validator, tests,
+  fixtures, and examples that these changes introduce.
 ---
 
 # instrument-maker-v4 — partial-skill entry (v4.4 acoustic-law enhancement)
@@ -25,7 +26,8 @@ What lives here is the **v4.4 acoustic-law / reed boundary-condition
 enhancement** that closes
 [issue #73](https://github.com/tonykoop/claude-skills/issues/73), plus the
 **v4.4.1 free-reed/khaen exploration template** for
-[issue #109](https://github.com/tonykoop/claude-skills/issues/109):
+[issue #109](https://github.com/tonykoop/claude-skills/issues/109), plus
+the **v4.4.2 sheng/hulusi/chalumeau validation guardrail**:
 
 ```
 skills/instrument-maker-v4/
@@ -38,7 +40,7 @@ skills/instrument-maker-v4/
 ├── scripts/
 │   └── validate_acoustic_law.py                ← new in v4.4; focused validator
 ├── tests/
-│   ├── test_validate_acoustic_law.py           ← 16 unit tests
+│   ├── test_validate_acoustic_law.py           ← 18 unit tests
 │   └── fixtures/family-spec/{pass,fail}/       ← 4 pass + 4 fail fixtures
 └── examples/
     └── khaen/
@@ -96,13 +98,18 @@ For free-reed / khaen work in the canonical skill, load
 build should be a reed coupon and single-pipe control unless measured coupon
 data already exists.
 
+If a reed/free-reed packet includes generated concept images, keep those
+images out of the fabrication authority chain. Record the governing DXF, CAD,
+design table, or measured template as the build authority, and mark generated
+images as concept/story/visual-BOM support only.
+
 ## Tests
 
 ```bash
 python3 -m unittest discover -s skills/instrument-maker-v4/tests -v
 ```
 
-All 16 tests should pass.
+All 18 tests should pass.
 
 ## Status
 
