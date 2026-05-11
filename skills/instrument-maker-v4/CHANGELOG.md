@@ -1,5 +1,25 @@
 # Changelog — instrument-maker-v4
 
+## v4.4.2 — 2026-05-11 (Round 10 TwinGrid)
+
+Round 10 tightened the reed/free-reed validation route for sheng, hulusi,
+and chalumeau-style prompts so agents do not treat visually plausible reed
+layouts as fabrication-authoritative until the acoustic law, end condition,
+and measurement status agree.
+
+### Added
+
+- Chalumeau-style `CHL` family IDs are now treated as wind/reed families by
+  `scripts/validate_acoustic_law.py`, so missing v4.4 acoustic-law columns
+  fail instead of being skipped.
+- Reed-family guidance now explicitly separates traditional sheng/hulusi
+  side-branch free-reed layouts, donor-reed measurement-required planning
+  packets, and chalumeau-style beating-reed/stopped-end layouts.
+- Unit fixtures cover a valid chalumeau-style control row and a missing-column
+  chalumeau row.
+- Partner Peek v2 adds a visual-authority checkpoint for reed/free-reed
+  packets that use generated concept images.
+
 ## v4.4.1 — 2026-05-10 (issue #109)
 
 Round 9 TwinGrid lane Alice recommended making free-reed/khaen work an

@@ -42,6 +42,11 @@ class PassFixtures(unittest.TestCase):
         rep = v.validate_rows(load_pass("khaen-quarter-wave-sister.csv"))
         self.assertEqual([f.code for f in rep.errors], [])
 
+    def test_chalumeau_style_stopped_pipe_passes(self):
+        rep = v.validate_rows(load_pass("chalumeau-stopped-pipe.csv"))
+        self.assertEqual([f.code for f in rep.errors], [])
+        self.assertEqual(rep.rows_checked, 2)
+
     def test_unknown_requires_measurement_warns_not_fails(self):
         rep = v.validate_rows(load_pass("khaen-needs-measurement.csv"))
         self.assertEqual([f.code for f in rep.errors], [])
@@ -61,6 +66,13 @@ class PassFixtures(unittest.TestCase):
 class FailFixtures(unittest.TestCase):
     def test_missing_acoustic_law_column_fails(self):
         rep = v.validate_rows(load_fail("khaen-missing-acoustic-law.csv"))
+        codes = {f.code for f in rep.errors}
+        self.assertIn("MISSING_COLUMN_acoustic_law", codes)
+        self.assertIn("MISSING_COLUMN_end_condition", codes)
+        self.assertIn("MISSING_COLUMN_dimension_provenance", codes)
+
+    def test_chalumeau_prefix_requires_acoustic_law_columns(self):
+        rep = v.validate_rows(load_fail("chalumeau-missing-acoustic-law.csv"))
         codes = {f.code for f in rep.errors}
         self.assertIn("MISSING_COLUMN_acoustic_law", codes)
         self.assertIn("MISSING_COLUMN_end_condition", codes)
