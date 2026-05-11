@@ -15,5 +15,7 @@ interface:
     - "review the cluster"
     - "yearbook rollout"
     - "design book rollout"
+    - "private media pilot"
+    - "photo album pilot"
 policy:
   allow_implicit_invocation: true

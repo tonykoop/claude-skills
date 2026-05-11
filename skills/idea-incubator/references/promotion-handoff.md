@@ -81,6 +81,10 @@ promotions require a named pilot edition, people/consent gate, proof-review
 owner, source/evidence ledger, image-gen derivative labels, and reviewed
 export path before any public sharing or print/vendor package.
 
+For photo-album or private-media pilot work, also use
+[`photo-album-private-media-pilot.md`](photo-album-private-media-pilot.md) to
+lock the source-photo policy before any media import or imagegen concept work.
+
 1. Does the target repo already exist? If yes, does it have `.gitattributes`
    with LFS rules covering the expected extensions?
 2. Are large files staged already, or do they still need copying from a
@@ -156,6 +160,8 @@ optimizes for visual polish:
 - EXIF/GPS strip-or-quarantine policy for derived review artifacts;
 - source/evidence ledger that separates observed archive facts from captions,
   memories, and inferred story claims.
+- source-photo rules that keep originals external by default, require LFS
+  before selected original imports, and keep shareable exports derivative-only.
 
 ## Yearbook / design-book rollout promotions
 
