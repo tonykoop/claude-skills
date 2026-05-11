@@ -129,12 +129,61 @@ Route to: `idea-incubator`, `imagegen`, `sprint-archive`.
 
 Before filing:
 
-1. Search existing issues in the target repo.
+1. Search existing open and closed issues in the target repo.
 2. Prefer `Refs` source issues when the source idea must stay open.
 3. Use labels when available: `instrument`, `maker`, `capture`, `promote`,
    `skills`, `workflow`, `public-ready`, `privacy`, `documentation`.
 4. Include concrete evidence: file path, archive folder, PR, or artifact.
 5. Keep private/family details out of public issue bodies.
+
+### Duplicate And Related-Issue Handling
+
+Use a two-pass search before any `gh issue create` call:
+
+```text
+gh issue list --repo <owner>/<repo> --state all --search "<candidate title keywords>"
+gh issue list --repo <owner>/<repo> --state all --label <likely-label>
+```
+
+Exact duplicates have the same repo, same requested change, and same primary
+evidence. Do not create a new issue. Add the new source path or swarm finding
+as a comment on the existing issue when useful, then record the candidate as
+`duplicate-of #<number>` in the manager summary's archive/watch area.
+
+Related issues share a theme but have a different deliverable, acceptance test,
+or owner skill. File the new issue if it is independently actionable. Include
+`Refs #<number>` links under an `Existing context` section and avoid using
+`Closes` unless the new issue is intentionally replacing the old one.
+
+When several findings are related and none is strong alone, file one scaffold
+issue with a checklist, or keep them in the manager report as a draft cluster
+for Tony to split later.
+
+### Label Creation
+
+Reuse labels that already exist in the repo. If the repo is missing standard
+swarm labels, create them only after the manager has approved issue-filing
+mutation for that repo:
+
+```text
+gh label create swarm --repo <owner>/<repo> --description "Run-swarm generated or triaged finding" --color 5319e7
+gh label create duplicate-candidate --repo <owner>/<repo> --description "Potential overlap with an existing issue" --color e11d21
+gh label create privacy --repo <owner>/<repo> --description "Needs privacy or public-readiness review before publication" --color b60205
+```
+
+If label creation is not approved or fails, continue with issue drafts and add
+`Suggested labels:` in the body. Never block the audit summary solely because a
+label is missing.
+
+### Filing Queue Check
+
+Only file issues that are ready for implementation or safe backlog capture.
+Each filed issue needs a target repo, cited evidence, an owner skill, and the
+smallest safe PR or worktree boundary. If the next action depends on Tony
+choosing public visibility, family/media privacy, IP handling, priority, cost,
+or creative direction, put the finding in `Needs Tony Decision` instead of
+opening a public issue. Put exact duplicates, thin evidence, and low-confidence
+clusters in `Archive Or Watch`.
 
 Title patterns:
 
@@ -172,6 +221,12 @@ Date:
 ## Ready For Implementation Swarm
 
 - 
+
+## Archive Or Watch
+
+- Exact duplicates:
+- Thin-evidence clusters:
+- Background context:
 
 ## Archive / PR Follow-Through
 

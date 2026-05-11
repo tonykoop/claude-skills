@@ -1,8 +1,7 @@
 ---
 name: run-swarm
-metadata:
-  version: 1.1.0
-  last-updated: 2026-05-10
+version: 1.2.0
+last-updated: 2026-05-10
 description: >-
   Launch a read-only multi-agent audit swarm for either WRFCoin repos or
   Tony's personal GitHub projects. Use when the user says "/run-swarm",
@@ -84,6 +83,36 @@ Manager collects:
 - "ready to implement now" versus "needs Tony decision" split
 - archive/PR follow-through check so swarm artifacts do not stay hidden in
   `/tmp`
+
+## Issue Filing Mode
+
+Issue filing is a manager action after the read-only audit pass, not something
+individual audit agents do on their own. Before filing, search existing open
+and closed issues in the target repo using the candidate title keywords, repo
+names, artifact paths, and likely labels from the agent report.
+
+Classify each candidate before creating anything:
+
+- **Exact duplicate**: same repo, same actionable outcome, and same evidence.
+  Do not open a new issue. Add a concise comment or manager note on the
+  existing issue with any new evidence, then mark the swarm candidate as
+  `duplicate-of #<number>` and move it to the archive/watch queue.
+- **Related issue**: overlapping area but a distinct outcome, owner skill, or
+  acceptance test. Open a new issue only if it can stand alone, and include
+  `Refs #<number>` links instead of closing or replacing the related issue.
+- **Cluster**: several findings that need one scaffold issue. File one parent
+  issue with a short checklist and keep lower-confidence findings in the
+  manager report until Tony chooses the split.
+
+Ready-to-file items need concrete evidence, a target repo, an owner skill, and
+the smallest safe implementation boundary. Items that depend on visibility,
+family/media privacy, IP handling, priority, or creative direction stay in the
+Tony-decision queue instead of becoming public issues.
+
+When labels are useful, first list the repo's labels and reuse existing names.
+Create missing standard swarm labels only when the manager has explicitly
+approved GitHub mutation for that repo. If label creation is not approved,
+include a `Suggested labels:` line in the draft or issue body instead.
 
 ## Guardrails
 

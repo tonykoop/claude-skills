@@ -171,12 +171,12 @@ skills:
     notes: "Initial snapshot with catalog/auth-state preflight (issue 72) for honest sparse-catalog output."
 
   run-swarm:
-    canonical_version: 1.1.0
+    canonical_version: 1.2.0
     runtime: shared
     repo_path: skills/run-swarm
     last_updated: 2026-05-10
     status: active
-    notes: Adds personal GitHub project mode for instruments, woodworking, crafts, career highlights, and maker documentation while preserving WRFCoin swarm behavior.
+    notes: Adds duplicate-aware issue filing, related-issue handling, and gated label creation while preserving personal GitHub and WRFCoin swarm behavior.
 
 planned_skills:
   energy-management:
