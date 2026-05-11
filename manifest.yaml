@@ -66,7 +66,9 @@ skills:
     status: active
     notes: >-
       Adds personal GitHub sprint Queue columns for label, model, and batch
-      metadata while preserving themed dispatch grouping.
+      metadata while preserving themed dispatch grouping, plus stale issue
+      refresh and archive follow-up checks before regenerating sprint dispatch
+      prompts.
 
   disk-cleanup:
     canonical_version: 1.0.0
