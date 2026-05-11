@@ -1,6 +1,6 @@
 ---
 name: instrument-maker-v4
-version: 4.4.4
+version: 4.4.5
 last-updated: 2026-05-11
 partial-skill: true
 canonical-install: ~/.claude/skills/instrument-maker-v4
@@ -11,10 +11,11 @@ description: >-
   enhancement (issue #73), the v4.4.1 free-reed/khaen exploration
   template (issue #109), and the v4.4.2 sheng/hulusi/chalumeau validation
   guardrail, plus the v4.4.3 prototype validation-loop upgrade template and
-  v4.4.4 repo-first bare-bones packet readiness template. The full skill body
-  lives in the canonical install directory; this folder contains only the
-  additive references, validator, tests, fixtures, and examples that these
-  changes introduce.
+  v4.4.4 repo-first bare-bones packet readiness template and v4.4.5
+  DXF/image-gen-2 visual authority guard. The full skill body lives in the
+  canonical install directory; this folder contains only the additive
+  references, validators, tests, fixtures, and examples that these changes
+  introduce.
 ---
 
 # instrument-maker-v4 - partial-skill entry (v4.4 readiness additions)
@@ -32,7 +33,8 @@ enhancement** that closes
 the **v4.4.2 sheng/hulusi/chalumeau validation guardrail**, plus a
 **v4.4.3 prototype validation-loop upgrade template** for repos that already
 have instrument packets but still need empirical measurement and iteration
-tracking, plus a **v4.4.4 repo-first bare-bones packet readiness template**:
+tracking, plus a **v4.4.4 repo-first bare-bones packet readiness template**,
+plus a **v4.4.5 DXF/image-gen-2 visual authority guard**:
 
 ```
 skills/instrument-maker-v4/
@@ -40,17 +42,21 @@ skills/instrument-maker-v4/
 ├── CHANGELOG.md                                ← v4.4+ entries only
 ├── references/
 │   ├── acoustic-models.md                      ← canonical + new "Reed boundary-condition decision tree" section
+│   ├── drawing-and-visual-authority.md         ← DXF/CAD authority + image-gen-2 guard
 │   ├── family-aware-design.md                  ← canonical + new family-spec.csv schema (acoustic_law, end_condition, dimension_provenance)
 │   ├── free-reed-khaen-exploration.md          ← P0 reed coupon / control-build template
 │   ├── prototype-validation-loop-upgrade.md     ← upgrade path for existing prototype packets
 │   └── repo-first-bare-bones-packet.md         ← minimal public repo-first packet contract
 ├── scripts/
-│   └── validate_acoustic_law.py                ← new in v4.4; focused validator
+│   ├── validate_acoustic_law.py                ← new in v4.4; focused validator
+│   └── validate_visual_authority.py            ← new in v4.4.5; DXF/image-gen-2 authority validator
 ├── tests/
 │   ├── test_validate_acoustic_law.py           ← acoustic-law validator tests
+│   ├── test_validate_visual_authority.py       ← visual authority unit tests
 │   ├── test_validation_loop_templates.py       ← validation-loop template contract tests
 │   ├── test_repo_first_bare_bones_template.py  ← readiness template contract tests
-│   └── fixtures/family-spec/{pass,fail}/       ← 4 pass + 4 fail fixtures
+│   ├── fixtures/family-spec/{pass,fail}/       ← 4 pass + 4 fail fixtures
+│   └── fixtures/visual-authority/{pass,fail}/  ← DXF/image-gen-2 authority fixtures
 └── examples/
     ├── repo-first-bare-bones-packet/           ← readiness:bare-bones starter packet
     └── khaen/
@@ -81,6 +87,8 @@ cp -r skills/instrument-maker-v4/references/*.md \
       ~/.claude/skills/instrument-maker-v4/references/
 cp     skills/instrument-maker-v4/scripts/validate_acoustic_law.py \
       ~/.claude/skills/instrument-maker-v4/scripts/
+cp     skills/instrument-maker-v4/scripts/validate_visual_authority.py \
+      ~/.claude/skills/instrument-maker-v4/scripts/
 cp -r skills/instrument-maker-v4/examples/khaen \
       ~/.claude/skills/instrument-maker-v4/examples/
 cp -r skills/instrument-maker-v4/examples/repo-first-bare-bones-packet \
@@ -98,6 +106,21 @@ Exit codes: `0` (clean), `1` (validation error), `2` (bad invocation).
 
 Add `--strict` to also fail on warnings and `--json` to emit a
 machine-readable findings document.
+
+## How to validate visual-output authority
+
+When a packet includes DXF/CAD drawings, SVG/PDF previews, or image-gen-2
+prompts/outputs, create a `visual-output-register.csv` or JSON equivalent and
+run:
+
+```bash
+python3 skills/instrument-maker-v4/scripts/validate_visual_authority.py \
+    path/to/your/visual-output-register.csv
+```
+
+The validator fails if generated image artifacts are marked as fabrication
+authority or if a build/cut visual packet has no DXF/CAD/design-table authority
+record. See `references/drawing-and-visual-authority.md`.
 
 ## Trigger phrases
 
@@ -126,6 +149,12 @@ For `readiness:bare-bones` or "make the first repo packet" work, load
 `references/repo-first-bare-bones-packet.md` before drafting a full packet.
 Use the example folder as a root-level starter and keep CAD/DXF authority as
 future work unless measured geometry already exists.
+
+For concept visuals, image-gen-2 prompts, visual BOM images, or build-log
+imagery, load `references/drawing-and-visual-authority.md` before generating
+or accepting visuals. Generated images can support communication, but DXF/CAD,
+design tables, measured templates, or reviewed drawings remain fabrication
+authority.
 
 ## Tests
 

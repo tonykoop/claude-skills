@@ -81,7 +81,7 @@ class RepoFirstBareBonesTemplate(unittest.TestCase):
 
     def test_skill_stub_references_bare_bones_template(self) -> None:
         skill = (SKILL_DIR / "SKILL.md").read_text(encoding="utf-8")
-        self.assertIn("version: 4.4.4", skill)
+        self.assertIn("version: 4.4.5", skill)
         self.assertIn("repo-first-bare-bones-packet.md", skill)
         self.assertIn("repo-first-bare-bones-packet/", skill)
         self.assertIn("test_repo_first_bare_bones_template.py", skill)
