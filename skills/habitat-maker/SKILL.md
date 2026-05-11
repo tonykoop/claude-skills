@@ -32,6 +32,7 @@ camera/electronics welfare gates on top of the first working canonical example
 - "review bat house welfare gates" / "bat box with camera"
 - "native bee house" / "solitary bee hotel" / "tube bee house"
 - "observation hive design review" / "camera in an observation hive"
+- "observation hive design preflight" / "camera in a habitat"
 - "build packet for a [species] birdhouse / bee house / bird feeder"
 - "laser-cut [habitat] for [species]" / "CNC [habitat]"
 - "parametric birdhouse design" / "regenerate the SVG for the birdhouse"
@@ -91,6 +92,10 @@ Cavity-habitat and generator-backed packets **must** ship:
      recommended on tree mounts.
    - **Cleanout access.** Hand-tool removable side, floor, or roof for
      annual cleaning.
+   Use [`references/welfare-gate-schema.md`](references/welfare-gate-schema.md)
+   as the shared record shape when copying these checks into
+   `geometry_params.json`, generated checklists, or future
+   `habitat-reference` sourced packets.
 4. **Cut list and BOM** — derived from the parameter file, dimensioned in
    the file's declared units, including kerf-test coupon.
 5. **Safety notes** — laser/CNC operation, glue/finish, child-build
@@ -103,6 +108,14 @@ Bird-bath and other non-cavity, non-generator-backed water-habitat packets do
 not need `geometry_params.json` unless the output includes machine-driven
 geometry. For those packets, the maintenance-first reference contract below is
 the source of truth.
+
+Bat house, native bee house, observation-hive preflight, and
+camera/electronics prompts use the same welfare-gate schema. Start from the
+concrete gate families in
+[`references/welfare-gate-schema.md`](references/welfare-gate-schema.md) and
+turn the relevant ids into pass/fail records before issuing a public packet.
+Generated images may support concept/story work, but CAD/DXF/JSON or
+dimensioned drawings remain the fabrication authority.
 
 ## Bird-bath and balcony packet contract
 
@@ -206,6 +219,9 @@ artifacts are required only where the geometry actually drives a machine.
 - [`references/bat-bee-observation-hive-welfare.md`](references/bat-bee-observation-hive-welfare.md)
   — normative reference for bat house, native bee house, observation-hive
   preflight, and camera/electronics welfare gates.
+- [`references/welfare-gate-schema.md`](references/welfare-gate-schema.md)
+  — shared pass/fail welfare-gate schema for packet-local records and the
+  future `habitat-reference` import workflow.
 
 ## Open work (v0.4 → v1.0)
 
@@ -220,7 +236,8 @@ artifacts are required only where the geometry actually drives a machine.
   gates and a bill of materials for a low ballasted removable basin.
 - Species reference loader (pulls gate records and species data from the
   `habitat-reference` repo when that repo is seeded, preserving packet-local
-  welfare gates if the shared reference is incomplete).
+  welfare gates if the shared reference is incomplete and preserving the shared
+  welfare-gate schema for imported records).
 - Method-specific reference docs under `references/` for CNC entrance-hole
   jigs, slip-cast mold prep, and lathe profiles for bird baths.
 - Validation generator: emit the validation-checklist.md programmatically
