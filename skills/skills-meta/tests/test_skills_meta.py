@@ -78,6 +78,50 @@ def write_manifest(repo_root: Path, skills: dict[str, dict]) -> None:
     (repo_root / "manifest.yaml").write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
+class VersionFlagTests(unittest.TestCase):
+    """The sprint-manager preflight probe needs a direct helper fallback when
+    no `skills-meta` PATH shim exists."""
+
+    def setUp(self) -> None:
+        self.tmp = Path(tempfile.mkdtemp(prefix="skills-meta-version-"))
+        self.addCleanup(shutil.rmtree, self.tmp, ignore_errors=True)
+
+    def _run_version(self, *extra: str) -> tuple[int, str]:
+        os.chdir(self.tmp)
+        argv = ["skills-meta.py", "--version", *extra]
+        old_argv, sys.argv = sys.argv, argv
+        buf = io.StringIO()
+        try:
+            with redirect_stdout(buf):
+                rc = sm.main()
+        finally:
+            sys.argv = old_argv
+        return rc, buf.getvalue().strip()
+
+    def test_version_works_without_manifest_or_cwd_assumptions(self) -> None:
+        rc, out = self._run_version()
+        self.assertEqual(rc, 0, msg=out)
+        self.assertEqual(out, "skills-meta 1.0.0")
+
+    def test_version_prefers_manifest_canonical_version_when_available(self) -> None:
+        manifest = self.tmp / "manifest.yaml"
+        write_manifest(
+            self.tmp,
+            {
+                "skills-meta": {
+                    "canonical_version": "9.8.7",
+                    "runtime": "portable",
+                    "repo_path": "skills/skills-meta",
+                    "last_updated": "2026-05-11",
+                    "status": "active",
+                }
+            },
+        )
+        rc, out = self._run_version("--manifest", str(manifest))
+        self.assertEqual(rc, 0, msg=out)
+        self.assertEqual(out, "skills-meta 9.8.7 (installed 1.0.0)")
+
+
 class SingleModeDeterminismTests(unittest.TestCase):
     """A skill name appearing at four roots must produce stable output and
     surface every copy — silent records[0] picking was the review's

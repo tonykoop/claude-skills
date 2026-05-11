@@ -73,6 +73,11 @@ class SkillRecord:
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Audit installed skills against manifest.yaml.")
     parser.add_argument(
+        "--version",
+        action="store_true",
+        help="Print the skills-meta version and exit. Uses manifest canonical_version when available.",
+    )
+    parser.add_argument(
         "--mode",
         choices=("inventory", "single", "drift", "fix", "fix-duplicates", "sync"),
         default="inventory",
@@ -269,6 +274,27 @@ def read_frontmatter(path: Path) -> dict[str, Any]:
     raw = text[4:end]
     data = parse_yaml(raw)
     return data or {}
+
+
+def installed_skill_frontmatter() -> dict[str, Any]:
+    """Read this helper's bundled SKILL.md without depending on cwd."""
+    skill_md = Path(__file__).resolve().parents[1] / "SKILL.md"
+    try:
+        return read_frontmatter(skill_md)
+    except OSError:
+        return {}
+
+
+def render_version(manifest: dict[str, Any]) -> str:
+    """Render a stable version probe for sprint-manager preflight checks."""
+    frontmatter = installed_skill_frontmatter()
+    name = str(frontmatter.get("name") or "skills-meta")
+    installed = str(frontmatter.get("version") or "unknown")
+    manifest_entry = (manifest.get("skills", {}) or {}).get(name) or {}
+    canonical = manifest_entry.get("canonical_version")
+    if canonical:
+        return f"{name} {canonical} (installed {installed})"
+    return f"{name} {installed}"
 
 
 def collect_root_specs(repo_root: Path, manifest_path: Path, explicit_roots: list[str]) -> list[RootSpec]:
@@ -1227,6 +1253,10 @@ def main() -> int:
     repo_root = Path.cwd()
     manifest_path = (repo_root / args.manifest).resolve()
     manifest = load_yaml(manifest_path)
+
+    if args.version:
+        print(render_version(manifest))
+        return 0
 
     if args.mode == "sync":
         if not args.target:

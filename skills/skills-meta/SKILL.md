@@ -68,6 +68,10 @@ Desktop installs are user-configured. Accept roots via `SKILLS_META_ROOTS` or
 
 ## Modes
 
+- Version probe: `python scripts/skills-meta.py --version` prints the
+  helper's installed version, or the manifest canonical version when a
+  manifest is available. This is the fallback when a runtime does not install
+  a `skills-meta` shell shim on `PATH`.
 - Inventory: list every discovered skill with version, last-updated,
   runtime/root, and manifest status.
 - Single-skill check: focus on one named skill and show installed vs
