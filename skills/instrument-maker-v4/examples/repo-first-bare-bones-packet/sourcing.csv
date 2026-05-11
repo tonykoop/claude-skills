@@ -1,0 +1,5 @@
+source_id,item_id,source_name,source_type,url_or_search,source_status,verified_date,lead_time,notes
+S001,B001,TBD supplier,supplier,TBD,supplier_spec_unverified,TBD,TBD,Do not claim current availability until verified.
+S002,B002,TBD donor or vendor,donor_or_supplier,TBD,supplier_spec_unverified,TBD,TBD,Record whether data is measured, supplier-provided, or inferred.
+S003,B003,TBD hardware supplier,supplier,TBD,substitution_candidate,TBD,TBD,Confirm dimensions and corrosion/finish compatibility.
+S004,B004,TBD finish supplier,supplier,TBD,needs_supplier_quote,TBD,TBD,Check safety data and material compatibility before purchase.
