@@ -1,5 +1,36 @@
 # Changelog — instrument-maker-v4
 
+## v4.4.4 — 2026-05-11 (readiness:bare-bones)
+
+Round 10 TwinGrid lane Dan-A adds a repo-first bare-bones packet template for
+instrument ideas that need a public GitHub starting point before a full
+build packet, CAD/DXF package, or measured acoustic authority exists.
+
+### Added
+
+- `references/repo-first-bare-bones-packet.md` — routing and acceptance
+  contract for minimal standalone instrument repos. It defines when to use
+  the template, the required first files, and the claims a bare-bones packet
+  must avoid.
+- `examples/repo-first-bare-bones-packet/` — root-level starter files for a
+  first packet: README, design stub, BOM, sourcing, cut list, validation,
+  risks, drawing brief, and photo shotlist.
+- `tests/test_repo_first_bare_bones_template.py` — contract tests for the
+  required reference language, example file set, CSV columns, and skill stub
+  pointers.
+
+### Acceptance criteria (readiness:bare-bones)
+
+- [x] Template/example exists in the canonical skill tree subset.
+- [x] Docs make the packet repo-first rather than `build-packets/...` nested.
+- [x] Bare-bones status is explicit; CAD/DXF remains future fabrication
+      authority unless measured geometry already exists.
+- [x] Private family/media details are excluded by default.
+- [x] Generated imagery is limited to concept/story support and cannot
+      replace CAD/DXF authority.
+- [x] Validation rows include `next_action` and `evidence` so first-pass
+      unknowns are actionable.
+
 ## v4.4.3 — 2026-05-11
 
 Round 10 TwinGrid lane Dan-B added a small upgrade path for prototype repos
