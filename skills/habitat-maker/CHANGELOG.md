@@ -8,6 +8,9 @@
 
 ## 0.4.0 — 2026-05-11
 
+- Tightened bat-house welfare guidance for clear drop space, venting/moisture,
+  no-mesh roost surfaces, discouraged tree mounts, climate/site records,
+  mount type, seasonal disturbance windows, and service calendars.
 - Added bat house, native bee house, observation-hive preflight, and
   camera/electronics welfare routing to `SKILL.md`.
 - Added `references/bat-bee-observation-hive-welfare.md` with pass/fail gates

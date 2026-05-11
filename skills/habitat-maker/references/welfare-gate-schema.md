@@ -72,7 +72,7 @@ and `source_ref`.
 
 | Applies to | Starter gate ids | Routing note |
 |---|---|---|
-| `bat_house` | `rough_roost_surfaces`, `chamber_spacing`, `heat_sun_posture`, `predator_exclusion`, `untreated_roost_interior`, `mounting_stability`, `seasonal_disturbance` | Prefer no internal camera for v1 unless heat, wiring, sealing, service, and disturbance burdens are accepted and gated. |
+| `bat_house` | `rough_roost_surfaces`, `chamber_spacing`, `heat_sun_posture`, `predator_exclusion`, `untreated_roost_interior`, `mounting_stability`, `clear_drop_space`, `venting_moisture`, `no_mesh`, `tree_mount_discouraged`, `seasonal_disturbance` | Prefer no internal camera for v1 unless heat, wiring, sealing, service, and disturbance burdens are accepted and gated. Keep `habitat-maker` as the first owner for welfare, site/climate, mount type, and service-calendar decisions; route downstream DXF/CNC, fastener, and workholding details to `makerspace` only after the welfare scaffold is stable. |
 | `native_bee_house` | `solitary_bee_scope`, `tunnel_size_match`, `smooth_tunnel_interior`, `dry_overhang`, `replaceable_media`, `parasite_mold_management`, `chemical_avoidance` | Route honeybee colony-management claims away from habitat-maker; keep this scope to solitary native nesting habitat. |
 | `observation_hive_preflight` | `qualified_keeper_review`, `secure_containment`, `ventilation_thermal_management`, `escape_proof_service_access`, `public_privacy_safety`, `route_out_colony_decisions` | habitat-maker may document preflight design caveats only; colony welfare, live handling, legal compliance, feeding, disease, and seasonal management route elsewhere. |
 | `camera_electronics` | `no_contact_protrusions`, `no_exposed_wires`, `low_heat_load`, `weatherproof_external_routing`, `service_without_disturbance`, `species_safe_sensing`, `fabrication_authority` | Electronics are welfare gates, not gadget notes. Generated images are concept-only; CAD/DXF/JSON or dimensioned drawings remain fabrication authority. |
@@ -102,6 +102,12 @@ Workflow:
 If `habitat-reference` is unavailable or missing a species record, keep using
 the habitat-maker baseline gates and cite packet-local references. Do not
 drop a gate merely because the shared reference repo is incomplete.
+
+For bat-house packets, preserve unknowns instead of inventing dimensions.
+The first welfare scaffold should record target bat group, climate/site
+preset, mount type, service calendar, seasonal disturbance window, roughening
+method, and whether camera/electronics gates are active before any
+machine-authoritative CAD/DXF or shop packet claim.
 
 ## Minimal JSON shape
 
