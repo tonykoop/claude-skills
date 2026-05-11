@@ -17,6 +17,8 @@ Required artifacts:
 
 - Add `drawing-brief.md` when another person needs to draft CAD, CAM, or a
   print.
+- Add `cad-index.csv` before the drawing brief when a repo contains recovered
+  CAD/drawings/layout files and the current fabrication authority is unclear.
 - Add `bom.csv` when the fixture or setup requires purchased stock or
   hardware.
 - Add `sourcing.csv` when vendor choice or lead time affects the decision.
@@ -32,6 +34,7 @@ distinct go/no-go gates, also produce:
 
 - `cut-list.csv`
 - `validation.csv`
+- `cad-index.csv` when recovered CAD/drawing/archive authority is a blocker
 - `process-schedule.csv` (rename to `bending-schedule.csv`,
   `welding-schedule.csv`, etc., as the work warrants)
 
@@ -42,7 +45,7 @@ consistent.
 
 Schemas, validation snippets, and a steam-bending gate table live in
 `references/structured-shop-artifacts.md`. Run the column check with
-`scripts/validate_packet.py --schemas-only <packet-dir>` before
+`scripts/validate_packet.py --schemas-only --packet <packet-dir>` before
 declaring the packet ready.
 
 ## Packet design rules

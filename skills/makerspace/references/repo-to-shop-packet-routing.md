@@ -35,6 +35,9 @@ Keep extraction narrow and fabrication-focused:
 - Materials, stock form, purchased hardware, adhesives, finishes, and
   fasteners.
 - Existing CAD, DXF, SVG, CAM, drawings, cut lists, BOMs, or sketches.
+- For recovered CAD archives: file path, file type, suspected role,
+  authority status, revision status, units/scale status, stale-file risk,
+  and next review action.
 - Tools or shop assumptions already stated in the repo.
 - Risk notes, failed attempts, calibration data, and open TODOs.
 
@@ -55,8 +58,9 @@ Start with the default repeatable shop packet:
 Add `drawing-brief.md` when the repo lacks authoritative shop drawings or
 when another person needs to produce CAD/CAM from the packet. Add `bom.csv`
 or `sourcing.csv` only when the repo contains or needs hardware and stock
-decisions. Add structured CSV artifacts under the thresholds in
-`structured-shop-artifacts.md`.
+decisions. Add `cad-index.csv` first when the repo has a recovered or mixed
+CAD archive and no reviewed fabrication revision. Add structured CSV
+artifacts under the thresholds in `structured-shop-artifacts.md`.
 
 ## Minimum readiness gates
 
@@ -72,11 +76,23 @@ When a repo-backed handoff needs explicit validation, add these checks to
 | REPO-SAFE | safety gate | machine, material, dust/fume/fire, stored-energy, and stop-work hazards are checked |
 | REPO-PUBLIC | publication scrub | private family/media/story details are excluded from public shop docs unless approved |
 
+For recovered CAD archives, add these before shop claims:
+
+| check_id | check_name | target |
+| --- | --- | --- |
+| CAD-IDX | CAD archive index | every CAD, drawing, export, layout, render, and sketch has a row in `cad-index.csv` or is explicitly excluded |
+| CAD-AUTH | authority status | each file is marked `current`, `stale`, `visual_only`, `requires_export`, or `unknown` |
+| CAD-UNITS | units and scale | every fabrication-authority candidate has units, scale, origin/datum, and at least one known dimension checked or marked `TBD` |
+| CAD-STALE | stale-file handling | duplicate, old/new, V1/V2, and unreviewed export files are blocked from shop use until reviewed |
+
 ## Handoff rules
 
 - Treat CAD, DXF, dimensioned drawings, and measured geometry as fabrication
   authority. Generated images can support concept/story work, but they do not
   replace CAD/DXF authority for shop operations.
+- For recovered archives, do not let file names or screenshots imply
+  authority. Build `cad-index.csv` first, then a drawing brief from the rows
+  that survive review.
 - Separate design intent from machine operations. Quote the required outcome
   first, then choose a shop route.
 - Preserve unknowns as `TBD` instead of inventing dimensions, machine limits,
