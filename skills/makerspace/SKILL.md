@@ -1,7 +1,7 @@
 ---
 name: makerspace
-version: 1.1.1
-last-updated: 2026-05-10
+version: 1.1.2
+last-updated: 2026-05-11
 description: >-
   Plan shop-floor fabrication for jigs, fixtures, workholding, molds, machine
   setups, and make/order/buy/borrow decisions. Use when the user asks to
@@ -26,16 +26,21 @@ description: >-
 - `workholding for this part`
 - `tolerance check` / `go/no-go`
 - `is this DXF ready for the shop?` / `CNC handoff checklist`
-- `turn this repo into a shop packet` / repo-backed woodworking,
-  furniture, jig, fixture, puzzle-box, or mechanism fabrication handoff
+- `turn this repo into a shop packet`
+- `fabrication handoff for my woodworking / mechanism project`
+- `is this CAD / DXF ready for the shop?`
+- repo-backed woodworking or mechanism builds such as `chessboard-table`,
+  `cryptex`, furniture, jigs, boxes, moving wooden assemblies, or shop-built
+  mechanical props when design intent already exists
 
 ## Do not trigger for
 
 - Instrument acoustics or voicing — route to `instrument-maker`.
 - Projects that are not yet scoped — route to `maker-engineering` or `idea-incubator`.
 - Reverse engineering of an existing object — route to `reverse-engineer` first, then return here when builder-ready.
-- Broad repository storytelling, portfolio polish, or private family/media
-  curation without fabrication decisions.
+- Broad repository storytelling, portfolio polish, or family/media curation
+  without fabrication decisions. Route those to the appropriate documentation
+  or idea skill.
 
 Treat `makerspace` as a fabrication specialist. Use it after the concept
 exists and the next question is practical: hold the part safely, choose a
@@ -95,6 +100,10 @@ Add optional artifacts only when the prompt calls for them:
 - `handoff_checklist.json`
   Add when reviewing DXF/CAD/CAM/fabrication-repo readiness for laser,
   CNC router, mill, plasma, or outside-shop handoff.
+- `validation.csv`
+  Add when repo handoff readiness needs explicit gates for revision
+  authority, missing dimensions, material fit, workholding, safety, or
+  privacy/publication scrub.
 - `bom.csv`
 - `sourcing.csv`
 - `risks.md`
@@ -109,6 +118,9 @@ also generate a parametric SVG sanity check. See
 
 Read `references/repeatable-shop-packets.md` before choosing the output
 shape.
+Read `references/repo-to-shop-packet-routing.md` when the user points at
+a woodworking/mechanism repo or asks for a fabrication handoff from an
+existing project.
 
 ## Gather the minimum inputs
 
@@ -144,6 +156,7 @@ needs a temporary profile instead of a canonical `spaces/<slug>/` entry.
    - make/order/buy/borrow decision support
    - safety and tolerance readiness check
    - repo-backed DXF/CAD/CAM fabrication handoff
+   - repo-to-shop-packet fabrication handoff
 4. Build the route.
    Produce a primary path and at least one fallback when the ideal machine,
    certification, or purchased component is unavailable.
@@ -154,6 +167,9 @@ needs a temporary profile instead of a canonical `spaces/<slug>/` entry.
 
 - `references/repeatable-shop-packets.md`
   Read first when choosing artifacts.
+- `references/repo-to-shop-packet-routing.md`
+  Read when turning an existing woodworking, furniture, jig, mechanism,
+  prop, or puzzle-box repo into a shop-floor packet.
 - `references/structured-shop-artifacts.md`
   Read when the packet has more than five distinct parts or more than
   five go/no-go gates, or when the work involves steam bending. Defines

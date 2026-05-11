@@ -1,10 +1,11 @@
 name: makerspace
-version: 1.1.1
+version: 1.1.2
 description: |
   Fabrication specialist for jigs, fixtures, workholding, machine-aware
   process plans, and make/order/buy/borrow decisions. Uses shop profiles
   or lightweight equipment templates to produce repeatable shop packets
-  with safety, tolerance, setup, and DXF/CNC handoff checks.
+  with safety, tolerance, setup, DXF/CNC handoff, and repo-backed fabrication
+  handoff checks.
 authors:
   - name: <your-name>
     url: https://github.com/<your-username>
@@ -23,6 +24,8 @@ keywords:
   - cnc
   - laser
   - dxf
+  - woodworking
+  - mechanism
   - handoff
   - mill
   - router
