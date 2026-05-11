@@ -47,6 +47,38 @@ media is involved, use the normal `imagegen` skill instead.
 8. Require watermarked review proofs and a signoff log before any
    print/vendor/export package.
 
+## Duplicate And Sibling Captures
+
+When two or more private-media captures describe the same album, family
+archive, media export, or imagegen-assisted pilot, preserve the issue trail
+instead of picking one and silently discarding the rest.
+
+- Pick one primary promotion anchor, usually the clearest or newest capture
+  with the best downstream target.
+- Include every overlapping private-media source as `Refs #N` in the
+  downstream issue. Do not use `Closes #N` for sibling captures until Tony
+  confirms whether they should remain as provenance, be comment-linked as
+  duplicates, or close after the scaffold lands.
+- Mark duplicate or sibling captures as supporting context in the readiness
+  matrix, not as separate repo promotions.
+- If a sibling issue is about public design-book chapters, instrument-repo
+  publishing, portfolio storytelling, or another non-private-media path, keep
+  it separate. Mention it only as adjacent context so privacy gates do not
+  absorb public showcase work.
+- If duplicate handling is unknown, make that a Tony decision in the handoff
+  instead of closing, replacing, or merging issues automatically.
+
+Example source block:
+
+```markdown
+Refs tonykoop/claude-skills#101
+Refs tonykoop/claude-skills#93
+
+Duplicate handling: Tony decision required. Treat #93 as supporting provenance
+for the #101 private-media pilot until Tony confirms whether to keep it open,
+comment-link it as duplicate context, or close it after the scaffold lands.
+```
+
 ## Source-Photo Rules
 
 - Treat original photos, scans, and videos as source evidence, not design
@@ -132,13 +164,17 @@ privacy boundary.
 ## Copy-Pasteable Pilot Handoff
 
 ```markdown
-Refs #<source-issue>
+Refs #<primary-source-issue>
+Refs #<sibling-source-issue-if-applicable>
 
 ## Summary
 
 Create a private photo-album / private-media pilot repo for one named batch,
 with source-photo rules, Git LFS tracking, privacy review, metadata handling,
 and imagegen derivative boundaries before any broad archive import.
+
+Duplicate handling: <Tony decision required / keep sibling open as provenance /
+comment-link sibling as duplicate context / close sibling after scaffold lands>
 
 ## Pilot batch
 

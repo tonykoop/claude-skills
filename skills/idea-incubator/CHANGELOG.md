@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.4.3 - 2026-05-11
+
+- Added duplicate/sibling capture handling for private photo-album and family
+  media pilots: preserve every source anchor with `Refs #N`, avoid auto-closing
+  duplicates until Tony confirms handling, and keep public design-book or
+  instrument-chapter issues on their own route.
+- Updated private-media handoff templates with explicit duplicate handling
+  fields.
+
 ## 1.4.2 - 2026-05-11
 
 - Added `references/private-media-decision-stub.md`, a compact owner checklist

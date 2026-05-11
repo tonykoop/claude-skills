@@ -246,6 +246,10 @@ privacy boundary.
 ```markdown
 Refs #<source-issue>
 
+Related private-media captures: <Refs #N links or none>
+Duplicate handling: <Tony decision required / keep sibling open as provenance /
+comment-link sibling as duplicate context / close sibling after scaffold lands>
+
 ## Summary
 
 Create a private family media archive scaffold for one curated pilot batch,

@@ -162,6 +162,9 @@ optimizes for visual polish:
   memories, and inferred story claims.
 - source-photo rules that keep originals external by default, require LFS
   before selected original imports, and keep shareable exports derivative-only.
+- duplicate or sibling private-media captures should remain visible with
+  `Refs #N` links until Tony confirms duplicate handling; public design-book,
+  instrument-chapter, or showcase issues stay on their own routing path.
 
 ## Yearbook / design-book rollout promotions
 

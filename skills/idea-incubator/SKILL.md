@@ -1,6 +1,6 @@
 ---
 name: idea-incubator
-version: 1.4.2
+version: 1.4.3
 last-updated: 2026-05-11
 description: >-
   Capture, classify, connect, review, and promote speculative ideas into a
@@ -79,6 +79,11 @@ Gemini CLI) hit them as reliably as Claude does.
    decision stub in
    [`references/private-media-decision-stub.md`](references/private-media-decision-stub.md)
    before any downstream repo scaffold, imagegen/layout work, or media import.
+   When multiple private-media captures
+   describe the same album, family archive, or imagegen-assisted pilot, preserve
+   every source anchor with `Refs #N`, do not auto-close duplicates until Tony
+   confirms handling, and keep public design-book or instrument-chapter issues
+   on their own routing path.
 6. **Promote-batch** - cluster-aware promotion. Use when multiple capture
    issues share a recovery, archive, intake-dump, or thematic root and should
    be triaged as a unit instead of one-by-one. See the dedicated section
@@ -161,7 +166,8 @@ When in doubt for a recovery/import cluster, default to `Refs`.
     gates.
 - [`references/photo-album-private-media-pilot.md`](references/photo-album-private-media-pilot.md)
   - Pilot workflow for private photo albums and media collections, including
-    source-photo, LFS, privacy, and imagegen derivative rules.
+    source-photo, LFS, privacy, duplicate/sibling capture handling, and imagegen
+    derivative rules.
 - [`references/private-media-decision-stub.md`](references/private-media-decision-stub.md)
   - Compact owner checklist for photo-album/private-media pilots before
     downstream repo scaffolds, imagegen/layout studies, or media imports.
