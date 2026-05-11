@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Resolved sync `repo_path` values relative to the manifest file instead of the caller's cwd.
 - Added runtime direction labels to sync drift plans and JSON output.
 - Deduped scan roots by resolved path so explicit roots do not double-count repo defaults.
 - Added cleanup reporting for manifest-marked deprecated, obsolete, and retired skills.

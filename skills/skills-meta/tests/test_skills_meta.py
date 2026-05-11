@@ -358,6 +358,64 @@ class SyncRuntimeDriftReportingTests(unittest.TestCase):
         self.assertEqual(plan[0]["source_runtime"], "claude", msg=out)
         self.assertEqual(plan[0]["target_runtime"], "codex", msg=out)
 
+
+class SyncManifestRelativePathTests(unittest.TestCase):
+    """Sync source lookup should follow the manifest location, not the shell cwd."""
+
+    def setUp(self) -> None:
+        self.tmp = Path(tempfile.mkdtemp(prefix="skills-meta-manifest-rel-"))
+        self.addCleanup(shutil.rmtree, self.tmp, ignore_errors=True)
+        self.repo = self.tmp / "repo"
+        write_skill(
+            self.repo / "skills" / "portable-skill",
+            "portable-skill",
+            "1.0.0",
+            "2026-05-01",
+        )
+        write_manifest(
+            self.repo,
+            {
+                "portable-skill": {
+                    "canonical_version": "1.0.0",
+                    "runtime": "portable",
+                    "repo_path": "skills/portable-skill",
+                    "last_updated": "2026-05-01",
+                    "status": "active",
+                }
+            },
+        )
+        self.target_root = self.tmp / "install"
+
+    def test_sync_manifest_repo_path_is_manifest_relative(self) -> None:
+        stable_cwd = SCRIPT.parents[3]
+        os.chdir(self.tmp)
+        argv = [
+            "skills-meta.py",
+            "--mode",
+            "sync",
+            "--manifest",
+            str(self.repo / "manifest.yaml"),
+            "--target",
+            str(self.target_root),
+            "--skill",
+            "portable-skill",
+        ]
+        old_argv, sys.argv = sys.argv, argv
+        buf = io.StringIO()
+        try:
+            with redirect_stdout(buf):
+                rc = sm.main()
+        finally:
+            sys.argv = old_argv
+            os.chdir(stable_cwd)
+
+        out = buf.getvalue()
+        self.assertEqual(rc, 0, msg=out)
+        self.assertIn("+ copy", out, msg=out)
+        self.assertIn(str(self.repo / "skills" / "portable-skill"), out, msg=out)
+        self.assertNotIn("source-missing", out, msg=out)
+
+
 class SyncSymlinkSafetyTests(unittest.TestCase):
     """The destructive review concern: never rmtree through a symlink, never
     flatten source-side symlinks, and refuse symlinked targets without

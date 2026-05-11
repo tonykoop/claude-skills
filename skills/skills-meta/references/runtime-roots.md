@@ -127,5 +127,10 @@ may legitimately live in more than one install root (a `merge-review`
 that drives both Claude Code and Codex CLI sprints, for example) and
 the helper has no way to guess which runtime you mean.
 
+Relative `repo_path` values are resolved from the directory that contains the
+manifest file, not from the shell's current working directory. This keeps
+absolute `--manifest` and parent-directory invocations from producing false
+`source-missing` sync plans.
+
 Sync plans include source and target runtime labels in text and JSON output so
 cross-runtime copies, such as Claude to Codex, are visible in the dry run.
