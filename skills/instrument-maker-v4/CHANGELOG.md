@@ -1,5 +1,40 @@
 # Changelog — instrument-maker-v4
 
+## v4.4.5 — 2026-05-11
+
+Round 10 TwinGrid lane Elsa-B focused on visual authority: generated images
+are useful for concept/story/visual BOM work, but DXF/CAD/design tables remain
+the source of fabrication truth.
+
+### Added
+
+- `references/drawing-and-visual-authority.md` — visual-output authority
+  guidance that defines DXF/CAD/design-table authority, derived previews, and
+  image-gen-2 concept-only boundaries.
+- `scripts/validate_visual_authority.py` — focused CSV/JSON validator for
+  `visual-output-register` records. It fails when image-gen-2 prompts/outputs
+  are marked as fabrication authority, use cut-ready roles, infer dimensions,
+  or when derived previews omit their source authority.
+- `tests/test_validate_visual_authority.py` and
+  `tests/fixtures/visual-authority/` — pass/fail fixtures covering DXF
+  authority with image-gen-2 concepts, JSON registers, generated-image
+  authority misuse, missing DXF/CAD authority, and missing derived-source
+  links.
+- Post-Peek note in the visual authority reference tying reed/free-reed
+  concept visuals back to `validate_acoustic_law.py`, measured coupon data,
+  and the governing DXF/CAD/design table.
+
+### Acceptance criteria
+
+- [x] Docs explicitly state that generated images may support concept/story
+      work but never replace CAD/DXF authority for fabrication.
+- [x] Validator rejects image-gen-2 artifacts recorded as cut-ready,
+      dimension-inferred, or fabrication-authoritative.
+- [x] Validator requires a fabrication-authority DXF/CAD/drawing/design-table
+      row when a visual register includes build/cut or derived-preview work.
+- [x] Existing acoustic-law tests continue to pass alongside the new visual
+      authority tests.
+
 ## v4.4.4 — 2026-05-11 (readiness:bare-bones)
 
 Round 10 TwinGrid lane Dan-A adds a repo-first bare-bones packet template for

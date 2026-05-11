@@ -1,0 +1,2 @@
+artifact_id,path,artifact_kind,role,authority,derived_from,dimension_claim,fabrication_required,notes
+IMG-001,images/generated/cut-layout.png,image_gen_2_output,cut_layout,fabrication,,image_inferred,true,Generated image incorrectly treated as cut-ready authority
