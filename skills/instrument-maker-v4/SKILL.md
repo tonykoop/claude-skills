@@ -84,6 +84,7 @@ skills/instrument-maker-v4/
 │   └── fixtures/visual-authority/{pass,fail}/  ← DXF/image-gen-2 authority fixtures
 └── examples/
     ├── repo-first-bare-bones-packet/           ← readiness:bare-bones starter packet
+    │   └── string-spike-fiddle/                ← erhu/huqin bare-bones guardrail variant
     ├── folded-drone/centerline-stations.csv    ← compact folded E2 proof-mule fixture
     └── khaen/
         ├── family-spec.csv                     ← combined traditional + sister + planning rows
@@ -196,6 +197,11 @@ For `readiness:bare-bones` or "make the first repo packet" work, load
 `references/repo-first-bare-bones-packet.md` before drafting a full packet.
 Use the example folder as a root-level starter and keep CAD/DXF authority as
 future work unless measured geometry already exists.
+
+For erhu/huqin or other string/spike-fiddle starters, use the
+`examples/repo-first-bare-bones-packet/string-spike-fiddle/` variant and keep
+qianjin-to-bridge speaking length, bridge/qianjin setup, resonator interface,
+and neck/spike alignment as measurement-required until measured or reviewed.
 
 For concept visuals, image-gen-2 prompts, visual BOM images, or build-log
 imagery, load `references/drawing-and-visual-authority.md` before generating

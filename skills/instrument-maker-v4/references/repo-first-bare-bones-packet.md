@@ -91,3 +91,29 @@ Move from bare-bones to a full packet only when:
 For wind or free-reed instruments, run `scripts/validate_acoustic_law.py` when
 `family-spec.csv` exists. Until then, mark the acoustic model as
 `measurement-required` in the design notes.
+
+## String / Spike-Fiddle Variant
+
+Use this variant for huqin-family starters such as erhu when the repo is still
+bare-bones and the next useful step is to expose setup and drawing unknowns.
+This is still a repo-first readiness packet, not a build-ready spike-fiddle
+plan.
+
+Required guardrails:
+
+- Treat active string length as the qianjin-to-bridge speaking span, not total
+  string length.
+- Record `380-420 mm` only as a first-pass setup range for erhu-like starters,
+  with status `measurement-required` or `assumption` until selected or
+  measured.
+- Require separate measurement gates for bridge placement, qianjin
+  placement/height, neck/spike alignment, peg/string path, resonator/body
+  envelope, and membrane/soundboard interface.
+- Treat an `artifact:dxf` routing label as a future authority preference, not
+  permission to invent cut-ready geometry.
+- Keep concept images, SVG previews, drawing PDFs, and render previews out of
+  the fabrication authority chain unless they are derived from named DXF/CAD,
+  design-table, measured-template, or reviewed-drawing authority.
+
+For a compact starter example, see
+`examples/repo-first-bare-bones-packet/string-spike-fiddle/`.

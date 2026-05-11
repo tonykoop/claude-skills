@@ -10,6 +10,7 @@ from pathlib import Path
 SKILL_DIR = Path(__file__).resolve().parents[1]
 REFERENCE = SKILL_DIR / "references" / "repo-first-bare-bones-packet.md"
 EXAMPLE_DIR = SKILL_DIR / "examples" / "repo-first-bare-bones-packet"
+STRING_SPIKE_DIR = EXAMPLE_DIR / "string-spike-fiddle"
 
 
 class RepoFirstBareBonesTemplate(unittest.TestCase):
@@ -84,7 +85,43 @@ class RepoFirstBareBonesTemplate(unittest.TestCase):
         self.assertIn("version: 4.4.7", skill)
         self.assertIn("repo-first-bare-bones-packet.md", skill)
         self.assertIn("repo-first-bare-bones-packet/", skill)
+        self.assertIn("string-spike-fiddle", skill)
         self.assertIn("test_repo_first_bare_bones_template.py", skill)
+
+    def test_string_spike_variant_names_guardrails(self) -> None:
+        text = REFERENCE.read_text(encoding="utf-8")
+        for required in (
+            "String / Spike-Fiddle Variant",
+            "qianjin-to-bridge speaking span",
+            "380-420 mm",
+            "measurement-required",
+            "membrane/soundboard interface",
+            "artifact:dxf",
+            "permission to invent cut-ready geometry",
+        ):
+            self.assertIn(required, text)
+
+    def test_string_spike_example_has_required_gates(self) -> None:
+        readme = (STRING_SPIKE_DIR / "README.md").read_text(encoding="utf-8")
+        self.assertIn("not build-ready", readme)
+        self.assertIn("qianjin-to-bridge", readme)
+        self.assertIn("380-420 mm", readme)
+
+        with (STRING_SPIKE_DIR / "readiness-gates.csv").open(
+            newline="", encoding="utf-8"
+        ) as f:
+            rows = list(csv.DictReader(f))
+
+        fields = {row["field"] for row in rows}
+        self.assertIn("speaking_length_qianjin_to_bridge_mm", fields)
+        self.assertIn("membrane_soundboard_interface", fields)
+        self.assertIn("dxf_cad_authority_status", fields)
+        self.assertTrue(
+            all(
+                row["status"] in {"measurement-required", "future-authority"}
+                for row in rows
+            )
+        )
 
 
 if __name__ == "__main__":
