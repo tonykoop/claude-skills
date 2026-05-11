@@ -3,7 +3,7 @@
 # Update this file whenever a skill version is bumped, packaged, or deprecated.
 
 schema_version: 1
-last_updated: 2026-05-10
+last_updated: 2026-05-11
 
 install_roots:
   windows:
@@ -148,6 +148,18 @@ skills:
     last_updated: 2026-05-11
     status: active
     notes: Portable snapshot from the standalone makerspace repo. v1.1.1 adds a generator-backed DXF/CNC fabrication handoff checklist on top of the structured-shop-artifacts validator; v1.1.2 adds repo-to-shop-packet routing for woodworking/mechanism fabrication handoffs.
+
+  laser-art:
+    canonical_version: 0.1.0
+    runtime: shared
+    repo_path: skills/laser-art
+    last_updated: 2026-05-11
+    status: active
+    notes: >-
+      Laser-cut, laser-engraved, and laser-scored decorative art routing skill
+      with explicit generated-image versus fabrication-authority boundaries.
+      v0.1.0 has no shell command shim; use skills-meta for version reporting
+      until a real `laser-art --version` command exists.
 
   reverse-engineer:
     canonical_version: 1.1.0
