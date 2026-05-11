@@ -1,6 +1,6 @@
 {
   "skill_name": "makerspace",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "focus": "fabrication specialist for jigs, fixtures, workholding, machine-aware planning, and make/order/buy/borrow decisions",
   "legacy_workspace_note": "The v0.2 benchmark workspace is intentionally not bundled in this portable package. When this snapshot is installed inside the tonykoop/claude-skills repo it lives at docs/benchmarks/makerspace/; the standalone tonykoop/makerspace repo keeps it at evals/workspace/. Both are optional context only; the runtime skill never loads them.",
   "evals": [
@@ -48,7 +48,7 @@
       "id": 6,
       "name": "repo-backed-dxf-cnc-handoff-routing",
       "prompt": "I have a woodworking mechanism repo with rough CAD, a DXF export, photos, and build notes. The concept already exists, but I need to know whether it is ready for a CNC or laser fabrication handoff. Route this through the right skill and name the checks and artifacts to produce.",
-      "expected_output": "A makerspace-routed fabrication handoff that extracts only shop-relevant repo facts, keeps private/story context out of public docs, treats CAD/DXF/drawings or measured geometry as fabrication authority, preserves missing machine constraints as TBD, and produces a handoff_checklist.json plus validation.csv gates for revision, units, layers, stock, workholding, CAM assumptions, safety, and dry run.",
+      "expected_output": "A makerspace-routed repo-to-shop-packet fabrication handoff that extracts only shop-relevant repo facts, keeps private/story context out of public docs, separates design intent from machine operations, treats CAD/DXF/drawings or measured geometry as fabrication authority over generated images, preserves missing dimensions, tolerances, and machine constraints as TBD, names default packet artifacts, and produces handoff_checklist.json plus validation.csv gates for revision authority, units, layers, stock/material fit, workholding, CAM assumptions, safety, dry run, and publication scrub.",
       "files": [],
       "assertions": []
     }

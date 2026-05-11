@@ -1,5 +1,13 @@
 # Changelog — makerspace
 
+## v1.1.2 — 2026-05-11
+
+- Add repo-to-shop-packet routing guidance for woodworking and mechanism
+  projects such as chessboard-table and cryptex.
+- Add a smoke eval covering fabrication handoff from an existing project repo.
+- Add minimum readiness gates for revision authority, dimensions, materials,
+  workholding, safety, and publication scrub.
+
 ## v1.1.1 — 2026-05-10
 
 - Add generator-backed `references/examples/cnc-laser-fabrication-handoff/`
