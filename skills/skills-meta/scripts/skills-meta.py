@@ -20,6 +20,7 @@ except ImportError:  # pragma: no cover - exercised on hosts without PyYAML.
 DEFAULT_ROOTS = ("skills", "claude/skills", "codex/skills", "gemini/skills")
 DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 SEMVER_RE = re.compile(r"^(\d+)\.(\d+)\.(\d+)$")
+OBSOLETE_STATUSES = {"deprecated", "obsolete", "retired"}
 
 
 @dataclass
@@ -57,6 +58,9 @@ class SkillRecord:
     def render_status(self) -> str:
         if self.duplicate_of:
             return "duplicate"
+        manifest_status = str((self.manifest or {}).get("status") or "").strip().lower()
+        if manifest_status in OBSOLETE_STATUSES:
+            return manifest_status
         if self.issues:
             if "missing-from-manifest" in self.issues:
                 return "unknown"
@@ -427,6 +431,9 @@ def annotate_records(records: list[SkillRecord], manifest: dict[str, Any]) -> tu
         record.manifest = active_lookup.get(record.name)
         record.planned = planned.get(record.name)
         if record.manifest:
+            manifest_status = str(record.manifest.get("status") or "").strip().lower()
+            if manifest_status in OBSOLETE_STATUSES:
+                record.issues.append(f"cleanup-candidate:{manifest_status}")
             canonical = str(record.manifest.get("canonical_version") or "")
             if not record.version:
                 record.issues.append("missing-version")
@@ -460,7 +467,10 @@ def annotate_records(records: list[SkillRecord], manifest: dict[str, Any]) -> tu
     seen = {record.name for record in records}
     for name in canonical_active:
         if name not in seen:
-            missing.append(name)
+            entry = active_lookup.get(name) or {}
+            status = str(entry.get("status") or "").strip().lower()
+            if status not in OBSOLETE_STATUSES:
+                missing.append(name)
 
     return records, missing
 
@@ -528,6 +538,29 @@ def pick_canonical_copy(repo_root: Path, group: list[SkillRecord]) -> SkillRecor
     return max(group, key=canonicalness_key(repo_root, group))
 
 
+def canonical_copy_reason(repo_root: Path, canonical: SkillRecord, group: list[SkillRecord]) -> str:
+    """Explain why this copy wins, using the same precedence as the picker."""
+    manifest_entry = next((r.manifest for r in group if r.manifest), None)
+    repo_path = manifest_entry.get("repo_path") if manifest_entry else None
+    if repo_path:
+        try:
+            if canonical.path.parent.resolve() == (repo_root / str(repo_path)).resolve():
+                return "manifest repo_path"
+        except OSError:
+            pass
+
+    versions = [semver_tuple(r.version) for r in group]
+    canonical_version = semver_tuple(canonical.version)
+    if canonical_version is not None and canonical_version == max((v for v in versions if v is not None), default=None):
+        return "highest semver"
+
+    dates = [r.last_updated for r in group if is_date(r.last_updated)]
+    if canonical.last_updated and dates and canonical.last_updated == max(dates):
+        return "newest last-updated"
+
+    return "stable first-seen fallback"
+
+
 def sort_canonical_first(repo_root: Path, records: list[SkillRecord]) -> list[SkillRecord]:
     """Stable sort with the canonical copy first; used so single-mode
     output is deterministic in duplicate-heavy installs."""
@@ -571,7 +604,21 @@ def render_unreadable(unreadable: list[UnreadableRoot]) -> list[str]:
     return lines
 
 
+def render_duplicate_warnings(repo_root: Path, duplicates: dict[str, list[SkillRecord]]) -> list[str]:
+    if not duplicates:
+        return []
+    lines = ["", f"duplicate warnings: {len(duplicates)}"]
+    for name, group in sorted(duplicates.items())[:8]:
+        canonical = next((r for r in group if not r.duplicate_of), group[0])
+        reason = canonical_copy_reason(repo_root, canonical, group)
+        lines.append(f"- {name}: keep {canonical.path.parent} ({reason}); cleanup candidates: {len(group) - 1}")
+    if len(duplicates) > 8:
+        lines.append(f"- ... {len(duplicates) - 8} more")
+    return lines
+
+
 def text_output(
+    repo_root: Path,
     records: list[SkillRecord],
     missing: list[str],
     unreadable: list[UnreadableRoot],
@@ -657,6 +704,7 @@ def text_output(
             lines.append(f"- ... {len(missing) - 12} more")
 
     lines.extend(render_unreadable(unreadable))
+    lines.extend(render_duplicate_warnings(repo_root, duplicates))
 
     if mode == "fix" and records:
         lines.append("")
@@ -731,15 +779,19 @@ def filter_and_sort(repo_root: Path, records: list[SkillRecord], skill: str | No
     return sort_canonical_first(repo_root, matches)
 
 
-def render_fix_duplicates_plan(duplicates: dict[str, list[SkillRecord]]) -> str:
+def render_fix_duplicates_plan(repo_root: Path, duplicates: dict[str, list[SkillRecord]]) -> str:
     """Print a human-readable plan: which copy stays, which get removed."""
     if not duplicates:
         return "No duplicates detected."
     lines = ["fix-duplicates plan (dry run)", ""]
     for name, group in sorted(duplicates.items()):
         canonical = next((r for r in group if not r.duplicate_of), group[0])
+        reason = canonical_copy_reason(repo_root, canonical, group)
         lines.append(f"# {name}")
-        lines.append(f"keep:   {canonical.path.parent}  (v{canonical.version or 'missing'}, {canonical.runtime})")
+        lines.append(
+            f"keep:   {canonical.path.parent}  "
+            f"(v{canonical.version or 'missing'}, {canonical.runtime}; kept because {reason})"
+        )
         for record in group:
             if record is canonical:
                 continue
@@ -747,6 +799,7 @@ def render_fix_duplicates_plan(duplicates: dict[str, list[SkillRecord]]) -> str:
                 f"remove: {record.path.parent}  (v{record.version or 'missing'}, {record.runtime})"
             )
         lines.append("")
+    lines.append("Warning: duplicate skill copies can shadow the canonical skill until cleaned up.")
     lines.append("Run with --apply to confirm each removal interactively.")
     return "\n".join(lines)
 
@@ -1093,13 +1146,13 @@ def main() -> int:
         if args.apply:
             apply_fix_duplicates(duplicates)
         else:
-            print(render_fix_duplicates_plan(duplicates))
+            print(render_fix_duplicates_plan(repo_root, duplicates))
         return 0
 
     if args.json:
         print(json_output(records, missing, unreadable, duplicates, args.mode))
     else:
-        print(text_output(records, missing, unreadable, duplicates, args.mode, args.skill))
+        print(text_output(repo_root, records, missing, unreadable, duplicates, args.mode, args.skill))
     if args.strict and (any(record.render_status() != "ok" for record in records) or missing):
         return 1
     return 0

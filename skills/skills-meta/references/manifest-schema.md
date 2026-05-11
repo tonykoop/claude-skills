@@ -33,6 +33,9 @@ hint, not as an up-to-date install record.
 - A local `last-updated` older than the manifest `last_updated` is stale.
 - A local skill missing from `manifest.skills` is unknown/untracked.
 - A manifest skill missing locally is missing from the current install set.
+- A manifest skill with `status: deprecated`, `status: obsolete`, or
+  `status: retired` is a cleanup candidate when installed. If it is already
+  absent, do not count it as missing-local drift.
 
 ## Frontmatter fix output
 
