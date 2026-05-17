@@ -1,5 +1,13 @@
 # Changelog - tmux-sprint
 
+## v2.3.1 - 2026-05-17
+
+- Added `references/provider-failover.md`, a manager-owned contract for
+  migrating budget-exhausted panes across Codex, Claude, Gemini, and final
+  manager absorption.
+- Documented provider failover in `SKILL.md`, including fallback order,
+  provider state fields, same-pane swap boundaries, and summary requirements.
+
 ## v2.3.0 - 2026-05-11
 
 - Added label-aware sprint batching and smart model-picker routing guidance.
