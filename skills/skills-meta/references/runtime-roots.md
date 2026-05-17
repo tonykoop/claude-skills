@@ -78,7 +78,8 @@ When multiple copies of the same skill appear:
 1. Prefer the manifest entry as canonical. The helper picks the copy
    whose path matches `manifest.skills.<name>.repo_path` when present;
    otherwise it falls back to the highest installed semver, then the
-   newest `last-updated`, then the first record.
+   newest `last-updated`, then the first record. Reports should say which
+   reason selected the kept copy.
 2. Report each discovered copy with path, runtime, version fields, and
    last-updated fields when present. Stale copies get tagged
    `duplicate` and carry a `duplicate-of:<path>` issue.
@@ -87,6 +88,8 @@ When multiple copies of the same skill appear:
 5. Do not delete or overwrite stale copies by default. The helper
    prints a cleanup plan; `fix-duplicates --apply` walks each removal
    interactively with a per-copy y/n prompt and never auto-deletes.
+6. Treat manifest entries marked `deprecated`, `obsolete`, or `retired` as
+   cleanup candidates when installed, not as missing-local drift when absent.
 
 ## Unreadable roots
 
@@ -123,3 +126,11 @@ not auto-detected per skill — pass `--target` explicitly. The same skill
 may legitimately live in more than one install root (a `merge-review`
 that drives both Claude Code and Codex CLI sprints, for example) and
 the helper has no way to guess which runtime you mean.
+
+Relative `repo_path` values are resolved from the directory that contains the
+manifest file, not from the shell's current working directory. This keeps
+absolute `--manifest` and parent-directory invocations from producing false
+`source-missing` sync plans.
+
+Sync plans include source and target runtime labels in text and JSON output so
+cross-runtime copies, such as Claude to Codex, are visible in the dry run.

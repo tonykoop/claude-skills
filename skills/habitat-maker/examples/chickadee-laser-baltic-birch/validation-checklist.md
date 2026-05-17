@@ -1,8 +1,9 @@
 # Validation Checklist
 
-Source: `geometry_params.json` → `welfare_gates` and
-`validation_targets_post_assembly`. Every item is **pass/fail with a
-remedy** — do not proceed to the next phase with any failure unresolved.
+Source: `geometry_params.json` -> `welfare_gates`,
+`validation_targets_post_assembly`, and the shared gate shape in
+`references/welfare-gate-schema.md`. Every item is **pass/fail with a
+remedy** - do not proceed to the next phase with any failure unresolved.
 
 ## Welfare gates (REQUIRED — habitat-maker v0.2 contract)
 

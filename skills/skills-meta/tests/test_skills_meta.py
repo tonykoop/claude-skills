@@ -20,6 +20,7 @@ from __future__ import annotations
 
 import importlib.util
 import io
+import json
 import os
 import shutil
 import sys
@@ -60,6 +61,13 @@ def write_skill(path: Path, name: str, version: str | None, last_updated: str | 
     (path / "SKILL.md").write_text(body, encoding="utf-8")
 
 
+def write_changelog(path: Path, version: str) -> None:
+    (path / "CHANGELOG.md").write_text(
+        f"# Changelog\n\n## v{version}\n\nFixture entry.\n",
+        encoding="utf-8",
+    )
+
+
 def write_manifest(repo_root: Path, skills: dict[str, dict]) -> None:
     """Tiny manifest writer; YAML-compatible enough for safe_load."""
     lines = ["schema_version: 1", "skills:"]
@@ -68,6 +76,50 @@ def write_manifest(repo_root: Path, skills: dict[str, dict]) -> None:
         for key, value in entry.items():
             lines.append(f"    {key}: {value}")
     (repo_root / "manifest.yaml").write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+class VersionFlagTests(unittest.TestCase):
+    """The sprint-manager preflight probe needs a direct helper fallback when
+    no `skills-meta` PATH shim exists."""
+
+    def setUp(self) -> None:
+        self.tmp = Path(tempfile.mkdtemp(prefix="skills-meta-version-"))
+        self.addCleanup(shutil.rmtree, self.tmp, ignore_errors=True)
+
+    def _run_version(self, *extra: str) -> tuple[int, str]:
+        os.chdir(self.tmp)
+        argv = ["skills-meta.py", "--version", *extra]
+        old_argv, sys.argv = sys.argv, argv
+        buf = io.StringIO()
+        try:
+            with redirect_stdout(buf):
+                rc = sm.main()
+        finally:
+            sys.argv = old_argv
+        return rc, buf.getvalue().strip()
+
+    def test_version_works_without_manifest_or_cwd_assumptions(self) -> None:
+        rc, out = self._run_version()
+        self.assertEqual(rc, 0, msg=out)
+        self.assertEqual(out, "skills-meta 1.0.0")
+
+    def test_version_prefers_manifest_canonical_version_when_available(self) -> None:
+        manifest = self.tmp / "manifest.yaml"
+        write_manifest(
+            self.tmp,
+            {
+                "skills-meta": {
+                    "canonical_version": "9.8.7",
+                    "runtime": "portable",
+                    "repo_path": "skills/skills-meta",
+                    "last_updated": "2026-05-11",
+                    "status": "active",
+                }
+            },
+        )
+        rc, out = self._run_version("--manifest", str(manifest))
+        self.assertEqual(rc, 0, msg=out)
+        self.assertEqual(out, "skills-meta 9.8.7 (installed 1.0.0)")
 
 
 class SingleModeDeterminismTests(unittest.TestCase):
@@ -152,6 +204,524 @@ class SingleModeDeterminismTests(unittest.TestCase):
             self.tmp / "gemini" / "duped" / "SKILL.md",
         ):
             self.assertIn(str(path), out, msg=out)
+
+
+class DeprecatedSkillCleanupTests(unittest.TestCase):
+    """Deprecated/obsolete manifest skills are cleanup candidates when
+    installed, but their absence should not count as manifest drift."""
+
+    def setUp(self) -> None:
+        self.tmp = Path(tempfile.mkdtemp(prefix="skills-meta-deprecated-"))
+        self.addCleanup(shutil.rmtree, self.tmp, ignore_errors=True)
+        self.repo = self.tmp / "repo"
+        (self.repo / "skills").mkdir(parents=True)
+
+    def _run_inventory(self) -> str:
+        os.chdir(self.repo)
+        argv = ["skills-meta.py", "--mode", "inventory", "--root", "skills"]
+        old_argv, sys.argv = sys.argv, argv
+        buf = io.StringIO()
+        try:
+            with redirect_stdout(buf):
+                rc = sm.main()
+        finally:
+            sys.argv = old_argv
+        self.assertEqual(rc, 0, msg=buf.getvalue())
+        return buf.getvalue()
+
+    def test_installed_deprecated_skill_is_flagged_for_cleanup(self) -> None:
+        write_manifest(
+            self.repo,
+            {
+                "old-skill": {
+                    "canonical_version": "1.0.0",
+                    "runtime": "shared",
+                    "repo_path": "skills/old-skill",
+                    "last_updated": "2026-05-01",
+                    "status": "deprecated",
+                }
+            },
+        )
+        write_skill(self.repo / "skills" / "old-skill", "old-skill", "1.0.0", "2026-05-01")
+
+        out = self._run_inventory()
+        self.assertIn("deprecated old-skill", out, msg=out)
+        self.assertIn("cleanup-candidate:deprecated", out, msg=out)
+
+    def test_missing_obsolete_skill_is_not_reported_missing_locally(self) -> None:
+        write_manifest(
+            self.repo,
+            {
+                "old-skill": {
+                    "canonical_version": "1.0.0",
+                    "runtime": "shared",
+                    "repo_path": "skills/old-skill",
+                    "last_updated": "2026-05-01",
+                    "status": "obsolete",
+                }
+            },
+        )
+
+        out = self._run_inventory()
+        self.assertNotIn("manifest missing locally", out, msg=out)
+        self.assertNotIn("- old-skill", out, msg=out)
+
+
+class ManifestAliasNameTests(unittest.TestCase):
+    """A canonical manifest key may differ from the historical repo folder."""
+
+    def setUp(self) -> None:
+        self.tmp = Path(tempfile.mkdtemp(prefix="skills-meta-alias-name-"))
+        self.addCleanup(shutil.rmtree, self.tmp, ignore_errors=True)
+        self.repo = self.tmp / "repo"
+        (self.repo / "skills").mkdir(parents=True)
+
+    def test_manifest_key_is_canonical_even_when_repo_path_is_legacy_alias(self) -> None:
+        write_manifest(
+            self.repo,
+            {
+                "instrument-maker": {
+                    "canonical_version": "4.4.6",
+                    "runtime": "shared",
+                    "repo_path": "skills/instrument-maker-v4",
+                    "last_updated": "2026-05-11",
+                    "status": "partial",
+                }
+            },
+        )
+        write_skill(
+            self.repo / "skills" / "instrument-maker-v4",
+            "instrument-maker",
+            "4.4.6",
+            "2026-05-11",
+        )
+        (self.repo / "skills" / "instrument-maker-v4" / "CHANGELOG.md").write_text(
+            "# Changelog\n\n## v4.4.6\n\nRename public invocation.\n",
+            encoding="utf-8",
+        )
+
+        os.chdir(self.repo)
+        argv = ["skills-meta.py", "--mode", "inventory", "--root", "skills"]
+        old_argv, sys.argv = sys.argv, argv
+        buf = io.StringIO()
+        try:
+            with redirect_stdout(buf):
+                rc = sm.main()
+        finally:
+            sys.argv = old_argv
+
+        out = buf.getvalue()
+        self.assertEqual(rc, 0, msg=out)
+        self.assertIn("instrument-maker", out, msg=out)
+        self.assertNotIn("manifest missing locally", out, msg=out)
+        self.assertNotIn("- instrument-maker-v4", out, msg=out)
+
+    def test_sync_filter_accepts_legacy_repo_path_alias_but_targets_canonical_name(self) -> None:
+        manifest = {
+            "skills": {
+                "instrument-maker": {
+                    "canonical_version": "4.4.6",
+                    "runtime": "shared",
+                    "repo_path": "skills/instrument-maker-v4",
+                    "last_updated": "2026-05-11",
+                    "status": "partial",
+                }
+            }
+        }
+        write_skill(
+            self.repo / "skills" / "instrument-maker-v4",
+            "instrument-maker",
+            "4.4.6",
+            "2026-05-11",
+        )
+
+        plan = sm.build_sync_plan(
+            self.repo,
+            manifest,
+            self.tmp / ".codex" / "skills",
+            ["instrument-maker-v4"],
+        )
+
+        self.assertEqual(len(plan), 1, msg=plan)
+        self.assertEqual(plan[0].name, "instrument-maker")
+        self.assertEqual(plan[0].target.name, "instrument-maker")
+
+
+class ManifestDependencyTests(unittest.TestCase):
+    """Manifest `requires` should make install dependencies visible."""
+
+    def setUp(self) -> None:
+        self.tmp = Path(tempfile.mkdtemp(prefix="skills-meta-requires-"))
+        self.addCleanup(shutil.rmtree, self.tmp, ignore_errors=True)
+        self.repo = self.tmp / "repo"
+        (self.repo / "skills").mkdir(parents=True)
+
+    def test_inventory_flags_missing_required_skill(self) -> None:
+        write_manifest(
+            self.repo,
+            {
+                "sprint-supervisor": {
+                    "canonical_version": "1.0.0",
+                    "runtime": "shared",
+                    "repo_path": "skills/sprint-supervisor",
+                    "last_updated": "2026-05-12",
+                    "status": "active",
+                    "requires": ["sprint-manager"],
+                },
+                "sprint-manager": {
+                    "canonical_version": "1.0.0",
+                    "runtime": "shared",
+                    "repo_path": "skills/sprint-manager",
+                    "last_updated": "2026-05-12",
+                    "status": "active",
+                },
+            },
+        )
+        write_skill(
+            self.repo / "skills" / "sprint-supervisor",
+            "sprint-supervisor",
+            "1.0.0",
+            "2026-05-12",
+        )
+
+        os.chdir(self.repo)
+        argv = ["skills-meta.py", "--mode", "single", "--skill", "sprint-supervisor"]
+        old_argv, sys.argv = sys.argv, argv
+        buf = io.StringIO()
+        try:
+            with redirect_stdout(buf):
+                rc = sm.main()
+        finally:
+            sys.argv = old_argv
+
+        out = buf.getvalue()
+        self.assertEqual(rc, 0, msg=out)
+        self.assertIn("missing-required:sprint-manager", out, msg=out)
+
+    def test_inventory_flags_transitive_required_drift_in_scan_order(self) -> None:
+        write_manifest(
+            self.repo,
+            {
+                "alpha": {
+                    "canonical_version": "1.0.0",
+                    "runtime": "shared",
+                    "repo_path": "skills/alpha",
+                    "last_updated": "2026-05-12",
+                    "status": "active",
+                    "requires": ["beta"],
+                },
+                "beta": {
+                    "canonical_version": "1.0.0",
+                    "runtime": "shared",
+                    "repo_path": "skills/beta",
+                    "last_updated": "2026-05-12",
+                    "status": "active",
+                    "requires": ["charlie"],
+                },
+                "charlie": {
+                    "canonical_version": "1.0.0",
+                    "runtime": "shared",
+                    "repo_path": "skills/charlie",
+                    "last_updated": "2026-05-12",
+                    "status": "active",
+                },
+            },
+        )
+        for name in ("alpha", "beta"):
+            skill_dir = self.repo / "skills" / name
+            write_skill(skill_dir, name, "1.0.0", "2026-05-12")
+            write_changelog(skill_dir, "1.0.0")
+
+        os.chdir(self.repo)
+        argv = ["skills-meta.py", "--mode", "single", "--skill", "alpha"]
+        old_argv, sys.argv = sys.argv, argv
+        buf = io.StringIO()
+        try:
+            with redirect_stdout(buf):
+                rc = sm.main()
+        finally:
+            sys.argv = old_argv
+
+        out = buf.getvalue()
+        self.assertEqual(rc, 0, msg=out)
+        self.assertIn("required-drift:beta", out, msg=out)
+
+    def test_fallback_yaml_parser_accepts_block_list_requires(self) -> None:
+        manifest_text = textwrap.dedent(
+            """\
+            schema_version: 1
+            skills:
+              alpha:
+                canonical_version: 1.0.0
+                runtime: shared
+                repo_path: skills/alpha
+                last_updated: 2026-05-12
+                status: active
+                requires:
+                  - beta
+                  - charlie
+            """
+        )
+
+        old_yaml = sm.yaml
+        sm.yaml = None
+        try:
+            parsed = sm.parse_yaml(manifest_text)
+        finally:
+            sm.yaml = old_yaml
+
+        self.assertEqual(
+            parsed["skills"]["alpha"]["requires"],
+            ["beta", "charlie"],
+            msg=parsed,
+        )
+
+    def test_sync_expands_requested_skill_to_include_required_skill(self) -> None:
+        write_manifest(
+            self.repo,
+            {
+                "sprint-supervisor": {
+                    "canonical_version": "1.0.0",
+                    "runtime": "shared",
+                    "repo_path": "skills/sprint-supervisor",
+                    "last_updated": "2026-05-12",
+                    "status": "active",
+                    "requires": ["sprint-manager"],
+                },
+                "sprint-manager": {
+                    "canonical_version": "1.0.0",
+                    "runtime": "shared",
+                    "repo_path": "skills/sprint-manager",
+                    "last_updated": "2026-05-12",
+                    "status": "active",
+                },
+            },
+        )
+        write_skill(
+            self.repo / "skills" / "sprint-supervisor",
+            "sprint-supervisor",
+            "1.0.0",
+            "2026-05-12",
+        )
+        write_skill(
+            self.repo / "skills" / "sprint-manager",
+            "sprint-manager",
+            "1.0.0",
+            "2026-05-12",
+        )
+
+        plan = sm.build_sync_plan(
+            self.repo,
+            sm.load_yaml(self.repo / "manifest.yaml"),
+            self.tmp / ".codex" / "skills",
+            ["sprint-supervisor"],
+        )
+
+        self.assertEqual(
+            [entry.name for entry in plan],
+            ["sprint-supervisor", "sprint-manager"],
+            msg=plan,
+        )
+
+
+class DuplicateWarningTests(unittest.TestCase):
+    """Duplicate-heavy installs should explain the cleanup choice, not just
+    print remove lines without context."""
+
+    def setUp(self) -> None:
+        self.tmp = Path(tempfile.mkdtemp(prefix="skills-meta-dup-warning-"))
+        self.addCleanup(shutil.rmtree, self.tmp, ignore_errors=True)
+        self.repo = self.tmp / "repo"
+        (self.repo / "skills").mkdir(parents=True)
+        write_manifest(
+            self.repo,
+            {
+                "duped": {
+                    "canonical_version": "1.0.0",
+                    "runtime": "shared",
+                    "repo_path": "skills/duped",
+                    "last_updated": "2026-05-01",
+                    "status": "active",
+                }
+            },
+        )
+        write_skill(self.repo / "skills" / "duped", "duped", "1.0.0", "2026-05-01")
+        write_skill(self.tmp / "install" / "duped", "duped", "1.0.0", "2026-05-01")
+
+    def test_fix_duplicates_plan_explains_keeper_and_shadow_warning(self) -> None:
+        os.chdir(self.repo)
+        argv = [
+            "skills-meta.py",
+            "--mode",
+            "fix-duplicates",
+            "--root",
+            str(self.tmp / "install"),
+        ]
+        old_argv, sys.argv = sys.argv, argv
+        buf = io.StringIO()
+        try:
+            with redirect_stdout(buf):
+                rc = sm.main()
+        finally:
+            sys.argv = old_argv
+        out = buf.getvalue()
+        self.assertEqual(rc, 0, msg=out)
+        self.assertIn("kept because manifest repo_path", out, msg=out)
+        self.assertIn("duplicate skill copies can shadow", out, msg=out)
+
+
+class RootDedupeTests(unittest.TestCase):
+    """A CLI root that names the same directory as a repo-local default should
+    not manufacture duplicates just because one path is relative."""
+
+    def test_relative_and_absolute_roots_dedupe_to_one_spec(self) -> None:
+        os.chdir(SCRIPT.parents[3])
+        tmp = Path(tempfile.mkdtemp(prefix="skills-meta-roots-"))
+        self.addCleanup(shutil.rmtree, tmp, ignore_errors=True)
+        repo = tmp / "repo"
+        (repo / "skills").mkdir(parents=True)
+
+        old_cwd = Path.cwd()
+        try:
+            os.chdir(repo)
+            specs = sm.dedupe_specs(
+                [
+                    sm.RootSpec(Path("skills"), "default"),
+                    sm.RootSpec((repo / "skills"), "cli"),
+                ]
+            )
+        finally:
+            os.chdir(old_cwd)
+
+        self.assertEqual(len(specs), 1, msg=specs)
+        self.assertEqual(specs[0].origin, "cli", msg=specs)
+
+
+class SyncRuntimeDriftReportingTests(unittest.TestCase):
+    """Sync drift reports should make cross-runtime direction obvious. A
+    Claude-owned source copied into a Codex install is otherwise easy to
+    misread as ordinary local path drift."""
+
+    def setUp(self) -> None:
+        self.tmp = Path(tempfile.mkdtemp(prefix="skills-meta-runtime-"))
+        self.addCleanup(shutil.rmtree, self.tmp, ignore_errors=True)
+        self.repo = self.tmp / "repo"
+        write_skill(
+            self.repo / "claude" / "skills" / "merge-review",
+            "merge-review",
+            "1.0.0",
+            "2026-05-01",
+        )
+        write_manifest(
+            self.repo,
+            {
+                "merge-review": {
+                    "canonical_version": "1.0.0",
+                    "runtime": "claude",
+                    "repo_path": "claude/skills/merge-review",
+                    "last_updated": "2026-05-01",
+                    "status": "active",
+                }
+            },
+        )
+        self.target_root = self.tmp / ".codex" / "skills"
+        write_skill(self.target_root / "merge-review", "merge-review", "0.9.0", "2026-04-01")
+
+    def _run_sync(self, *extra: str) -> tuple[int, str]:
+        os.chdir(self.repo)
+        argv = [
+            "skills-meta.py",
+            "--mode",
+            "sync",
+            "--target",
+            str(self.target_root),
+            "--skill",
+            "merge-review",
+            *extra,
+        ]
+        old_argv, sys.argv = sys.argv, argv
+        buf = io.StringIO()
+        try:
+            with redirect_stdout(buf):
+                rc = sm.main()
+        finally:
+            sys.argv = old_argv
+        return rc, buf.getvalue()
+
+    def test_text_sync_plan_shows_claude_to_codex_drift(self) -> None:
+        rc, out = self._run_sync()
+        self.assertEqual(rc, 0, msg=out)
+        self.assertIn("! drift", out, msg=out)
+        self.assertIn("merge-review", out, msg=out)
+        self.assertIn("[claude -> codex]", out, msg=out)
+        self.assertIn("target has local changes", out, msg=out)
+        self.assertIn("Drifted targets need --apply --force", out, msg=out)
+
+    def test_json_sync_plan_includes_runtime_labels(self) -> None:
+        rc, out = self._run_sync("--json")
+        self.assertEqual(rc, 0, msg=out)
+        plan = json.loads(out)["plan"]
+        self.assertEqual(len(plan), 1, msg=out)
+        self.assertEqual(plan[0]["state"], "drift", msg=out)
+        self.assertEqual(plan[0]["source_runtime"], "claude", msg=out)
+        self.assertEqual(plan[0]["target_runtime"], "codex", msg=out)
+
+
+class SyncManifestRelativePathTests(unittest.TestCase):
+    """Sync source lookup should follow the manifest location, not the shell cwd."""
+
+    def setUp(self) -> None:
+        self.tmp = Path(tempfile.mkdtemp(prefix="skills-meta-manifest-rel-"))
+        self.addCleanup(shutil.rmtree, self.tmp, ignore_errors=True)
+        self.repo = self.tmp / "repo"
+        write_skill(
+            self.repo / "skills" / "portable-skill",
+            "portable-skill",
+            "1.0.0",
+            "2026-05-01",
+        )
+        write_manifest(
+            self.repo,
+            {
+                "portable-skill": {
+                    "canonical_version": "1.0.0",
+                    "runtime": "portable",
+                    "repo_path": "skills/portable-skill",
+                    "last_updated": "2026-05-01",
+                    "status": "active",
+                }
+            },
+        )
+        self.target_root = self.tmp / "install"
+
+    def test_sync_manifest_repo_path_is_manifest_relative(self) -> None:
+        stable_cwd = SCRIPT.parents[3]
+        os.chdir(self.tmp)
+        argv = [
+            "skills-meta.py",
+            "--mode",
+            "sync",
+            "--manifest",
+            str(self.repo / "manifest.yaml"),
+            "--target",
+            str(self.target_root),
+            "--skill",
+            "portable-skill",
+        ]
+        old_argv, sys.argv = sys.argv, argv
+        buf = io.StringIO()
+        try:
+            with redirect_stdout(buf):
+                rc = sm.main()
+        finally:
+            sys.argv = old_argv
+            os.chdir(stable_cwd)
+
+        out = buf.getvalue()
+        self.assertEqual(rc, 0, msg=out)
+        self.assertIn("+ copy", out, msg=out)
+        self.assertIn(str(self.repo / "skills" / "portable-skill"), out, msg=out)
+        self.assertNotIn("source-missing", out, msg=out)
 
 
 class SyncSymlinkSafetyTests(unittest.TestCase):

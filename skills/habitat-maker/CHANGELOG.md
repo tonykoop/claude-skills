@@ -1,5 +1,27 @@
 # habitat-maker — CHANGELOG
 
+## 0.4.0 — 2026-05-11
+
+- Added bat house, native bee house, observation-hive preflight, and
+  camera/electronics welfare routing to `SKILL.md`.
+- Added `references/bat-bee-observation-hive-welfare.md` with pass/fail gates
+  for bat roosting surfaces, chamber spacing, heat, predator exclusion,
+  native bee tunnel media, parasite/mold management, observation-hive
+  containment, qualified review, and electronics caveats.
+- Added a compact reusable gate record shape for future packet JSON,
+  generated checklists, and `habitat-reference` imports.
+- Moved `SKILL.md` version metadata to top-level frontmatter fields so
+  `skills-meta` can read the canonical version and update date.
+- Added smoke-test coverage for the new reference and routing strings.
+- Added `references/welfare-gate-schema.md`, a shared pass/fail record shape
+  for welfare gates and the future `habitat-reference` import workflow.
+- Updated `SKILL.md` and the chickadee validation checklist to route reusable
+  welfare gates through the shared schema without changing fabrication
+  geometry.
+- Added concrete starter gate families for bat houses, native bee houses,
+  observation-hive preflight, and camera/electronics welfare review.
+- Added smoke-test coverage for the shared welfare-gate schema reference.
+
 ## 0.3.0 — 2026-05-10
 
 - Added bird-bath and balcony/renter support to `SKILL.md`, including

@@ -25,7 +25,7 @@ intake:
 Project:
 Source evidence:
 Goal:
-Target skill: maker-engineering / makerspace / instrument-maker-v4
+Target skill: maker-engineering / makerspace / instrument-maker
 Handoff status: builder-ready / provisional / blocked
 Date:
 ```
@@ -75,7 +75,7 @@ Use this routing language:
 
 - To `maker-engineering`: "Please convert this analysis into engineering requirements, tolerances, trade studies, and a prototype validation plan."
 - To `makerspace`: "Please convert this analysis into shop-ready fabrication steps, fixtures, tools, material purchasing, and safety checks."
-- To `instrument-maker-v4`: "Please convert this validated instrument analysis into an instrument build packet, preserving acoustic unknowns and measurement confidence."
+- To `instrument-maker`: "Please convert this validated instrument analysis into an instrument build packet, preserving acoustic unknowns and measurement confidence."
 
 ## Blocked Handoff Note
 

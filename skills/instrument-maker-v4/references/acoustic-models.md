@@ -6,7 +6,13 @@ Use these models as design starting points. Put formulas in spreadsheet cells or
 
 > Added in v4.4 to close [#73](https://github.com/tonykoop/claude-skills/issues/73). Round 7 TwinGrid lane Irene showed two specialists confidently picking *different* governing acoustic models for the same instrument (khaen) — one quarter-wave, one half-wave — both internally consistent, both passing self-review. The fix is to make the model choice an explicit, machine-checkable field rather than an implicit specialist judgment.
 
-Before computing any pipe length for a free-reed instrument (khaen, sheng, sho, harmonica, melodica, accordion, bawu, harmonium, reed organ, hulusi, hybrid free-reed adaptations), the acoustician specialist **must** answer the questions in this tree and record the answer as `acoustic_law` in the packet's `family-spec.csv`. The validator (`scripts/validate_acoustic_law.py`) refuses to ship a packet that omits or invents the value.
+Before computing any pipe length for a free-reed or reed-coupled pipe
+instrument (khaen, sheng, sho, harmonica, melodica, accordion, bawu,
+harmonium, reed organ, hulusi, chalumeau-style reed pipes, hybrid reed
+adaptations), the acoustician specialist **must** answer the questions in this
+tree and record the answer as `acoustic_law` in the packet's
+`family-spec.csv`. The validator (`scripts/validate_acoustic_law.py`) refuses
+to ship a packet that omits or invents the value.
 
 ```
 Is this a free-reed instrument? ─── NO ───────► follow the standard
@@ -23,7 +29,9 @@ Where does the reed sit relative to the pipe?
         → f = c / (4 * L_eff)
         → end correction at the open end only (≈ 0.6 * r_eff)
         → examples: melodica with single-direction channel, sheng-style
-          upright pipes with reed at base, single-pipe accordion blocks
+          upright pipes with reed at base, single-pipe accordion blocks,
+          compact chalumeau-style control pipes where the reed end is
+          acoustically closed
 
   (b) Reed sits in the SIDE WALL of the pipe near its mid-point;
       both pipe ends are open to room air. Reed acts as a side branch.
@@ -31,7 +39,7 @@ Where does the reed sit relative to the pipe?
         → f = c / (2 * L_eff)
         → end correction at BOTH open ends (≈ 0.6 * r_eff each)
         → examples: TRADITIONAL LAO KHAEN, sheng (with both pipe ends open),
-          traditional bawu, hulusi mid-pipe reed configurations
+          traditional bawu, hulusi mid-pipe free-reed configurations
 
   (c) Reed at the closed end with a vent/fingerhole that controls
       whether the pipe couples to the reed (vent open = silent; vent
@@ -66,7 +74,8 @@ Where does the reed sit relative to the pipe?
       where the reed itself is the stop).
         → acoustic_law = stopped_pipe
         → f = c / (4 L_eff)  (sounds an octave below open-open of same length)
-        → examples: traditional reed organ ranks, some accordion bass
+        → examples: traditional reed organ ranks, some accordion bass,
+          chalumeau-style beating-reed pipes with a stopped reed end
 ```
 
 ### Controlled vocabulary
@@ -83,16 +92,34 @@ The `acoustic_law` field accepts exactly these values; the validator rejects any
 | `empirical_only`                   | No closed-form model; dimensions from measurement        | n/a — measurement required       |
 | `unknown_requires_measurement`     | Decision deferred until a reed/cavity is measured        | n/a — emits validator WARN       |
 
-`open_open` is for edge-tone flutes (NAF, transverse, shakuhachi) and remains the default for that family. `closed_open`, `stopped_pipe`, `side_branch_reed`, and `free_reed_coupled_pipe` cover the free-reed cases. `empirical_only` and `unknown_requires_measurement` are honest-uncertainty escape hatches; both must come with a justifying note in the packet's `design.md`.
+`open_open` is for edge-tone flutes (NAF, transverse, shakuhachi) and remains the default for that family. `closed_open`, `stopped_pipe`, `side_branch_reed`, and `free_reed_coupled_pipe` cover the reed and free-reed cases. `empirical_only` and `unknown_requires_measurement` are honest-uncertainty escape hatches; both must come with a justifying note in the packet's `design.md`.
+
+### Reed-family routing notes
+
+- **Sheng/khaen side-branch families:** use `side_branch_reed` or
+  `free_reed_coupled_pipe` only when the reed sits in the side wall and both
+  pipe ends remain open. DXF notes must identify the reed window, socket pitch
+  map, and both open pipe ends.
+- **Hulusi/bawu donor-reed or uncertain-coupling families:** use
+  `unknown_requires_measurement` until the packet records reed-alone pitch,
+  pull-down, onset pressure, blow/draw behavior, leak status, and the measured
+  pipe coupling. Do not promote supplier reed labels or concept images into
+  build dimensions.
+- **Chalumeau-style beating-reed pipes:** use `closed_open` when the reed end
+  acts as the closed end of a quarter-wave pipe, or `stopped_pipe` when the
+  design is intentionally modeled as a stopped reed pipe. These are reed-pipe
+  validation cases even though they are not free-reed mouth organs.
 
 ### Exploration packet guard
 
-For khaen/khen, sheng, sho, and donor-reed experiments, read
+For khaen/khen, sheng, sho, hulusi, bawu, chalumeau-style reed pipes, and
+donor-reed experiments, read
 `references/free-reed-khaen-exploration.md` before creating CAD. A planning
 packet may ship with `acoustic_law=unknown_requires_measurement`, but a
 family-true packet must measure a P0 reed coupon, choose `side_branch_reed` or
-`closed_open`, and pass `scripts/validate_acoustic_law.py` before pipe lengths
-are treated as build dimensions.
+`closed_open`/`stopped_pipe` as appropriate, and pass
+`scripts/validate_acoustic_law.py` before pipe lengths are treated as build
+dimensions.
 
 Unsupported pipe-law claims must be caught in one of two places:
 

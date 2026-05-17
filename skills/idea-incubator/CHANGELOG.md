@@ -1,5 +1,32 @@
 # Changelog
 
+## 1.4.1 - 2026-05-10
+
+- Added a focused photo-album/private-media pilot workflow with source-photo
+  rules, LFS-first import gates, privacy/metadata blockers, and imagegen
+  derivative boundaries.
+- Added proof/export gates for watermarked review proofs, proof-review signoff,
+  consent/off-limits review, and vendor/public/family-share export boundaries.
+- Updated skill routing and promotion handoff guidance so pilot requests use
+  the source-photo workflow before downstream repo work.
+
+## 1.4.0 - 2026-05-10
+
+- Added yearbook/design-book rollout promotion guidance for yearbooks, cohort
+  books, school archives, class/team books, workshop books, and private
+  print-on-demand books with identifiable people or private media.
+- New reference: `references/yearbook-design-book-rollout.md` with pilot
+  edition defaults, consent/off-limits gates, privacy/proof reviewers,
+  source/evidence ledger templates, EXIF/GPS handling, proof/export gates,
+  explicit source-media policy values, and image-gen derivative boundaries.
+- `promotion-handoff.md` and `private-media-family-archive.md` now route
+  yearbook/design-book captures through the rollout checklist before drafting
+  downstream issues.
+- `SKILL.md` frontmatter now uses top-level `version` and `last-updated` keys
+  so `skills-meta` can compare the skill against `manifest.yaml`.
+- Added round-4 eval expectations for promoting a private yearbook/design-book
+  rollout idea.
+
 ## 1.3.0 - 2026-05-10
 
 - Added private media / family archive promotion guidance for photo albums,

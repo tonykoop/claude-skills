@@ -3,7 +3,7 @@
 # Update this file whenever a skill version is bumped, packaged, or deprecated.
 
 schema_version: 1
-last_updated: 2026-05-10
+last_updated: 2026-05-11
 
 install_roots:
   windows:
@@ -42,14 +42,15 @@ skills:
       Current Codex tmux sprint driver. v3 evolution is tracked by issues.
 
   tmux-sprint:
-    canonical_version: 2.2.0
+    canonical_version: 2.3.1
     runtime: claude
     repo_path: claude/skills/tmux-sprint
-    last_updated: 2026-05-10
+    last_updated: 2026-05-17
     status: active
     notes: >-
-      Claude-side tmux sprint counterpart with TwinGrid blind A/B and Partner
-      Peek templates.
+      Claude-side tmux sprint counterpart with TwinGrid blind A/B, Partner
+      Peek templates, label-aware sprint batching/model-picker routing, and a
+      provider-failover contract for budget-exhausted pane recovery.
 
   merge-review:
     canonical_version: 1.0.0
@@ -59,11 +60,16 @@ skills:
     status: active
 
   sprint-update:
-    canonical_version: 1.0.0
+    canonical_version: 1.1.0
     runtime: claude
     repo_path: claude/skills/sprint-update
-    last_updated: 2026-05-08
+    last_updated: 2026-05-10
     status: active
+    notes: >-
+      Adds personal GitHub sprint Queue columns for label, model, and batch
+      metadata while preserving themed dispatch grouping, plus stale issue
+      refresh and archive follow-up checks before regenerating sprint dispatch
+      prompts.
 
   disk-cleanup:
     canonical_version: 1.0.0
@@ -94,12 +100,12 @@ skills:
     status: active
 
   idea-incubator:
-    canonical_version: 1.3.0
+    canonical_version: 1.4.1
     runtime: shared
     repo_path: skills/idea-incubator
     last_updated: 2026-05-10
     status: active
-    notes: Promote-batch mode; readiness matrix, evidence-ledger, LFS prompts for recovery/import; private media/family archive promotion template with privacy boundary, EXIF/GPS handling, and one-batch pilot defaults.
+    notes: Promote-batch mode; readiness matrix, evidence-ledger, LFS prompts for recovery/import; private media/family archive promotion template; yearbook/design-book rollout workflow with pilot edition, consent/proof gates, image-gen derivative boundaries, EXIF/GPS handling, provenance-ledger defaults, and photo-album/private-media pilot source-photo rules.
 
   maker-engineering:
     canonical_version: 1.1.0
@@ -109,37 +115,61 @@ skills:
     status: active
     notes: Umbrella routing skill for physical making projects and specialist handoffs. v1.1 adds the human-carrying / floatable-object safety gate.
 
-  instrument-maker-v4:
-    canonical_version: 4.4.1
+  instrument-maker:
+    canonical_version: 4.4.6
     runtime: shared
     repo_path: skills/instrument-maker-v4
-    last_updated: 2026-05-10
+    last_updated: 2026-05-11
     status: partial
     notes: |
+      Official public invocation is instrument-maker. The repo path remains
+      skills/instrument-maker-v4 during the staged migration so active PRs and
+      installed aliases can continue to resolve instrument-maker-v4 while
+      user-facing routing moves to the unversioned name. The v4 label is
+      release lineage and implementation history, not the public skill name.
+
       Partial-skill repo entry hosting the v4.4 acoustic-law / reed
-      boundary-condition enhancement (issue #73) and v4.4.1 free-reed/khaen
-      exploration template (issue #109). The full skill body
-      lives in the canonical install at ~/.claude/skills/instrument-maker-v4
-      and is not yet versioned in this repo. This entry contains the
-      additive references, validator, tests, fixtures, and examples that
-      v4.4/v4.4.1 introduce. See skills/instrument-maker-v4/SKILL.md for the
-      partial-skill contract.
+      boundary-condition enhancement (issue #73), v4.4.1 free-reed/khaen
+      exploration template (issue #109), and v4.4.2 sheng/hulusi/chalumeau
+      validation guardrail, plus the v4.4.3 prototype validation-loop upgrade
+      template, v4.4.4 repo-first bare-bones packet readiness template, and
+      v4.4.5 DXF/image-gen-2 visual authority guard. The full skill body
+      lives in the canonical install at ~/.claude/skills/instrument-maker
+      and is not yet versioned in this repo. Existing
+      ~/.claude/skills/instrument-maker-v4 and
+      ~/.codex/skills/instrument-maker-v4 installs may remain as compatibility
+      aliases until runtime roots are migrated. This entry contains the
+      additive references, validators, tests, fixtures, and examples that
+      v4.4/v4.4.1/v4.4.2/v4.4.3/v4.4.4/v4.4.5/v4.4.6 introduce. See
+      skills/instrument-maker-v4/SKILL.md for the partial-skill contract.
 
   yoga-sequencer:
-    canonical_version: 1.1.0
+    canonical_version: 1.2.0
     runtime: shared
     repo_path: skills/yoga-sequencer
     last_updated: 2026-05-10
     status: active
-    notes: Vinyasa-first shared class-sequencing skill with playlist-builder handoff output. v1.1.0 adds cue-density arcs and alternate-peak guidance.
+    notes: Vinyasa-first shared class-sequencing skill with playlist-builder handoff output. v1.2.0 adds heated-room safety checklist and hot-room cue-volume guidance.
 
   makerspace:
-    canonical_version: 1.1.0
+    canonical_version: 1.1.2
     runtime: shared
     repo_path: skills/makerspace
-    last_updated: 2026-05-10
+    last_updated: 2026-05-11
     status: active
-    notes: Portable snapshot from the standalone makerspace repo. v1.1.0 adds structured-shop-artifacts reference, CSV schemas, steam-bending gate table, and `validate_packet.py --schemas-only`.
+    notes: Portable snapshot from the standalone makerspace repo. v1.1.1 adds a generator-backed DXF/CNC fabrication handoff checklist on top of the structured-shop-artifacts validator; v1.1.2 adds repo-to-shop-packet routing for woodworking/mechanism fabrication handoffs.
+
+  laser-art:
+    canonical_version: 0.1.0
+    runtime: shared
+    repo_path: skills/laser-art
+    last_updated: 2026-05-11
+    status: active
+    notes: >-
+      Laser-cut, laser-engraved, and laser-scored decorative art routing skill
+      with explicit generated-image versus fabrication-authority boundaries.
+      v0.1.0 has no shell command shim; use skills-meta for version reporting
+      until a real `laser-art --version` command exists.
 
   reverse-engineer:
     canonical_version: 1.1.0
@@ -150,12 +180,12 @@ skills:
     notes: Portable snapshot from reverse-engineering/skills/v1/reverse-engineer for cross-platform review. v1.1.0 adds image-access preflight and degraded-mode banner (#70).
 
   habitat-maker:
-    canonical_version: 0.3.0
+    canonical_version: 0.4.0
     runtime: shared
     repo_path: skills/habitat-maker
-    last_updated: 2026-05-10
+    last_updated: 2026-05-11
     status: active
-    notes: Bird-bath/balcony support plus first canonical example (chickadee laser packet) with generator-backed SVG and JSON.
+    notes: Bat/bee/observation-hive welfare gates and camera/electronics caveats, plus bird-bath/balcony support and first canonical chickadee laser packet.
 
   playlist-builder:
     canonical_version: 0.1.0
@@ -164,6 +194,14 @@ skills:
     last_updated: 2026-05-10
     status: active
     notes: "Initial snapshot with catalog/auth-state preflight (issue 72) for honest sparse-catalog output."
+
+  run-swarm:
+    canonical_version: 1.2.0
+    runtime: shared
+    repo_path: skills/run-swarm
+    last_updated: 2026-05-10
+    status: active
+    notes: Adds duplicate-aware issue filing, related-issue handling, gated label creation, manager summary queues, Tony-decision queues, and skill-owner routing while preserving personal GitHub and WRFCoin swarm behavior.
 
 planned_skills:
   energy-management:

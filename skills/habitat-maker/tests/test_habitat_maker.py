@@ -1,5 +1,5 @@
 """
-Smoke tests for habitat-maker v0.3.
+Smoke tests for habitat-maker v0.4.
 
 Asserts:
   1. The canonical example's geometry_params.json parses, has the
@@ -33,6 +33,10 @@ PACKET_DIR = SKILL_DIR / "examples" / "chickadee-laser-baltic-birch"
 GENERATOR = SKILL_DIR / "scripts" / "generate_chickadee_packet.py"
 SKILL_MD = SKILL_DIR / "SKILL.md"
 BIRD_BATH_REFERENCE = SKILL_DIR / "references" / "bird-bath-balcony.md"
+BAT_BEE_REFERENCE = (
+    SKILL_DIR / "references" / "bat-bee-observation-hive-welfare.md"
+)
+WELFARE_GATE_SCHEMA = SKILL_DIR / "references" / "welfare-gate-schema.md"
 
 
 REQUIRED_WELFARE_GATES = {
@@ -217,6 +221,155 @@ class TestBirdBathReference(unittest.TestCase):
         self.assertIn("Optional Fill-Depth Gauge Template", self.reference)
         self.assertIn("3/4 in    maximum fill line", self.reference)
         self.assertIn("1 in      reject", self.reference)
+
+
+class TestBatBeeObservationHiveReference(unittest.TestCase):
+    """Bat, bee, observation-hive, and electronics prompts get welfare gates."""
+
+    def setUp(self) -> None:
+        self.skill = SKILL_MD.read_text()
+        self.reference = BAT_BEE_REFERENCE.read_text()
+
+    def test_skill_routes_new_prompt_types(self) -> None:
+        required = [
+            "review bat house welfare gates",
+            "native bee house",
+            "observation hive design review",
+            "camera in an observation hive",
+            "Bat, bee, observation-hive, and electronics welfare contract",
+            "references/bat-bee-observation-hive-welfare.md",
+        ]
+        for term in required:
+            self.assertIn(term, self.skill)
+
+    def test_bat_house_gates_present(self) -> None:
+        required = [
+            "Rough landing and roost surfaces",
+            "Chamber spacing",
+            "Heat and sun posture",
+            "Predator exclusion",
+            "Untreated interior",
+            "Exterior-only weatherproofing",
+            "Mounting stability",
+            "Seasonal disturbance",
+        ]
+        for term in required:
+            self.assertIn(term, self.reference)
+
+    def test_native_bee_gates_present(self) -> None:
+        required = [
+            "Native solitary bee scope",
+            "Tunnel diameter and depth",
+            "Smooth tunnel interiors",
+            "Dry overhang",
+            "Replaceable media",
+            "Parasite and mold management",
+            "Chemical avoidance",
+            "Predator and pest posture",
+        ]
+        for term in required:
+            self.assertIn(term, self.reference)
+
+    def test_observation_hive_preflight_gates_present(self) -> None:
+        required = [
+            "Qualified keeper review",
+            "Secure containment",
+            "Ventilation and thermal management",
+            "Escape-proof service access",
+            "Public and privacy safety",
+            "Route-out decisions",
+        ]
+        for term in required:
+            self.assertIn(term, self.reference)
+
+    def test_camera_electronics_caveats_present(self) -> None:
+        required = [
+            "No contact protrusions",
+            "No exposed wires",
+            "Low heat load",
+            "Weatherproof external routing",
+            "Service without disturbance",
+            "Species-safe sensing",
+            "Fabrication authority",
+        ]
+        for term in required:
+            self.assertIn(term, self.reference)
+
+    def test_reusable_gate_record_shape_present(self) -> None:
+        required = [
+            "Reusable Gate Record Shape",
+            "`gate_id`",
+            "`label`",
+            "`applies_to`",
+            "`severity`",
+            "`pass_condition`",
+            "`fail_remedy`",
+            "`evidence`",
+            "`source_ref`",
+            "habitat-reference",
+            "Do not drop a welfare gate",
+        ]
+        for term in required:
+            self.assertIn(term, self.reference)
+
+
+class TestWelfareGateSchemaReference(unittest.TestCase):
+    """Shared welfare gates must stay machine-readable enough to reuse."""
+
+    def setUp(self) -> None:
+        self.skill = SKILL_MD.read_text()
+        self.reference = WELFARE_GATE_SCHEMA.read_text()
+
+    def test_skill_routes_to_shared_welfare_schema(self) -> None:
+        self.assertIn("references/welfare-gate-schema.md", self.skill)
+        self.assertIn("habitat-reference", self.skill)
+        self.assertIn("geometry_params.json", self.skill)
+
+    def test_reference_defines_required_fields(self) -> None:
+        required = [
+            "`gate_id`",
+            "`label`",
+            "`applies_to`",
+            "`severity`",
+            "`pass_condition`",
+            "`fail_remedy`",
+            "`evidence`",
+            "`source_ref`",
+        ]
+        for term in required:
+            self.assertIn(term, self.reference)
+
+    def test_reference_preserves_cavity_baseline_gates(self) -> None:
+        for gate_id in REQUIRED_WELFARE_GATES:
+            self.assertIn(f"`{gate_id}`", self.reference)
+
+    def test_reference_documents_habitat_reference_workflow(self) -> None:
+        self.assertIn("Habitat-reference workflow", self.reference)
+        self.assertIn("habitat-reference", self.reference)
+        self.assertIn("drop a gate", self.reference)
+
+    def test_reference_connects_concrete_gate_families(self) -> None:
+        required = [
+            "`bat_house`",
+            "`native_bee_house`",
+            "`observation_hive_preflight`",
+            "`camera_electronics`",
+            "`fabrication_authority`",
+            "private family/media details",
+        ]
+        for term in required:
+            self.assertIn(term, self.reference)
+
+    def test_skill_routes_preflight_without_colony_operations(self) -> None:
+        required = [
+            "native bee house",
+            "observation hive design preflight",
+            "camera/electronics prompts use the same welfare-gate schema",
+            "colony management, legal compliance, or live",
+            "fabrication authority",
+        ]
+        for term in required:
+            self.assertIn(term, self.skill)
 
 
 if __name__ == "__main__":

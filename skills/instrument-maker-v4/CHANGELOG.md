@@ -1,4 +1,155 @@
-# Changelog — instrument-maker-v4
+# Changelog — instrument-maker
+
+## Unreleased — acoustic-law validator guard
+
+Salvages the small validator-hardening slice from stale draft PR #140.
+
+### Fixed
+
+- The acoustic-law validator now recognizes wind/reed prefixes in legacy
+  identifier columns such as `model_id`, `pipe_id`, `instrument_id`, and
+  `build_id`, not only `member_id`.
+- Hulusi-style family tables with `model_id=HUL-*` and no v4.4 acoustic-law
+  schema now fail with missing-column errors instead of returning
+  `rows_checked=0` as a non-wind skip.
+- Unit fixtures cover the Round 11 Bob-A/B finding that `rows_checked=0` must
+  not be treated as meaningful free-reed validation.
+
+## v4.4.6 — 2026-05-11 (invocation rename)
+
+Issue #157 makes `instrument-maker` the official public skill name and keeps
+`instrument-maker-v4` as a staged-migration alias / historical folder name.
+The v4 label now describes release lineage and implementation history, not the
+user-facing invocation.
+
+### Changed
+
+- Skill frontmatter `name` is now `instrument-maker`.
+- Manifest canonical key is now `instrument-maker`, while `repo_path` remains
+  `skills/instrument-maker-v4` to avoid breaking active PRs during migration.
+- Docs and routing language prefer `instrument-maker`; `instrument-maker-v4`
+  is documented as a deprecated compatibility alias.
+
+### Acceptance criteria
+
+- [x] Official skill frontmatter/name and user-facing invocation become
+      `instrument-maker`.
+- [x] Historical `instrument-maker-v4` repo path remains available for staged
+      migration and active PR compatibility.
+- [x] Docs explain that v4 is release lineage / implementation history.
+- [x] Packaging and skills-meta checks continue to resolve the historical
+      repo-path basename as an alias.
+
+## v4.4.5 — 2026-05-11
+
+Round 10 TwinGrid lane Elsa-B focused on visual authority: generated images
+are useful for concept/story/visual BOM work, but DXF/CAD/design tables remain
+the source of fabrication truth.
+
+### Added
+
+- `references/drawing-and-visual-authority.md` — visual-output authority
+  guidance that defines DXF/CAD/design-table authority, derived previews, and
+  image-gen-2 concept-only boundaries.
+- `scripts/validate_visual_authority.py` — focused CSV/JSON validator for
+  `visual-output-register` records. It fails when image-gen-2 prompts/outputs
+  are marked as fabrication authority, use cut-ready roles, infer dimensions,
+  or when derived previews omit their source authority.
+- `tests/test_validate_visual_authority.py` and
+  `tests/fixtures/visual-authority/` — pass/fail fixtures covering DXF
+  authority with image-gen-2 concepts, JSON registers, generated-image
+  authority misuse, missing DXF/CAD authority, and missing derived-source
+  links.
+- Post-Peek note in the visual authority reference tying reed/free-reed
+  concept visuals back to `validate_acoustic_law.py`, measured coupon data,
+  and the governing DXF/CAD/design table.
+
+### Acceptance criteria
+
+- [x] Docs explicitly state that generated images may support concept/story
+      work but never replace CAD/DXF authority for fabrication.
+- [x] Validator rejects image-gen-2 artifacts recorded as cut-ready,
+      dimension-inferred, or fabrication-authoritative.
+- [x] Validator requires a fabrication-authority DXF/CAD/drawing/design-table
+      row when a visual register includes build/cut or derived-preview work.
+- [x] Existing acoustic-law tests continue to pass alongside the new visual
+      authority tests.
+
+## v4.4.4 — 2026-05-11 (readiness:bare-bones)
+
+Round 10 TwinGrid lane Dan-A adds a repo-first bare-bones packet template for
+instrument ideas that need a public GitHub starting point before a full
+build packet, CAD/DXF package, or measured acoustic authority exists.
+
+### Added
+
+- `references/repo-first-bare-bones-packet.md` — routing and acceptance
+  contract for minimal standalone instrument repos. It defines when to use
+  the template, the required first files, and the claims a bare-bones packet
+  must avoid.
+- `examples/repo-first-bare-bones-packet/` — root-level starter files for a
+  first packet: README, design stub, BOM, sourcing, cut list, validation,
+  risks, drawing brief, and photo shotlist.
+- `tests/test_repo_first_bare_bones_template.py` — contract tests for the
+  required reference language, example file set, CSV columns, and skill stub
+  pointers.
+
+### Acceptance criteria (readiness:bare-bones)
+
+- [x] Template/example exists in the canonical skill tree subset.
+- [x] Docs make the packet repo-first rather than `build-packets/...` nested.
+- [x] Bare-bones status is explicit; CAD/DXF remains future fabrication
+      authority unless measured geometry already exists.
+- [x] Private family/media details are excluded by default.
+- [x] Generated imagery is limited to concept/story support and cannot
+      replace CAD/DXF authority.
+- [x] Validation rows include `next_action` and `evidence` so first-pass
+      unknowns are actionable.
+
+## v4.4.3 — 2026-05-11
+
+Round 10 TwinGrid lane Dan-B added a small upgrade path for prototype repos
+that already have instrument packets but lack an empirical validation loop.
+
+### Added
+
+- `references/prototype-validation-loop-upgrade.md` — template for inventorying
+  existing packet artifacts, assigning L0-L4 readiness, adding
+  `validation-loop.csv`, recording measurements, and closing the next
+  iteration decision without redesigning the instrument.
+- `examples/khaen/prototype-validation-loop.csv` — concrete reusable CSV
+  example for connecting `family-spec.csv`, reed coupon measurements, DXF
+  checklist rows, and playable-prototype tuner results.
+- `tests/test_validation_loop_templates.py` — contract test that checks the
+  new template files and required safety/readiness language.
+
+### Acceptance criteria
+
+- [x] Existing packet repos get a template path instead of a full redesign.
+- [x] Readiness labels and next-action statuses are explicit.
+- [x] Measurements and iteration decisions are captured as structured CSV.
+- [x] CAD/DXF/design tables remain fabrication authority.
+- [x] Generated images are limited to concept/story support.
+
+## v4.4.2 — 2026-05-11 (Round 10 TwinGrid)
+
+Round 10 tightened the reed/free-reed validation route for sheng, hulusi,
+and chalumeau-style prompts so agents do not treat visually plausible reed
+layouts as fabrication-authoritative until the acoustic law, end condition,
+and measurement status agree.
+
+### Added
+
+- Chalumeau-style `CHL` family IDs are now treated as wind/reed families by
+  `scripts/validate_acoustic_law.py`, so missing v4.4 acoustic-law columns
+  fail instead of being skipped.
+- Reed-family guidance now explicitly separates traditional sheng/hulusi
+  side-branch free-reed layouts, donor-reed measurement-required planning
+  packets, and chalumeau-style beating-reed/stopped-end layouts.
+- Unit fixtures cover a valid chalumeau-style control row and a missing-column
+  chalumeau row.
+- Partner Peek v2 adds a visual-authority checkpoint for reed/free-reed
+  packets that use generated concept images.
 
 ## v4.4.1 — 2026-05-10 (issue #109)
 

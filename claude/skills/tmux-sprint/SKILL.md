@@ -1,7 +1,7 @@
 ---
 name: tmux-sprint
-version: 2.2.0
-last-updated: 2026-05-10
+version: 2.3.1
+last-updated: 2026-05-17
 description: >-
   Transactional sprint-round dispatch, liveness probing, and codex-session
   revival for persona agents running in a tmux grid. Use whenever the user
@@ -10,6 +10,8 @@ description: >-
   sprint round, TwinGrid blind A/B, Partner Peek reveal, send an assignment to
   alice/bob/cindy/dan/elsa/frank, or wants to reliably hand out per-persona
   assignment markdown files across a mixed claude+codex tmux sprint session.
+  Includes label-aware sprint batching and smart model-picker routing for
+  GitHub issue queues.
   Replaces fragile `tmux send-keys` patterns with structured primitives that
   verify submission, rate-limit by pane type, and persist round state across
   `/compact`.
@@ -258,6 +260,24 @@ Walks the state machine:
 
 No user interaction needed unless the codex binary itself prompts for auth.
 
+### Provider failover - budget-exhausted pane recovery
+
+When a live pane is blocked by a provider-specific budget or rate-limit
+condition, the manager should prefer a same-pane provider migration before
+absorbing the lane into the manager context. The first implementation contract
+lives in `references/provider-failover.md` and defines:
+
+- the default fallback order: `codex -> claude -> gemini -> manager-absorb`
+- the per-pane provider state fields that round records should persist
+- the same-pane swap flow: interrupt, exit to shell, launch, probe, resume
+- the prompt families that count as retryable exhaustion signals
+- the morning-summary fields for migrated panes
+
+The failover path deliberately reuses the existing `preflight`, `dispatch`,
+and `restart` boundaries. Provider migration is a manager-owned recovery
+operation; sprint-supervisor should only approve safe prompts by prompt shape
+and escalate anything outside its rubric.
+
 ## TwinGrid mode - blind A/B plus Partner Peek
 
 Use TwinGrid mode when the manager wants paired Claude/Codex lanes to solve
@@ -314,6 +334,12 @@ Batch dispatch by runtime and risk:
   handoff and agent record rather than changing expectations mid-round.
 - If a pane is blocked on approval, auth, missing tools, or a long-running
   command, skip it in the next batch and let the manager recover it explicitly.
+
+For GitHub-backed sprint queues, preserve issue labels as first-class routing
+inputs. Read `references/label-aware-routing.md` before generating assignment
+headers from issue labels, and use `scripts/plan-label-batches.sh` when you
+have `gh issue list --json number,title,url,labels` output to convert labels
+into batch groups, suggested models, and manager-review notes.
 
 ### Phase 1: blind dispatch
 
@@ -451,6 +477,7 @@ Invoke this skill when the user says any of:
 - "restart frank" / "frank is at codex resume" / "revive the codex pane"
 - "check which personas are idle" / "who is free for more work"
 - "send alice this assignment" / "hand bob this md file"
+- "label-aware sprint batching" / "smart model picker" / "plan label batches"
 
 ## Related skills
 
@@ -480,5 +507,7 @@ The supporting `scripts/preflight.sh`, `scripts/dispatch.sh`, `scripts/restart.s
 `assets/assignment-preamble.txt`, and `assets/personas.default.json` files
 referenced above live in the working wrfcoin workspace and are not yet
 included in this v0.1 publish. The SKILL.md (this file) is the contract;
-the implementation is shipped incrementally. Open an issue in this repo if you
-want to request the reference script implementations.
+the implementation is shipped incrementally. The provider failover contract in
+`references/provider-failover.md` is likewise a design packet until those
+reference scripts are present in this public package. Open an issue in this
+repo if you want to request the reference script implementations.

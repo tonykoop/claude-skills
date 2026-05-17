@@ -5,6 +5,10 @@ scanned documents, personal video, memorial projects, private image-gen album
 work, or any media collection involving identifiable people, homes, schools,
 events, locations, or family history.
 
+For yearbooks, design books, cohort books, school archives, team/class books,
+or print-book rollouts, use this privacy-first baseline plus the rollout gates
+in [`yearbook-design-book-rollout.md`](yearbook-design-book-rollout.md).
+
 The promotion goal is a repo-ready downstream issue that protects privacy and
 provenance before it optimizes for visual polish.
 
@@ -15,8 +19,13 @@ provenance before it optimizes for visual polish.
 - Commit Git LFS tracking and `.gitignore` rules before any media import.
 - Keep originals external with source-ledger references unless the owner
   explicitly chooses LFS-backed original import.
+- For photo-album or private-media pilot requests, run
+  [`photo-album-private-media-pilot.md`](photo-album-private-media-pilot.md)
+  before drafting downstream repo work.
 - Treat image-gen outputs, restorations, collages, and print layouts as
   derivatives, not documentary originals.
+- Require watermarked review proofs and proof-review signoff before vendor
+  upload, family sharing, public preview, or print-ready export.
 - Use `Refs #N` for the source issue until the scaffold, privacy boundary, and
   ledgers exist.
 
@@ -28,8 +37,8 @@ Add these checks to the standard Promote readiness matrix:
 |---|---|---|
 | Pilot scope | One named album/export/folder or date/event batch | "All family photos" or open-ended archive dump |
 | Repo visibility | Private repo chosen or placeholder explicitly private | Public/default visibility unresolved |
-| Reviewer boundary | Privacy reviewer or family reviewer named | No human review owner |
-| Consent/off-limits | Off-limits people, events, locations, and date ranges listed or explicitly unknown | Assumes all media is shareable |
+| Reviewer boundary | Privacy reviewer, family reviewer, and proof reviewer named where relevant | No human review owner |
+| Consent/off-limits | Off-limits people, faces, minors, events, schools, homes, locations, and date ranges listed or explicitly unknown | Assumes all media is shareable |
 | Originals policy | LFS import vs external originals decided | Original media copied before policy exists |
 | Metadata policy | EXIF/GPS strip-or-quarantine rule chosen | Derived review copies preserve location metadata by accident |
 | Provenance | Source ledger and evidence ledger planned | Captions or memories are treated as archive facts |
@@ -56,6 +65,10 @@ For private-media promotions, include these sections in the downstream issue:
    image-gen boundaries, and proof-review steps.
 7. **LFS-first import** - `.gitattributes` committed before any heavy binary
    files land.
+8. **Source-photo rules** - originals stay external by default, imported
+   originals require LFS first, and derivatives remain traceable to source IDs.
+9. **Proof/export gate** - watermarked review proofs and signoff log before
+   print/vendor/export packages.
 
 ## Repo Scaffold Hints
 
@@ -94,6 +107,7 @@ family-archive-or-photo-album/
     privacy-review.md
     family-review-log.md
     proofing-notes.md
+    proof-signoff.md
   derived/
     README.md
   exports/
@@ -250,6 +264,8 @@ review-safe derived outputs before any broad media import.
   LFS-original, derived-only, or exclude.
 - EXIF/GPS strip-or-quarantine policy for derived review artifacts.
 - Reviewer/consent checklist and off-limits people/events/locations.
+- Watermarked review proofs and `reviews/proof-signoff.md` before print,
+  vendor, public-preview, or family-share exports.
 - Image-gen/restoration prompt boundaries that label generated outputs as
   derivatives, not documentary originals.
 
@@ -260,6 +276,8 @@ review-safe derived outputs before any broad media import.
 - Source and evidence ledgers distinguish observed file facts from captions,
   memories, and inferred story claims.
 - Large media import is blocked until LFS tracking is committed.
+- Proof signoff exists before vendor upload, print-ready export, public
+  preview, or family sharing.
 - Source issue remains open as a provenance anchor.
 ```
 

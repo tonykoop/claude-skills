@@ -32,7 +32,7 @@ downstream issue or PR body.
 ## Specialist pairings
 
 - `maker-engineering` for fabrication and shop ideas.
-- `instrument-maker-v4` for instrument concepts and acoustics.
+- `instrument-maker` for instrument concepts and acoustics.
 - `yoga-sequencer` for class and sequence ideas.
 - `skills-meta` for skill ecosystem or routing ideas.
 
@@ -73,6 +73,17 @@ drafting the downstream issue. Those promotions default to a private repo,
 one curated pilot batch, explicit reviewer/consent boundaries, EXIF/GPS
 strip-or-quarantine handling, and `Refs #N` until the scaffold and ledgers
 exist.
+
+For yearbooks, design books, cohort books, school archives, team/class books,
+or private print-book rollouts, also run
+[`yearbook-design-book-rollout.md`](yearbook-design-book-rollout.md). Those
+promotions require a named pilot edition, people/consent gate, proof-review
+owner, source/evidence ledger, image-gen derivative labels, and reviewed
+export path before any public sharing or print/vendor package.
+
+For photo-album or private-media pilot work, also use
+[`photo-album-private-media-pilot.md`](photo-album-private-media-pilot.md) to
+lock the source-photo policy before any media import or imagegen concept work.
 
 1. Does the target repo already exist? If yes, does it have `.gitattributes`
    with LFS rules covering the expected extensions?
@@ -149,3 +160,25 @@ optimizes for visual polish:
 - EXIF/GPS strip-or-quarantine policy for derived review artifacts;
 - source/evidence ledger that separates observed archive facts from captions,
   memories, and inferred story claims.
+- source-photo rules that keep originals external by default, require LFS
+  before selected original imports, and keep shareable exports derivative-only.
+
+## Yearbook / design-book rollout promotions
+
+Use [`yearbook-design-book-rollout.md`](yearbook-design-book-rollout.md) when
+a capture proposes a yearbook, design book, cohort book, school archive,
+class/team book, workshop book, or print-on-demand rollout involving private
+media or identifiable people. The downstream handoff must add rollout-specific
+gates on top of the private-media baseline:
+
+- private repo by default until the privacy boundary permits otherwise;
+- one named pilot edition, cohort, class, event, chapter, or sample section;
+- consent/off-limits handling for minors, names, faces, schools/teams, homes,
+  events, locations, and sensitive dates;
+- privacy reviewer plus proof reviewer before export or print sharing;
+- source/evidence ledger for images, scans, captions, rosters, credits, and
+  inferred story claims;
+- image-gen, restoration, collage, and layout outputs labeled as derivatives,
+  not documentary originals;
+- watermarked proof artifacts and signoff log before print/vendor/export
+  packages.

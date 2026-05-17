@@ -20,6 +20,7 @@ Active skill entries use:
 - `repo_path`
 - `last_updated`
 - `status`
+- `requires` (optional list of manifest skill names that must be installed with this skill)
 - `notes`
 
 `planned_skills` is supporting context, not canonical inventory. Treat it as a
@@ -33,6 +34,13 @@ hint, not as an up-to-date install record.
 - A local `last-updated` older than the manifest `last_updated` is stale.
 - A local skill missing from `manifest.skills` is unknown/untracked.
 - A manifest skill missing locally is missing from the current install set.
+- A manifest skill with `status: deprecated`, `status: obsolete`, or
+  `status: retired` is a cleanup candidate when installed. If it is already
+  absent, do not count it as missing-local drift.
+- A manifest skill with `requires: [other-skill]` is drift when the required
+  skill is absent, unknown to `manifest.skills`, or present but itself drifted.
+- Sync mode expands a focused `--skill` request to include transitive
+  `requires` entries, so dependency sets travel together.
 
 ## Frontmatter fix output
 

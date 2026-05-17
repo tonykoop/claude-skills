@@ -61,7 +61,7 @@ authoritative version source.
 Each skill is independently versioned with semver. Tags are namespaced:
 
 ```text
-instrument-maker-v4/v4.3.1
+instrument-maker/v4.4.6
 tmux-v2/v2.0.0
 idea-incubator/v1.0.0
 ```

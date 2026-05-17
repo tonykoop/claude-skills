@@ -1,8 +1,7 @@
 ---
 name: idea-incubator
-metadata:
-  version: 1.3.0
-  last-updated: 2026-05-10
+version: 1.4.1
+last-updated: 2026-05-10
 description: >-
   Capture, classify, connect, review, and promote speculative ideas into a
   searchable GitHub issue inbox. Use when the user says "new idea", "incubate
@@ -32,6 +31,10 @@ into specialist handoffs.
 - `promote the cluster`
 - `batch promote`
 - `review the cluster`
+- `yearbook rollout`
+- `design book rollout`
+- `private media pilot`
+- `photo album pilot`
 
 The phrases are kept punctuation-free so substring-matching agents (Codex,
 Gemini CLI) hit them as reliably as Claude does.
@@ -65,6 +68,14 @@ Gemini CLI) hit them as reliably as Claude does.
    archives, photo albums, scanned documents, or personal video, also run the
    privacy-first checklist in
    [`references/private-media-family-archive.md`](references/private-media-family-archive.md).
+   When the idea is a yearbook, design book, school archive, cohort book, or
+   print-book rollout with identifiable people or private source media, also
+   run the rollout gates in
+   [`references/yearbook-design-book-rollout.md`](references/yearbook-design-book-rollout.md).
+   If the user asks for a photo album or private media pilot, use the focused
+   workflow in
+   [`references/photo-album-private-media-pilot.md`](references/photo-album-private-media-pilot.md)
+   before drafting downstream repo work.
 6. **Promote-batch** - cluster-aware promotion. Use when multiple capture
    issues share a recovery, archive, intake-dump, or thematic root and should
    be triaged as a unit instead of one-by-one. See the dedicated section
@@ -141,6 +152,13 @@ When in doubt for a recovery/import cluster, default to `Refs`.
 - [`references/private-media-family-archive.md`](references/private-media-family-archive.md)
   - Privacy-first promotion template for family archives, photo albums,
     scanned documents, and personal video.
+- [`references/yearbook-design-book-rollout.md`](references/yearbook-design-book-rollout.md)
+  - Rollout workflow for yearbooks, design books, cohort books, and private
+    print projects with consent, provenance, proof, and image-gen derivative
+    gates.
+- [`references/photo-album-private-media-pilot.md`](references/photo-album-private-media-pilot.md)
+  - Pilot workflow for private photo albums and media collections, including
+    source-photo, LFS, privacy, and imagegen derivative rules.
 - [`references/promote-batch-example.md`](references/promote-batch-example.md)
   - Worked example: legacy-import / Weather Balloon Camera Vessel cluster.
 

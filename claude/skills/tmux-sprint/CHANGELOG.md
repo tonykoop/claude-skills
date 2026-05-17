@@ -1,5 +1,22 @@
 # Changelog - tmux-sprint
 
+## v2.3.1 - 2026-05-17
+
+- Added `references/provider-failover.md`, a manager-owned contract for
+  migrating budget-exhausted panes across Codex, Claude, Gemini, and final
+  manager absorption.
+- Documented provider failover in `SKILL.md`, including fallback order,
+  provider state fields, same-pane swap boundaries, and summary requirements.
+
+## v2.3.0 - 2026-05-11
+
+- Added label-aware sprint batching and smart model-picker routing guidance.
+- Added `references/label-aware-routing.md` with source-label preservation,
+  assignment header shape, model conflict handling, and sprint-update output
+  expectations.
+- Added `scripts/plan-label-batches.sh` plus a focused smoke test for turning
+  GitHub issue JSON into Markdown/JSON batch plans.
+
 ## v2.2.0 - 2026-05-10
 
 - Added `twingrid_contracts.py` helpers for `ready_for_peek.json` freeze
