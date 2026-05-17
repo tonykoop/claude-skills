@@ -1,5 +1,20 @@
 # Changelog — instrument-maker
 
+## Unreleased — acoustic-law validator guard
+
+Salvages the small validator-hardening slice from stale draft PR #140.
+
+### Fixed
+
+- The acoustic-law validator now recognizes wind/reed prefixes in legacy
+  identifier columns such as `model_id`, `pipe_id`, `instrument_id`, and
+  `build_id`, not only `member_id`.
+- Hulusi-style family tables with `model_id=HUL-*` and no v4.4 acoustic-law
+  schema now fail with missing-column errors instead of returning
+  `rows_checked=0` as a non-wind skip.
+- Unit fixtures cover the Round 11 Bob-A/B finding that `rows_checked=0` must
+  not be treated as meaningful free-reed validation.
+
 ## v4.4.6 — 2026-05-11 (invocation rename)
 
 Issue #157 makes `instrument-maker` the official public skill name and keeps
