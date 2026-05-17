@@ -296,6 +296,105 @@ class ManifestAliasNameTests(unittest.TestCase):
         self.assertEqual(plan[0].target.name, "instrument-maker")
 
 
+class ManifestDependencyTests(unittest.TestCase):
+    """Manifest `requires` should make install dependencies visible."""
+
+    def setUp(self) -> None:
+        self.tmp = Path(tempfile.mkdtemp(prefix="skills-meta-requires-"))
+        self.addCleanup(shutil.rmtree, self.tmp, ignore_errors=True)
+        self.repo = self.tmp / "repo"
+        (self.repo / "skills").mkdir(parents=True)
+
+    def test_inventory_flags_missing_required_skill(self) -> None:
+        write_manifest(
+            self.repo,
+            {
+                "sprint-supervisor": {
+                    "canonical_version": "1.0.0",
+                    "runtime": "shared",
+                    "repo_path": "skills/sprint-supervisor",
+                    "last_updated": "2026-05-12",
+                    "status": "active",
+                    "requires": ["sprint-manager"],
+                },
+                "sprint-manager": {
+                    "canonical_version": "1.0.0",
+                    "runtime": "shared",
+                    "repo_path": "skills/sprint-manager",
+                    "last_updated": "2026-05-12",
+                    "status": "active",
+                },
+            },
+        )
+        write_skill(
+            self.repo / "skills" / "sprint-supervisor",
+            "sprint-supervisor",
+            "1.0.0",
+            "2026-05-12",
+        )
+
+        os.chdir(self.repo)
+        argv = ["skills-meta.py", "--mode", "single", "--skill", "sprint-supervisor"]
+        old_argv, sys.argv = sys.argv, argv
+        buf = io.StringIO()
+        try:
+            with redirect_stdout(buf):
+                rc = sm.main()
+        finally:
+            sys.argv = old_argv
+
+        out = buf.getvalue()
+        self.assertEqual(rc, 0, msg=out)
+        self.assertIn("missing-required:sprint-manager", out, msg=out)
+
+    def test_sync_expands_requested_skill_to_include_required_skill(self) -> None:
+        write_manifest(
+            self.repo,
+            {
+                "sprint-supervisor": {
+                    "canonical_version": "1.0.0",
+                    "runtime": "shared",
+                    "repo_path": "skills/sprint-supervisor",
+                    "last_updated": "2026-05-12",
+                    "status": "active",
+                    "requires": ["sprint-manager"],
+                },
+                "sprint-manager": {
+                    "canonical_version": "1.0.0",
+                    "runtime": "shared",
+                    "repo_path": "skills/sprint-manager",
+                    "last_updated": "2026-05-12",
+                    "status": "active",
+                },
+            },
+        )
+        write_skill(
+            self.repo / "skills" / "sprint-supervisor",
+            "sprint-supervisor",
+            "1.0.0",
+            "2026-05-12",
+        )
+        write_skill(
+            self.repo / "skills" / "sprint-manager",
+            "sprint-manager",
+            "1.0.0",
+            "2026-05-12",
+        )
+
+        plan = sm.build_sync_plan(
+            self.repo,
+            sm.load_yaml(self.repo / "manifest.yaml"),
+            self.tmp / ".codex" / "skills",
+            ["sprint-supervisor"],
+        )
+
+        self.assertEqual(
+            [entry.name for entry in plan],
+            ["sprint-supervisor", "sprint-manager"],
+            msg=plan,
+        )
+
+
 class DuplicateWarningTests(unittest.TestCase):
     """Duplicate-heavy installs should explain the cleanup choice, not just
     print remove lines without context."""

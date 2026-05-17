@@ -43,7 +43,9 @@ frontmatter.
    `manifest.yaml`.
 3. Report drift, missing metadata, unknown skills, stale installs, and
    manifest-marked deprecated/obsolete cleanup candidates.
-4. If asked for fixes, suggest a copy-pasteable frontmatter block only.
+4. Report missing, unknown, or drifted manifest dependencies declared with
+   `requires`.
+5. If asked for fixes, suggest a copy-pasteable frontmatter block only.
 
 Do not edit installed skills unless the user explicitly asks for a separate
 rewrite task.
@@ -112,6 +114,10 @@ python skills/skills-meta/scripts/skills-meta.py --mode sync \
 Omit `--skill` to operate on every manifest skill. Sync only knows about
 skills listed in `manifest.skills`; unknown directories at the target
 are left alone.
+
+When a manifest skill declares `requires`, focused sync expands the request to
+include those dependencies. For example, syncing `sprint-supervisor` also
+syncs a manifest-declared `sprint-manager` dependency.
 
 ## Unreadable roots
 

@@ -177,10 +177,32 @@ def parse_block_scalar(lines: list[str], index: int, parent_indent: int) -> tupl
     return " ".join(chunk for chunk in chunks if chunk), index
 
 
-def parse_scalar(value: str) -> str:
+def parse_scalar(value: str) -> Any:
+    if value.startswith("[") and value.endswith("]"):
+        inner = value[1:-1].strip()
+        if not inner:
+            return []
+        return [parse_scalar(chunk.strip()) for chunk in inner.split(",")]
     if len(value) >= 2 and value[0] in {"'", '"'} and value[-1] == value[0]:
         return value[1:-1]
     return value
+
+
+def normalize_requires(value: Any) -> list[str]:
+    if value is None:
+        return []
+    if isinstance(value, list):
+        return [str(item).strip() for item in value if str(item).strip()]
+    if isinstance(value, str):
+        raw = value.strip()
+        if not raw:
+            return []
+        if raw.startswith("[") and raw.endswith("]"):
+            raw = raw[1:-1].strip()
+        if not raw:
+            return []
+        return [chunk.strip().strip("'\"") for chunk in raw.split(",") if chunk.strip()]
+    return [str(value).strip()] if str(value).strip() else []
 
 
 def flatten_roots(value: Any) -> list[Path]:
@@ -416,10 +438,12 @@ def annotate_records(records: list[SkillRecord], manifest: dict[str, Any]) -> tu
     active = manifest.get("skills", {}) or {}
     planned = manifest.get("planned_skills", {}) or {}
     active_lookup: dict[str, dict[str, Any]] = {}
+    canonical_lookup: dict[str, dict[str, Any]] = {}
     canonical_active: list[str] = []
     for key, entry in active.items():
         canonical = canonical_name(str(key), entry or {})
         canonical_active.append(canonical)
+        canonical_lookup[canonical] = entry or {}
         for alias in entry_aliases(str(key), entry or {}):
             active_lookup[alias] = entry
     missing: list[str] = []
@@ -460,6 +484,24 @@ def annotate_records(records: list[SkillRecord], manifest: dict[str, Any]) -> tu
                 record.issues.append("planned-only")
             else:
                 record.issues.append("missing-from-manifest")
+
+    installed_by_name: dict[str, list[SkillRecord]] = {}
+    for record in records:
+        installed_by_name.setdefault(record.name, []).append(record)
+
+    for record in records:
+        if not record.manifest:
+            continue
+        for required in normalize_requires(record.manifest.get("requires")):
+            if required not in active_lookup and required not in canonical_lookup:
+                record.issues.append(f"unknown-required:{required}")
+                continue
+            required_records = installed_by_name.get(required, [])
+            if not required_records:
+                record.issues.append(f"missing-required:{required}")
+                continue
+            if not any(not required_record.issues for required_record in required_records):
+                record.issues.append(f"required-drift:{required}")
 
     seen = {record.name for record in records}
     for name in canonical_active:
@@ -905,12 +947,13 @@ def build_sync_plan(
 ) -> list[SyncEntry]:
     """For each manifest skill we're asked to sync, classify the target state."""
     active = manifest.get("skills", {}) or {}
+    expanded_filter = expand_sync_skill_filter(active, skill_filter)
     entries: list[SyncEntry] = []
     for key, raw in active.items():
         entry = raw or {}
         name = canonical_name(str(key), entry)
         aliases = entry_aliases(str(key), entry)
-        if skill_filter and name not in skill_filter and aliases.isdisjoint(skill_filter):
+        if expanded_filter and name not in expanded_filter and aliases.isdisjoint(expanded_filter):
             continue
         repo_path = entry.get("repo_path")
         if not repo_path:
@@ -986,6 +1029,46 @@ def build_sync_plan(
                 )
             )
     return entries
+
+
+def expand_sync_skill_filter(
+    active: dict[str, Any],
+    skill_filter: list[str] | None,
+) -> set[str] | None:
+    """Return requested skills plus transitive manifest `requires` entries.
+
+    A missing filter means "all skills", so there is nothing to expand. When
+    the user asks for one skill, sync should carry along its declared
+    dependencies instead of silently installing a broken partial set.
+    """
+    if not skill_filter:
+        return None
+
+    alias_to_canonical: dict[str, str] = {}
+    entries_by_canonical: dict[str, dict[str, Any]] = {}
+    for key, raw in active.items():
+        entry = raw or {}
+        canonical = canonical_name(str(key), entry)
+        entries_by_canonical[canonical] = entry
+        for alias in entry_aliases(str(key), entry):
+            alias_to_canonical[alias] = canonical
+
+    selected: set[str] = set()
+    pending: list[str] = list(skill_filter)
+    while pending:
+        requested = pending.pop()
+        canonical = alias_to_canonical.get(requested, requested)
+        if canonical in selected:
+            continue
+        selected.add(canonical)
+        entry = entries_by_canonical.get(canonical)
+        if not entry:
+            continue
+        for required in normalize_requires(entry.get("requires")):
+            required_canonical = alias_to_canonical.get(required, required)
+            if required_canonical not in selected:
+                pending.append(required_canonical)
+    return selected
 
 
 def render_sync_plan(plan: list[SyncEntry], target: Path, apply: bool, force: bool) -> str:
