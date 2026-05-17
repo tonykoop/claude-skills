@@ -78,6 +78,50 @@ def write_manifest(repo_root: Path, skills: dict[str, dict]) -> None:
     (repo_root / "manifest.yaml").write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
+class VersionFlagTests(unittest.TestCase):
+    """The sprint-manager preflight probe needs a direct helper fallback when
+    no `skills-meta` PATH shim exists."""
+
+    def setUp(self) -> None:
+        self.tmp = Path(tempfile.mkdtemp(prefix="skills-meta-version-"))
+        self.addCleanup(shutil.rmtree, self.tmp, ignore_errors=True)
+
+    def _run_version(self, *extra: str) -> tuple[int, str]:
+        os.chdir(self.tmp)
+        argv = ["skills-meta.py", "--version", *extra]
+        old_argv, sys.argv = sys.argv, argv
+        buf = io.StringIO()
+        try:
+            with redirect_stdout(buf):
+                rc = sm.main()
+        finally:
+            sys.argv = old_argv
+        return rc, buf.getvalue().strip()
+
+    def test_version_works_without_manifest_or_cwd_assumptions(self) -> None:
+        rc, out = self._run_version()
+        self.assertEqual(rc, 0, msg=out)
+        self.assertEqual(out, "skills-meta 1.0.0")
+
+    def test_version_prefers_manifest_canonical_version_when_available(self) -> None:
+        manifest = self.tmp / "manifest.yaml"
+        write_manifest(
+            self.tmp,
+            {
+                "skills-meta": {
+                    "canonical_version": "9.8.7",
+                    "runtime": "portable",
+                    "repo_path": "skills/skills-meta",
+                    "last_updated": "2026-05-11",
+                    "status": "active",
+                }
+            },
+        )
+        rc, out = self._run_version("--manifest", str(manifest))
+        self.assertEqual(rc, 0, msg=out)
+        self.assertEqual(out, "skills-meta 9.8.7 (installed 1.0.0)")
+
+
 class SingleModeDeterminismTests(unittest.TestCase):
     """A skill name appearing at four roots must produce stable output and
     surface every copy — silent records[0] picking was the review's
@@ -621,6 +665,64 @@ class SyncRuntimeDriftReportingTests(unittest.TestCase):
         self.assertEqual(plan[0]["state"], "drift", msg=out)
         self.assertEqual(plan[0]["source_runtime"], "claude", msg=out)
         self.assertEqual(plan[0]["target_runtime"], "codex", msg=out)
+
+
+class SyncManifestRelativePathTests(unittest.TestCase):
+    """Sync source lookup should follow the manifest location, not the shell cwd."""
+
+    def setUp(self) -> None:
+        self.tmp = Path(tempfile.mkdtemp(prefix="skills-meta-manifest-rel-"))
+        self.addCleanup(shutil.rmtree, self.tmp, ignore_errors=True)
+        self.repo = self.tmp / "repo"
+        write_skill(
+            self.repo / "skills" / "portable-skill",
+            "portable-skill",
+            "1.0.0",
+            "2026-05-01",
+        )
+        write_manifest(
+            self.repo,
+            {
+                "portable-skill": {
+                    "canonical_version": "1.0.0",
+                    "runtime": "portable",
+                    "repo_path": "skills/portable-skill",
+                    "last_updated": "2026-05-01",
+                    "status": "active",
+                }
+            },
+        )
+        self.target_root = self.tmp / "install"
+
+    def test_sync_manifest_repo_path_is_manifest_relative(self) -> None:
+        stable_cwd = SCRIPT.parents[3]
+        os.chdir(self.tmp)
+        argv = [
+            "skills-meta.py",
+            "--mode",
+            "sync",
+            "--manifest",
+            str(self.repo / "manifest.yaml"),
+            "--target",
+            str(self.target_root),
+            "--skill",
+            "portable-skill",
+        ]
+        old_argv, sys.argv = sys.argv, argv
+        buf = io.StringIO()
+        try:
+            with redirect_stdout(buf):
+                rc = sm.main()
+        finally:
+            sys.argv = old_argv
+            os.chdir(stable_cwd)
+
+        out = buf.getvalue()
+        self.assertEqual(rc, 0, msg=out)
+        self.assertIn("+ copy", out, msg=out)
+        self.assertIn(str(self.repo / "skills" / "portable-skill"), out, msg=out)
+        self.assertNotIn("source-missing", out, msg=out)
+
 
 class SyncSymlinkSafetyTests(unittest.TestCase):
     """The destructive review concern: never rmtree through a symlink, never

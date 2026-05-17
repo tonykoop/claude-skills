@@ -73,6 +73,11 @@ class SkillRecord:
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Audit installed skills against manifest.yaml.")
     parser.add_argument(
+        "--version",
+        action="store_true",
+        help="Print the skills-meta version and exit. Uses manifest canonical_version when available.",
+    )
+    parser.add_argument(
         "--mode",
         choices=("inventory", "single", "drift", "fix", "fix-duplicates", "sync"),
         default="inventory",
@@ -269,6 +274,27 @@ def read_frontmatter(path: Path) -> dict[str, Any]:
     raw = text[4:end]
     data = parse_yaml(raw)
     return data or {}
+
+
+def installed_skill_frontmatter() -> dict[str, Any]:
+    """Read this helper's bundled SKILL.md without depending on cwd."""
+    skill_md = Path(__file__).resolve().parents[1] / "SKILL.md"
+    try:
+        return read_frontmatter(skill_md)
+    except OSError:
+        return {}
+
+
+def render_version(manifest: dict[str, Any]) -> str:
+    """Render a stable version probe for sprint-manager preflight checks."""
+    frontmatter = installed_skill_frontmatter()
+    name = str(frontmatter.get("name") or "skills-meta")
+    installed = str(frontmatter.get("version") or "unknown")
+    manifest_entry = (manifest.get("skills", {}) or {}).get(name) or {}
+    canonical = manifest_entry.get("canonical_version")
+    if canonical:
+        return f"{name} {canonical} (installed {installed})"
+    return f"{name} {installed}"
 
 
 def collect_root_specs(repo_root: Path, manifest_path: Path, explicit_roots: list[str]) -> list[RootSpec]:
@@ -997,13 +1023,32 @@ def hash_dir(path: Path) -> str | None:
     return h.hexdigest()
 
 
+def resolve_manifest_repo_path(manifest_dir: Path, repo_path: str) -> Path:
+    """Resolve a manifest repo_path from the manifest file's directory."""
+    path = Path(repo_path).expanduser()
+    if path.is_absolute():
+        return path.resolve()
+    return (manifest_dir / path).resolve()
+
+
 def build_sync_plan(
     repo_root: Path,
-    manifest: dict[str, Any],
-    target: Path,
-    skill_filter: list[str] | None,
+    manifest_dir_or_manifest: Path | dict[str, Any],
+    manifest_or_target: dict[str, Any] | Path,
+    target_or_filter: Path | list[str] | None,
+    skill_filter: list[str] | None = None,
 ) -> list[SyncEntry]:
     """For each manifest skill we're asked to sync, classify the target state."""
+    if isinstance(manifest_dir_or_manifest, dict):
+        manifest_dir = repo_root
+        manifest = manifest_dir_or_manifest
+        target = manifest_or_target
+        skill_filter = target_or_filter  # type: ignore[assignment]
+    else:
+        manifest_dir = manifest_dir_or_manifest
+        manifest = manifest_or_target
+        target = target_or_filter
+
     active = manifest.get("skills", {}) or {}
     expanded_filter = expand_sync_skill_filter(active, skill_filter)
     entries: list[SyncEntry] = []
@@ -1018,7 +1063,7 @@ def build_sync_plan(
             entries.append(
                 SyncEntry(
                     name,
-                    repo_root / str(key),
+                    manifest_dir / str(key),
                     target / name,
                     "source-missing",
                     "configured",
@@ -1027,9 +1072,9 @@ def build_sync_plan(
                 )
             )
             continue
-        source = (repo_root / str(repo_path)).resolve()
+        source = resolve_manifest_repo_path(manifest_dir, str(repo_path))
         dest = target / name
-        source_runtime = infer_runtime(repo_root, source)
+        source_runtime = infer_runtime(manifest_dir, source)
         target_runtime = infer_runtime(repo_root, target)
         if not source.exists():
             entries.append(
@@ -1224,9 +1269,14 @@ def apply_sync(plan: list[SyncEntry], force: bool) -> tuple[int, int, int]:
 
 def main() -> int:
     args = parse_args()
-    repo_root = Path.cwd()
-    manifest_path = (repo_root / args.manifest).resolve()
+    cwd = Path.cwd()
+    manifest_path = (cwd / args.manifest).resolve()
+    repo_root = manifest_path.parent
     manifest = load_yaml(manifest_path)
+
+    if args.version:
+        print(render_version(manifest))
+        return 0
 
     if args.mode == "sync":
         if not args.target:
@@ -1236,7 +1286,7 @@ def main() -> int:
         skill_filter: list[str] | None = None
         if args.skill:
             skill_filter = [s.strip() for s in args.skill.split(",") if s.strip()]
-        plan = build_sync_plan(repo_root, manifest, target, skill_filter)
+        plan = build_sync_plan(repo_root, manifest_path.parent, manifest, target, skill_filter)
         if args.json:
             payload = {
                 "mode": "sync",
