@@ -13,13 +13,14 @@ description: >-
   retained only as a compatibility alias and historical repo folder during
   migration. This repository entry hosts the v4.4 acoustic-law/reed
   boundary-condition enhancement (issue #73), the v4.4.1 free-reed/khaen
-  exploration template (issue #109), and the v4.4.2
-  sheng/hulusi/chalumeau validation guardrail, plus the v4.4.3 prototype
-  validation-loop upgrade template and v4.4.4 repo-first bare-bones packet
-  readiness template, the v4.4.5 DXF/image-gen-2 visual authority guard, and
-  the v4.4.6 invocation rename. The full skill body lives in the canonical
-  install directory; this folder contains only the additive references,
-  validators, tests, fixtures, and examples that these changes introduce.
+  exploration template (issue #109), the folded stopped-pipe drone/DXF helper
+  enhancement (issue #108), and the v4.4.2 sheng/hulusi/chalumeau validation
+  guardrail, plus the v4.4.3 prototype validation-loop upgrade template and
+  v4.4.4 repo-first bare-bones packet readiness template, the v4.4.5
+  DXF/image-gen-2 visual authority guard, and the v4.4.6 invocation rename.
+  The full skill body lives in the canonical install directory; this folder
+  contains only the additive references, validators, tests, fixtures, and
+  examples that these changes introduce.
 ---
 
 # instrument-maker - partial-skill entry (v4 readiness additions)
@@ -40,9 +41,11 @@ runtime install roots are migrated.
 
 What lives here is the **v4.4 acoustic-law / reed boundary-condition
 enhancement** that closes
-[issue #73](https://github.com/tonykoop/claude-skills/issues/73), plus the
+[issue #73](https://github.com/tonykoop/claude-skills/issues/73), the
 **v4.4.1 free-reed/khaen exploration template** for
 [issue #109](https://github.com/tonykoop/claude-skills/issues/109), plus
+the **folded stopped-pipe drone template and DXF helper** for
+[issue #108](https://github.com/tonykoop/claude-skills/issues/108), plus
 the **v4.4.2 sheng/hulusi/chalumeau validation guardrail**, plus a
 **v4.4.3 prototype validation-loop upgrade template** for repos that already
 have instrument packets but still need empirical measurement and iteration
@@ -59,13 +62,16 @@ skills/instrument-maker-v4/
 │   ├── drawing-and-visual-authority.md         ← DXF/CAD authority + image-gen-2 guard
 │   ├── family-aware-design.md                  ← canonical + new family-spec.csv schema (acoustic_law, end_condition, dimension_provenance)
 │   ├── free-reed-khaen-exploration.md          ← P0 reed coupon / control-build template
+│   ├── folded-stopped-pipe-drone.md            ← folded drone packet template
 │   ├── prototype-validation-loop-upgrade.md     ← upgrade path for existing prototype packets
 │   └── repo-first-bare-bones-packet.md         ← minimal public repo-first packet contract
 ├── scripts/
+│   ├── generate_folded_drone_dxf.py            ← CSV-to-DXF folded bore helper
 │   ├── validate_acoustic_law.py                ← new in v4.4; focused validator
 │   └── validate_visual_authority.py            ← new in v4.4.5; DXF/image-gen-2 authority validator
 ├── tests/
 │   ├── test_validate_acoustic_law.py           ← acoustic-law validator tests
+│   ├── test_generate_folded_drone_dxf.py       ← focused DXF generator tests
 │   ├── test_validate_visual_authority.py       ← visual authority unit tests
 │   ├── test_validation_loop_templates.py       ← validation-loop template contract tests
 │   ├── test_repo_first_bare_bones_template.py  ← readiness template contract tests
@@ -74,6 +80,7 @@ skills/instrument-maker-v4/
 │   └── fixtures/visual-authority/{pass,fail}/  ← DXF/image-gen-2 authority fixtures
 └── examples/
     ├── repo-first-bare-bones-packet/           ← readiness:bare-bones starter packet
+    ├── folded-drone/centerline-stations.csv    ← compact folded E2 proof-mule fixture
     └── khaen/
         ├── family-spec.csv                     ← combined traditional + sister + planning rows
         ├── p0-reed-coupon-log.csv             ← reed-alone pitch, pull-down, onset, blow/draw log
@@ -105,7 +112,11 @@ cp     skills/instrument-maker-v4/scripts/validate_acoustic_law.py \
       ~/.claude/skills/instrument-maker/scripts/
 cp     skills/instrument-maker-v4/scripts/validate_visual_authority.py \
       ~/.claude/skills/instrument-maker/scripts/
+cp     skills/instrument-maker-v4/scripts/generate_folded_drone_dxf.py \
+      ~/.claude/skills/instrument-maker/scripts/
 cp -r skills/instrument-maker-v4/examples/khaen \
+      ~/.claude/skills/instrument-maker/examples/
+cp -r skills/instrument-maker-v4/examples/folded-drone \
       ~/.claude/skills/instrument-maker/examples/
 cp -r skills/instrument-maker-v4/examples/repo-first-bare-bones-packet \
       ~/.claude/skills/instrument-maker/examples/
@@ -122,6 +133,21 @@ Exit codes: `0` (clean), `1` (validation error), `2` (bad invocation).
 
 Add `--strict` to also fail on warnings and `--json` to emit a
 machine-readable findings document.
+
+## How to generate a folded stopped-pipe drone DXF starter
+
+```bash
+python3 skills/instrument-maker-v4/scripts/generate_folded_drone_dxf.py \
+    skills/instrument-maker-v4/examples/folded-drone/centerline-stations.csv \
+    --output /tmp/folded-drone-layout.dxf \
+    --duct-height-mm 42 \
+    --tuning-tail-mm 180
+```
+
+The helper reads centerline stations plus a width schedule and emits a
+DXF-first folded-bore layout with duct walls, bend zones, tuning-tail
+allowance, leak-test notes, breath-contact safety notes, and a straight
+reference tube comparison. It is a layout generator, not CAM.
 
 ## How to validate visual-output authority
 
