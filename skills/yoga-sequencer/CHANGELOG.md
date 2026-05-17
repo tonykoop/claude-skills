@@ -1,5 +1,12 @@
 # Changelog — yoga-sequencer
 
+## v1.2.0 — 2026-05-10
+
+- Added `references/heated-room-safety.md` with a reusable teacher-facing hot-room checklist covering hydration, breath-quality gates, heat-distress signs, pregnancy / non-heated substitutions, and compression or inversion caution.
+- SKILL.md now directs heated, hot power, sculpt, and C3-style requests to load the heated-room safety reference and include the checklist in full-class outputs.
+- `references/sequencing-principles.md`: added heated-room cue-volume guidance so teacher voice gets quieter as repetition and heat rise.
+- Source: Round 8 Bob hot-power vinyasa follow-on (issue #95).
+
 ## v1.1.0 — 2026-05-10
 
 - Added cue-density arc as a required field on every phase of a full-class plan. Controlled vocabulary: `sparse`, `moderate`, `rhythmic`, `focused`, `minimal`.
