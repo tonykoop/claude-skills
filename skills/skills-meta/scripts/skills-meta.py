@@ -1033,12 +1033,22 @@ def resolve_manifest_repo_path(manifest_dir: Path, repo_path: str) -> Path:
 
 def build_sync_plan(
     repo_root: Path,
-    manifest_dir: Path,
-    manifest: dict[str, Any],
-    target: Path,
-    skill_filter: list[str] | None,
+    manifest_dir_or_manifest: Path | dict[str, Any],
+    manifest_or_target: dict[str, Any] | Path,
+    target_or_filter: Path | list[str] | None,
+    skill_filter: list[str] | None = None,
 ) -> list[SyncEntry]:
     """For each manifest skill we're asked to sync, classify the target state."""
+    if isinstance(manifest_dir_or_manifest, dict):
+        manifest_dir = repo_root
+        manifest = manifest_dir_or_manifest
+        target = manifest_or_target
+        skill_filter = target_or_filter  # type: ignore[assignment]
+    else:
+        manifest_dir = manifest_dir_or_manifest
+        manifest = manifest_or_target
+        target = target_or_filter
+
     active = manifest.get("skills", {}) or {}
     expanded_filter = expand_sync_skill_filter(active, skill_filter)
     entries: list[SyncEntry] = []
