@@ -152,7 +152,11 @@ def parse_mapping(lines: list[str], index: int, indent: int) -> tuple[dict[str, 
         key, raw_value = stripped.split(":", 1)
         value = raw_value.strip()
         if not value:
-            child, index = parse_mapping(lines, index + 1, indent + 2)
+            next_item = next_content_line(lines, index + 1)
+            if next_item and next_item[1] >= indent + 2 and next_item[2].startswith("-"):
+                child, index = parse_sequence(lines, index + 1, indent + 2)
+            else:
+                child, index = parse_mapping(lines, index + 1, indent + 2)
             result[key.strip()] = child
             continue
         if value.startswith((">", "|")):
@@ -160,6 +164,43 @@ def parse_mapping(lines: list[str], index: int, indent: int) -> tuple[dict[str, 
             result[key.strip()] = block
             continue
         result[key.strip()] = parse_scalar(value)
+        index += 1
+    return result, index
+
+
+def next_content_line(lines: list[str], index: int) -> tuple[int, int, str] | None:
+    while index < len(lines):
+        raw_line = lines[index]
+        stripped = raw_line.strip()
+        if stripped and not stripped.startswith("#") and stripped != "---":
+            return index, len(raw_line) - len(raw_line.lstrip(" ")), stripped
+        index += 1
+    return None
+
+
+def parse_sequence(lines: list[str], index: int, indent: int) -> tuple[list[Any], int]:
+    result: list[Any] = []
+    while index < len(lines):
+        raw_line = lines[index]
+        stripped = raw_line.strip()
+        if not stripped or stripped.startswith("#") or stripped == "---":
+            index += 1
+            continue
+        current_indent = len(raw_line) - len(raw_line.lstrip(" "))
+        if current_indent < indent:
+            break
+        if current_indent > indent:
+            index += 1
+            continue
+        if not stripped.startswith("-"):
+            break
+
+        value = stripped[1:].strip()
+        if not value:
+            child, index = parse_mapping(lines, index + 1, indent + 2)
+            result.append(child)
+            continue
+        result.append(parse_scalar(value))
         index += 1
     return result, index
 
@@ -177,10 +218,32 @@ def parse_block_scalar(lines: list[str], index: int, parent_indent: int) -> tupl
     return " ".join(chunk for chunk in chunks if chunk), index
 
 
-def parse_scalar(value: str) -> str:
+def parse_scalar(value: str) -> Any:
+    if value.startswith("[") and value.endswith("]"):
+        inner = value[1:-1].strip()
+        if not inner:
+            return []
+        return [parse_scalar(chunk.strip()) for chunk in inner.split(",")]
     if len(value) >= 2 and value[0] in {"'", '"'} and value[-1] == value[0]:
         return value[1:-1]
     return value
+
+
+def normalize_requires(value: Any) -> list[str]:
+    if value is None:
+        return []
+    if isinstance(value, list):
+        return [str(item).strip() for item in value if str(item).strip()]
+    if isinstance(value, str):
+        raw = value.strip()
+        if not raw:
+            return []
+        if raw.startswith("[") and raw.endswith("]"):
+            raw = raw[1:-1].strip()
+        if not raw:
+            return []
+        return [chunk.strip().strip("'\"") for chunk in raw.split(",") if chunk.strip()]
+    return [str(value).strip()] if str(value).strip() else []
 
 
 def flatten_roots(value: Any) -> list[Path]:
@@ -412,16 +475,27 @@ def canonical_name(key: str, entry: dict[str, Any]) -> str:
     return str(key)
 
 
+def append_issue(record: SkillRecord, issue: str) -> bool:
+    if issue in record.issues:
+        return False
+    record.issues.append(issue)
+    return True
+
+
 def annotate_records(records: list[SkillRecord], manifest: dict[str, Any]) -> tuple[list[SkillRecord], list[str]]:
     active = manifest.get("skills", {}) or {}
     planned = manifest.get("planned_skills", {}) or {}
     active_lookup: dict[str, dict[str, Any]] = {}
+    canonical_lookup: dict[str, dict[str, Any]] = {}
+    dependency_lookup: dict[str, str] = {}
     canonical_active: list[str] = []
     for key, entry in active.items():
         canonical = canonical_name(str(key), entry or {})
         canonical_active.append(canonical)
+        canonical_lookup[canonical] = entry or {}
         for alias in entry_aliases(str(key), entry or {}):
             active_lookup[alias] = entry
+            dependency_lookup[alias] = canonical
     missing: list[str] = []
 
     for record in records:
@@ -430,36 +504,62 @@ def annotate_records(records: list[SkillRecord], manifest: dict[str, Any]) -> tu
         if record.manifest:
             manifest_status = str(record.manifest.get("status") or "").strip().lower()
             if manifest_status in OBSOLETE_STATUSES:
-                record.issues.append(f"cleanup-candidate:{manifest_status}")
+                append_issue(record, f"cleanup-candidate:{manifest_status}")
             canonical = str(record.manifest.get("canonical_version") or "")
             if not record.version:
-                record.issues.append("missing-version")
+                append_issue(record, "missing-version")
             else:
                 cmp = compare_semver(record.version, canonical)
                 if cmp is None:
-                    record.issues.append("unparseable-version")
+                    append_issue(record, "unparseable-version")
                 elif cmp < 0:
-                    record.issues.append(f"behind-canonical:{canonical}")
+                    append_issue(record, f"behind-canonical:{canonical}")
                 elif cmp > 0:
-                    record.issues.append(f"ahead-of-canonical:{canonical}")
+                    append_issue(record, f"ahead-of-canonical:{canonical}")
 
             manifest_updated = str(record.manifest.get("last_updated") or "")
             if not record.last_updated:
-                record.issues.append("missing-last-updated")
+                append_issue(record, "missing-last-updated")
             elif is_date(record.last_updated) and manifest_updated and record.last_updated < manifest_updated:
-                record.issues.append(f"stale-last-updated:{manifest_updated}")
+                append_issue(record, f"stale-last-updated:{manifest_updated}")
             elif not is_date(record.last_updated):
-                record.issues.append("unparseable-last-updated")
+                append_issue(record, "unparseable-last-updated")
 
             if not record.changelog_path:
-                record.issues.append("missing-changelog")
+                append_issue(record, "missing-changelog")
             elif not changelog_mentions_version(record.changelog_path, canonical):
-                record.issues.append(f"changelog-missing-version:{canonical}")
+                append_issue(record, f"changelog-missing-version:{canonical}")
         else:
             if record.planned:
-                record.issues.append("planned-only")
+                append_issue(record, "planned-only")
             else:
-                record.issues.append("missing-from-manifest")
+                append_issue(record, "missing-from-manifest")
+
+    installed_by_name: dict[str, list[SkillRecord]] = {}
+    for record in records:
+        installed_by_name.setdefault(record.name, []).append(record)
+        path_canonical = dependency_lookup.get(record.path.parent.name)
+        if path_canonical and path_canonical != record.name:
+            installed_by_name.setdefault(path_canonical, []).append(record)
+
+    while True:
+        changed = False
+        for record in records:
+            if not record.manifest:
+                continue
+            for required in normalize_requires(record.manifest.get("requires")):
+                required_name = dependency_lookup.get(required)
+                if required_name is None or required_name not in canonical_lookup:
+                    changed |= append_issue(record, f"unknown-required:{required}")
+                    continue
+                required_records = installed_by_name.get(required_name, [])
+                if not required_records:
+                    changed |= append_issue(record, f"missing-required:{required_name}")
+                    continue
+                if not any(not required_record.issues for required_record in required_records):
+                    changed |= append_issue(record, f"required-drift:{required_name}")
+        if not changed:
+            break
 
     seen = {record.name for record in records}
     for name in canonical_active:
@@ -905,12 +1005,13 @@ def build_sync_plan(
 ) -> list[SyncEntry]:
     """For each manifest skill we're asked to sync, classify the target state."""
     active = manifest.get("skills", {}) or {}
+    expanded_filter = expand_sync_skill_filter(active, skill_filter)
     entries: list[SyncEntry] = []
     for key, raw in active.items():
         entry = raw or {}
         name = canonical_name(str(key), entry)
         aliases = entry_aliases(str(key), entry)
-        if skill_filter and name not in skill_filter and aliases.isdisjoint(skill_filter):
+        if expanded_filter and name not in expanded_filter and aliases.isdisjoint(expanded_filter):
             continue
         repo_path = entry.get("repo_path")
         if not repo_path:
@@ -986,6 +1087,46 @@ def build_sync_plan(
                 )
             )
     return entries
+
+
+def expand_sync_skill_filter(
+    active: dict[str, Any],
+    skill_filter: list[str] | None,
+) -> set[str] | None:
+    """Return requested skills plus transitive manifest `requires` entries.
+
+    A missing filter means "all skills", so there is nothing to expand. When
+    the user asks for one skill, sync should carry along its declared
+    dependencies instead of silently installing a broken partial set.
+    """
+    if not skill_filter:
+        return None
+
+    alias_to_canonical: dict[str, str] = {}
+    entries_by_canonical: dict[str, dict[str, Any]] = {}
+    for key, raw in active.items():
+        entry = raw or {}
+        canonical = canonical_name(str(key), entry)
+        entries_by_canonical[canonical] = entry
+        for alias in entry_aliases(str(key), entry):
+            alias_to_canonical[alias] = canonical
+
+    selected: set[str] = set()
+    pending: list[str] = list(skill_filter)
+    while pending:
+        requested = pending.pop()
+        canonical = alias_to_canonical.get(requested, requested)
+        if canonical in selected:
+            continue
+        selected.add(canonical)
+        entry = entries_by_canonical.get(canonical)
+        if not entry:
+            continue
+        for required in normalize_requires(entry.get("requires")):
+            required_canonical = alias_to_canonical.get(required, required)
+            if required_canonical not in selected:
+                pending.append(required_canonical)
+    return selected
 
 
 def render_sync_plan(plan: list[SyncEntry], target: Path, apply: bool, force: bool) -> str:

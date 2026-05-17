@@ -61,6 +61,13 @@ def write_skill(path: Path, name: str, version: str | None, last_updated: str | 
     (path / "SKILL.md").write_text(body, encoding="utf-8")
 
 
+def write_changelog(path: Path, version: str) -> None:
+    (path / "CHANGELOG.md").write_text(
+        f"# Changelog\n\n## v{version}\n\nFixture entry.\n",
+        encoding="utf-8",
+    )
+
+
 def write_manifest(repo_root: Path, skills: dict[str, dict]) -> None:
     """Tiny manifest writer; YAML-compatible enough for safe_load."""
     lines = ["schema_version: 1", "skills:"]
@@ -294,6 +301,183 @@ class ManifestAliasNameTests(unittest.TestCase):
         self.assertEqual(len(plan), 1, msg=plan)
         self.assertEqual(plan[0].name, "instrument-maker")
         self.assertEqual(plan[0].target.name, "instrument-maker")
+
+
+class ManifestDependencyTests(unittest.TestCase):
+    """Manifest `requires` should make install dependencies visible."""
+
+    def setUp(self) -> None:
+        self.tmp = Path(tempfile.mkdtemp(prefix="skills-meta-requires-"))
+        self.addCleanup(shutil.rmtree, self.tmp, ignore_errors=True)
+        self.repo = self.tmp / "repo"
+        (self.repo / "skills").mkdir(parents=True)
+
+    def test_inventory_flags_missing_required_skill(self) -> None:
+        write_manifest(
+            self.repo,
+            {
+                "sprint-supervisor": {
+                    "canonical_version": "1.0.0",
+                    "runtime": "shared",
+                    "repo_path": "skills/sprint-supervisor",
+                    "last_updated": "2026-05-12",
+                    "status": "active",
+                    "requires": ["sprint-manager"],
+                },
+                "sprint-manager": {
+                    "canonical_version": "1.0.0",
+                    "runtime": "shared",
+                    "repo_path": "skills/sprint-manager",
+                    "last_updated": "2026-05-12",
+                    "status": "active",
+                },
+            },
+        )
+        write_skill(
+            self.repo / "skills" / "sprint-supervisor",
+            "sprint-supervisor",
+            "1.0.0",
+            "2026-05-12",
+        )
+
+        os.chdir(self.repo)
+        argv = ["skills-meta.py", "--mode", "single", "--skill", "sprint-supervisor"]
+        old_argv, sys.argv = sys.argv, argv
+        buf = io.StringIO()
+        try:
+            with redirect_stdout(buf):
+                rc = sm.main()
+        finally:
+            sys.argv = old_argv
+
+        out = buf.getvalue()
+        self.assertEqual(rc, 0, msg=out)
+        self.assertIn("missing-required:sprint-manager", out, msg=out)
+
+    def test_inventory_flags_transitive_required_drift_in_scan_order(self) -> None:
+        write_manifest(
+            self.repo,
+            {
+                "alpha": {
+                    "canonical_version": "1.0.0",
+                    "runtime": "shared",
+                    "repo_path": "skills/alpha",
+                    "last_updated": "2026-05-12",
+                    "status": "active",
+                    "requires": ["beta"],
+                },
+                "beta": {
+                    "canonical_version": "1.0.0",
+                    "runtime": "shared",
+                    "repo_path": "skills/beta",
+                    "last_updated": "2026-05-12",
+                    "status": "active",
+                    "requires": ["charlie"],
+                },
+                "charlie": {
+                    "canonical_version": "1.0.0",
+                    "runtime": "shared",
+                    "repo_path": "skills/charlie",
+                    "last_updated": "2026-05-12",
+                    "status": "active",
+                },
+            },
+        )
+        for name in ("alpha", "beta"):
+            skill_dir = self.repo / "skills" / name
+            write_skill(skill_dir, name, "1.0.0", "2026-05-12")
+            write_changelog(skill_dir, "1.0.0")
+
+        os.chdir(self.repo)
+        argv = ["skills-meta.py", "--mode", "single", "--skill", "alpha"]
+        old_argv, sys.argv = sys.argv, argv
+        buf = io.StringIO()
+        try:
+            with redirect_stdout(buf):
+                rc = sm.main()
+        finally:
+            sys.argv = old_argv
+
+        out = buf.getvalue()
+        self.assertEqual(rc, 0, msg=out)
+        self.assertIn("required-drift:beta", out, msg=out)
+
+    def test_fallback_yaml_parser_accepts_block_list_requires(self) -> None:
+        manifest_text = textwrap.dedent(
+            """\
+            schema_version: 1
+            skills:
+              alpha:
+                canonical_version: 1.0.0
+                runtime: shared
+                repo_path: skills/alpha
+                last_updated: 2026-05-12
+                status: active
+                requires:
+                  - beta
+                  - charlie
+            """
+        )
+
+        old_yaml = sm.yaml
+        sm.yaml = None
+        try:
+            parsed = sm.parse_yaml(manifest_text)
+        finally:
+            sm.yaml = old_yaml
+
+        self.assertEqual(
+            parsed["skills"]["alpha"]["requires"],
+            ["beta", "charlie"],
+            msg=parsed,
+        )
+
+    def test_sync_expands_requested_skill_to_include_required_skill(self) -> None:
+        write_manifest(
+            self.repo,
+            {
+                "sprint-supervisor": {
+                    "canonical_version": "1.0.0",
+                    "runtime": "shared",
+                    "repo_path": "skills/sprint-supervisor",
+                    "last_updated": "2026-05-12",
+                    "status": "active",
+                    "requires": ["sprint-manager"],
+                },
+                "sprint-manager": {
+                    "canonical_version": "1.0.0",
+                    "runtime": "shared",
+                    "repo_path": "skills/sprint-manager",
+                    "last_updated": "2026-05-12",
+                    "status": "active",
+                },
+            },
+        )
+        write_skill(
+            self.repo / "skills" / "sprint-supervisor",
+            "sprint-supervisor",
+            "1.0.0",
+            "2026-05-12",
+        )
+        write_skill(
+            self.repo / "skills" / "sprint-manager",
+            "sprint-manager",
+            "1.0.0",
+            "2026-05-12",
+        )
+
+        plan = sm.build_sync_plan(
+            self.repo,
+            sm.load_yaml(self.repo / "manifest.yaml"),
+            self.tmp / ".codex" / "skills",
+            ["sprint-supervisor"],
+        )
+
+        self.assertEqual(
+            [entry.name for entry in plan],
+            ["sprint-supervisor", "sprint-manager"],
+            msg=plan,
+        )
 
 
 class DuplicateWarningTests(unittest.TestCase):
