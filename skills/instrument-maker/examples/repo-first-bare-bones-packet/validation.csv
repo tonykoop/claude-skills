@@ -1,0 +1,7 @@
+gate_id,gate,required_before,method,status,next_action,evidence,notes
+V001,Acoustic model selected and justified,full packet,Design review plus measurement or cited model,TBD,Choose model or define measurement plan,TBD,For wind/free-reed projects use acoustic-law validator once family-spec.csv exists.
+V002,Critical dimensions measured or experiment planned,CAD/DXF authority,Measurement log or explicit test plan,TBD,Record values or assign experiment,TBD,No hidden guessed dimensions.
+V003,Material and process feasibility checked,build-ready claim,Shop/process review,TBD,Confirm tool/material limits,TBD,Include tool limits and material behavior.
+V004,Supplier facts verified,purchase recommendation,Current supplier check,TBD,Check price availability lead time and shipping,TBD,Prices and lead times are time-sensitive.
+V005,Public-safe documentation reviewed,publish,Privacy review,TBD,Review photos story text and metadata,TBD,Exclude private family/media/location details.
+V006,Risk review complete,full packet,Risks have mitigation or test owner,TBD,Assign mitigation or test owner,TBD,Architecture-changing risks block promotion.

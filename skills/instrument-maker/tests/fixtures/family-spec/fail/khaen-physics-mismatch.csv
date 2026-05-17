@@ -1,0 +1,3 @@
+member_id,target_hz,target_note,acoustic_law,end_condition,dimension_provenance,predicted_L_geom_mm,wood_species,notes
+KHN-007-G3,196.00,G3,side_branch_reed,both_ends_open,physics_derived,427.0,Hard Maple,Length is half of correct (the bug Round 7 lane Irene caught)
+KHN-007-A4,440.00,A4,side_branch_reed,both_ends_open,physics_derived,184.0,Hard Maple,Half-wave law but quarter-wave length

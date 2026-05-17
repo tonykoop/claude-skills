@@ -1,0 +1,3 @@
+artifact_id,path,artifact_kind,role,authority,derived_from,dimension_claim,fabrication_required,notes
+DXF-001,drawings/body-layout.dxf,dxf,fabrication_geometry,fabrication,,derived_from_authority,true,Controls cut geometry
+SVG-001,drawings/body-layout.svg,svg_preview,derived_preview,derived_preview,,derived_from_authority,false,Preview missing source authority link
