@@ -1,7 +1,7 @@
 ---
 name: tmux-sprint
-version: 2.3.0
-last-updated: 2026-05-11
+version: 2.3.1
+last-updated: 2026-05-17
 description: >-
   Transactional sprint-round dispatch, liveness probing, and codex-session
   revival for persona agents running in a tmux grid. Use whenever the user
@@ -260,6 +260,24 @@ Walks the state machine:
 
 No user interaction needed unless the codex binary itself prompts for auth.
 
+### Provider failover - budget-exhausted pane recovery
+
+When a live pane is blocked by a provider-specific budget or rate-limit
+condition, the manager should prefer a same-pane provider migration before
+absorbing the lane into the manager context. The first implementation contract
+lives in `references/provider-failover.md` and defines:
+
+- the default fallback order: `codex -> claude -> gemini -> manager-absorb`
+- the per-pane provider state fields that round records should persist
+- the same-pane swap flow: interrupt, exit to shell, launch, probe, resume
+- the prompt families that count as retryable exhaustion signals
+- the morning-summary fields for migrated panes
+
+The failover path deliberately reuses the existing `preflight`, `dispatch`,
+and `restart` boundaries. Provider migration is a manager-owned recovery
+operation; sprint-supervisor should only approve safe prompts by prompt shape
+and escalate anything outside its rubric.
+
 ## TwinGrid mode - blind A/B plus Partner Peek
 
 Use TwinGrid mode when the manager wants paired Claude/Codex lanes to solve
@@ -489,5 +507,7 @@ The supporting `scripts/preflight.sh`, `scripts/dispatch.sh`, `scripts/restart.s
 `assets/assignment-preamble.txt`, and `assets/personas.default.json` files
 referenced above live in the working wrfcoin workspace and are not yet
 included in this v0.1 publish. The SKILL.md (this file) is the contract;
-the implementation is shipped incrementally. Open an issue in this repo if you
-want to request the reference script implementations.
+the implementation is shipped incrementally. The provider failover contract in
+`references/provider-failover.md` is likewise a design packet until those
+reference scripts are present in this public package. Open an issue in this
+repo if you want to request the reference script implementations.

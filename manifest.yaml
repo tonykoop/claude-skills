@@ -42,14 +42,15 @@ skills:
       Current Codex tmux sprint driver. v3 evolution is tracked by issues.
 
   tmux-sprint:
-    canonical_version: 2.3.0
+    canonical_version: 2.3.1
     runtime: claude
     repo_path: claude/skills/tmux-sprint
-    last_updated: 2026-05-10
+    last_updated: 2026-05-17
     status: active
     notes: >-
       Claude-side tmux sprint counterpart with TwinGrid blind A/B, Partner
-      Peek templates, and label-aware sprint batching/model-picker routing.
+      Peek templates, label-aware sprint batching/model-picker routing, and a
+      provider-failover contract for budget-exhausted pane recovery.
 
   merge-review:
     canonical_version: 1.0.0
