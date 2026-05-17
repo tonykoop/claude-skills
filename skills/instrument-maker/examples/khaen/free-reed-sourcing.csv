@@ -1,0 +1,5 @@
+item_id,item,stable_spec,source_status,supplier_or_source,date_checked,price_status,lead_time_status,verification_needed,notes
+SRC-001,donor melodica reed bank,"known donor model; individual reed pitch TBD",donor_part_on_hand,shop inventory,,not_applicable,not_applicable,"measure reed-alone pitch, blow/draw behavior, pull-down cents",Do not scale family until measured
+SRC-002,brass shim stock for handmade reeds,"0.10-0.25 mm brass or phosphor bronze",supplier_spec_unverified,local or online metal supplier,,unknown,unknown,"verify alloy, thickness, spring behavior, burr quality",Coupon-test before CAD
+SRC-003,commercial sheng/khaen reed plate,"supplier pitch labels and plate dimensions",live_stock_transient,online marketplace,,must_verify_current,must_verify_current,"verify current availability and measure in shop",Do not treat listing as stable design data
+SRC-004,ceramic shell fabricator,"clay body, shrinkage, glaze thickness, removable core seat",needs_supplier_quote,TBD,,quote_required,quote_required,"confirm fired shrinkage and tolerances",Use removable acoustic core for P0/P1
