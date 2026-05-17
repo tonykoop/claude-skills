@@ -70,7 +70,7 @@ skills/instrument-maker-v4/
 │   ├── test_validation_loop_templates.py       ← validation-loop template contract tests
 │   ├── test_repo_first_bare_bones_template.py  ← readiness template contract tests
 │   ├── test_invocation_rename.py               ← public-name migration contract tests
-│   ├── fixtures/family-spec/{pass,fail}/       ← 4 pass + 4 fail fixtures
+│   ├── fixtures/family-spec/{pass,fail}/       ← 4 pass + 5 fail fixtures
 │   └── fixtures/visual-authority/{pass,fail}/  ← DXF/image-gen-2 authority fixtures
 └── examples/
     ├── repo-first-bare-bones-packet/           ← readiness:bare-bones starter packet
