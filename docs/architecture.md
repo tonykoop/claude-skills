@@ -49,7 +49,7 @@ The 3-5 sub-agents per persona × 7 personas = ~30 agents running in parallel du
 | `~/.claude/projects/<project-slug>/tmux-v2/rounds/round-<N>.json` | Per-round dispatch record (survives `/compact`) |
 | `~/.claude/projects/<project-slug>/tmux-v2/dispatches/<ts>.json` | Raw transaction log per dispatch |
 | GitHub issues + PRs | Merge ledger; the canonical "what's done" |
-| `/tmp/wrfcoin-sprint-doc-locks/<basename>.holder` | Advisory-lock holder file managed by the sprint-doc-lock hook |
+| `/tmp/sprint-doc-locks/<basename>.holder` | Advisory-lock holder file managed by the sprint-doc-lock hook |
 
 Round-state JSON survives manager-pane `/compact` and is readable by a second sprint manager (codex or claude). This is what makes manager handoffs across compaction boundaries work.
 

@@ -78,7 +78,7 @@ same content as the deck but laid out for shop-floor reading.
 ### Print packet design conventions
 
 - **Sans-serif body** — readable on a shop-floor clipboard at arm's
-  length. Tony's brand uses Inter; default is fine if Inter isn't
+  length. Inter is a readable default; substitute your preferred sans-serif if Inter isn't
   available.
 - **Headings differentiate by size, not by color** — print packets
   may be photocopied or printed grayscale.

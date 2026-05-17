@@ -1,13 +1,13 @@
 # Makerspace Round 1 Skill Eval
 
 Date: 2026-05-08
-Skill path: `/mnt/c/Users/Tony/Documents/GitHub/makerspace`
-Issue context: `tonykoop/claude-skills#15`
+Skill path: `<your-workspace>/makerspace`
+Issue context: `<your-repo>#15`
 
 ## Scope
 
 This pass re-checked the revised `makerspace` skill against
-`/home/tony/.codex/skills/.system/skill-creator/SKILL.md`, ran structural
+`skill-creator/SKILL.md`, ran structural
 validation, and attempted a CLI forward-test before falling back to an
 in-process manual behavioral pass.
 
@@ -60,7 +60,7 @@ documentation blindly. The corrected interpretation for this repo is:
 Command:
 
 ```bash
-python3 /home/tony/.codex/skills/.system/skill-creator/scripts/quick_validate.py /mnt/c/Users/Tony/Documents/GitHub/makerspace
+python3 <skill-creator>/scripts/quick_validate.py <your-workspace>/makerspace
 ```
 
 Result:
@@ -90,7 +90,7 @@ Result: pass.
 Attempted first:
 
 ```bash
-codex exec --ephemeral -s read-only -C /mnt/c/Users/Tony/Documents/GitHub/makerspace ...
+codex exec --ephemeral -s read-only -C <your-workspace>/makerspace ...
 ```
 
 Observed failure:
@@ -223,7 +223,7 @@ artifacts. That location is sensible for this repo because it keeps the old
 workspace data versioned with the skill while avoiding runtime coupling.
 
 Keep the original external `makerspace-workspace` folder untouched for now.
-Do not delete or move the original until Tony explicitly asks, since it may
+Do not delete or move the original until the repo owner explicitly asks, since it may
 still be a useful provenance anchor or comparison point.
 
 If the repo gets another cleanup pass later, consider renaming the in-repo

@@ -1,0 +1,2 @@
+artifact_id,path,artifact_kind,role
+DXF-001,drawings/body-layout.dxf,dxf,fabrication_geometry

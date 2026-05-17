@@ -1,6 +1,9 @@
 ---
 name: yoga-sequencer
-description: Design vinyasa-first yoga class sequences, peak-pose progressions, anatomical prep, counter-poses, and full class plans with phase timing plus playlist-builder handoff data. Use when planning a yoga class, sequencing for hips, shoulders, twists, or backbends, choosing prep for a peak pose, or turning a class arc into music-ready phases.
+metadata:
+  version: 1.2.0
+  last-updated: 2026-05-10
+description: Design vinyasa-first yoga class sequences, peak-pose progressions, anatomical prep, counter-poses, heated-room safety adjustments, and full class plans with phase timing plus playlist-builder handoff data. Use when planning a yoga class, sequencing for hips, shoulders, twists, or backbends, choosing prep for a peak pose, adapting a hot-room class, or turning a class arc into music-ready phases.
 ---
 
 # Yoga Sequencer
@@ -33,6 +36,8 @@ These references are bundled but not all are needed every time. Pull only what t
   Query for specific lookups: prep ladder for a peak pose, counter-pose ideas, or constraint-aware substitutions. For a routine class plan that only uses the staple poses listed below, you usually do not need to open this file at all.
 - `references/sequencing-principles.md`
   Open when you need the default arc by class length, peak-pose ladders, or the bilateral symmetry checklist.
+- `references/heated-room-safety.md`
+  Open for any heated-room, hot power, sculpt, C3-style, or sweaty public-class request. Use it for the standard safety checklist, heat-distress signs, hydration and breath-quality gates, pregnancy/non-heated substitutions, and cue-volume guidance as heat rises.
 - `references/playlist-builder-handoff.md`
   Open when the user wants music or a phase-timing export.
 
@@ -103,6 +108,7 @@ Start from the most demanding shape and work backward.
 - Use `poses.yaml` to identify required actions, likely prep poses, and safer regressions.
 - Build heat, mobility, strength, and pattern recognition before the peak.
 - Include at least one simpler version or exit ramp.
+- If the default peak is **constraint-heavy** — binds, deep twists, deep backbends, heavy wrist load, balance peaks, or anything contraindicated for pregnancy — also include a **teacher-discretion alternate peak**: a wholly different, gentler shape that lands the same theme. This is more than a regression. It is the peak you teach when the room reads tired, brand-new, or pregnancy-heavy. See `references/sequencing-principles.md` for the alternate-peak pattern and worked examples.
 
 ### Anatomical prep lookup
 
@@ -135,8 +141,17 @@ Produce a phase-by-phase plan with:
 - intent
 - pose order
 - notable cues, modifications, or cautions
+- **cue density** — how much teacher voice belongs in the phase: `sparse`, `moderate`, `rhythmic`, `focused`, or `minimal`. See `references/sequencing-principles.md` for default arcs by class length and style.
 
 Always include warm-up, standing build, peak or focal work, counterpose, cooldown, and savasana.
+
+For heated-room or hot power requests, also include a short teacher-usable safety checklist:
+
+- hydration and permission to downshift without rushing to rejoin
+- breath-quality gate: if breath gets ragged, the advanced option is to reduce intensity
+- heat-distress signs such as dizziness, tunnel vision, nausea, chills, goosebumps, confusion, unusual shortness of breath, glassy eyes, loss of coordination, or the sense that the room suddenly got hotter
+- pregnancy, heat-avoidance, and non-heated substitution path: open twists, supported balance, less compression, and rest options
+- cue-volume arc: teacher voice gets quieter as repetition and heat rise; the peak is focused, not loud
 
 ### Playlist handoff
 
@@ -153,6 +168,9 @@ The YAML is part of the contract for any full class plan — see "When to includ
 - If crow, inversion, deep twist, or deep backbend appears, give it runway and recovery.
 - Match breath cadence to the class goal: steadier for grounding, quicker only when the user clearly wants heat.
 - If one side gets extra rounds, state why and re-balance later when possible.
+- Manage teacher voice across the arc. Cue density rises into the peak (focused) and falls into savasana (minimal). Avoid lyric-dense or wordy cueing during focused phases — students need silence for proprioception.
+- In heated rooms, protect breath and attention by lowering cue volume as repetition and heat rise: teach landmarks early, then use fewer words, repeated anchor cues, and longer quiet stretches.
+- When the default peak is constraint-heavy (binds, deep twists, deep backbends, balance peaks, heavy wrist load, pregnancy-contraindicated), include a teacher-discretion alternate peak — a wholly different gentler shape that still lands the theme. This is the peak you teach when the room reads tired, brand-new, or pregnancy-heavy. A regression of the default is not a substitute.
 
 ## Safety and scope
 
@@ -160,15 +178,16 @@ The YAML is part of the contract for any full class plan — see "When to includ
 - If a request centers on injury treatment, rehab, or guaranteed safety, say that this skill can only offer general class-planning adjustments.
 - Prefer accessible regressions for mixed-level rooms.
 - Name obvious caution zones for advanced poses or strong ranges of motion.
+- For hot-room classes, use calm teacher language instead of legal disclaimers: name downshift options, breath-quality gates, hydration reminders, heat-distress signs, and non-heated or pregnancy-aware substitutions.
 
 ## Output shape
 
 For a full sequence, use this structure unless the user asks for something shorter:
 
-1. Class summary: length, level, theme, peak pose, energy.
-2. Sequence by phase: timing, intent, pose order, brief cues.
+1. Class summary: length, level, theme, peak pose, energy. If the default peak is constraint-heavy, also name the teacher-discretion alternate peak.
+2. Sequence by phase: timing, intent, pose order, brief cues, **cue density** (sparse / moderate / rhythmic / focused / minimal).
 3. Modifications and cautions.
-4. Playlist phase-map YAML block (see rule below).
+4. Playlist phase-map YAML block (see rule below). Each phase should carry both `energy` and `cue_density`.
 
 For lookup requests (counter-pose, anatomical prep, single-pose modifications), return only the smallest useful subset and skip the playlist YAML.
 
@@ -195,7 +214,7 @@ If you are unsure whether the request is full-class or lookup, default to includ
 These are optional collaborators, not requirements. The skill should produce a complete, self-contained class plan even if none of them are installed on the current platform.
 
 - `yoga-playlist-builder` for music selection and phase-matched track planning, when available
-- `energy-management` when class design must fit Tony's week, energy, or teaching schedule
+- `energy-management` when class design must fit the user's week, energy, or teaching schedule
 - `idea-incubator` when the user wants class themes, workshop angles, or retreat concepts
 
 ## Final check before replying
@@ -205,3 +224,6 @@ These are optional collaborators, not requirements. The skill should produce a c
 - Is the peak earned rather than dropped in?
 - Is there a believable cooldown?
 - Did you include playlist-ready timing when relevant?
+- Did you map cue density across the arc, and does it ease toward `minimal` for savasana?
+- For heated-room classes, did you include the safety checklist and make the teacher voice quieter as repetition and heat rise?
+- If the peak is constraint-heavy, did you offer a teacher-discretion alternate peak (not just a regression)?

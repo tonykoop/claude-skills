@@ -1,19 +1,34 @@
 ---
 name: skills-meta
+version: 1.0.0
+last-updated: 2026-05-09
 description: >-
-  Audit installed skills, compare frontmatter to manifest.yaml, and report
-  version drift, missing metadata, unreadable roots, or duplicate copies
-  across roots. Can also sync canonical skills from manifest repo_path
-  into a target install root (e.g. cross-install Claude-side skills like
-  merge-review and sprint-update into a Codex CLI skill folder). Use when
-  asked what skills are installed, what version a skill is running,
-  whether skills are up to date, to suggest frontmatter fixes, to clean
-  up duplicate skill copies, or to make a skill available to another
-  runtime on the same machine. Read-only by default; never rewrites,
-  deletes, or copies without an explicit --apply flag.
+  Audit installed skills across Claude, Codex, Gemini, and desktop installs.
+  Compare frontmatter to manifest.yaml and report version drift, missing
+  metadata, unreadable roots, or duplicate copies across roots. Can also sync
+  canonical skills from manifest repo_path into a target install root (e.g.
+  cross-install Claude-side skills into a Codex CLI skill folder). Use when
+  asked what skills are installed, what version a skill is running, whether
+  skills are up to date, to suggest frontmatter fixes, to clean up duplicate
+  skill copies, or to make a skill available to another runtime on the same
+  machine. Read-only by default; never rewrites, deletes, or copies without an
+  explicit --apply flag.
 ---
 
 # skills-meta
+
+## Trigger phrases
+
+- `what skills do I have?` / `list installed skills`
+- `what version is [skill] running?`
+- `are my skills up to date?` / `check for drift`
+- `audit my skills` / `skills inventory`
+- `suggest frontmatter fix for [skill]`
+
+## Do not trigger for
+
+- Editing or rewriting skills — treat that as a separate user-authorized task.
+- Skill design or new skill creation — route to `skill-creator` if available.
 
 Use this skill to answer "what skill versions am I running?" across Claude,
 Codex, Gemini, and desktop installs.
@@ -26,8 +41,11 @@ frontmatter.
 1. Inventory installed skills.
 2. Compare each skill's `version` and `last-updated` frontmatter to
    `manifest.yaml`.
-3. Report drift, missing metadata, unknown skills, and stale installs.
-4. If asked for fixes, suggest a copy-pasteable frontmatter block only.
+3. Report drift, missing metadata, unknown skills, stale installs, and
+   manifest-marked deprecated/obsolete cleanup candidates.
+4. Report missing, unknown, or drifted manifest dependencies declared with
+   `requires`.
+5. If asked for fixes, suggest a copy-pasteable frontmatter block only.
 
 Do not edit installed skills unless the user explicitly asks for a separate
 rewrite task.
@@ -50,6 +68,10 @@ Desktop installs are user-configured. Accept roots via `SKILLS_META_ROOTS` or
 
 ## Modes
 
+- Version probe: `python scripts/skills-meta.py --version` prints the
+  helper's installed version, or the manifest canonical version when a
+  manifest is available. This is the fallback when a runtime does not install
+  a `skills-meta` shell shim on `PATH`.
 - Inventory: list every discovered skill with version, last-updated,
   runtime/root, and manifest status.
 - Single-skill check: focus on one named skill and show installed vs
@@ -57,15 +79,18 @@ Desktop installs are user-configured. Accept roots via `SKILLS_META_ROOTS` or
 - Drift check: surface only mismatches, missing skills, and stale dates.
 - Frontmatter-fix: print a suggested frontmatter block, never apply it.
 - Fix-duplicates: when a skill name appears at multiple roots, print a
-  keep/remove plan. Default is dry-run; pass `--apply` to confirm each
-  removal interactively. Never deletes without per-copy y/n.
+  keep/remove plan with the reason one copy was chosen as canonical. Default
+  is dry-run; pass `--apply` to confirm each removal interactively. Never
+  deletes without per-copy y/n.
 - Sync: copy manifest skills from their canonical `repo_path` into a
   `--target` install root. Useful for cross-runtime install — e.g.
   making Claude-side skills (`merge-review`, `sprint-update`) available
   to a Codex CLI agent. Dry-run by default; `--apply` copies missing
   skills; `--apply --force` also overwrites targets that have drifted
   from the canonical source. Without `--force`, drifted targets are
-  reported and skipped so local edits aren't clobbered silently.
+  reported and skipped so local edits aren't clobbered silently. Sync
+  output labels source and target runtimes so cross-runtime copies are
+  easy to audit.
 
 ## Sync workflow
 
@@ -94,6 +119,10 @@ Omit `--skill` to operate on every manifest skill. Sync only knows about
 skills listed in `manifest.skills`; unknown directories at the target
 are left alone.
 
+When a manifest skill declares `requires`, focused sync expands the request to
+include those dependencies. For example, syncing `sprint-supervisor` also
+syncs a manifest-declared `sprint-manager` dependency.
+
 ## Unreadable roots
 
 When a manifest, `SKILLS_META_ROOTS`, or `--root` entry doesn't exist or
@@ -120,12 +149,19 @@ and surfaced in inventory/drift output. Use `--mode fix-duplicates` to
 print a keep/remove plan, or `--mode fix-duplicates --apply` to walk
 each removal interactively.
 
+## Deprecated and obsolete skills
+
+Manifest entries with `status: deprecated`, `status: obsolete`, or
+`status: retired` are cleanup candidates. If an installed copy still exists,
+the helper reports it with a `cleanup-candidate:<status>` issue. If it is
+already absent, it is not counted as "manifest missing locally" drift.
+
 ## Output rules
 
 - Keep reports short and mobile-friendly.
 - One skill per line when possible.
 - Prefer status tags like `ok`, `missing`, `drift`, `planned`,
-  `unknown`, `duplicate`.
+  `unknown`, `duplicate`, `deprecated`, and `obsolete`.
 - Summarize counts first, then the top mismatches.
 - If there are many results, cap the initial list and say how many were
   omitted.

@@ -1,0 +1,22 @@
+{
+  "id": "yoga-restorative",
+  "name": "Restorative Yoga (75-min)",
+  "description": "75-minute restorative class. Surrender energy throughout. Long-held supported poses, conscious rest, extended savasana. No peak — the entire class is a slow drift down. Compatible with yin formats and most studio restorative offerings.",
+  "duration_min": 75,
+  "duration_acceptable": [70, 82],
+  "padding_default_min": 5,
+  "track_count_target": [10, 14],
+  "music_pedagogy": {
+    "beat": "Movement is minimal. Tracks should drift rather than drive — beat clarity is less important than sustained atmosphere.",
+    "voice": "Long silent stretches between cues. Tracks must allow extended quiet without abrupt shifts back to high energy.",
+    "count": "Rarely used. Counts here are breath cycles, not beats."
+  },
+  "phases": [
+    { "name": "Settling",             "bank": "A", "min_tracks": 1, "max_tracks": 2, "window_min": [0, 10],  "energy": 1, "notes": "Students lie down with props. Quiet, atmospheric." },
+    { "name": "Long-Held Poses",      "bank": "E", "min_tracks": 3, "max_tracks": 4, "window_min": [10, 40], "energy": 3, "notes": "Long-held supported poses. Music continues but stays low-percussion." },
+    { "name": "Conscious Rest",       "bank": "A", "min_tracks": 2, "max_tracks": 3, "window_min": [40, 60], "energy": 1, "notes": "Deeper rest. Tracks may have very long fades or drone-like quality." },
+    { "name": "Final Savasana",       "bank": "A", "min_tracks": 1, "max_tracks": 2, "window_min": [60, 80], "energy": 1, "notes": "Extended savasana. Silence is welcome — let a track end and don't replace it for 2-5 minutes." }
+  ],
+  "theme_anchor": null,
+  "content_filter": "Strictly filter explicit lyrics. Tracks with prominent sung lyrics should also be screened — many students sleep during restorative and lyrics can pull them back to alertness."
+}

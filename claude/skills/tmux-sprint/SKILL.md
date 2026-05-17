@@ -1,15 +1,20 @@
 ---
 name: tmux-sprint
+version: 2.3.1
+last-updated: 2026-05-17
 description: >-
   Transactional sprint-round dispatch, liveness probing, and codex-session
   revival for persona agents running in a tmux grid. Use whenever the user
   mentions tmux-sprint, round dispatch, preflight sprint panes, persona dispatch,
   restart a dead codex pane, frank pane is stuck at codex resume, dispatch a
-  sprint round, send an assignment to alice/bob/cindy/dan/elsa/frank, or wants
-  to reliably hand out per-persona assignment markdown files across a mixed
-  claude+codex tmux sprint session. Replaces fragile `tmux send-keys` patterns
-  with structured primitives that verify submission, rate-limit by pane type,
-  and persist round state across `/compact`.
+  sprint round, TwinGrid blind A/B, Partner Peek reveal, send an assignment to
+  alice/bob/cindy/dan/elsa/frank, or wants to reliably hand out per-persona
+  assignment markdown files across a mixed claude+codex tmux sprint session.
+  Includes label-aware sprint batching and smart model-picker routing for
+  GitHub issue queues.
+  Replaces fragile `tmux send-keys` patterns with structured primitives that
+  verify submission, rate-limit by pane type, and persist round state across
+  `/compact`.
 ---
 
 # tmux-sprint — Sprint Driver
@@ -255,6 +260,177 @@ Walks the state machine:
 
 No user interaction needed unless the codex binary itself prompts for auth.
 
+### Provider failover - budget-exhausted pane recovery
+
+When a live pane is blocked by a provider-specific budget or rate-limit
+condition, the manager should prefer a same-pane provider migration before
+absorbing the lane into the manager context. The first implementation contract
+lives in `references/provider-failover.md` and defines:
+
+- the default fallback order: `codex -> claude -> gemini -> manager-absorb`
+- the per-pane provider state fields that round records should persist
+- the same-pane swap flow: interrupt, exit to shell, launch, probe, resume
+- the prompt families that count as retryable exhaustion signals
+- the morning-summary fields for migrated panes
+
+The failover path deliberately reuses the existing `preflight`, `dispatch`,
+and `restart` boundaries. Provider migration is a manager-owned recovery
+operation; sprint-supervisor should only approve safe prompts by prompt shape
+and escalate anything outside its rubric.
+
+## TwinGrid mode - blind A/B plus Partner Peek
+
+Use TwinGrid mode when the manager wants paired Claude/Codex lanes to solve
+the same task independently, reveal partner outputs only after the blind pass,
+and turn the combined result into a skill-improvement recommendation or PR.
+
+TwinGrid is a manager-owned protocol layered on top of normal `preflight` and
+`dispatch`; it can run content-generation rounds, skill-development rounds, or
+mixed rounds. The manager owns metrics and orchestration. Agents must not
+self-report elapsed time, context remaining, usage remaining, or pane status;
+capture those from tmux/statusline telemetry instead.
+
+### Phase 0: Plan-first dispatch
+
+Use Plan-first dispatch for implementation rounds or any task that may create
+repo changes. The assignment should say "Plan first" and the persona must
+summarize intended files, tests, and PR scope before editing. The manager then
+presses Enter or sends a short approval nudge. Only after that gate should the
+persona create worktrees, edit files, commit, push, or open a PR.
+
+For long instructions, write the full prompt to a file and dispatch a short
+one-liner such as:
+
+```text
+Read /tmp/r9i-dan.md and execute. Plan first.
+```
+
+This avoids `tmux send-keys -l` hangs on large prompts while preserving a
+readable contract file for recovery after `/compact`.
+
+Rename each pane/session before dispatch when the runtime supports it:
+
+```text
+/rename <agent>_r<round>_<topic>
+```
+
+Examples: `dan_r9_twingrid-contracts`, `elsa_r9_yaybahar-rig`. This makes
+`/resume`, pane recovery, PR review, and archive inspection line up with the
+assignment. For Claude panes with touchy login/API state, wait a few seconds
+between `/rename`, `/new`, and the handoff send.
+
+### Smart batching and model picker notes
+
+Batch dispatch by runtime and risk:
+
+- Send short file-based prompts to all Claude panes in small groups when the
+  panes are idle and the work is artifact-only.
+- Send Codex panes sequentially with the existing rate limit, especially when
+  the task involves edits, tests, network tools, or repo state.
+- Give implementation, merge, review-gate, and ambiguous architecture work to
+  the stronger available model; use lighter models for bounded artifact
+  generation, transcription, simple matrix reads, and no-code validation.
+- Keep blind A/B independence by recording the actual runtime/model in the
+  handoff and agent record rather than changing expectations mid-round.
+- If a pane is blocked on approval, auth, missing tools, or a long-running
+  command, skip it in the next batch and let the manager recover it explicitly.
+
+For GitHub-backed sprint queues, preserve issue labels as first-class routing
+inputs. Read `references/label-aware-routing.md` before generating assignment
+headers from issue labels, and use `scripts/plan-label-batches.sh` when you
+have `gh issue list --json number,title,url,labels` output to convert labels
+into batch groups, suggested models, and manager-review notes.
+
+### Phase 1: blind dispatch
+
+Use `references/twingrid-blind-handoff-template.md` to generate one assignment
+per side/lane. The template requires:
+
+- lane, side, runtime, task, and output folder
+- named skill(s) to load
+- isolated worktree/output-path guardrails
+- no partner-output visibility
+- a required agent record without self-reported runtime metrics
+
+For content-generation rounds, the output folder can be under `/tmp`. For
+skill-development rounds, each side must receive an assigned branch/worktree
+and should open a draft PR only after concrete repo changes.
+
+Before Partner Peek, each side must freeze the blind pass by writing
+`ready_for_peek.json` in its own output folder. Use
+`scripts/twingrid_contracts.py freeze` where possible:
+
+```bash
+python3 claude/skills/tmux-sprint/scripts/twingrid_contracts.py freeze \
+  --round 9 \
+  --lane elsa \
+  --side A \
+  --runtime gpt55-window-13 \
+  --task "Yaybahar resonance test rig" \
+  --output-folder /tmp/twingrid-r9-gpt55-elsa-yaybahar-test-rig
+```
+
+The freeze record state is `BLIND_FROZEN` and includes the output folder,
+artifact summary/validation/skill findings paths when present, a blind
+artifact manifest, and SHA256 receipts. Do not read partner output or modify
+existing blind artifacts before writing it.
+
+Canonical skill findings filename: `skill_findings.md`. Existing aliases
+`skill-improvement-findings.md` and `skill-improvement-recommendation.md` are
+accepted for backwards compatibility, but new handoffs should ask for
+`skill_findings.md`.
+
+### Phase 2: Partner Peek reveal
+
+After both sides finish the blind pass, the manager writes a compact reveal
+brief and uses `references/twingrid-partner-peek-template.md`. The reveal must
+include the partner output path, a manager comparison, any newly available
+tools, and the instruction to preserve the original blind artifact while adding
+v2 supplements such as `partner-peek-improvements.md`, `v2-*`, validation logs,
+`combine_recommendation.md`, and a Partner Peek record.
+
+For structured Partner Peek records, use
+`scripts/twingrid_contracts.py peek-record` as a starter and then fill in the
+adopted ideas, validation, PR/issues, and manager notes:
+
+```bash
+python3 claude/skills/tmux-sprint/scripts/twingrid_contracts.py peek-record \
+  --round 9 \
+  --lane elsa \
+  --side A \
+  --runtime gpt55-window-13 \
+  --task "Yaybahar resonance test rig" \
+  --output-folder /tmp/twingrid-r9-gpt55-elsa-yaybahar-test-rig \
+  --partner-folder /tmp/twingrid-r9-gpt54-elsa-yaybahar-test-rig
+```
+
+If a pane disappears or is restarted after producing artifacts, first inspect
+its existing output folder. A valid `ready_for_peek.json` with `BLIND_FROZEN`
+and matching SHA256 receipts is enough to recover from the folder rather than
+rerunning the blind pass. Launch a fresh pane only for the missing Partner Peek
+or implementation continuation, and point it at the frozen folder.
+
+### Manager matrix
+
+Use `scripts/twingrid_matrix.py` after the blind pass or Partner Peek pass to
+scan output folders and optional pane captures:
+
+```bash
+python3 claude/skills/tmux-sprint/scripts/twingrid_matrix.py \
+  --outputs-glob '/tmp/twingrid-r7-*' \
+  --pane-captures-dir /tmp/twingrid-r7-pane-captures \
+  --format markdown
+```
+
+The matrix reports lane, side, runtime, output folder, blind artifacts, v2
+artifacts, validations run, PR/issue status, skill-improvement
+recommendations, freeze state, canonical/alias skill findings filenames, and
+pane-block findings. It detects common blockers in pane capture text,
+including local command approval prompts, missing tool requests, and
+command-not-found/install hints. See
+`references/twingrid-manager-matrix.md` for the JSON shape and manager
+workflow.
+
 ## Persona config
 
 Persona metadata is read from
@@ -301,6 +477,7 @@ Invoke this skill when the user says any of:
 - "restart frank" / "frank is at codex resume" / "revive the codex pane"
 - "check which personas are idle" / "who is free for more work"
 - "send alice this assignment" / "hand bob this md file"
+- "label-aware sprint batching" / "smart model picker" / "plan label batches"
 
 ## Related skills
 
@@ -330,5 +507,7 @@ The supporting `scripts/preflight.sh`, `scripts/dispatch.sh`, `scripts/restart.s
 `assets/assignment-preamble.txt`, and `assets/personas.default.json` files
 referenced above live in the working wrfcoin workspace and are not yet
 included in this v0.1 publish. The SKILL.md (this file) is the contract;
-the implementation is shipped incrementally. Reach out via the wrfcoin GitHub
-org if you want a copy of the current scripts to fork from.
+the implementation is shipped incrementally. The provider failover contract in
+`references/provider-failover.md` is likewise a design packet until those
+reference scripts are present in this public package. Open an issue in this
+repo if you want to request the reference script implementations.

@@ -1,15 +1,16 @@
 name: makerspace
-version: 1.0.0
+version: 1.1.2
 description: |
   Fabrication specialist for jigs, fixtures, workholding, machine-aware
   process plans, and make/order/buy/borrow decisions. Uses shop profiles
   or lightweight equipment templates to produce repeatable shop packets
-  with safety, tolerance, and setup checks.
+  with safety, tolerance, setup, DXF/CNC handoff, and repo-backed fabrication
+  handoff checks.
 authors:
-  - name: Tony Koop
-    url: https://github.com/tonykoop
+  - name: <your-name>
+    url: https://github.com/<your-username>
 license: MIT
-homepage: https://github.com/tonykoop/makerspace
+homepage: https://github.com/<your-username>/makerspace
 keywords:
   - makerspace
   - fabrication
@@ -22,6 +23,10 @@ keywords:
   - tooling
   - cnc
   - laser
+  - dxf
+  - woodworking
+  - mechanism
+  - handoff
   - mill
   - router
   - makerspace-profile

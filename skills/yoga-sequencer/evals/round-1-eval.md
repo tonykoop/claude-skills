@@ -7,7 +7,7 @@ Evaluator: Codex
 
 ## Validation
 
-- `python3 /home/tony/.codex/skills/.system/skill-creator/scripts/quick_validate.py skills/yoga-sequencer`
+- `python3 <skill-creator>/scripts/quick_validate.py skills/yoga-sequencer`
   Result: pass (`Skill is valid!`)
 - YAML parse check:
   - `skills/yoga-sequencer/agents/openai.yaml`

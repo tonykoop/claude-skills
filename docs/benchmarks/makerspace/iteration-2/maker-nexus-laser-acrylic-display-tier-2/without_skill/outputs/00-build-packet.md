@@ -1,6 +1,6 @@
 # Edge-Lit Acrylic Award Display — Tier 2 Build Packet
 
-**Maker:** Tony (cleared: laser, woodshop)
+**Maker:** [Maker Name] (cleared: laser, woodshop)
 **Facility:** Maker Nexus (Sunnyvale, CA)
 **Date:** 2026-05-08
 **Tier:** 2 (intermediate — multi-process, multi-material, fixturing required)

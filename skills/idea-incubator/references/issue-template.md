@@ -12,7 +12,7 @@ Title: <short idea title>
   > <paste the raw capture here>
 
 ## What this is
-<1-3 sentences in Tony's words, or the closest safe paraphrase>
+<1-3 sentences in the user's words, or the closest safe paraphrase>
 
 ## Why it matters
 - <why this is worth keeping>

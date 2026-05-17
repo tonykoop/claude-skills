@@ -11,7 +11,7 @@ Date: 2026-05-08
 
 ## Notes on skill-creator alignment
 
-- I re-read `/home/tony/.codex/skills/.system/skill-creator/SKILL.md` before this pass.
+- I re-read the `skill-creator/SKILL.md` before this pass.
 - The skill now follows the validator-friendly frontmatter shape used by the current skill-creator toolchain: `name` and `description` only.
 - The repo-required `CHANGELOG.md` remains present because the repository release workflow expects it.
 
@@ -106,6 +106,6 @@ Date: 2026-05-08
 
 ## Remaining Risks
 
-- Repo ownership and visibility are intentionally not hard-coded, so some promotion prompts still need Tony to name the target repo.
+- Repo ownership and visibility are intentionally not hard-coded, so some promotion prompts still need the user to name the target repo.
 - The label bootstrap helper depends on authenticated `gh` access.
 - `CHANGELOG.md` is a deliberate repo-level exception to the minimal skill-creator guidance.

@@ -5,7 +5,7 @@
 Build the `yoga-sequencer` skill for GitHub issue #13:
 
 ```bash
-gh issue view 13 --repo tonykoop/claude-skills
+gh issue view 13 --repo <your-username>/<your-repo>
 ```
 
 ## Model / lane
@@ -17,7 +17,7 @@ Use your configured `gpt-5.4` lane. This is a structured content/design skill wi
 Primary repo:
 
 ```text
-/mnt/c/Users/Tony/Documents/GitHub/claude-skills
+<your-workspace>/claude-skills
 ```
 
 Target skill path:
@@ -43,7 +43,7 @@ skills/yoga-sequencer/
 - You are not alone in the repo. Other agents may edit sibling paths under `skills/`.
 - Do not revert unrelated changes.
 - Do not commit or push.
-- Ask Tony if you need his preferred yoga style beyond vinyasa defaults.
+- Ask the repo owner if you need their preferred yoga style beyond vinyasa defaults.
 
 ## Done
 

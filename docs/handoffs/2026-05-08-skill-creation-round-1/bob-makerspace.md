@@ -5,7 +5,7 @@
 Work on the existing `makerspace` skill repo for GitHub issue #15:
 
 ```bash
-gh issue view 15 --repo tonykoop/claude-skills
+gh issue view 15 --repo <your-username>/<your-repo>
 ```
 
 ## Model / lane
@@ -17,20 +17,20 @@ Use your configured `gpt-5.4` lane. This is the manufacturing/fabrication specia
 Primary repo:
 
 ```text
-/mnt/c/Users/Tony/Documents/GitHub/makerspace
+<your-workspace>/makerspace
 ```
 
-Related workspace Tony flagged:
+Related workspace flagged:
 
 ```text
-/mnt/c/Users/Tony/Documents/GitHub/makerspace-workspace
+<your-workspace>/makerspace-workspace
 ```
 
 ## Build requirements
 
 - Inspect the existing makerspace repo before editing; it already has `SKILL.md`, references, examples, scripts, agents, and evals.
 - Improve it toward the issue #15 specialist goal: jigs, fixtures, workholding, shop process, machine-aware planning, and make/order/buy/borrow decisions.
-- Evaluate whether `makerspace-workspace` should live inside the makerspace repo. If yes, integrate it cleanly under a sensible path such as `evals/workspace/` or `benchmarks/`, preserving artifacts and avoiding deletion of the original external folder unless Tony explicitly asks.
+- Evaluate whether `makerspace-workspace` should live inside the makerspace repo. If yes, integrate it cleanly under a sensible path such as `evals/workspace/` or `benchmarks/`, preserving artifacts and avoiding deletion of the original external folder unless the repo owner explicitly asks.
 - Keep the skill concise; move detailed checklists/templates into references.
 - Do not take over acoustic design; route that to `instrument-maker-v4` or `maker-engineering`.
 
@@ -42,7 +42,7 @@ The makerspace repo already has local modifications and untracked files. Work wi
 
 - You are not alone in the repo.
 - Do not commit or push.
-- If workspace relocation has destructive implications, ask Tony before deleting/moving anything irreversible.
+- If workspace relocation has destructive implications, ask the repo owner before deleting/moving anything irreversible.
 
 ## Done
 

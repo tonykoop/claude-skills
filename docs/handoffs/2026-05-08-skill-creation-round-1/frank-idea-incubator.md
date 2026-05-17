@@ -5,7 +5,7 @@
 Build the `idea-incubator` skill for GitHub issue #9:
 
 ```bash
-gh issue view 9 --repo tonykoop/claude-skills
+gh issue view 9 --repo <your-username>/<your-repo>
 ```
 
 ## Model / lane
@@ -17,7 +17,7 @@ Use your configured `gpt-5.4-mini` lane. This issue has strong context and needs
 Primary repo:
 
 ```text
-/mnt/c/Users/Tony/Documents/GitHub/claude-skills
+<your-workspace>/claude-skills
 ```
 
 Target skill path:
@@ -42,7 +42,7 @@ skills/idea-incubator/
 - You are not alone in the repo. Other agents may edit sibling paths under `skills/`.
 - Do not revert unrelated changes.
 - Do not commit or push.
-- Ask Tony if the future `idea-incubator` repo ownership or visibility matters before hard-coding it.
+- Ask the repo owner if the future `idea-incubator` repo ownership or visibility matters before hard-coding it.
 
 ## Done
 

@@ -12,11 +12,15 @@ from datetime import date
 from pathlib import Path
 from typing import Any
 
-import yaml
+try:
+    import yaml
+except ImportError:  # pragma: no cover - exercised on hosts without PyYAML.
+    yaml = None
 
 DEFAULT_ROOTS = ("skills", "claude/skills", "codex/skills", "gemini/skills")
 DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 SEMVER_RE = re.compile(r"^(\d+)\.(\d+)\.(\d+)$")
+OBSOLETE_STATUSES = {"deprecated", "obsolete", "retired"}
 
 
 @dataclass
@@ -45,6 +49,7 @@ class SkillRecord:
     version: str | None
     last_updated: str | None
     description: str | None
+    changelog_path: Path | None = None
     manifest: dict[str, Any] | None = None
     planned: dict[str, Any] | None = None
     issues: list[str] = field(default_factory=list)
@@ -53,6 +58,9 @@ class SkillRecord:
     def render_status(self) -> str:
         if self.duplicate_of:
             return "duplicate"
+        manifest_status = str((self.manifest or {}).get("status") or "").strip().lower()
+        if manifest_status in OBSOLETE_STATUSES:
+            return manifest_status
         if self.issues:
             if "missing-from-manifest" in self.issues:
                 return "unknown"
@@ -64,6 +72,11 @@ class SkillRecord:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Audit installed skills against manifest.yaml.")
+    parser.add_argument(
+        "--version",
+        action="store_true",
+        help="Print the skills-meta version and exit. Uses manifest canonical_version when available.",
+    )
     parser.add_argument(
         "--mode",
         choices=("inventory", "single", "drift", "fix", "fix-duplicates", "sync"),
@@ -99,14 +112,143 @@ def parse_args() -> argparse.Namespace:
         help="In sync --apply, overwrite a target that has drifted from the canonical source. "
         "Without --force, drifted targets are reported and skipped to protect local edits.",
     )
+    parser.add_argument("--strict", action="store_true", help="Exit 1 when drift or missing manifest skills are found.")
     return parser.parse_args()
 
 
 def load_yaml(path: Path) -> dict[str, Any]:
     if not path.exists():
         return {}
-    data = yaml.safe_load(path.read_text(encoding="utf-8"))
+    data = parse_yaml(path.read_text(encoding="utf-8"))
     return data or {}
+
+
+def parse_yaml(text: str) -> dict[str, Any]:
+    if yaml is not None:
+        data = yaml.safe_load(text)
+        return data or {}
+    return parse_simple_yaml(text)
+
+
+def parse_simple_yaml(text: str) -> dict[str, Any]:
+    lines = text.splitlines()
+    data, _ = parse_mapping(lines, 0, 0)
+    return data
+
+
+def parse_mapping(lines: list[str], index: int, indent: int) -> tuple[dict[str, Any], int]:
+    result: dict[str, Any] = {}
+    while index < len(lines):
+        raw_line = lines[index]
+        stripped = raw_line.strip()
+        if not stripped or stripped.startswith("#") or stripped == "---":
+            index += 1
+            continue
+        current_indent = len(raw_line) - len(raw_line.lstrip(" "))
+        if current_indent < indent:
+            break
+        if current_indent > indent:
+            index += 1
+            continue
+        if ":" not in stripped:
+            index += 1
+            continue
+
+        key, raw_value = stripped.split(":", 1)
+        value = raw_value.strip()
+        if not value:
+            next_item = next_content_line(lines, index + 1)
+            if next_item and next_item[1] >= indent + 2 and next_item[2].startswith("-"):
+                child, index = parse_sequence(lines, index + 1, indent + 2)
+            else:
+                child, index = parse_mapping(lines, index + 1, indent + 2)
+            result[key.strip()] = child
+            continue
+        if value.startswith((">", "|")):
+            block, index = parse_block_scalar(lines, index + 1, current_indent)
+            result[key.strip()] = block
+            continue
+        result[key.strip()] = parse_scalar(value)
+        index += 1
+    return result, index
+
+
+def next_content_line(lines: list[str], index: int) -> tuple[int, int, str] | None:
+    while index < len(lines):
+        raw_line = lines[index]
+        stripped = raw_line.strip()
+        if stripped and not stripped.startswith("#") and stripped != "---":
+            return index, len(raw_line) - len(raw_line.lstrip(" ")), stripped
+        index += 1
+    return None
+
+
+def parse_sequence(lines: list[str], index: int, indent: int) -> tuple[list[Any], int]:
+    result: list[Any] = []
+    while index < len(lines):
+        raw_line = lines[index]
+        stripped = raw_line.strip()
+        if not stripped or stripped.startswith("#") or stripped == "---":
+            index += 1
+            continue
+        current_indent = len(raw_line) - len(raw_line.lstrip(" "))
+        if current_indent < indent:
+            break
+        if current_indent > indent:
+            index += 1
+            continue
+        if not stripped.startswith("-"):
+            break
+
+        value = stripped[1:].strip()
+        if not value:
+            child, index = parse_mapping(lines, index + 1, indent + 2)
+            result.append(child)
+            continue
+        result.append(parse_scalar(value))
+        index += 1
+    return result, index
+
+
+def parse_block_scalar(lines: list[str], index: int, parent_indent: int) -> tuple[str, int]:
+    chunks: list[str] = []
+    while index < len(lines):
+        raw_line = lines[index]
+        stripped = raw_line.strip()
+        current_indent = len(raw_line) - len(raw_line.lstrip(" "))
+        if stripped and current_indent <= parent_indent:
+            break
+        chunks.append(stripped)
+        index += 1
+    return " ".join(chunk for chunk in chunks if chunk), index
+
+
+def parse_scalar(value: str) -> Any:
+    if value.startswith("[") and value.endswith("]"):
+        inner = value[1:-1].strip()
+        if not inner:
+            return []
+        return [parse_scalar(chunk.strip()) for chunk in inner.split(",")]
+    if len(value) >= 2 and value[0] in {"'", '"'} and value[-1] == value[0]:
+        return value[1:-1]
+    return value
+
+
+def normalize_requires(value: Any) -> list[str]:
+    if value is None:
+        return []
+    if isinstance(value, list):
+        return [str(item).strip() for item in value if str(item).strip()]
+    if isinstance(value, str):
+        raw = value.strip()
+        if not raw:
+            return []
+        if raw.startswith("[") and raw.endswith("]"):
+            raw = raw[1:-1].strip()
+        if not raw:
+            return []
+        return [chunk.strip().strip("'\"") for chunk in raw.split(",") if chunk.strip()]
+    return [str(value).strip()] if str(value).strip() else []
 
 
 def flatten_roots(value: Any) -> list[Path]:
@@ -130,8 +272,29 @@ def read_frontmatter(path: Path) -> dict[str, Any]:
     if end == -1:
         return {}
     raw = text[4:end]
-    data = yaml.safe_load(raw)
+    data = parse_yaml(raw)
     return data or {}
+
+
+def installed_skill_frontmatter() -> dict[str, Any]:
+    """Read this helper's bundled SKILL.md without depending on cwd."""
+    skill_md = Path(__file__).resolve().parents[1] / "SKILL.md"
+    try:
+        return read_frontmatter(skill_md)
+    except OSError:
+        return {}
+
+
+def render_version(manifest: dict[str, Any]) -> str:
+    """Render a stable version probe for sprint-manager preflight checks."""
+    frontmatter = installed_skill_frontmatter()
+    name = str(frontmatter.get("name") or "skills-meta")
+    installed = str(frontmatter.get("version") or "unknown")
+    manifest_entry = (manifest.get("skills", {}) or {}).get(name) or {}
+    canonical = manifest_entry.get("canonical_version")
+    if canonical:
+        return f"{name} {canonical} (installed {installed})"
+    return f"{name} {installed}"
 
 
 def collect_root_specs(repo_root: Path, manifest_path: Path, explicit_roots: list[str]) -> list[RootSpec]:
@@ -168,7 +331,7 @@ def dedupe_specs(specs: list[RootSpec]) -> list[RootSpec]:
     priority = {"cli": 3, "env": 2, "manifest": 1, "default": 0}
     by_path: dict[str, RootSpec] = {}
     for spec in specs:
-        key = str(spec.path.expanduser())
+        key = str(spec.path.expanduser().resolve(strict=False))
         existing = by_path.get(key)
         if existing is None or priority[spec.origin] > priority[existing.origin]:
             by_path[key] = RootSpec(path=Path(key), origin=spec.origin)
@@ -283,6 +446,18 @@ def is_date(value: str | None) -> bool:
     return bool(value and DATE_RE.match(value))
 
 
+def changelog_for(skill_md: Path) -> Path | None:
+    path = skill_md.parent / "CHANGELOG.md"
+    return path if path.exists() else None
+
+
+def changelog_mentions_version(path: Path, version: str | None) -> bool:
+    if not version:
+        return True
+    text = path.read_text(encoding="utf-8")
+    return version in text or f"v{version}" in text
+
+
 def scan_roots(repo_root: Path, resolved: list[tuple[Path, RootSpec]]) -> list[SkillRecord]:
     records: list[SkillRecord] = []
     for skill_dir, spec in resolved:
@@ -298,6 +473,7 @@ def scan_roots(repo_root: Path, resolved: list[tuple[Path, RootSpec]]) -> list[S
         version = frontmatter.get("version")
         last_updated = frontmatter.get("last-updated")
         description = frontmatter.get("description")
+        changelog_path = changelog_for(skill_md)
         records.append(
             SkillRecord(
                 name=name,
@@ -307,6 +483,7 @@ def scan_roots(repo_root: Path, resolved: list[tuple[Path, RootSpec]]) -> list[S
                 version=str(version) if version is not None else None,
                 last_updated=str(last_updated) if last_updated is not None else None,
                 description=str(description) if description is not None else None,
+                changelog_path=changelog_path,
             )
         )
     return records
@@ -321,57 +498,102 @@ def entry_aliases(key: str, entry: dict[str, Any]) -> set[str]:
 
 
 def canonical_name(key: str, entry: dict[str, Any]) -> str:
-    repo_path = entry.get("repo_path")
-    if repo_path:
-        return Path(str(repo_path)).name
     return str(key)
+
+
+def append_issue(record: SkillRecord, issue: str) -> bool:
+    if issue in record.issues:
+        return False
+    record.issues.append(issue)
+    return True
 
 
 def annotate_records(records: list[SkillRecord], manifest: dict[str, Any]) -> tuple[list[SkillRecord], list[str]]:
     active = manifest.get("skills", {}) or {}
     planned = manifest.get("planned_skills", {}) or {}
     active_lookup: dict[str, dict[str, Any]] = {}
+    canonical_lookup: dict[str, dict[str, Any]] = {}
+    dependency_lookup: dict[str, str] = {}
     canonical_active: list[str] = []
     for key, entry in active.items():
         canonical = canonical_name(str(key), entry or {})
         canonical_active.append(canonical)
+        canonical_lookup[canonical] = entry or {}
         for alias in entry_aliases(str(key), entry or {}):
             active_lookup[alias] = entry
+            dependency_lookup[alias] = canonical
     missing: list[str] = []
 
     for record in records:
         record.manifest = active_lookup.get(record.name)
         record.planned = planned.get(record.name)
         if record.manifest:
+            manifest_status = str(record.manifest.get("status") or "").strip().lower()
+            if manifest_status in OBSOLETE_STATUSES:
+                append_issue(record, f"cleanup-candidate:{manifest_status}")
             canonical = str(record.manifest.get("canonical_version") or "")
             if not record.version:
-                record.issues.append("missing-version")
+                append_issue(record, "missing-version")
             else:
                 cmp = compare_semver(record.version, canonical)
                 if cmp is None:
-                    record.issues.append("unparseable-version")
+                    append_issue(record, "unparseable-version")
                 elif cmp < 0:
-                    record.issues.append(f"behind-canonical:{canonical}")
+                    append_issue(record, f"behind-canonical:{canonical}")
                 elif cmp > 0:
-                    record.issues.append(f"ahead-of-canonical:{canonical}")
+                    append_issue(record, f"ahead-of-canonical:{canonical}")
 
             manifest_updated = str(record.manifest.get("last_updated") or "")
             if not record.last_updated:
-                record.issues.append("missing-last-updated")
+                append_issue(record, "missing-last-updated")
             elif is_date(record.last_updated) and manifest_updated and record.last_updated < manifest_updated:
-                record.issues.append(f"stale-last-updated:{manifest_updated}")
+                append_issue(record, f"stale-last-updated:{manifest_updated}")
             elif not is_date(record.last_updated):
-                record.issues.append("unparseable-last-updated")
+                append_issue(record, "unparseable-last-updated")
+
+            if not record.changelog_path:
+                append_issue(record, "missing-changelog")
+            elif not changelog_mentions_version(record.changelog_path, canonical):
+                append_issue(record, f"changelog-missing-version:{canonical}")
         else:
             if record.planned:
-                record.issues.append("planned-only")
+                append_issue(record, "planned-only")
             else:
-                record.issues.append("missing-from-manifest")
+                append_issue(record, "missing-from-manifest")
+
+    installed_by_name: dict[str, list[SkillRecord]] = {}
+    for record in records:
+        installed_by_name.setdefault(record.name, []).append(record)
+        path_canonical = dependency_lookup.get(record.path.parent.name)
+        if path_canonical and path_canonical != record.name:
+            installed_by_name.setdefault(path_canonical, []).append(record)
+
+    while True:
+        changed = False
+        for record in records:
+            if not record.manifest:
+                continue
+            for required in normalize_requires(record.manifest.get("requires")):
+                required_name = dependency_lookup.get(required)
+                if required_name is None or required_name not in canonical_lookup:
+                    changed |= append_issue(record, f"unknown-required:{required}")
+                    continue
+                required_records = installed_by_name.get(required_name, [])
+                if not required_records:
+                    changed |= append_issue(record, f"missing-required:{required_name}")
+                    continue
+                if not any(not required_record.issues for required_record in required_records):
+                    changed |= append_issue(record, f"required-drift:{required_name}")
+        if not changed:
+            break
 
     seen = {record.name for record in records}
     for name in canonical_active:
         if name not in seen:
-            missing.append(name)
+            entry = active_lookup.get(name) or {}
+            status = str(entry.get("status") or "").strip().lower()
+            if status not in OBSOLETE_STATUSES:
+                missing.append(name)
 
     return records, missing
 
@@ -439,6 +661,29 @@ def pick_canonical_copy(repo_root: Path, group: list[SkillRecord]) -> SkillRecor
     return max(group, key=canonicalness_key(repo_root, group))
 
 
+def canonical_copy_reason(repo_root: Path, canonical: SkillRecord, group: list[SkillRecord]) -> str:
+    """Explain why this copy wins, using the same precedence as the picker."""
+    manifest_entry = next((r.manifest for r in group if r.manifest), None)
+    repo_path = manifest_entry.get("repo_path") if manifest_entry else None
+    if repo_path:
+        try:
+            if canonical.path.parent.resolve() == (repo_root / str(repo_path)).resolve():
+                return "manifest repo_path"
+        except OSError:
+            pass
+
+    versions = [semver_tuple(r.version) for r in group]
+    canonical_version = semver_tuple(canonical.version)
+    if canonical_version is not None and canonical_version == max((v for v in versions if v is not None), default=None):
+        return "highest semver"
+
+    dates = [r.last_updated for r in group if is_date(r.last_updated)]
+    if canonical.last_updated and dates and canonical.last_updated == max(dates):
+        return "newest last-updated"
+
+    return "stable first-seen fallback"
+
+
 def sort_canonical_first(repo_root: Path, records: list[SkillRecord]) -> list[SkillRecord]:
     """Stable sort with the canonical copy first; used so single-mode
     output is deterministic in duplicate-heavy installs."""
@@ -482,7 +727,21 @@ def render_unreadable(unreadable: list[UnreadableRoot]) -> list[str]:
     return lines
 
 
+def render_duplicate_warnings(repo_root: Path, duplicates: dict[str, list[SkillRecord]]) -> list[str]:
+    if not duplicates:
+        return []
+    lines = ["", f"duplicate warnings: {len(duplicates)}"]
+    for name, group in sorted(duplicates.items())[:8]:
+        canonical = next((r for r in group if not r.duplicate_of), group[0])
+        reason = canonical_copy_reason(repo_root, canonical, group)
+        lines.append(f"- {name}: keep {canonical.path.parent} ({reason}); cleanup candidates: {len(group) - 1}")
+    if len(duplicates) > 8:
+        lines.append(f"- ... {len(duplicates) - 8} more")
+    return lines
+
+
 def text_output(
+    repo_root: Path,
     records: list[SkillRecord],
     missing: list[str],
     unreadable: list[UnreadableRoot],
@@ -512,6 +771,10 @@ def text_output(
         lines.append(f"status: {record.render_status()}")
         if record.issues:
             lines.append("issues: " + ", ".join(record.issues))
+        if record.changelog_path:
+            lines.append(f"changelog: {record.changelog_path}")
+        else:
+            lines.append("changelog: missing")
         if len(records) > 1:
             lines.append("")
             lines.append(f"other copies: {len(records) - 1}")
@@ -545,8 +808,9 @@ def text_output(
         status = record.render_status()
         canonical = f"  canonical {record.manifest.get('canonical_version')}" if record.manifest else ""
         updated = record.last_updated or "missing"
+        issues = f"  issues: {', '.join(record.issues)}" if record.issues else ""
         lines.append(
-            f"{status:<9} {record.name:<18} v{record.version or 'missing'}  {updated}  {record.path}{canonical}"
+            f"{status:<9} {record.name:<18} v{record.version or 'missing'}  {updated}  {record.path}{canonical}{issues}"
         )
         shown += 1
 
@@ -563,6 +827,7 @@ def text_output(
             lines.append(f"- ... {len(missing) - 12} more")
 
     lines.extend(render_unreadable(unreadable))
+    lines.extend(render_duplicate_warnings(repo_root, duplicates))
 
     if mode == "fix" and records:
         lines.append("")
@@ -603,6 +868,7 @@ def json_output(
                 "runtime": record.runtime,
                 "version": record.version,
                 "last_updated": record.last_updated,
+                "changelog_path": str(record.changelog_path) if record.changelog_path else None,
                 "status": record.render_status(),
                 "issues": record.issues,
                 "manifest": _json_safe(record.manifest),
@@ -636,15 +902,19 @@ def filter_and_sort(repo_root: Path, records: list[SkillRecord], skill: str | No
     return sort_canonical_first(repo_root, matches)
 
 
-def render_fix_duplicates_plan(duplicates: dict[str, list[SkillRecord]]) -> str:
+def render_fix_duplicates_plan(repo_root: Path, duplicates: dict[str, list[SkillRecord]]) -> str:
     """Print a human-readable plan: which copy stays, which get removed."""
     if not duplicates:
         return "No duplicates detected."
     lines = ["fix-duplicates plan (dry run)", ""]
     for name, group in sorted(duplicates.items()):
         canonical = next((r for r in group if not r.duplicate_of), group[0])
+        reason = canonical_copy_reason(repo_root, canonical, group)
         lines.append(f"# {name}")
-        lines.append(f"keep:   {canonical.path.parent}  (v{canonical.version or 'missing'}, {canonical.runtime})")
+        lines.append(
+            f"keep:   {canonical.path.parent}  "
+            f"(v{canonical.version or 'missing'}, {canonical.runtime}; kept because {reason})"
+        )
         for record in group:
             if record is canonical:
                 continue
@@ -652,6 +922,7 @@ def render_fix_duplicates_plan(duplicates: dict[str, list[SkillRecord]]) -> str:
                 f"remove: {record.path.parent}  (v{record.version or 'missing'}, {record.runtime})"
             )
         lines.append("")
+    lines.append("Warning: duplicate skill copies can shadow the canonical skill until cleaned up.")
     lines.append("Run with --apply to confirm each removal interactively.")
     return "\n".join(lines)
 
@@ -720,6 +991,8 @@ class SyncEntry:
     source: Path
     target: Path
     state: str
+    source_runtime: str
+    target_runtime: str
     note: str = ""
     symlink_target: Path | None = None
 
@@ -750,30 +1023,71 @@ def hash_dir(path: Path) -> str | None:
     return h.hexdigest()
 
 
+def resolve_manifest_repo_path(manifest_dir: Path, repo_path: str) -> Path:
+    """Resolve a manifest repo_path from the manifest file's directory."""
+    path = Path(repo_path).expanduser()
+    if path.is_absolute():
+        return path.resolve()
+    return (manifest_dir / path).resolve()
+
+
 def build_sync_plan(
     repo_root: Path,
-    manifest: dict[str, Any],
-    target: Path,
-    skill_filter: list[str] | None,
+    manifest_dir_or_manifest: Path | dict[str, Any],
+    manifest_or_target: dict[str, Any] | Path,
+    target_or_filter: Path | list[str] | None,
+    skill_filter: list[str] | None = None,
 ) -> list[SyncEntry]:
     """For each manifest skill we're asked to sync, classify the target state."""
+    if isinstance(manifest_dir_or_manifest, dict):
+        manifest_dir = repo_root
+        manifest = manifest_dir_or_manifest
+        target = manifest_or_target
+        skill_filter = target_or_filter  # type: ignore[assignment]
+    else:
+        manifest_dir = manifest_dir_or_manifest
+        manifest = manifest_or_target
+        target = target_or_filter
+
     active = manifest.get("skills", {}) or {}
+    expanded_filter = expand_sync_skill_filter(active, skill_filter)
     entries: list[SyncEntry] = []
     for key, raw in active.items():
         entry = raw or {}
         name = canonical_name(str(key), entry)
-        if skill_filter and name not in skill_filter and str(key) not in skill_filter:
+        aliases = entry_aliases(str(key), entry)
+        if expanded_filter and name not in expanded_filter and aliases.isdisjoint(expanded_filter):
             continue
         repo_path = entry.get("repo_path")
         if not repo_path:
             entries.append(
-                SyncEntry(name, repo_root / str(key), target / name, "source-missing", "no repo_path in manifest")
+                SyncEntry(
+                    name,
+                    manifest_dir / str(key),
+                    target / name,
+                    "source-missing",
+                    "configured",
+                    infer_runtime(repo_root, target),
+                    "no repo_path in manifest",
+                )
             )
             continue
-        source = (repo_root / str(repo_path)).resolve()
+        source = resolve_manifest_repo_path(manifest_dir, str(repo_path))
         dest = target / name
+        source_runtime = infer_runtime(manifest_dir, source)
+        target_runtime = infer_runtime(repo_root, target)
         if not source.exists():
-            entries.append(SyncEntry(name, source, dest, "source-missing", f"{source} not on disk"))
+            entries.append(
+                SyncEntry(
+                    name,
+                    source,
+                    dest,
+                    "source-missing",
+                    source_runtime,
+                    target_runtime,
+                    f"{source} not on disk",
+                )
+            )
             continue
         symlink_target: Path | None = None
         if dest.is_symlink():
@@ -784,11 +1098,20 @@ def build_sync_plan(
         source_hash = hash_dir(source)
         dest_hash = hash_dir(dest)
         if dest_hash is None and not dest.is_symlink():
-            entries.append(SyncEntry(name, source, dest, "missing"))
+            entries.append(SyncEntry(name, source, dest, "missing", source_runtime, target_runtime))
         elif source_hash == dest_hash:
             note = f"symlinked to {symlink_target}" if symlink_target else ""
             entries.append(
-                SyncEntry(name, source, dest, "in-sync", note, symlink_target=symlink_target)
+                SyncEntry(
+                    name,
+                    source,
+                    dest,
+                    "in-sync",
+                    source_runtime,
+                    target_runtime,
+                    note,
+                    symlink_target=symlink_target,
+                )
             )
         else:
             note = (
@@ -797,9 +1120,58 @@ def build_sync_plan(
                 else "target has local changes"
             )
             entries.append(
-                SyncEntry(name, source, dest, "drift", note, symlink_target=symlink_target)
+                SyncEntry(
+                    name,
+                    source,
+                    dest,
+                    "drift",
+                    source_runtime,
+                    target_runtime,
+                    note,
+                    symlink_target=symlink_target,
+                )
             )
     return entries
+
+
+def expand_sync_skill_filter(
+    active: dict[str, Any],
+    skill_filter: list[str] | None,
+) -> set[str] | None:
+    """Return requested skills plus transitive manifest `requires` entries.
+
+    A missing filter means "all skills", so there is nothing to expand. When
+    the user asks for one skill, sync should carry along its declared
+    dependencies instead of silently installing a broken partial set.
+    """
+    if not skill_filter:
+        return None
+
+    alias_to_canonical: dict[str, str] = {}
+    entries_by_canonical: dict[str, dict[str, Any]] = {}
+    for key, raw in active.items():
+        entry = raw or {}
+        canonical = canonical_name(str(key), entry)
+        entries_by_canonical[canonical] = entry
+        for alias in entry_aliases(str(key), entry):
+            alias_to_canonical[alias] = canonical
+
+    selected: set[str] = set()
+    pending: list[str] = list(skill_filter)
+    while pending:
+        requested = pending.pop()
+        canonical = alias_to_canonical.get(requested, requested)
+        if canonical in selected:
+            continue
+        selected.add(canonical)
+        entry = entries_by_canonical.get(canonical)
+        if not entry:
+            continue
+        for required in normalize_requires(entry.get("requires")):
+            required_canonical = alias_to_canonical.get(required, required)
+            if required_canonical not in selected:
+                pending.append(required_canonical)
+    return selected
 
 
 def render_sync_plan(plan: list[SyncEntry], target: Path, apply: bool, force: bool) -> str:
@@ -817,7 +1189,10 @@ def render_sync_plan(plan: list[SyncEntry], target: Path, apply: bool, force: bo
             "source-missing": "? skip   ",
         }.get(entry.state, "  ?      ")
         suffix = f"  ({entry.note})" if entry.note else ""
-        lines.append(f"{marker} {entry.name:<22} {entry.source}  ->  {entry.target}{suffix}")
+        runtime_flow = f"[{entry.source_runtime} -> {entry.target_runtime}]"
+        lines.append(
+            f"{marker} {entry.name:<22} {runtime_flow:<24} {entry.source}  ->  {entry.target}{suffix}"
+        )
     lines.append("")
     summary = ", ".join(f"{state}: {n}" for state, n in sorted(counts.items()))
     lines.append(f"summary: {summary}")
@@ -894,9 +1269,14 @@ def apply_sync(plan: list[SyncEntry], force: bool) -> tuple[int, int, int]:
 
 def main() -> int:
     args = parse_args()
-    repo_root = Path.cwd()
-    manifest_path = (repo_root / args.manifest).resolve()
+    cwd = Path.cwd()
+    manifest_path = (cwd / args.manifest).resolve()
+    repo_root = manifest_path.parent
     manifest = load_yaml(manifest_path)
+
+    if args.version:
+        print(render_version(manifest))
+        return 0
 
     if args.mode == "sync":
         if not args.target:
@@ -906,7 +1286,7 @@ def main() -> int:
         skill_filter: list[str] | None = None
         if args.skill:
             skill_filter = [s.strip() for s in args.skill.split(",") if s.strip()]
-        plan = build_sync_plan(repo_root, manifest, target, skill_filter)
+        plan = build_sync_plan(repo_root, manifest_path.parent, manifest, target, skill_filter)
         if args.json:
             payload = {
                 "mode": "sync",
@@ -918,6 +1298,8 @@ def main() -> int:
                         "name": e.name,
                         "source": str(e.source),
                         "target": str(e.target),
+                        "source_runtime": e.source_runtime,
+                        "target_runtime": e.target_runtime,
                         "state": e.state,
                         "note": e.note,
                     }
@@ -953,13 +1335,15 @@ def main() -> int:
         if args.apply:
             apply_fix_duplicates(duplicates)
         else:
-            print(render_fix_duplicates_plan(duplicates))
+            print(render_fix_duplicates_plan(repo_root, duplicates))
         return 0
 
     if args.json:
         print(json_output(records, missing, unreadable, duplicates, args.mode))
     else:
-        print(text_output(records, missing, unreadable, duplicates, args.mode, args.skill))
+        print(text_output(repo_root, records, missing, unreadable, duplicates, args.mode, args.skill))
+    if args.strict and (any(record.render_status() != "ok" for record in records) or missing):
+        return 1
     return 0
 
 

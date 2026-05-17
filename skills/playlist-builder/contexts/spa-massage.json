@@ -1,0 +1,17 @@
+{
+  "id": "spa-massage",
+  "name": "Spa / Massage soundtrack",
+  "description": "60-90 minute low-energy soundtrack for massage, bodywork, or spa treatment. Single drifting arc, no peak, gradually softens toward the end.",
+  "duration_min": 75,
+  "duration_acceptable": [60, 95],
+  "padding_default_min": 5,
+  "track_count_target": [10, 14],
+  "phases": [
+    { "name": "Settling",   "bank": "A", "min_tracks": 2, "max_tracks": 3, "window_min": [0, 15],   "energy": 1, "notes": "Client is arriving, settling onto the table." },
+    { "name": "Drift",      "bank": "E", "min_tracks": 4, "max_tracks": 5, "window_min": [15, 55],  "energy": 3, "notes": "Steady, low-percussion. The body of the session." },
+    { "name": "Soften",     "bank": "A", "min_tracks": 2, "max_tracks": 3, "window_min": [55, 80],  "energy": 2, "notes": "Slowing further. Therapist is wrapping up." },
+    { "name": "Closing",    "bank": "A", "min_tracks": 1, "max_tracks": 2, "window_min": [80, 95],  "energy": 1, "notes": "Almost silence. Reentry." }
+  ],
+  "theme_anchor": null,
+  "_status": "stub — verify with a spa therapist before relying on it"
+}

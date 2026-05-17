@@ -1,5 +1,7 @@
 ---
 name: sprint-update
+version: 1.1.0
+last-updated: 2026-05-10
 description: >-
   Update the current sprint document with new merge results, persona status changes,
   and velocity stats. Use when the user says "update sprint doc", "sprint update",
@@ -12,8 +14,13 @@ Update the sprint doc at `docs/plans/<date>_Sprint.md` (or the most recent sprin
 
 ## Sprint doc structure
 
-The sprint doc uses **per-persona queues** (not wave tables). Each persona
-(Alice, Bob, Cindy, Dan, Elsa) has their own section with three tables:
+The sprint doc uses **per-persona queues** (not wave tables). WRFCoin sprint
+docs use the compact queue table. Personal GitHub sprint docs use the expanded
+queue table with `Label`, `Model`, and `Batch` columns so agents can be routed
+from one generated queue without losing triage metadata.
+
+WRFCoin personas (Alice, Bob, Cindy, Dan, Elsa) have their own section with
+three tables:
 
 ```markdown
 ## <Persona> — <Domain>
@@ -27,6 +34,24 @@ The sprint doc uses **per-persona queues** (not wave tables). Each persona
 ### Completed
 | Issue | Repo | PR | SHA | Wave |
 ```
+
+Personal GitHub sprint sections use the same Active and Completed tables, but
+their Queue table is:
+
+```markdown
+### Queue
+| # | Priority | Label | Model | Batch | Issue | Repo | Description |
+|---|----------|-------|-------|-------|-------|------|-------------|
+| 1 | P1 | instrument-maker | gpt-5.5 | batch-01 | #123 | repo-name | Short task |
+```
+
+Column meanings:
+- `Label`: the primary GitHub label or routing category to preserve from queue
+  generation, such as `instrument`, `maker`, `capture`, or `promote`.
+- `Model`: the intended runtime/model lane when known. Use `TBD` if queue
+  generation has not assigned a model.
+- `Batch`: the generation batch, import batch, or sprint grouping. Keep it as
+  traceability metadata; do not use it as the only dispatch theme.
 
 ## What to update
 
@@ -48,7 +73,10 @@ gh pr view <num> --repo wrfcoin/<repo> --json mergeCommit --jq '.mergeCommit.oid
 
 ### 2. Promote next queue item: Queue → Active
 
-After clearing an Active slot, move the top Queue item to Active with status `next`:
+After clearing an Active slot, move the top Queue item to Active with status
+`next`. When promoting from a personal GitHub queue, preserve useful `Label`,
+`Model`, and `Batch` metadata in the Active description or handoff so the
+assignment still carries its routing context:
 
 ```markdown
 ### Active
@@ -74,7 +102,74 @@ Update the sprint row with new PR count and key milestones.
 
 Update "What's working" and "What's blocking launch" if merges changed the picture.
 
-### 6. Dispatch Prompt Patterns (always include)
+### 6. Stale issue refresh
+
+Before promoting queued work or regenerating dispatch prompts, refresh any Active
+or Queue row whose state may be stale:
+
+- issue or PR state was last checked in a previous sprint day;
+- the row says `next`, `blocked`, `changes-req`, `stale`, `parked`, or similar;
+- the description references a branch, PR, artifact, or dependency that may have
+  moved since the sprint doc was written;
+- an issue is duplicated, superseded, closed, or already satisfied by a recent
+  merge.
+
+Use GitHub as the source of truth, then update the sprint doc rather than
+copying stale table text forward:
+
+```bash
+gh issue view <num> --repo wrfcoin/<repo> \
+  --json number,title,state,labels,updatedAt,closedAt,url
+gh pr list --repo wrfcoin/<repo> --state all --search "#<num>" \
+  --json number,state,isDraft,mergedAt,title,headRefName,url
+```
+
+Apply these outcomes:
+
+- **Open and still actionable**: keep the row, refresh the title/description if
+  it drifted, and preserve priority unless current labels clearly changed it.
+  For personal GitHub sprint queues, also preserve any `Label`, `Model`, or
+  `Batch` columns already present; refresh stale values, but do not drop the
+  routing metadata during cleanup.
+- **Closed as completed or merged**: move it to Completed if it belongs to the
+  sprint ledger, with PR and SHA when available.
+- **Duplicate, superseded, or no longer useful**: remove it from dispatchable
+  Queue/Active work and note the reason in launch readiness or velocity notes.
+- **Blocked by another issue/PR**: keep it queued only if the blocker is explicit
+  and dispatch prompts name the prerequisite.
+
+If a row cannot be refreshed because GitHub is unavailable, leave the row in
+place, mark the validation gap in the sprint notes, and do not promote it ahead
+of freshly verified work.
+
+### 7. Archive follow-up
+
+During each sprint update, check whether recent sprint artifacts need durable
+follow-through:
+
+- swarm reports, blind summaries, merge-review notes, or dispatch outputs under
+  `/tmp`, sprint archive folders, or linked PR artifacts;
+- strong implementation ideas that were written to summaries but never promoted
+  to an issue, PR, or sprint queue row;
+- completed work whose proof should be linked from the sprint doc before the
+  temporary artifact disappears.
+
+For each artifact worth preserving, choose one public-safe action:
+
+- add or update a sprint Queue row that points at the artifact and names the next
+  engineering action, preserving label/model/batch metadata when the sprint doc
+  uses personal GitHub queue columns;
+- file or link a GitHub issue when the work belongs in a repo backlog;
+- add the artifact path/PR URL to Completed or velocity notes when it is only
+  evidence for work already done;
+- explicitly skip it when it is obsolete, duplicate, private, or not actionable.
+
+Privacy boundary: do not publish private family/media details, raw archive
+contents, EXIF/GPS data, private source paths, or personal names into public
+issues or sprint docs. Use a redacted summary, a private-repo pointer, or a
+private handoff note when the artifact is useful but not public-safe.
+
+### 8. Dispatch Prompt Patterns (always include)
 
 After updating counts and tables, generate **themed dispatch prompt patterns** for
 each persona that has queued work. These go into the sprint doc as a new subsection
@@ -98,7 +193,8 @@ under each persona, right after their Queue table and before Completed:
 
 1. **Sizing**: 2-3 issues per agent, max 4 agents per round, 8-12 issues per round
 2. **Grouping**: Group by repo + theme (e.g., "infra Docker", "backend resilience"),
-   NOT by batch number ("infra batch 1")
+   or by repo + label/theme for personal GitHub queues. Do NOT group only by
+   batch number ("infra batch 1").
 3. **Priority order**: Work top-down by priority — P0 first, then P1, then P2, etc.
    Don't mix priorities in a single round unless they share a theme.
 4. **Revision round first**: If any Active items have status `changes-req`, generate
@@ -108,10 +204,16 @@ under each persona, right after their Queue table and before Completed:
    - "infra Docker hardening" not "infra P2 batch"
    - "core4 consensus fixes" not "Alice round 2"
 6. **Include issue numbers**: Every prompt must list the specific issue numbers.
+   For personal GitHub queues, include label, model, and batch context when the
+   prompt would otherwise be ambiguous.
 7. **Estimate rounds**: Show how many rounds it would take to clear the queue.
    Only generate detailed prompts for the next 3-4 rounds. Summarize the rest.
 8. **All 5 personas**: Generate prompts for every persona that has queued work,
    not just the one the user is currently focused on.
+9. **Personal GitHub columns**: When regenerating personal sprint queues, keep
+   the `Label`, `Model`, and `Batch` columns in the Queue table even if a value
+   is unknown. Use `TBD` for unknown model or batch values instead of dropping
+   the column.
 
 #### Example output for a persona section
 
@@ -133,6 +235,15 @@ under each persona, right after their Queue table and before Completed:
 > - infra Docker: #259/#261 single-stage, #266 wrf limits, #224 PAYMASTER_CHAIN_ID
 ```
 
+Personal GitHub queues should carry the extra routing columns into the prompt:
+
+```markdown
+**Round 1 — maker documentation capture** (2 agents, 5 issues):
+> launch 2 agents on P1 maker documentation issues:
+> - label maker-docs, model gpt-5.5, batch batch-03: #41, #44, #49
+> - label portfolio, model gpt-5.4, batch batch-03: #52, #53
+```
+
 #### When to regenerate
 
 Regenerate dispatch prompts every time sprint-update runs. Old prompts are replaced
@@ -142,5 +253,5 @@ entirely — they reflect the queue state at update time, not historical plans.
 
 Update the sprint progress memory file:
 ```
-/home/tony/.claude/projects/<project-slug>/memory/project_sprint_progress.md
+~/.claude/projects/<project-slug>/memory/project_sprint_progress.md
 ```

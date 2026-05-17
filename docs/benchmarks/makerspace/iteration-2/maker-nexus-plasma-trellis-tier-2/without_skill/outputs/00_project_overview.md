@@ -8,7 +8,7 @@
 | Field | Value |
 |---|---|
 | Project | Climbing-vine silhouette garden trellis |
-| Maker | Tony Koop |
+| Maker | [Maker Name] |
 | Shop | Maker Nexus (metalshop cleared) |
 | Process | Plasma cutting (CNC table) |
 | Material | Mild steel, 1/4" (0.250") plate, A36 |

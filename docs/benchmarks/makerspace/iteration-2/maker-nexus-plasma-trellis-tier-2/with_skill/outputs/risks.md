@@ -195,10 +195,9 @@ discolored cut wall. Stop and investigate before production.
 
 ### R13 — The next maker can't replicate this
 
-**Failure mode:** if Tony cuts this once, learns the actual
+**Failure mode:** if the maker cuts this once, learns the actual
 kerf and parameters, but doesn't write the numbers back into
-this packet, the next person (or future Tony) starts from
-scratch.
+this packet, the next person starts from scratch.
 
 **Mitigation:** after the production cut, update `design.md`
 with the measured kerf. After 30 days outdoor, update

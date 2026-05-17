@@ -47,6 +47,23 @@ Use confidence language to protect uncertainty. Confidence is about the claim, n
 - Separate nominal target from tolerance: "Target 25 mm; tolerance unknown" is better than a naked "25 mm."
 - For proportional estimates, say "about 0.42x the overall length" instead of inventing absolute units.
 
+## Cap on Dimensional Confidence Under Degraded Intake
+
+When the observation ledger's `intake.image_access_mode` is `description-only`, `missing`, `partial`, or `named-object`, dimensional and material claims are capped:
+
+| Claim subject | Max confidence | Notes |
+| --- | --- | --- |
+| Absolute dimension (mm/in/g/etc.) | `low` | Even if the value matches a class average, no `medium` or `high` without a measurement or direct image. |
+| Proportion or ratio | `medium` | Topology and proportions can survive prose. State the source plane and the prose phrase that justifies it. |
+| Material (specific species/alloy/grade) | `low` | "Looks like oak" from prose stays low. Class-typical material is `inferred + low`, never `observed`. |
+| Material class (wood / metal / plastic / fabric) | `medium` | Function and feel from prose can usually rule a class in or out. |
+| Mechanism topology | `medium` | "It hinges at the back" from prose can be `inferred + medium` if the prose is unambiguous. |
+| Color / finish exact | `low` | "Dark stain" stays a category, not a Pantone/RAL/wood-species commitment. |
+
+The cap applies to *new* claims derived from the degraded source. User-supplied measured values, named-class data with a cited authoritative source, or claims later confirmed by a direct-mode follow-up image are exempt and may be `high`.
+
+When the cap forces a downgrade, say so explicitly: "Capped at low confidence under degraded intake mode (description-only). Move to medium/high after a direct-mode image or measurement."
+
 ## Confidence Note Pattern
 
 ```text

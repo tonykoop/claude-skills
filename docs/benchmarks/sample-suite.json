@@ -1,0 +1,237 @@
+{
+  "schema_version": 1,
+  "suite_id": "sample-skills-platform-controls",
+  "skill_name": "skills-platform-sample",
+  "skill_version": "1.0.0",
+  "runtime_targets": [
+    "Claude Code",
+    "Claude Desktop",
+    "Codex CLI",
+    "Codex Desktop",
+    "Gemini CLI"
+  ],
+  "description": "Deterministic sample suite for validating the benchmark harness and core skills-platform control contracts.",
+  "archive_notes": [
+    "This sample uses checked-in response fixtures so reviewers can verify the harness without calling a model.",
+    "Future instrument-maker comparisons can add one case per prompt and point candidate.path at each run's archived output directory."
+  ],
+  "cases": [
+    {
+      "id": "hybrid-ocarina-routing",
+      "title": "Hybrid ceramic ocarina request routes to specialists",
+      "skill_name": "maker-engineering",
+      "runtime_targets": [
+        "Codex CLI",
+        "Claude Code",
+        "Gemini CLI"
+      ],
+      "prompt_fixture": "I want to make a ceramic ocarina and need to figure out the slip-cast mold, tuning approach, and a small experiment for shrinkage.",
+      "expected_mode": "umbrella routing",
+      "expected_artifacts": [
+        "specialist handoff prompts",
+        "DoE scaffold"
+      ],
+      "candidate": {
+        "kind": "local_artifact",
+        "path": "docs/benchmarks/fixtures/maker-engineering-hybrid-handoff"
+      },
+      "watch_points": [
+        "Routing accuracy",
+        "Specialist boundary clarity",
+        "Runtime-agnostic handoff language"
+      ],
+      "assertions": [
+        {
+          "id": "response-file-present",
+          "kind": "file_exists",
+          "path": "response.md"
+        },
+        {
+          "id": "routes-to-required-specialists",
+          "kind": "contains_all",
+          "path": "response.md",
+          "terms": [
+            "instrument-maker",
+            "makerspace",
+            "DoE"
+          ]
+        },
+        {
+          "id": "keeps-boundaries-explicit",
+          "kind": "contains_all",
+          "path": "response.md",
+          "terms": [
+            "acoustic",
+            "mold",
+            "shrinkage"
+          ]
+        },
+        {
+          "id": "runtime-agnostic",
+          "kind": "not_contains_any",
+          "path": "response.md",
+          "terms": [
+            "$instrument-maker",
+            "/instrument-maker",
+            "$makerspace",
+            "/makerspace"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tmux-v2-pane-recovery",
+      "title": "tmux-v2 keeps sprint recovery operational and scoped",
+      "skill_name": "tmux-v2",
+      "runtime_targets": [
+        "Codex CLI"
+      ],
+      "prompt_fixture": "Launch the WRFCoin persona dashboard, check which panes are alive, and recover any idle codex resume panes without touching shared repo state.",
+      "expected_mode": "runtime operations",
+      "expected_artifacts": [
+        "pane liveness report",
+        "recovery commands",
+        "shared-repo safety note"
+      ],
+      "candidate": {
+        "kind": "local_artifact",
+        "path": "docs/benchmarks/fixtures/tmux-v2-pane-recovery"
+      },
+      "watch_points": [
+        "Trigger accuracy",
+        "Operational safety",
+        "Handoff quality"
+      ],
+      "assertions": [
+        {
+          "id": "response-file-present",
+          "kind": "file_exists",
+          "path": "response.md"
+        },
+        {
+          "id": "reports-liveness-and-recovery",
+          "kind": "contains_all",
+          "path": "response.md",
+          "terms": [
+            "pane liveness",
+            "codex resume",
+            "tmux send-keys"
+          ]
+        },
+        {
+          "id": "protects-shared-repos",
+          "kind": "contains_all",
+          "path": "response.md",
+          "terms": [
+            "do not reset",
+            "shared repo"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "skill-creator-portable-skill",
+      "title": "skill-creator produces validator-ready portable skill guidance",
+      "skill_name": "skill-creator",
+      "runtime_targets": [
+        "Claude Code",
+        "Codex CLI",
+        "Codex Desktop"
+      ],
+      "prompt_fixture": "Create a portable skill for repeatable workshop project retrospectives and make sure it can be validated before publishing.",
+      "expected_mode": "skill authoring",
+      "expected_artifacts": [
+        "SKILL.md",
+        "manifest entry",
+        "validation command"
+      ],
+      "candidate": {
+        "kind": "local_artifact",
+        "path": "docs/benchmarks/fixtures/skill-creator-portable-skill"
+      },
+      "watch_points": [
+        "Trigger accuracy",
+        "Version awareness",
+        "Validation quality"
+      ],
+      "assertions": [
+        {
+          "id": "response-file-present",
+          "kind": "file_exists",
+          "path": "response.md"
+        },
+        {
+          "id": "names-authoring-artifacts",
+          "kind": "contains_all",
+          "path": "response.md",
+          "terms": [
+            "SKILL.md",
+            "manifest.yaml",
+            "agents/openai.yaml"
+          ]
+        },
+        {
+          "id": "includes-validation-command",
+          "kind": "contains_any",
+          "path": "response.md",
+          "terms": [
+            "quick_validate.py",
+            "Skill is valid"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "energy-management-planned-skill",
+      "title": "planned energy-management skill stays in issue-backed handoff mode",
+      "skill_name": "energy-management",
+      "runtime_targets": [
+        "Claude Desktop",
+        "Codex Desktop",
+        "Gemini CLI"
+      ],
+      "prompt_fixture": "I want an energy-management skill for pacing creative work across the week. Turn this into a safe first handoff, not a full installable skill yet.",
+      "expected_mode": "planned-skill handoff",
+      "expected_artifacts": [
+        "issue handoff",
+        "promotion criteria",
+        "safety boundaries"
+      ],
+      "candidate": {
+        "kind": "local_artifact",
+        "path": "docs/benchmarks/fixtures/energy-management-planned-skill"
+      },
+      "watch_points": [
+        "Planned skill routing",
+        "Context discipline",
+        "Handoff quality"
+      ],
+      "assertions": [
+        {
+          "id": "response-file-present",
+          "kind": "file_exists",
+          "path": "response.md"
+        },
+        {
+          "id": "stays-planned",
+          "kind": "contains_all",
+          "path": "response.md",
+          "terms": [
+            "issue handoff",
+            "planned skill",
+            "promotion criteria"
+          ]
+        },
+        {
+          "id": "does-not-claim-installable",
+          "kind": "not_contains_any",
+          "path": "response.md",
+          "terms": [
+            "ready to install",
+            "published skill"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -66,11 +66,11 @@ Prefer this skill over a bare launcher when the user says things like:
 ## Read first
 
 Before doing anything substantial, read:
-- `/home/tony/wrfcoin/.codex/skills/wrfcoin-persona-handoff/SKILL.md`
-- `/home/tony/wrfcoin/.codex/skills/wrfcoin-launch-personas/SKILL.md`
+- `<workspace>/.codex/skills/wrfcoin-persona-handoff/SKILL.md`
+- `<workspace>/.codex/skills/wrfcoin-launch-personas/SKILL.md`
 
 If present, also mirror the operator behavior from:
-- `/home/tony/.claude/skills/tmux-sprint/SKILL.md`
+- `~/.claude/skills/tmux-sprint/SKILL.md`
 
 ## Workflow
 
@@ -171,17 +171,17 @@ Examples:
 
 Fresh issue work:
 ```bash
-git -C /home/tony/wrfcoin/<repo> worktree add /home/tony/wrfcoin/worktrees/<repo>-<persona>-dispatch -b <branch-name> origin/main
+git -C <workspace>/<repo> worktree add <workspace>/worktrees/<repo>-<persona>-dispatch -b <branch-name> origin/main
 ```
 
 Existing PR rescue branch:
 ```bash
-git -C /home/tony/wrfcoin/<repo> worktree add /home/tony/wrfcoin/worktrees/<repo>-<persona>-rescue <existing-branch>
+git -C <workspace>/<repo> worktree add <workspace>/worktrees/<repo>-<persona>-rescue <existing-branch>
 ```
 
 Detached clean checkout from a remote PR tip when the local branch/worktree is compromised:
 ```bash
-git -C /home/tony/wrfcoin/<repo> worktree add --detach /home/tony/wrfcoin/worktrees/<repo>-<persona>-rescue origin/<existing-branch>
+git -C <workspace>/<repo> worktree add --detach <workspace>/worktrees/<repo>-<persona>-rescue origin/<existing-branch>
 ```
 
 If you create a rescue worktree, update:
@@ -213,7 +213,7 @@ Check:
 ```bash
 tmux list-windows -F '#{window_index}:#{window_name}'
 tmux list-panes -t sprint -F '#{pane_index}:#{pane_pid}:#{pane_current_command}:#{pane_title}'
-cat /home/tony/wrfcoin/.sprint-target
+cat <workspace>/.sprint-target
 ```
 
 If the panes show live Claude/Codex sessions, send a short kickoff nudge to each pane that points at the refreshed prompt file.
@@ -221,7 +221,7 @@ If the panes show live Claude/Codex sessions, send a short kickoff nudge to each
 Preferred nudge shape:
 
 ```bash
-tmux send-keys -t sprint.<N> "<Persona> kickoff: use /home/tony/wrfcoin/docs/plans/sprint-<persona>.md as the source of truth. <short priority summary>." Enter
+tmux send-keys -t sprint.<N> "<Persona> kickoff: use <workspace>/docs/plans/sprint-<persona>.md as the source of truth. <short priority summary>." Enter
 ```
 
 If `send-keys` is blocked by sandbox permissions, rerun with escalation.
@@ -231,7 +231,7 @@ If `send-keys` is blocked by sandbox permissions, rerun with escalation.
 If the session is live but needs the full prompt pasted in-band, use:
 
 ```bash
-cat /home/tony/wrfcoin/docs/plans/sprint-<persona>.md | tmux load-buffer -
+cat <workspace>/docs/plans/sprint-<persona>.md | tmux load-buffer -
 tmux paste-buffer -t sprint.<N>
 tmux send-keys -t sprint.<N> Enter
 ```

@@ -2,13 +2,30 @@
 
 Use this only when the builder-ready gate passes or when the user explicitly wants a provisional prototype plan. Label provisional handoffs clearly.
 
+## Intake (required)
+
+Carry the `intake:` block from the observation ledger forward verbatim:
+
+```yaml
+intake:
+  image_access_mode: direct      # one of: direct | file-path | description-only | missing | partial | named-object
+  images_referenced: 0
+  images_viewable: 0
+  recovery_path: not-needed
+  source_qualifiers: []
+  confidence_ceiling: full       # full | provisional | speculative
+  notes: ""
+```
+
+**Provisional-by-default rule.** If `image_access_mode` is anything other than `direct`, the `Handoff status` field below must read `provisional` unless the user has explicitly accepted a different status with full knowledge of the degraded intake. Do not silently promote to `builder-ready`.
+
 ## Handoff Header
 
 ```text
 Project:
 Source evidence:
 Goal:
-Target skill: maker-engineering / makerspace / instrument-maker-v4
+Target skill: maker-engineering / makerspace / instrument-maker
 Handoff status: builder-ready / provisional / blocked
 Date:
 ```
@@ -58,7 +75,7 @@ Use this routing language:
 
 - To `maker-engineering`: "Please convert this analysis into engineering requirements, tolerances, trade studies, and a prototype validation plan."
 - To `makerspace`: "Please convert this analysis into shop-ready fabrication steps, fixtures, tools, material purchasing, and safety checks."
-- To `instrument-maker-v4`: "Please convert this validated instrument analysis into an instrument build packet, preserving acoustic unknowns and measurement confidence."
+- To `instrument-maker`: "Please convert this validated instrument analysis into an instrument build packet, preserving acoustic unknowns and measurement confidence."
 
 ## Blocked Handoff Note
 

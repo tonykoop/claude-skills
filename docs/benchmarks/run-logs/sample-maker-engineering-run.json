@@ -1,0 +1,294 @@
+{
+  "schema_version": 1,
+  "suite_id": "sample-skills-platform-controls",
+  "skill_name": "skills-platform-sample",
+  "skill_version": "1.0.0",
+  "runtime_targets": [
+    "Claude Code",
+    "Claude Desktop",
+    "Codex CLI",
+    "Codex Desktop",
+    "Gemini CLI"
+  ],
+  "runtime": "codex-cli",
+  "run_id": "sample-2026-05-09",
+  "created_at": "2026-05-09T00:00:00Z",
+  "status": "pass",
+  "totals": {
+    "cases": 4,
+    "cases_passed": 4,
+    "cases_failed": 0,
+    "assertions": 13,
+    "assertions_passed": 13,
+    "assertions_failed": 0
+  },
+  "cases": [
+    {
+      "id": "hybrid-ocarina-routing",
+      "title": "Hybrid ceramic ocarina request routes to specialists",
+      "skill_name": "maker-engineering",
+      "runtime_targets": [
+        "Codex CLI",
+        "Claude Code",
+        "Gemini CLI"
+      ],
+      "prompt_fixture": "I want to make a ceramic ocarina and need to figure out the slip-cast mold, tuning approach, and a small experiment for shrinkage.",
+      "expected_mode": "umbrella routing",
+      "expected_artifacts": [
+        "specialist handoff prompts",
+        "DoE scaffold"
+      ],
+      "candidate": {
+        "kind": "local_artifact",
+        "path": "docs/benchmarks/fixtures/maker-engineering-hybrid-handoff"
+      },
+      "watch_points": [
+        "Routing accuracy",
+        "Specialist boundary clarity",
+        "Runtime-agnostic handoff language"
+      ],
+      "status": "pass",
+      "passed_count": 4,
+      "failed_count": 0,
+      "assertions": [
+        {
+          "id": "response-file-present",
+          "kind": "file_exists",
+          "path": "docs/benchmarks/fixtures/maker-engineering-hybrid-handoff/response.md",
+          "status": "pass",
+          "evidence": "found"
+        },
+        {
+          "id": "routes-to-required-specialists",
+          "kind": "contains_all",
+          "path": "docs/benchmarks/fixtures/maker-engineering-hybrid-handoff/response.md",
+          "status": "pass",
+          "evidence": {
+            "found": [
+              "instrument-maker",
+              "makerspace",
+              "DoE"
+            ],
+            "missing": []
+          }
+        },
+        {
+          "id": "keeps-boundaries-explicit",
+          "kind": "contains_all",
+          "path": "docs/benchmarks/fixtures/maker-engineering-hybrid-handoff/response.md",
+          "status": "pass",
+          "evidence": {
+            "found": [
+              "acoustic",
+              "mold",
+              "shrinkage"
+            ],
+            "missing": []
+          }
+        },
+        {
+          "id": "runtime-agnostic",
+          "kind": "not_contains_any",
+          "path": "docs/benchmarks/fixtures/maker-engineering-hybrid-handoff/response.md",
+          "status": "pass",
+          "evidence": {
+            "unexpected": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "tmux-v2-pane-recovery",
+      "title": "tmux-v2 keeps sprint recovery operational and scoped",
+      "skill_name": "tmux-v2",
+      "runtime_targets": [
+        "Codex CLI"
+      ],
+      "prompt_fixture": "Launch the WRFCoin persona dashboard, check which panes are alive, and recover any idle codex resume panes without touching shared repo state.",
+      "expected_mode": "runtime operations",
+      "expected_artifacts": [
+        "pane liveness report",
+        "recovery commands",
+        "shared-repo safety note"
+      ],
+      "candidate": {
+        "kind": "local_artifact",
+        "path": "docs/benchmarks/fixtures/tmux-v2-pane-recovery"
+      },
+      "watch_points": [
+        "Trigger accuracy",
+        "Operational safety",
+        "Handoff quality"
+      ],
+      "status": "pass",
+      "passed_count": 3,
+      "failed_count": 0,
+      "assertions": [
+        {
+          "id": "response-file-present",
+          "kind": "file_exists",
+          "path": "docs/benchmarks/fixtures/tmux-v2-pane-recovery/response.md",
+          "status": "pass",
+          "evidence": "found"
+        },
+        {
+          "id": "reports-liveness-and-recovery",
+          "kind": "contains_all",
+          "path": "docs/benchmarks/fixtures/tmux-v2-pane-recovery/response.md",
+          "status": "pass",
+          "evidence": {
+            "found": [
+              "pane liveness",
+              "codex resume",
+              "tmux send-keys"
+            ],
+            "missing": []
+          }
+        },
+        {
+          "id": "protects-shared-repos",
+          "kind": "contains_all",
+          "path": "docs/benchmarks/fixtures/tmux-v2-pane-recovery/response.md",
+          "status": "pass",
+          "evidence": {
+            "found": [
+              "do not reset",
+              "shared repo"
+            ],
+            "missing": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "skill-creator-portable-skill",
+      "title": "skill-creator produces validator-ready portable skill guidance",
+      "skill_name": "skill-creator",
+      "runtime_targets": [
+        "Claude Code",
+        "Codex CLI",
+        "Codex Desktop"
+      ],
+      "prompt_fixture": "Create a portable skill for repeatable workshop project retrospectives and make sure it can be validated before publishing.",
+      "expected_mode": "skill authoring",
+      "expected_artifacts": [
+        "SKILL.md",
+        "manifest entry",
+        "validation command"
+      ],
+      "candidate": {
+        "kind": "local_artifact",
+        "path": "docs/benchmarks/fixtures/skill-creator-portable-skill"
+      },
+      "watch_points": [
+        "Trigger accuracy",
+        "Version awareness",
+        "Validation quality"
+      ],
+      "status": "pass",
+      "passed_count": 3,
+      "failed_count": 0,
+      "assertions": [
+        {
+          "id": "response-file-present",
+          "kind": "file_exists",
+          "path": "docs/benchmarks/fixtures/skill-creator-portable-skill/response.md",
+          "status": "pass",
+          "evidence": "found"
+        },
+        {
+          "id": "names-authoring-artifacts",
+          "kind": "contains_all",
+          "path": "docs/benchmarks/fixtures/skill-creator-portable-skill/response.md",
+          "status": "pass",
+          "evidence": {
+            "found": [
+              "SKILL.md",
+              "manifest.yaml",
+              "agents/openai.yaml"
+            ],
+            "missing": []
+          }
+        },
+        {
+          "id": "includes-validation-command",
+          "kind": "contains_any",
+          "path": "docs/benchmarks/fixtures/skill-creator-portable-skill/response.md",
+          "status": "pass",
+          "evidence": {
+            "found": [
+              "quick_validate.py",
+              "Skill is valid"
+            ],
+            "missing": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "energy-management-planned-skill",
+      "title": "planned energy-management skill stays in issue-backed handoff mode",
+      "skill_name": "energy-management",
+      "runtime_targets": [
+        "Claude Desktop",
+        "Codex Desktop",
+        "Gemini CLI"
+      ],
+      "prompt_fixture": "I want an energy-management skill for pacing creative work across the week. Turn this into a safe first handoff, not a full installable skill yet.",
+      "expected_mode": "planned-skill handoff",
+      "expected_artifacts": [
+        "issue handoff",
+        "promotion criteria",
+        "safety boundaries"
+      ],
+      "candidate": {
+        "kind": "local_artifact",
+        "path": "docs/benchmarks/fixtures/energy-management-planned-skill"
+      },
+      "watch_points": [
+        "Planned skill routing",
+        "Context discipline",
+        "Handoff quality"
+      ],
+      "status": "pass",
+      "passed_count": 3,
+      "failed_count": 0,
+      "assertions": [
+        {
+          "id": "response-file-present",
+          "kind": "file_exists",
+          "path": "docs/benchmarks/fixtures/energy-management-planned-skill/response.md",
+          "status": "pass",
+          "evidence": "found"
+        },
+        {
+          "id": "stays-planned",
+          "kind": "contains_all",
+          "path": "docs/benchmarks/fixtures/energy-management-planned-skill/response.md",
+          "status": "pass",
+          "evidence": {
+            "found": [
+              "issue handoff",
+              "planned skill",
+              "promotion criteria"
+            ],
+            "missing": []
+          }
+        },
+        {
+          "id": "does-not-claim-installable",
+          "kind": "not_contains_any",
+          "path": "docs/benchmarks/fixtures/energy-management-planned-skill/response.md",
+          "status": "pass",
+          "evidence": {
+            "unexpected": []
+          }
+        }
+      ]
+    }
+  ],
+  "archive_notes": [
+    "This sample uses checked-in response fixtures so reviewers can verify the harness without calling a model.",
+    "Future instrument-maker comparisons can add one case per prompt and point candidate.path at each run's archived output directory."
+  ]
+}

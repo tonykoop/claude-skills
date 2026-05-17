@@ -25,6 +25,26 @@ Required artifacts:
 - Add `response.md` when the user wants a chat-style answer instead of a
   file set.
 
+## When to add structured (CSV) artifacts
+
+When the packet has more than five distinct parts **or** more than five
+distinct go/no-go gates, also produce:
+
+- `cut-list.csv`
+- `validation.csv`
+- `process-schedule.csv` (rename to `bending-schedule.csv`,
+  `welding-schedule.csv`, etc., as the work warrants)
+
+For any packet whose primary feature is curved (rocker arc, kayak hull,
+bent rim), also generate a parametric SVG side-elevation or top-view
+that visually proves the dimensions in the narrative are mutually
+consistent.
+
+Schemas, validation snippets, and a steam-bending gate table live in
+`references/structured-shop-artifacts.md`. Run the column check with
+`scripts/validate_packet.py --schemas-only <packet-dir>` before
+declaring the packet ready.
+
 ## Packet design rules
 
 - Keep design intent separate from machine operations.

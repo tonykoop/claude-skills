@@ -1,0 +1,30 @@
+{
+  "id": "yoga-sculpt",
+  "name": "Yoga Sculpt (60-min, strength + cardio + yoga)",
+  "description": "60-minute drill-format class blending yoga with light free weights and cardio bursts. Heavy focus on repetitive movements (up/down/up/down) on a 4- or 8-count beat. Higher BPM throughout. Generic format used at many heated-yoga studios under names like Yoga Sculpt, Strength Yoga, Sculpt Flow.",
+  "duration_min": 60,
+  "duration_acceptable": [58, 64],
+  "padding_default_min": 3,
+  "track_count_target": [14, 18],
+  "music_pedagogy": {
+    "beat": "Drill format requires the cleanest beat alignment of any yoga class. Tracks must support rep-counted movements (squat up/down on 1 and 3, or pulse on every beat). Avoid breakdowns or unexpected drops mid-track.",
+    "voice": "Cueing is dense and rapid (form corrections during reps). Pick tracks with sparse vocals or fully instrumental sections during drill blocks.",
+    "count": "4-count and 8-count are dominant. 'Down on 4, up on 4' is typical."
+  },
+  "phases": [
+    { "name": "Warmup",          "bank": "B", "min_tracks": 2, "max_tracks": 3, "window_min": [0, 8],   "energy": 5, "bpm_target": [95, 110] },
+    { "name": "Cardio Block 1",   "bank": "D", "min_tracks": 2, "max_tracks": 3, "window_min": [8, 20],  "energy": 8, "bpm_target": [120, 135] },
+    { "name": "Strength (Weights)","bank": "D", "min_tracks": 3, "max_tracks": 4, "window_min": [20, 35], "energy": 7, "bpm_target": [110, 125], "notes": "Free-weight drills. Tracks must hold steady rep cadence." },
+    { "name": "Cardio Block 2",   "bank": "D", "min_tracks": 2, "max_tracks": 3, "window_min": [35, 47], "energy": 9, "bpm_target": [125, 140], "notes": "Final push." },
+    { "name": "Cool Down",        "bank": "E", "min_tracks": 2, "max_tracks": 3, "window_min": [47, 56], "energy": 4, "bpm_target": [80, 100] },
+    { "name": "Closing / Savasana","bank": "A", "min_tracks": 1, "max_tracks": 2, "window_min": [56, 64], "energy": 1 }
+  ],
+  "theme_anchor": null,
+  "moment_tracks": {
+    "bank": "C",
+    "window_min": [20, 35],
+    "tracks": 1,
+    "rationale": "A 'drop' moment at the strength-block transition — high-energy lyrical track to mark the shift."
+  },
+  "content_filter": "Filter explicit lyrics by default. Sculpt's gym-music sensibility may push the line — keep tracks tasteful for a yoga-studio audience."
+}

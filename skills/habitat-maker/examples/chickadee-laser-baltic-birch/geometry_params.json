@@ -1,0 +1,151 @@
+{
+  "schema_version": "1.0",
+  "packet": "chickadee-laser-baltic-birch",
+  "skill": "habitat-maker",
+  "skill_version": "0.2.0",
+  "units": "mm",
+  "imperial_equivalents_provided": true,
+  "target_species": [
+    "Black-capped Chickadee (Poecile atricapillus)",
+    "Carolina Chickadee (Poecile carolinensis)",
+    "Mountain Chickadee (Poecile gambeli)",
+    "Chestnut-backed Chickadee (Poecile rufescens)",
+    "Boreal Chickadee (Poecile hudsonicus)"
+  ],
+  "compatible_with_same_hole": [
+    "House Wren (caveat: aggressive nest competitor)"
+  ],
+  "explicitly_not_for": [
+    "Bluebirds (need 1-1/2 in hole)",
+    "Tufted Titmouse (1-1/4 in preferred)",
+    "Owls / kestrels / ducks (different geometry entirely)"
+  ],
+  "references": [
+    {
+      "name": "NestWatch — Black-capped Chickadee",
+      "url": "https://nestwatch.org/learn/all-about-birdhouses/birds/black-capped-chickadee/",
+      "fields_consumed": ["entrance_diameter", "floor", "interior_height", "mount_height_ft", "spacing_ft"]
+    },
+    {
+      "name": "NestWatch — Features of a Good Birdhouse",
+      "url": "https://nestwatch.org/learn/all-about-birdhouses/features-of-a-good-birdhouse/",
+      "fields_consumed": ["wall_thickness_guidance", "perch_no", "ventilation_yes", "drainage_yes", "cleanout_required"]
+    },
+    {
+      "name": "NestWatch — Dealing with Predators",
+      "url": "https://nestwatch.org/learn/all-about-birdhouses/dealing-with-predators/",
+      "fields_consumed": ["predator_baffle"]
+    }
+  ],
+  "material": {
+    "primary": {
+      "name": "Baltic-birch plywood, 6 mm, exterior phenolic glue (WBP)",
+      "panel_thickness_mm": 6.0,
+      "lifespan_years_estimate": "3-5 with annual maintenance",
+      "thermal_score": "marginal — offset via siting + ventilation",
+      "laser_score": "excellent"
+    },
+    "alternate": {
+      "name": "Solid cedar, 1/4 in, three-ply lamination",
+      "panel_thickness_mm": 6.35,
+      "plies_per_finished_panel": 3,
+      "finished_wall_thickness_mm": 19,
+      "lifespan_years_estimate": "10+ with refinish",
+      "thermal_score": "excellent",
+      "laser_score": "good with active air assist; resin flare risk",
+      "rationale": "Trades faster build for better thermal mass and longer outdoor life. Drives different joinery (lap joints + screws instead of box joints) and a 7-day cure. Use when bird welfare is the lead criterion and the shop has cedar policy + active air assist.",
+      "design_table_overrides": {
+        "T_per_finished_panel_mm": 19,
+        "joinery_strategy": "lap joints + screws (box joints in 19 mm laminated stack are impractical)",
+        "joinery_door": "small exterior brass hinges + latch (vs pivot+latch screw for the default Baltic-birch build)"
+      }
+    }
+  },
+  "cavity_dimensions_mm": {
+    "floor_interior_x":                                  110,
+    "floor_interior_y":                                  110,
+    "interior_height_floor_to_roof_underside":           230,
+    "entrance_diameter":                                 28.6,
+    "entrance_center_above_interior_floor_top":          175
+  },
+  "design_choices_mm": {
+    "panel_thickness":                  6.0,
+    "kerf_offset_assumed":              0.075,
+    "roof_slope_deg":                   15,
+    "roof_overhang_front":              50,
+    "roof_overhang_back":               25,
+    "roof_overhang_side":               25,
+    "roof_slope_direction":             "front-high → back-low (runoff sheds AWAY from entrance)",
+    "back_panel_top_tab_height":        80,
+    "back_panel_bottom_tab_height":     30,
+    "mount_hole_diameter":              5.5,
+    "mount_hole_count":                 2,
+    "vent_slot_w":                      4,
+    "vent_slot_h":                      50,
+    "vent_slots_per_side":              3,
+    "drain_corner_notch":               8,
+    "drain_corner_notches_count":       4,
+    "fledgling_score_lines_count":      5,
+    "fledgling_score_line_length":      80,
+    "fledgling_score_line_spacing":     2,
+    "entrance_guard_w":                 60
+  },
+  "derived_panel_geometry_mm": {
+    "panel_thickness":                       6.0,
+    "floor_interior":                        110,
+    "box_exterior":                          122,
+    "front_panel_h":                         275,
+    "back_panel_box_h":                      242,
+    "back_panel_total_h":                    352,
+    "side_front_edge":                       269,
+    "side_back_edge":                        236,
+    "roof_w":                                172,
+    "roof_d":                                204,
+    "entrance_guard_w":                      60,
+    "entrance_diameter":                     28.6,
+    "entrance_above_floor":                  175,
+    "floor_top_above_panel_bottom":          12,
+    "_derivation_notes": [
+      "box_exterior = floor_interior + 2 * panel_thickness = 110 + 12 = 122",
+      "front_panel_h = interior_height + 2 * panel_thickness + roof_rise where roof_rise = round(box_exterior * tan(15°)) = 33; so 230 + 12 + 33 = 275",
+      "back_panel_box_h = interior_height + 2 * panel_thickness = 242",
+      "back_panel_total_h = back_panel_box_h + 80 (top tab) + 30 (bottom tab) = 352",
+      "side_front_edge = front_panel_h - panel_thickness = 269 (sides sit between front+back; the roof caps the assembly)",
+      "side_back_edge  = back_panel_box_h - panel_thickness = 236",
+      "roof_w = box_exterior + 2 * 25 (side overhang) = 172",
+      "roof_d = (box_exterior + 50 + 25) / cos(15°) = ~204 (slope-projected length)",
+      "floor_top_above_panel_bottom = 6 (dado) + 6 (floor thickness) = 12; entrance center then sits at panel-y = 12 + 175 = 187"
+    ]
+  },
+  "joinery": {
+    "vertical_corners":   "box-joint, 22 fingers + 2 half-fingers, finger_w = edge_len / 23",
+    "floor_seating":      "6 mm dado 6 mm above panel bottom; laser-only substitute = 4 triangular stop tabs",
+    "roof_attach":        "4 × #6 × 5/8 in stainless screws — removable",
+    "cleanout_door":      "right side panel pivots on 2 × #6 × 1/2 in screws + 1 latch screw"
+  },
+  "mounting": {
+    "recommended_height_ft":            "5-15",
+    "preferred_method":                 "metal pole + stovepipe predator baffle (≥ 18 in baffle below box)",
+    "tree_mount_acceptable":            false,
+    "tree_mount_caveat":                "only with trunk baffle; predation rate substantially higher",
+    "perch":                            false,
+    "entrance_orientation":             "facing away from prevailing storm wind (typically NE in continental US)",
+    "min_distance_to_woody_cover_ft":   30,
+    "min_distance_between_chickadee_boxes_ft": 200
+  },
+  "validation_targets_post_assembly": {
+    "drainage_test":                    "250 mL water through entrance drains in ≤ 60 s",
+    "smoke_test":                       "incense smoke at entrance draws upward and exits vent slots",
+    "diagonal_squareness_max_diff_mm":  2,
+    "assembled_mass_grams_range":       [250, 350]
+  },
+  "welfare_gates": {
+    "no_perch":             "REQUIRED",
+    "no_interior_finish":   "REQUIRED",
+    "drainage":             "REQUIRED — ≥ 4 drains, total ≥ 2 cm² open area",
+    "ventilation":          "REQUIRED — ≥ 6 cm² per side under roof line",
+    "fledgling_grip":       "REQUIRED — score lines, kerf grooves, or roughened texture below entrance",
+    "predator_baffle":      "REQUIRED on pole mounts; recommended on tree mounts",
+    "cleanout_access":      "REQUIRED — hand-tool removable side, floor, or roof"
+  }
+}
