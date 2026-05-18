@@ -251,6 +251,8 @@ class TestBatBeeObservationHiveReference(unittest.TestCase):
             "Untreated interior",
             "Exterior-only weatherproofing",
             "Mounting stability",
+            "Clear drop space",
+            "Venting and moisture",
             "Seasonal disturbance",
         ]
         for term in required:
@@ -271,6 +273,18 @@ class TestBatBeeObservationHiveReference(unittest.TestCase):
             "Do not let the canonical example layout substitute",
         ]
         for term in required_reference_terms:
+            self.assertIn(term, self.reference)
+
+    def test_bat_house_round11_tightening_present(self) -> None:
+        required = [
+            "without mesh or snag-prone liners",
+            "climate/site preset",
+            "tree mounts are discouraged",
+            "mount type",
+            "service calendar",
+            "seasonal disturbance windows",
+        ]
+        for term in required:
             self.assertIn(term, self.reference)
 
     def test_native_bee_gates_present(self) -> None:
@@ -368,11 +382,27 @@ class TestWelfareGateSchemaReference(unittest.TestCase):
     def test_reference_connects_concrete_gate_families(self) -> None:
         required = [
             "`bat_house`",
+            "`clear_drop_space`",
+            "`venting_moisture`",
+            "`no_mesh`",
+            "`tree_mount_discouraged`",
             "`native_bee_house`",
             "`observation_hive_preflight`",
             "`camera_electronics`",
             "`fabrication_authority`",
             "private family/media details",
+        ]
+        for term in required:
+            self.assertIn(term, self.reference)
+
+    def test_bat_house_schema_keeps_makerspace_downstream(self) -> None:
+        required = [
+            "Keep `habitat-maker` as the first owner",
+            "route downstream DXF/CNC, fastener, and workholding details to `makerspace`",
+            "preserve unknowns instead of inventing dimensions",
+            "climate/site",
+            "mount type",
+            "service calendar",
         ]
         for term in required:
             self.assertIn(term, self.reference)

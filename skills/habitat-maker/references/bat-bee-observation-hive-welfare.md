@@ -59,14 +59,16 @@ group, climate/site, mount type, or deployment evidence.
 
 | Gate | Pass condition | Fail remedy |
 | --- | --- | --- |
-| Rough landing and roost surfaces | Landing pad and internal roost surfaces are roughened, grooved, or mesh-free textured for secure climbing. | Add shallow kerfs/grooves or roughen the wood; reject slick plastic or finished interiors. |
+| Rough landing and roost surfaces | Landing pad and internal roost surfaces are roughened, grooved, or otherwise bare-textured for secure climbing without mesh or snag-prone liners. | Add shallow kerfs/grooves or roughen the wood; reject slick plastic, slick finishes, loose fibers, or mesh that can snag claws or wings. |
 | Chamber spacing | Chamber gap is sized for the target bat group and does not create a loose deep cavity. | Adjust spacers before fabrication; do not rely on vague "bat box" proportions. |
-| Heat and sun posture | Packet names climate, sun exposure, color/finish, and overheating mitigation. | Re-site, change exterior color, add ventilation, or reject the mounting location. |
+| Heat and sun posture | Packet names climate/site preset, sun exposure, exterior color/finish, venting and moisture posture, and overheating mitigation. | Re-site, change exterior color, add ventilation/moisture-shedding detail, or reject the mounting location. |
 | Predator exclusion | Entry geometry and mounting avoid perches, ledges, and easy predator reach. | Remove ledges/perches, raise mount height, or redesign the entry zone. |
 | Untreated interior | No paint, stain, oil, adhesive squeeze-out, or loose fibers contact roosting bats. | Keep interior bare and mechanically clean; move coatings to exterior-only surfaces. |
 | Exterior-only weatherproofing | Weather protection is outside the roost path and fully cured before deployment. | Seal exterior seams only; reject uncured, odorous, or interior coatings. |
-| Mounting stability | Mount resists wind, vibration, and seasonal movement without opening gaps. | Improve backing, fasteners, or site; do not deploy a wobbly box. |
-| Seasonal disturbance | Packet forbids inspection, camera service, or relocation during maternity or hibernation-sensitive windows unless handled by qualified wildlife support. | Delay service or remove electronics until the box is confirmed unoccupied. |
+| Mounting stability | Mount type is named and resists wind, vibration, and seasonal movement without opening gaps; tree mounts are discouraged unless a qualified review documents the added predator, sway, and maintenance risks. | Improve backing, fasteners, or site; prefer building, pole, or post mounting; do not deploy a wobbly or unreviewed tree-mounted box. |
+| Clear drop space | Deployment record documents a clear entry/drop zone for the target site without immediate obstructions, ledges, or clutter below the entrance. | Re-site, raise, clear the approach zone, or reject the deployment until the entry/drop path is documented. |
+| Venting and moisture | Vent and weather-shedding details are dimensioned or otherwise inspectable, with no water-wicking path into roost chambers. | Add vent/moisture details to the drawing or parameter file before treating the packet as fabrication-ready. |
+| Seasonal disturbance | Packet names seasonal disturbance windows and includes a service calendar; inspection, camera service, or relocation during maternity or hibernation-sensitive windows is forbidden unless handled by qualified wildlife support. | Delay service, remove electronics, or keep the packet concept-only until the box is confirmed unoccupied and service timing is documented. |
 
 ## Native Bee House Welfare Gates
 
@@ -121,6 +123,8 @@ Use this as the minimum field checklist for bat, bee, observation-hive, or
 electronics review packets.
 
 - [ ] Habitat type and target species/group are named.
+- [ ] Climate/site preset, mount type, and service calendar are named before
+      bat-house deployment or fabrication claims.
 - [ ] Welfare gates are pass/fail, not suggestions.
 - [ ] Animal-contact surfaces are untreated, non-toxic, and mechanically safe.
 - [ ] Maintenance can be done without disturbing occupied chambers.
