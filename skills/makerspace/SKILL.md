@@ -1,6 +1,6 @@
 ---
 name: makerspace
-version: 1.1.2
+version: 1.1.3
 last-updated: 2026-05-11
 description: >-
   Plan shop-floor fabrication for jigs, fixtures, workholding, molds, machine
@@ -100,6 +100,10 @@ Add optional artifacts only when the prompt calls for them:
 - `handoff_checklist.json`
   Add when reviewing DXF/CAD/CAM/fabrication-repo readiness for laser,
   CNC router, mill, plasma, or outside-shop handoff.
+- `cad-index.csv`
+  Add first when a repo contains recovered CAD, drawings, STL/STEP/DXF,
+  Illustrator/PDF layouts, or mixed old/new files whose fabrication authority
+  is not yet clear.
 - `validation.csv`
   Add when repo handoff readiness needs explicit gates for revision
   authority, missing dimensions, material fit, workholding, safety, or
@@ -121,6 +125,9 @@ shape.
 Read `references/repo-to-shop-packet-routing.md` when the user points at
 a woodworking/mechanism repo or asks for a fabrication handoff from an
 existing project.
+Read `references/recovered-cad-archive-index.md` when a repo has recovered
+or mixed CAD/drawing/layout files and the first blocker is deciding what is
+current fabrication authority.
 
 ## Gather the minimum inputs
 
@@ -170,6 +177,9 @@ needs a temporary profile instead of a canonical `spaces/<slug>/` entry.
 - `references/repo-to-shop-packet-routing.md`
   Read when turning an existing woodworking, furniture, jig, mechanism,
   prop, or puzzle-box repo into a shop-floor packet.
+- `references/recovered-cad-archive-index.md`
+  Read when a repo has recovered or mixed CAD/drawing/layout files and the
+  first blocker is deciding what is current fabrication authority.
 - `references/structured-shop-artifacts.md`
   Read when the packet has more than five distinct parts or more than
   five go/no-go gates, or when the work involves steam bending. Defines

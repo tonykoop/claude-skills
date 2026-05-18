@@ -22,6 +22,7 @@ remain sufficient.
 |---|---|---|
 | `cut-list.csv` | Per-part stock list with rough and finished dimensions | `part_id,part_name,qty,rough_dimensions,finished_dimensions,material,operation_notes` |
 | `validation.csv` | Auditable per-check log with target/tolerance/method | `check_id,check_name,target,tolerance,method,when_to_check,pass_fail,notes` |
+| `cad-index.csv` | Recovered CAD/drawing archive triage before shop claims | `path,file_type,role,authority_status,revision_status,units_scale_status,stale_risk,next_review_action,notes` |
 | `process-schedule.csv` | Step-by-step process timing and gates (rename to `bending-schedule.csv`, `welding-schedule.csv`, etc., as the work warrants) | `step_id,part,option,stock,prep,heat_or_glue_time,bend_or_clamp_window,fixture,release_time,go_no_go` |
 
 Existing `bom.csv` retains its schema:
@@ -36,6 +37,10 @@ Existing `bom.csv` retains its schema:
 - IDs (`part_id`, `check_id`, `step_id`) are strings; prefer
   `CHAIR-001`, `VAL-001`, `BEND-001` style so they sort and grep
   cleanly.
+- For `cad-index.csv`, use `TBD` for unchecked units/scale or revision
+  status. Use authority statuses such as `current`, `stale`, `visual_only`,
+  `requires_export`, and `unknown`; do not promote `unknown` or
+  `visual_only` rows into shop instructions.
 
 ## Optional sanity-check drawing
 
@@ -78,6 +83,9 @@ schemas = {
                    "finished_dimensions","material","operation_notes"],
   "validation.csv": ["check_id","check_name","target","tolerance",
                      "method","when_to_check","pass_fail","notes"],
+  "cad-index.csv": ["path","file_type","role","authority_status",
+                    "revision_status","units_scale_status","stale_risk",
+                    "next_review_action","notes"],
   "process-schedule.csv": ["step_id","part","option","stock","prep",
                            "heat_or_glue_time","bend_or_clamp_window",
                            "fixture","release_time","go_no_go"],
@@ -106,7 +114,7 @@ EOF
 ```
 
 The repo provides this as `scripts/validate_packet.py --schemas-only
-<packet-dir>`.
+--packet <packet-dir>`.
 
 ### SVG render check
 
@@ -181,9 +189,11 @@ packet.
 
 - `references/repeatable-shop-packets.md` — when to add structured
   artifacts to the default packet.
+- `references/recovered-cad-archive-index.md` — how to use `cad-index.csv`
+  before treating recovered CAD/drawings as fabrication authority.
 - `references/safety-checklist.md` — broader safety sweep; the
   steam-bending gate table above is a focused subset.
 - `scripts/validate_packet.py` — runs the CSV header-and-column check
-  against a packet directory. Pass `--schemas-only <dir>` for the
+  against a packet directory. Pass `--schemas-only --packet <dir>` for the
   CSV-only check, or include `validation.csv` / `cut-list.csv` in a
   full tier-2 packet to have them validated as part of completeness.

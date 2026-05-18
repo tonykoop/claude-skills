@@ -268,6 +268,11 @@ CSV_SCHEMAS: dict[str, list[str]] = {
         "check_id", "check_name", "target", "tolerance", "method",
         "when_to_check", "pass_fail", "notes",
     ],
+    "cad-index.csv": [
+        "path", "file_type", "role", "authority_status",
+        "revision_status", "units_scale_status", "stale_risk",
+        "next_review_action", "notes",
+    ],
     "process-schedule.csv": [
         "step_id", "part", "option", "stock", "prep",
         "heat_or_glue_time", "bend_or_clamp_window", "fixture",

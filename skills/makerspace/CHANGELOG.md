@@ -1,5 +1,15 @@
 # Changelog — makerspace
 
+## v1.1.3 — 2026-05-11
+
+- Add a recovered-CAD archive index pattern for repo-backed shop-packet
+  handoffs.
+- Add `cad-index.csv` as a structured artifact for authority status, stale
+  file handling, units/scale checks, and next review actions before shop
+  claims.
+- Extend the packet validator's schema-only CSV check to recognize
+  `cad-index.csv`.
+
 ## v1.1.2 — 2026-05-11
 
 - Add repo-to-shop-packet routing guidance for woodworking and mechanism

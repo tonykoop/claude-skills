@@ -1,5 +1,5 @@
 name: makerspace
-version: 1.1.2
+version: 1.1.3
 description: |
   Fabrication specialist for jigs, fixtures, workholding, machine-aware
   process plans, and make/order/buy/borrow decisions. Uses shop profiles
