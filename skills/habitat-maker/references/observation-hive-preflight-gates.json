@@ -1,0 +1,102 @@
+{
+  "schema_version": "1.0",
+  "skill": "habitat-maker",
+  "contract": "observation_hive_preflight",
+  "readiness_label": "concept/preflight only; not approved for live colony use",
+  "applies_to": ["observation_hive_preflight"],
+  "required_gate_ids": [
+    "qualified_keeper_review",
+    "secure_containment",
+    "ventilation_thermal_management",
+    "escape_proof_service_access",
+    "public_privacy_safety",
+    "route_out_colony_decisions"
+  ],
+  "route_out_topics": [
+    "live colony handling",
+    "colony sourcing",
+    "feeding",
+    "disease response",
+    "queen status",
+    "inspection cadence",
+    "overwintering",
+    "transport",
+    "legal compliance",
+    "private family or media details"
+  ],
+  "gates": [
+    {
+      "gate_id": "qualified_keeper_review",
+      "label": "Qualified keeper review",
+      "applies_to": ["observation_hive_preflight"],
+      "severity": "required",
+      "pass_condition": "Packet is labeled concept/preflight only and requires qualified beekeeper review before any live colony use.",
+      "fail_remedy": "Mark the packet as non-live display only until a qualified local keeper reviews it.",
+      "evidence": "deployment_record",
+      "source_ref": ["habitat-maker:bat-bee-observation-hive-welfare"]
+    },
+    {
+      "gate_id": "secure_containment",
+      "label": "Secure containment",
+      "applies_to": ["observation_hive_preflight"],
+      "severity": "required",
+      "pass_condition": "Bee paths, doors, seals, frame interfaces, and viewing panels are documented as escape-resistant design requirements.",
+      "fail_remedy": "Keep the packet at preflight level and redesign closures, gaskets, viewing-panel retention, and service access before live use.",
+      "evidence": "inspection",
+      "source_ref": ["habitat-maker:bat-bee-observation-hive-welfare"]
+    },
+    {
+      "gate_id": "ventilation_thermal_management",
+      "label": "Ventilation and thermal management",
+      "applies_to": ["observation_hive_preflight"],
+      "severity": "required",
+      "pass_condition": "Packet records airflow path, heat load posture, sun exposure limits, emergency shade or cooling posture, and unattended-display assumptions.",
+      "fail_remedy": "Add ventilation and thermal review or reject the proposed viewing location before live use.",
+      "evidence": "deployment_record",
+      "source_ref": ["habitat-maker:bat-bee-observation-hive-welfare"]
+    },
+    {
+      "gate_id": "escape_proof_service_access",
+      "label": "Escape-proof service access",
+      "applies_to": ["observation_hive_preflight"],
+      "severity": "required",
+      "pass_condition": "Inspection, cleaning, and service access do not create uncontrolled bee release into family, shop, school, or public areas.",
+      "fail_remedy": "Add service protocol constraints or keep the packet as a non-live display.",
+      "evidence": "inspection",
+      "source_ref": ["habitat-maker:bat-bee-observation-hive-welfare"]
+    },
+    {
+      "gate_id": "public_privacy_safety",
+      "label": "Public and privacy safety",
+      "applies_to": ["observation_hive_preflight"],
+      "severity": "required",
+      "pass_condition": "Packet defines public standoff, signage, supervision, and private-detail redaction requirements.",
+      "fail_remedy": "Redact private family/media details and add public safety boundaries before public release.",
+      "evidence": "inspection",
+      "source_ref": ["habitat-maker:bat-bee-observation-hive-welfare"]
+    },
+    {
+      "gate_id": "route_out_colony_decisions",
+      "label": "Route-out colony decisions",
+      "applies_to": ["observation_hive_preflight"],
+      "severity": "required",
+      "pass_condition": "Colony sourcing, feeding, disease response, queen status, inspection cadence, overwintering, transport, legal compliance, and live handling are explicitly out of scope.",
+      "fail_remedy": "Add route-out language to the packet and route these decisions to qualified local beekeeping or project-specific support.",
+      "evidence": "inspection",
+      "source_ref": ["habitat-maker:bat-bee-observation-hive-welfare"]
+    }
+  ],
+  "camera_electronics_default": {
+    "default_posture": "external observation only for v1",
+    "required_if_electronics_present": [
+      "no_contact_protrusions",
+      "no_exposed_wires",
+      "low_heat_load",
+      "weatherproof_external_routing",
+      "service_without_disturbance",
+      "species_safe_sensing",
+      "fabrication_authority"
+    ]
+  },
+  "fabrication_authority": "Generated images and concept renders are non-authoritative; dimensions must come from CAD/DXF/JSON, design tables, or reviewed drawings."
+}
