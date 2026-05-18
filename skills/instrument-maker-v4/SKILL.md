@@ -1,6 +1,6 @@
 ---
 name: instrument-maker
-version: 4.4.7
+version: 4.5.0
 last-updated: 2026-05-17
 partial-skill: true
 canonical-install: ~/.claude/skills/instrument-maker
@@ -19,10 +19,11 @@ description: >-
   v4.4.4 repo-first bare-bones packet readiness template, the v4.4.5
   DXF/image-gen-2 visual authority guard, the v4.4.6 invocation rename and
   early visual-register trigger, the v4.4.7 instrument design-book chapter
-  contract (issue #104), and Round 12 hulusi/bawu stopped-pipe free-reed
-  validation guidance. The full skill body lives in the canonical install
-  directory; this folder contains only the additive references, validators,
-  tests, fixtures, and examples that these changes introduce.
+  contract (issue #104), Round 12 hulusi/bawu stopped-pipe free-reed
+  validation guidance, and the v4.5 experimental acoustic rig template
+  (issue #107). The full skill body lives in the canonical install directory;
+  this folder contains only the additive references, validators, tests,
+  fixtures, and examples that these changes introduce.
 ---
 
 # instrument-maker - partial-skill entry (v4 readiness additions)
@@ -55,8 +56,10 @@ tracking, plus a **v4.4.4 repo-first bare-bones packet readiness template**,
 plus a **v4.4.5 DXF/image-gen-2 visual authority guard**, plus the
 **v4.4.6 public invocation rename and early visual-register trigger**, plus the
 **v4.4.7 instrument design-book chapter contract**
-([issue #104](https://github.com/tonykoop/claude-skills/issues/104)),
-plus Round 12 **hulusi/bawu stopped-pipe free-reed validation guidance**:
+([issue #104](https://github.com/tonykoop/claude-skills/issues/104)), plus
+Round 12 **hulusi/bawu stopped-pipe free-reed validation guidance**, plus the
+**v4.5 experimental acoustic rig template** for coupled-resonator / yaybahar-style
+systems ([issue #107](https://github.com/tonykoop/claude-skills/issues/107)):
 
 ```
 skills/instrument-maker-v4/
@@ -65,6 +68,7 @@ skills/instrument-maker-v4/
 ├── references/
 │   ├── acoustic-models.md                      ← canonical + new "Reed boundary-condition decision tree" section
 │   ├── drawing-and-visual-authority.md         ← DXF/CAD authority + early visual-register + image-gen-2 guard
+│   ├── experimental-acoustic-rigs.md           ← bench-rig-first workflow for coupled systems
 │   ├── family-aware-design.md                  ← canonical + new family-spec.csv schema (acoustic_law, end_condition, dimension_provenance)
 │   ├── free-reed-khaen-exploration.md          ← P0 reed coupon / control-build template
 │   ├── folded-stopped-pipe-drone.md            ← folded drone packet template
@@ -72,12 +76,16 @@ skills/instrument-maker-v4/
 │   ├── prototype-validation-loop-upgrade.md     ← upgrade path for existing prototype packets
 │   ├── repo-first-bare-bones-packet.md         ← minimal public repo-first packet contract
 │   └── instrument-design-book-chapter-contract.md ← public chapter readiness / asset-ledger contract
+├── assets/
+│   └── templates/experimental-acoustic-rig/    ← README, validation plan, risks, matrix, log, sensor/safety checklists
 ├── scripts/
+│   ├── apply_experimental_rig_runtime_patch.py  ← idempotently patches canonical SKILL.md routing guidance
 │   ├── generate_folded_drone_dxf.py            ← CSV-to-DXF folded bore helper
 │   ├── validate_acoustic_law.py                ← new in v4.4; focused validator
 │   └── validate_visual_authority.py            ← new in v4.4.5; DXF/image-gen-2 authority validator
 ├── tests/
 │   ├── test_validate_acoustic_law.py           ← acoustic-law validator tests
+│   ├── test_experimental_rig_templates.py      ← template/schema smoke tests
 │   ├── test_generate_folded_drone_dxf.py       ← focused DXF generator tests
 │   ├── test_validate_visual_authority.py       ← visual authority unit tests
 │   ├── test_validation_loop_templates.py       ← validation-loop template contract tests
@@ -103,20 +111,25 @@ skills/instrument-maker-v4/
 The full instrument-maker skill is several MB of references, scripts,
 agents, and assets that have not yet been reconciled with this repo's
 manifest conventions. Importing the entire skill is out of scope for
-issue #73. The smallest high-quality version that satisfies the issue is
-this additive subset, which can be merged into the canonical install
-with `cp -r` and will not collide with any other file there.
+issues #73, #109, and #107. The smallest high-quality version that
+satisfies these issues is this additive subset, which can be merged into
+the canonical install with `cp -r` and will not collide with any other
+file there.
 
-The canonical install (with the v4.4 changes applied) is what the
+The canonical install (with the v4.4 and v4.5 changes applied) is what the
 `/instrument-maker` slash command invokes. `/instrument-maker-v4` may
 continue to work as a deprecated alias during migration, but new docs,
 handoffs, and routing should use `instrument-maker`.
 
-## How to apply v4.4 to a canonical install
+## How to apply v4.5 to a canonical install
 
 ```bash
 cp -r skills/instrument-maker-v4/references/*.md \
       ~/.claude/skills/instrument-maker/references/
+cp -r skills/instrument-maker-v4/assets/templates/experimental-acoustic-rig \
+      ~/.claude/skills/instrument-maker/assets/templates/
+cp     skills/instrument-maker-v4/scripts/apply_experimental_rig_runtime_patch.py \
+      ~/.claude/skills/instrument-maker/scripts/
 cp     skills/instrument-maker-v4/scripts/validate_acoustic_law.py \
       ~/.claude/skills/instrument-maker/scripts/
 cp     skills/instrument-maker-v4/scripts/validate_visual_authority.py \
@@ -131,7 +144,14 @@ cp -r skills/instrument-maker-v4/examples/hulusi-bawu \
       ~/.claude/skills/instrument-maker/examples/
 cp -r skills/instrument-maker-v4/examples/repo-first-bare-bones-packet \
       ~/.claude/skills/instrument-maker/examples/
+python3 ~/.claude/skills/instrument-maker/scripts/apply_experimental_rig_runtime_patch.py \
+      ~/.claude/skills/instrument-maker/SKILL.md
 ```
+
+The final command updates the runtime-facing canonical `SKILL.md` with
+the v4.5 bench-rig-first routing block. Copying only the reference and
+template files is not sufficient for issue #107, because the invoked
+slash-command behavior lives in the canonical skill body.
 
 ## How to validate a packet's family-spec.csv
 
@@ -182,6 +202,22 @@ The canonical instrument-maker skill keeps its existing domain triggers;
 the v4.4 changes are invisible to the user except as a hard validator
 gate at packet generation time. Keep `instrument-maker-v4` only as a
 deprecated compatibility alias while active installs and PRs migrate.
+
+The v4.5 addition adds an internal routing rule: prompts for yaybahar-style
+systems, coupled string-spring-membrane rigs, resonance test beds,
+experimental acoustic apparatus, or unknown coupled resonators should
+produce a **bench-rig packet before a performance-instrument packet**.
+
+When this rule applies, read `references/experimental-acoustic-rigs.md`
+and seed the packet with:
+
+- `variable-matrix.csv`
+- `measurement-log-template.csv`
+- `sensor-capture-checklist.md`
+- `stored-energy-safety-checklist.md`
+- `README.md`
+- `validation-plan.md`
+- `risks.md`
 
 For free-reed / khaen work in the canonical skill, load
 `references/free-reed-khaen-exploration.md` before drafting CAD. The first
