@@ -1,0 +1,10 @@
+part,qty,material,shape,width_mm,height_mm,depth_mm,rear_height_mm,front_height_mm,thickness_mm
+back_panel,1,12.7 mm exterior plywood or MDO,rectangle,508,914,,,,12.7
+upper_front_panel,1,12.7 mm exterior plywood or MDO,rectangle,508,572,,,,12.7
+lower_front_panel,1,12.7 mm exterior plywood or MDO,rectangle,508,178,,,,12.7
+roof_panel,1,19 mm cedar,rectangle,559,178,,,,19
+side_wall,2,19 mm cedar,trapezoid,,,105,914,865,19
+partition,3,9.5 mm exterior plywood,rectangle,470,813,,,,9.5
+side_spacer_strip,8,19 mm cedar,rectangle,19,813,,,,19
+top_spacer_strip,4,19 mm cedar,rectangle,470,19,,,,19
+building_mount_batten_optional,2,19 mm cedar,rectangle,64,762,,,,19
