@@ -1,6 +1,6 @@
 ---
 name: habitat-maker
-version: 0.4.0
+version: 0.4.1
 last-updated: 2026-05-11
 description: >-
   Design wildlife habitat and garden infrastructure — birdhouses, bat houses,
@@ -265,6 +265,12 @@ artifacts are required only where the geometry actually drives a machine.
   any new species/method packet in this skill: the file layout, the
   parameter schema, the validation gate set, and the agent record format
   are normative.
+- [`examples/observation-hive-preflight-template/`](examples/observation-hive-preflight-template/)
+  — concept/preflight-only observation-hive template. Use as a fixture for
+  public packet boundary-setting: route out live beekeeping decisions,
+  preserve public/private boundaries, require qualified review, and block
+  fabrication-ready geometry until containment, ventilation, service access,
+  and review gates are satisfied.
 - [`references/bird-bath-balcony.md`](references/bird-bath-balcony.md)
   — normative reference for bird-bath welfare gates, balcony/renter
   deployment constraints, material safety matrix, and compact fill/deployment
