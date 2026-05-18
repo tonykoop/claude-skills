@@ -62,7 +62,7 @@ Minimal example:
   "generated_at": "2026-05-11",
   "source": {
     "mode": "personal-github",
-    "workspace_root": "/mnt/c/Users/Tony/Documents/GitHub",
+    "workspace_root": "/path/to/workspace",
     "query": "gh search issues --owner tonykoop --state open"
   },
   "counts": {
