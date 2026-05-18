@@ -58,6 +58,21 @@ user-facing invocation.
 - [x] Packaging and skills-meta checks continue to resolve the historical
       repo-path basename as an alias.
 
+## v4.4.6 — unreleased
+
+Round 12 Cindy-A adds a narrow string/spike-fiddle follow-up to the repo-first
+bare-bones template so erhu/huqin-style starters preserve the qianjin-to-bridge
+measurement boundary before any CAD/DXF authority claim.
+
+### Added
+
+- String/spike-fiddle variant guidance in
+  `references/repo-first-bare-bones-packet.md`.
+- `examples/repo-first-bare-bones-packet/string-spike-fiddle/` — compact
+  erhu/huqin guardrail example covering speaking length, bridge/qianjin setup,
+  resonator interface, neck/spike alignment, and future DXF/CAD authority.
+- Contract tests for the variant guidance and example fields.
+
 ## v4.4.5 — 2026-05-11
 
 Round 10 TwinGrid lane Elsa-B focused on visual authority: generated images

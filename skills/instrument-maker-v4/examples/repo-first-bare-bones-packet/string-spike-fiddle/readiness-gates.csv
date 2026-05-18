@@ -1,0 +1,9 @@
+gate_id,field,status,next_action,evidence,notes
+SSF001,speaking_length_qianjin_to_bridge_mm,measurement-required,Choose or measure qianjin-to-bridge span,TBD,Use 380-420 mm only as an erhu-like first-pass setup range.
+SSF002,bridge_position_status,measurement-required,Record bridge placement basis or prototype setup,TBD,Bridge placement controls active speaking span and action.
+SSF003,qianjin_position_status,measurement-required,Record qianjin height and location basis,TBD,Do not substitute total string length for speaking length.
+SSF004,resonator_body_authority,measurement-required,Name measured template reviewed drawing or experiment,TBD,Body envelope and face opening affect tone and fabrication.
+SSF005,membrane_soundboard_interface,measurement-required,Define material interface and validation method,TBD,Interface choice changes tone durability and build method.
+SSF006,neck_spike_alignment_authority,measurement-required,Name drawing template or inspection method,TBD,Alignment controls structural load path and ergonomics.
+SSF007,peg_string_path_authority,measurement-required,Record peg-hole and string-path authority,TBD,Blocks peg layout and string clearance claims.
+SSF008,dxf_cad_authority_status,future-authority,Create DXF CAD design table or measured template after geometry review,TBD,artifact:dxf is a future authority preference not cut-ready permission.
