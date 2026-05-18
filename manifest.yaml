@@ -133,7 +133,8 @@ skills:
       exploration template (issue #109), and v4.4.2 sheng/hulusi/chalumeau
       validation guardrail, plus the v4.4.3 prototype validation-loop upgrade
       template, v4.4.4 repo-first bare-bones packet readiness template,
-      v4.4.5 DXF/image-gen-2 visual authority guard, and the v4.4.7
+      v4.4.5 DXF/image-gen-2 visual authority guard, v4.4.6 early
+      visual-register trigger for concept/pre-CAD visuals, and the v4.4.7
       instrument design-book chapter contract (issue #104). The full skill
       body lives in the canonical install at ~/.claude/skills/instrument-maker
       and is not yet versioned in this repo. Existing

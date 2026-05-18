@@ -17,11 +17,11 @@ description: >-
   enhancement (issue #108), and the v4.4.2 sheng/hulusi/chalumeau validation
   guardrail, plus the v4.4.3 prototype validation-loop upgrade template and
   v4.4.4 repo-first bare-bones packet readiness template, the v4.4.5
-  DXF/image-gen-2 visual authority guard, the v4.4.6 invocation rename, and
-  the v4.4.7 instrument design-book chapter contract (issue #104). The full
-  skill body lives in the canonical install directory; this folder contains
-  only the additive references, validators, tests, fixtures, and examples
-  that these changes introduce.
+  DXF/image-gen-2 visual authority guard, the v4.4.6 invocation rename and
+  early visual-register trigger, and the v4.4.7 instrument design-book
+  chapter contract (issue #104). The full skill body lives in the canonical
+  install directory; this folder contains only the additive references,
+  validators, tests, fixtures, and examples that these changes introduce.
 ---
 
 # instrument-maker - partial-skill entry (v4 readiness additions)
@@ -52,7 +52,7 @@ the **v4.4.2 sheng/hulusi/chalumeau validation guardrail**, plus a
 have instrument packets but still need empirical measurement and iteration
 tracking, plus a **v4.4.4 repo-first bare-bones packet readiness template**,
 plus a **v4.4.5 DXF/image-gen-2 visual authority guard**, plus the
-**v4.4.6 public invocation rename**, plus the
+**v4.4.6 public invocation rename and early visual-register trigger**, plus the
 **v4.4.7 instrument design-book chapter contract**
 ([issue #104](https://github.com/tonykoop/claude-skills/issues/104)):
 
@@ -62,7 +62,7 @@ skills/instrument-maker-v4/
 ├── CHANGELOG.md                                ← v4.4+ entries only
 ├── references/
 │   ├── acoustic-models.md                      ← canonical + new "Reed boundary-condition decision tree" section
-│   ├── drawing-and-visual-authority.md         ← DXF/CAD authority + image-gen-2 guard
+│   ├── drawing-and-visual-authority.md         ← DXF/CAD authority + early visual-register + image-gen-2 guard
 │   ├── family-aware-design.md                  ← canonical + new family-spec.csv schema (acoustic_law, end_condition, dimension_provenance)
 │   ├── free-reed-khaen-exploration.md          ← P0 reed coupon / control-build template
 │   ├── folded-stopped-pipe-drone.md            ← folded drone packet template
