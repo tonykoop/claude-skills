@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
-"""Generate a DXF/CNC fabrication handoff checklist from one source JSON.
+"""Generate a DXF/CNC fabrication handoff blocker list from one source JSON.
 
-The generated JSON is the machine-readable handoff record. The generated
-validation.csv mirrors the makerspace structured-artifact schema so the
-existing packet validator can check the handoff gates without a second
-validator.
+The generated JSON is the machine-readable handoff record. It is a blocker
+list, not a pass certificate: it surfaces the gates that must be reviewed by
+the fabrication owner before shop work can proceed. The generated validation.csv
+mirrors the makerspace structured-artifact schema so the existing packet
+validator can check the handoff gates without a second validator.
 """
 
 from __future__ import annotations
@@ -80,16 +81,27 @@ def build_checklist(data: dict[str, Any]) -> dict[str, Any]:
         "project": data["project"],
         "revision": data["revision"],
         "generated_from": "design_params.json",
+        "checklist_role": "blocker_list_not_pass_certificate",
+        "generated_checklist_notice": (
+            "Generated checklists surface blockers for fabrication-owner "
+            "review; they do not certify shop readiness or replace CAD, "
+            "drawing, material, CAM, workholding, and safety review."
+        ),
         "fabrication_authority": data["authority"],
         "source_files": data["source_files"],
         "machine_routes": data["machine_routes"],
         "readiness_gates": gates,
         "handoff_decision": {
-            "ready_when": "all gates are marked pass or explicitly waived",
+            "ready_when": (
+                "all gates are marked pass or explicitly waived by the "
+                "fabrication owner after source review"
+            ),
             "blocked_when": [
                 "CAD/DXF source cannot be tied to the revision",
                 "material, machine, or workholding assumptions remain TBD",
                 "CAM operator must infer units, origin, scale, kerf, or depth",
+                "generated checklist is treated as a pass certificate "
+                "without owner review",
             ],
         },
     }
@@ -122,7 +134,7 @@ def write_validation_csv(path: Path, checklist: dict[str, Any]) -> None:
             )
 
 
-def parse_args() -> argparse.Namespace:
+def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Generate a CNC/laser fabrication handoff checklist.",
     )
@@ -138,11 +150,11 @@ def parse_args() -> argparse.Namespace:
         default=None,
         help="Output directory. Defaults to the source file directory.",
     )
-    return parser.parse_args()
+    return parser.parse_args(argv)
 
 
-def main() -> int:
-    args = parse_args()
+def main(argv: list[str] | None = None) -> int:
+    args = parse_args(argv)
     source = args.source
     out_dir = args.out_dir or source.parent
     out_dir.mkdir(parents=True, exist_ok=True)

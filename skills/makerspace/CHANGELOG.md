@@ -17,6 +17,8 @@
 - Add a smoke eval covering fabrication handoff from an existing project repo.
 - Add minimum readiness gates for revision authority, dimensions, materials,
   workholding, safety, and publication scrub.
+- Clarify generated DXF/CNC handoff checklists as blocker lists, not pass
+  certificates, and add coverage for the generated checklist role.
 
 ## v1.1.1 — 2026-05-10
 

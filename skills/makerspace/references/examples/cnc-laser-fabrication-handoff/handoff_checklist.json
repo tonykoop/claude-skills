@@ -1,4 +1,5 @@
 {
+  "checklist_role": "blocker_list_not_pass_certificate",
   "fabrication_authority": {
     "cad_source": "cad/source-model.step",
     "drawing_source": "drawings/shop-drawing-r12.pdf",
@@ -10,14 +11,16 @@
     ],
     "notes": "Fabrication follows the CAD/DXF revision, not generated images or prose summaries."
   },
+  "generated_checklist_notice": "Generated checklists surface blockers for fabrication-owner review; they do not certify shop readiness or replace CAD, drawing, material, CAM, workholding, and safety review.",
   "generated_from": "design_params.json",
   "handoff_decision": {
     "blocked_when": [
       "CAD/DXF source cannot be tied to the revision",
       "material, machine, or workholding assumptions remain TBD",
-      "CAM operator must infer units, origin, scale, kerf, or depth"
+      "CAM operator must infer units, origin, scale, kerf, or depth",
+      "generated checklist is treated as a pass certificate without owner review"
     ],
-    "ready_when": "all gates are marked pass or explicitly waived"
+    "ready_when": "all gates are marked pass or explicitly waived by the fabrication owner after source review"
   },
   "handoff_id": "MS-HANDOFF-CNC-LASER-001",
   "machine_routes": [

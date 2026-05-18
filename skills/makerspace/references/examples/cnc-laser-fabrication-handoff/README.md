@@ -1,8 +1,13 @@
-# CNC/Laser Fabrication Handoff Checklist
+# CNC/Laser Fabrication Handoff Blocker Checklist
 
 This example is a generator-backed handoff gate for projects where a design
 repo has to move into laser cutting, CNC routing, or a fabrication partner's
 CAM workflow.
+
+The generated checklist is a blocker list, not a pass certificate. It can show
+that every required gate is present and schema-valid, but shop readiness still
+depends on fabrication-owner review of the CAD/DXF revision, drawings,
+materials, CAM setup, workholding, and safety constraints.
 
 ## Files
 
@@ -39,6 +44,8 @@ leave private/story context out of public shop docs.
 
 The output should block handoff when revision authority, units, layers,
 material, workholding, CAM assumptions, or safety policy are still implicit.
+Passing schema validation only proves the checklist is structurally readable;
+it does not certify that a fabrication partner can cut the job.
 
 Generated concept images can support story or review, but they are never a
 substitute for the CAD/DXF revision, drawing callouts, and CAM setup record.
