@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.4.4 - 2026-05-18
+
+- Added `references/private-media-decision-stub.md`, a compact owner checklist
+  for photo-album/private-media pilots before downstream repo scaffolds,
+  imagegen/layout studies, media imports, or proof/export work.
+- Updated the photo-album/private-media pilot workflow to surface unknown owner
+  decisions as blockers before promotion proceeds.
+
 ## 1.4.3 - 2026-05-18
 
 - Added `scripts/promote_batch_readiness.py`, an offline-first helper that
