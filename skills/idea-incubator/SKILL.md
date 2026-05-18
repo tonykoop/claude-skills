@@ -1,7 +1,7 @@
 ---
 name: idea-incubator
-version: 1.4.2
-last-updated: 2026-05-17
+version: 1.4.3
+last-updated: 2026-05-18
 description: >-
   Capture, classify, connect, review, and promote speculative ideas into a
   searchable GitHub issue inbox. Use when the user says "new idea", "incubate
@@ -110,9 +110,16 @@ Promote mode's readiness matrix.
 
 1. **Promotion-readiness matrix** across the whole cluster (see
    [`references/promotion-handoff.md`](references/promotion-handoff.md)).
+   When issue JSON, local repos, or inventory CSVs are available, use
+   [`scripts/promote_batch_readiness.py`](scripts/promote_batch_readiness.py)
+   and [`references/promote-batch-readiness.md`](references/promote-batch-readiness.md)
+   to draft the matrix before making the final recommendation.
 2. **Already-satisfied flagging** - mark any issue whose deliverable already
    exists in the repo, working dir, or upstream system. Recommend `close`,
    not `promote`, for those.
+   Explicitly check existing anchors before recommending a new repo:
+   local repos, staging folders, archive inventories, upstream systems, and
+   already-merged PRs.
 3. **One-promote-first recommendation** so the first promotion sets the
    shared scaffold conventions (LFS rules, label set, milestone naming, README
    structure) the rest mirror. This avoids a rebase wave when sibling lanes
@@ -162,6 +169,9 @@ When in doubt for a recovery/import cluster, default to `Refs`.
 - [`references/photo-album-private-media-pilot.md`](references/photo-album-private-media-pilot.md)
   - Pilot workflow for private photo albums and media collections, including
     source-photo, LFS, privacy, and imagegen derivative rules.
+- [`references/promote-batch-readiness.md`](references/promote-batch-readiness.md)
+  - Helper workflow for readiness matrices, existing-anchor checks, and
+    GitHub query fallbacks when live API evidence is uneven.
 - [`references/promote-batch-example.md`](references/promote-batch-example.md)
   - Worked example: legacy-import / Weather Balloon Camera Vessel cluster.
 
@@ -175,6 +185,9 @@ one that matches the host shell:
 - [`scripts/bootstrap_labels.py`](scripts/bootstrap_labels.py) - Python 3,
   for native PowerShell on Claude Desktop (Windows) or any environment where
   bash is awkward but Python is available.
+- [`scripts/promote_batch_readiness.py`](scripts/promote_batch_readiness.py) -
+  offline-first helper that converts saved issue JSON plus local anchor roots
+  and inventory CSVs into a Promote-batch readiness matrix.
 
 If neither works (mobile zip-upload, sandboxed Codex Desktop, no `gh`), fall
 back to the copy-pasteable `gh label create` block in
