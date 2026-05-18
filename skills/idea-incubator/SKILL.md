@@ -1,7 +1,7 @@
 ---
 name: idea-incubator
-version: 1.4.1
-last-updated: 2026-05-10
+version: 1.4.2
+last-updated: 2026-05-17
 description: >-
   Capture, classify, connect, review, and promote speculative ideas into a
   searchable GitHub issue inbox. Use when the user says "new idea", "incubate
@@ -62,7 +62,10 @@ Gemini CLI) hit them as reliably as Claude does.
    when the scope is clear, or to a project repo when the idea belongs in an
    existing backlog. Always include the **promotion-readiness matrix** from
    [`references/promotion-handoff.md`](references/promotion-handoff.md) before
-   selecting a single issue, and run the **binary-asset / LFS prompts** when
+   selecting a single issue. For instrument design-book, yearbook, portfolio,
+   or showcase chapter promotions, use the dedicated instrument chapter
+   pattern in that reference before drafting a downstream issue. Run the
+   **binary-asset / LFS prompts** when
    the capture mentions CAD, media, ZIPs, PDFs, audio, video, or any asset
    likely to exceed 100 MB. When the idea involves private media, family
    archives, photo albums, scanned documents, or personal video, also run the

@@ -41,6 +41,73 @@ downstream issue or PR body.
 Do not hard-code future repo ownership or visibility in the handoff. Keep the
 target repo as an explicit input unless the user has already chosen it.
 
+## Instrument design-book / yearbook chapter promotions
+
+Use this pattern when an incubated idea asks for public image-gen-2
+design-book, yearbook, portfolio, or showcase chapters for instrument repos.
+The downstream scaffold belongs in `tonykoop/instrument-maker`, while
+`instrument-maker-v4` owns the readiness contract and the instrument evidence
+that feeds it.
+
+### Readiness mirror rule
+
+Public chapter readiness MUST mirror source instrument readiness. A chapter can
+only claim the highest state that the source instrument packet has already
+earned:
+
+| Source state | Public chapter state |
+|---|---|
+| Capture / sketch only or L0 Concept | No public chapter; keep as incubated idea or private note. |
+| L1 Design | Draft outline only; no polished public imagery and no shop-readiness claims. |
+| L2 Shop Packet | One pilot scaffold may be created for careful review. Banner must say shop-packet candidate, not build-ready; generated imagery stays concept/support only. |
+| L3 Validated Packet | Chapter may claim build-ready only when validator, artifacts, units, sourceability, and tolerance checks are cited. No empirical/measured claims yet. |
+| L4 Empirical Packet | Public chapter may include measured build feedback, tuning deviations, correction-loop results, and generated supporting imagery, all linked to source evidence. |
+
+Do not batch-roll chapters. Prove one L2+ pilot scaffold first, but keep
+publication, build-ready, and empirical claims gated by the true source level:
+L3 for build-ready language and L4 for measured/empirical language. Reuse the
+scaffold only for instruments that independently pass the same mirror check.
+
+### Downstream issue draft
+
+Use `Refs #100`, not `Closes #100`, until both the reusable scaffold and one
+pilot chapter have been reviewed. The source capture remains a provenance
+anchor while the public contract is still being proven.
+
+```markdown
+Title: Scaffold instrument design-book chapter contract
+
+Promoting the Round 9 instrument chapter idea into `tonykoop/instrument-maker`.
+
+Source: Refs #100
+Feature owner: `instrument-maker-v4`
+Summary: Create a reusable public chapter contract for instrument repos whose
+source packets pass readiness gates.
+
+Requested output:
+- Chapter template with readiness banner and source-instrument mirror rule.
+- Asset ledger for photos, renders, generated images, drawings, audio, and PDFs.
+- Prompt appendix for image-gen-2 prompts and model/edit provenance.
+- Git LFS policy before any large media import.
+- Generated-image labeling rules that separate concept imagery from measured
+  build evidence.
+- One L2+ pilot scaffold before any batch rollout, with L3/L4 claims gated by
+  the source packet's actual readiness.
+- Cross-skill handoff notes for future `instrument-showcase` routing and
+  optional `sheet-music` routing when notation or playable examples are part of
+  the chapter.
+
+Acceptance:
+- The scaffold can be reused without implying every instrument is ready for a
+  polished public chapter.
+```
+
+### Required chapter scaffold pieces
+
+For the detailed contract that the downstream issue should implement, use
+`instrument-maker-v4`'s
+`references/instrument-design-book-chapter-contract.md`.
+
 ## Promotion-readiness matrix
 
 Always run a readiness matrix before selecting which issue to promote. For

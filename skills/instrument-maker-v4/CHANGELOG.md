@@ -1,5 +1,23 @@
 # Changelog — instrument-maker
 
+## v4.4.7 — 2026-05-17 (issue #104)
+
+### Added
+
+- `references/instrument-design-book-chapter-contract.md` — Round 9
+  design-book / yearbook chapter scaffold contract for public instrument repo
+  chapters. Defines readiness mirroring, readiness banner, chapter template,
+  asset ledger, prompt appendix, Git LFS media policy, generated-image labels,
+  one L2+ pilot gate, and cross-skill routing to future `instrument-showcase`
+  plus optional `sheet-music`.
+
+### Notes
+
+- This is an additive partial-skill reference. It does not imply any current
+  instrument is public-chapter-ready and it does not batch-roll chapters.
+- Downstream scaffold issues should use `Refs #100`, not `Closes #100`, until
+  the reusable contract and one pilot are proven.
+
 ## Unreleased — acoustic-law validator guard
 
 Salvages the small validator-hardening slice from stale draft PR #140.

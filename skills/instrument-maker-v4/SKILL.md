@@ -1,7 +1,7 @@
 ---
 name: instrument-maker
-version: 4.4.6
-last-updated: 2026-05-11
+version: 4.4.7
+last-updated: 2026-05-17
 partial-skill: true
 canonical-install: ~/.claude/skills/instrument-maker
 legacy-alias: instrument-maker-v4
@@ -17,10 +17,11 @@ description: >-
   enhancement (issue #108), and the v4.4.2 sheng/hulusi/chalumeau validation
   guardrail, plus the v4.4.3 prototype validation-loop upgrade template and
   v4.4.4 repo-first bare-bones packet readiness template, the v4.4.5
-  DXF/image-gen-2 visual authority guard, and the v4.4.6 invocation rename.
-  The full skill body lives in the canonical install directory; this folder
-  contains only the additive references, validators, tests, fixtures, and
-  examples that these changes introduce.
+  DXF/image-gen-2 visual authority guard, the v4.4.6 invocation rename, and
+  the v4.4.7 instrument design-book chapter contract (issue #104). The full
+  skill body lives in the canonical install directory; this folder contains
+  only the additive references, validators, tests, fixtures, and examples
+  that these changes introduce.
 ---
 
 # instrument-maker - partial-skill entry (v4 readiness additions)
@@ -51,7 +52,9 @@ the **v4.4.2 sheng/hulusi/chalumeau validation guardrail**, plus a
 have instrument packets but still need empirical measurement and iteration
 tracking, plus a **v4.4.4 repo-first bare-bones packet readiness template**,
 plus a **v4.4.5 DXF/image-gen-2 visual authority guard**, plus the
-**v4.4.6 public invocation rename**:
+**v4.4.6 public invocation rename**, plus the
+**v4.4.7 instrument design-book chapter contract**
+([issue #104](https://github.com/tonykoop/claude-skills/issues/104)):
 
 ```
 skills/instrument-maker-v4/
@@ -64,7 +67,8 @@ skills/instrument-maker-v4/
 │   ├── free-reed-khaen-exploration.md          ← P0 reed coupon / control-build template
 │   ├── folded-stopped-pipe-drone.md            ← folded drone packet template
 │   ├── prototype-validation-loop-upgrade.md     ← upgrade path for existing prototype packets
-│   └── repo-first-bare-bones-packet.md         ← minimal public repo-first packet contract
+│   ├── repo-first-bare-bones-packet.md         ← minimal public repo-first packet contract
+│   └── instrument-design-book-chapter-contract.md ← public chapter readiness / asset-ledger contract
 ├── scripts/
 │   ├── generate_folded_drone_dxf.py            ← CSV-to-DXF folded bore helper
 │   ├── validate_acoustic_law.py                ← new in v4.4; focused validator
@@ -198,6 +202,17 @@ imagery, load `references/drawing-and-visual-authority.md` before generating
 or accepting visuals. Generated images can support communication, but DXF/CAD,
 design tables, measured templates, or reviewed drawings remain fabrication
 authority.
+
+## Instrument design-book chapter scaffold
+
+This repo entry also contains the Round 9 additive reference
+`references/instrument-design-book-chapter-contract.md`. Use it when an
+incubated idea promotes public design-book, yearbook, portfolio, or showcase
+chapters for instrument repos. The contract requires public chapter readiness
+to mirror source instrument readiness, defines the readiness banner,
+asset-ledger, prompt appendix, generated-image labels, and LFS-first media
+policy, and keeps `Refs #100` as the downstream source-link pattern until the
+scaffold and one L2+ pilot chapter are proven.
 
 ## Tests
 

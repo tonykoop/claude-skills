@@ -16,7 +16,7 @@ class InstrumentMakerInvocationRename(unittest.TestCase):
     def test_skill_frontmatter_uses_unversioned_public_name(self) -> None:
         skill = (SKILL_DIR / "SKILL.md").read_text(encoding="utf-8")
         self.assertIn("name: instrument-maker", skill)
-        self.assertIn("version: 4.4.6", skill)
+        self.assertIn("version: 4.4.7", skill)
         self.assertIn("legacy-alias: instrument-maker-v4", skill)
         self.assertIn("v4` as release lineage / implementation", skill)
 
@@ -28,7 +28,7 @@ class InstrumentMakerInvocationRename(unittest.TestCase):
         self.assertIn("instrument-maker", skills)
         self.assertNotIn("instrument-maker-v4", skills)
         entry = skills["instrument-maker"]
-        self.assertEqual(entry["canonical_version"], "4.4.6")
+        self.assertEqual(entry["canonical_version"], "4.4.7")
         self.assertEqual(entry["repo_path"], "skills/instrument-maker-v4")
         self.assertIn("instrument-maker-v4", entry["notes"])
         self.assertIn("release lineage", entry["notes"])
