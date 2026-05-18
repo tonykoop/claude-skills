@@ -174,6 +174,33 @@ For camera-enabled habitat packets, generated concept images may communicate
 placement ideas, but CAD/DXF/JSON or dimensioned packet artifacts remain the
 fabrication authority.
 
+### Observation-camera packets
+
+If a habitat includes a camera, the packet must declare
+`camera_observation.mode` in `geometry_params.json`. Allowed enum values are:
+
+- `none` — no camera support.
+- `interior_view` — primary camera sees the cavity through a sealed optical
+  window from an exterior pod.
+- `exterior_approach` — camera watches the entrance or approach zone only.
+- `interior_plus_exterior_approach` — primary `interior_view` plus optional
+  second `exterior_approach` camera.
+
+For a requested live nest view, use `interior_view` as the primary mode and
+keep all electronics outside the cavity. Add an exterior approach camera only
+when both cameras have independent service access and external cable routing.
+Camera packets must add welfare gates for electronics isolation, interior heat,
+interior light, moisture control, cable routing, service independence, and
+non-disturbance.
+
+Any generator-backed camera pod, viewport, rail, gland, or retainer geometry
+must be traceable through `camera-geometry-manifest.json`, which names the
+source parameter file, generator script, generated artifacts, and
+welfare-critical features. See
+`references/observation-camera-modes.md` and
+`examples/chickadee-camera-observation-contract/`.
+
+
 ## Generator-backed artifacts: when to require them
 
 When a build packet's method is **laser**, **CNC**, **plotter-cut vinyl**,
@@ -247,3 +274,5 @@ artifacts are required only where the geometry actually drives a machine.
 - Validation generator: emit the validation-checklist.md programmatically
   from `geometry_params.json` so adding a species automatically updates
   the gate set.
+- Generic camera-packet generator: produce interior-view pod and optional
+  exterior-approach mount geometry from the observation-camera contract.
