@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.1 - 2026-05-11
+
+- Add a machine-readable queue output contract for JSON/CSV issue landscape
+  artifacts.
+- Require personal-project swarm summaries to record queue counts,
+  skill-owner counts, and artifact paths without mutating repos or sprint docs.
+
 ## 1.2.0 - 2026-05-10
 
 - Add duplicate-aware issue filing guidance for exact duplicates, related

@@ -1,7 +1,7 @@
 ---
 name: run-swarm
-version: 1.2.0
-last-updated: 2026-05-10
+version: 1.2.1
+last-updated: 2026-05-11
 description: >-
   Launch a read-only multi-agent audit swarm for either WRFCoin repos or
   Tony's personal GitHub projects. Use when the user says "/run-swarm",
@@ -78,12 +78,38 @@ the smallest safe implementation boundary.
 Manager collects:
 
 - combined issue/report table
+- machine-readable queue artifacts when the swarm is shaping a sprint queue:
+  `issue_landscape.json` and `issue_landscape.csv`, following
+  `references/queue-output-schema.md`
 - duplicate/overlap notes
 - top 5 next-sprint recommendations
 - skill-owner routing for each actionable item
 - "ready to implement now" versus "needs Tony decision" split with reasons
 - archive/PR follow-through check so swarm artifacts do not stay hidden in
   `/tmp`
+
+### Machine-Readable Queue Output
+
+When the swarm is used for backlog triage, sprint shaping, or a Personal
+GitHub audit, emit a human summary plus JSON/CSV artifacts. Keep the run
+read-only: these files describe the issue landscape and manager queues, but
+they do not edit sprint docs, repos, labels, issues, or PRs by themselves.
+
+Use the queue names from `references/queue-output-schema.md`:
+
+- `ready-to-implement`
+- `tony-decision`
+- `archive-or-watch`
+
+Include both classification lenses when they matter:
+
+- `strict_dispatch_bucket`: separates actual skill-development work from
+  content-production, capture, public-deliverable, or privacy-gated work.
+- `owner_skill_bucket`: names the skill that should own the next decision or
+  implementation boundary, even when the item is not safe to dispatch yet.
+
+Also include skill-owner counts and queue counts so a sprint manager can size
+lanes without re-parsing prose.
 
 ## Issue Filing Mode
 
