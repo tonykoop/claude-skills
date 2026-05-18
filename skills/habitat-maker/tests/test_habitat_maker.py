@@ -256,6 +256,23 @@ class TestBatBeeObservationHiveReference(unittest.TestCase):
         for term in required:
             self.assertIn(term, self.reference)
 
+    def test_four_chamber_is_example_scope_not_universal_requirement(self) -> None:
+        required_skill_terms = [
+            "A four-chamber layout is a",
+            "not a universal requirement",
+            "choose chamber count from",
+        ]
+        for term in required_skill_terms:
+            self.assertIn(term, self.skill)
+
+        required_reference_terms = [
+            "Bat-house example scope",
+            "chamber count is not a default",
+            "Do not let the canonical example layout substitute",
+        ]
+        for term in required_reference_terms:
+            self.assertIn(term, self.reference)
+
     def test_native_bee_gates_present(self) -> None:
         required = [
             "Native solitary bee scope",

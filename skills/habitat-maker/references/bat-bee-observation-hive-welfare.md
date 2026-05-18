@@ -12,6 +12,11 @@ maintained:
 
 - Bat houses: no internal camera for v1 unless the prompt explicitly accepts
   heat, wiring, sealing, service, and disturbance burdens.
+- Bat-house example scope: a four-chamber packet is appropriate for the first
+  canonical skill-package example, but chamber count is not a default
+  requirement for all `bat-houses` scaffolds. Choose chamber count from the
+  target bat group, site/climate, mounting posture, welfare gates, and
+  deployment assumptions before claiming build-ready geometry.
 - Native bee houses: removable or replaceable nesting media under a dry
   overhang; avoid permanent sealed blocks that cannot be cleaned or retired.
 - Observation-hive prompts: provide only design preflight caveats and route
@@ -47,6 +52,10 @@ reviewed external record is available.
 ## Bat House Welfare Gates
 
 Every bat-house packet must include these pass/fail gates.
+If a packet uses a four-chamber layout, record it as the selected example or
+design scope and still document why that chamber count fits the target bat
+group and site. Do not let the canonical example layout substitute for target
+group, climate/site, mount type, or deployment evidence.
 
 | Gate | Pass condition | Fail remedy |
 | --- | --- | --- |

@@ -231,7 +231,11 @@ artifacts are required only where the geometry actually drives a machine.
 - Third canonical example: tube bee house (different habitat type entirely;
   exercises the schema for non-cavity habitats).
 - First canonical bat-house example packet using the bat/electronics welfare
-  gates without an internal camera by default.
+  gates without an internal camera by default. A four-chamber layout is a
+  suitable canonical example scope, not a universal requirement for every
+  `bat-houses` scaffold; new bat-house packets must choose chamber count from
+  the target bat group, site, welfare gates, and deployment assumptions before
+  treating geometry as authoritative.
 - First canonical bird-bath example packet using the balcony/renter reference
   gates and a bill of materials for a low ballasted removable basin.
 - Species reference loader (pulls gate records and species data from the
