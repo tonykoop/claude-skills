@@ -87,7 +87,7 @@ class RepoFirstBareBonesTemplate(unittest.TestCase):
 
     def test_skill_stub_references_bare_bones_template(self) -> None:
         skill = (SKILL_DIR / "SKILL.md").read_text(encoding="utf-8")
-        self.assertIn("version: 4.4.7", skill)
+        self.assertIn("version: 4.5.0", skill)
         self.assertIn("repo-first-bare-bones-packet.md", skill)
         self.assertIn("repo-first-bare-bones-packet/", skill)
         self.assertIn("string-spike-fiddle", skill)
