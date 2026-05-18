@@ -20,8 +20,9 @@ description: >-
   DXF/image-gen-2 visual authority guard, the v4.4.6 invocation rename and
   early visual-register trigger, the v4.4.7 instrument design-book chapter
   contract (issue #104), Round 12 hulusi/bawu stopped-pipe free-reed
-  validation guidance, and the v4.5 experimental acoustic rig template
-  (issue #107). The full skill body lives in the canonical install directory;
+  validation guidance, the v4.5 experimental acoustic rig template
+  (issue #107), and v4.5 bowed-string packet support (issue #106). The full
+  skill body lives in the canonical install directory;
   this folder contains only the additive references, validators, tests,
   fixtures, and examples that these changes introduce.
 ---
@@ -59,7 +60,9 @@ plus a **v4.4.5 DXF/image-gen-2 visual authority guard**, plus the
 ([issue #104](https://github.com/tonykoop/claude-skills/issues/104)), plus
 Round 12 **hulusi/bawu stopped-pipe free-reed validation guidance**, plus the
 **v4.5 experimental acoustic rig template** for coupled-resonator / yaybahar-style
-systems ([issue #107](https://github.com/tonykoop/claude-skills/issues/107)):
+systems ([issue #107](https://github.com/tonykoop/claude-skills/issues/107)), plus
+the **v4.5 bowed-string packet support** for
+[issue #106](https://github.com/tonykoop/claude-skills/issues/106):
 
 ```
 skills/instrument-maker-v4/
@@ -71,6 +74,7 @@ skills/instrument-maker-v4/
 │   ├── experimental-acoustic-rigs.md           ← bench-rig-first workflow for coupled systems
 │   ├── family-aware-design.md                  ← canonical + new family-spec.csv schema (acoustic_law, end_condition, dimension_provenance)
 │   ├── free-reed-khaen-exploration.md          ← P0 reed coupon / control-build template
+│   ├── bowed-string-packets.md                 ← bowed-string packet shape, gates, and SW checklist
 │   ├── folded-stopped-pipe-drone.md            ← folded drone packet template
 │   ├── hulusi-bawu-stopped-pipe-free-reed.md   ← stopped-pipe free-reed HUL-P0/HUL-P1 gates
 │   ├── prototype-validation-loop-upgrade.md     ← upgrade path for existing prototype packets
@@ -78,6 +82,7 @@ skills/instrument-maker-v4/
 │   └── instrument-design-book-chapter-contract.md ← public chapter readiness / asset-ledger contract
 ├── assets/
 │   └── templates/experimental-acoustic-rig/    ← README, validation plan, risks, matrix, log, sensor/safety checklists
+│   └── templates/                              ← bowed-string schedule, source posture, and no-carve-zone CSV helpers
 ├── scripts/
 │   ├── apply_experimental_rig_runtime_patch.py  ← idempotently patches canonical SKILL.md routing guidance
 │   ├── generate_folded_drone_dxf.py            ← CSV-to-DXF folded bore helper
@@ -98,6 +103,9 @@ skills/instrument-maker-v4/
     │   └── string-spike-fiddle/                ← erhu/huqin bare-bones guardrail variant
     ├── folded-drone/centerline-stations.csv    ← compact folded E2 proof-mule fixture
     ├── hulusi-bawu/                            ← stopped-pipe free-reed validation scaffold
+    ├── bowed-string/
+    │   ├── tagelharpa-string-schedule.csv      ← bass tagelharpa schedule example
+    │   └── yayli-source-posture.csv            ← yayli tambur claim posture example
     └── khaen/
         ├── family-spec.csv                     ← combined traditional + sister + planning rows
         ├── p0-reed-coupon-log.csv             ← reed-alone pitch, pull-down, onset, blow/draw log
@@ -128,6 +136,8 @@ cp -r skills/instrument-maker-v4/references/*.md \
       ~/.claude/skills/instrument-maker/references/
 cp -r skills/instrument-maker-v4/assets/templates/experimental-acoustic-rig \
       ~/.claude/skills/instrument-maker/assets/templates/
+cp -r skills/instrument-maker-v4/assets/templates/*.csv \
+      ~/.claude/skills/instrument-maker/assets/templates/
 cp     skills/instrument-maker-v4/scripts/apply_experimental_rig_runtime_patch.py \
       ~/.claude/skills/instrument-maker/scripts/
 cp     skills/instrument-maker-v4/scripts/validate_acoustic_law.py \
@@ -144,6 +154,9 @@ cp -r skills/instrument-maker-v4/examples/hulusi-bawu \
       ~/.claude/skills/instrument-maker/examples/
 cp -r skills/instrument-maker-v4/examples/repo-first-bare-bones-packet \
       ~/.claude/skills/instrument-maker/examples/
+mkdir -p ~/.claude/skills/instrument-maker/examples/bowed-string
+cp -r skills/instrument-maker-v4/examples/bowed-string/*.csv \
+      ~/.claude/skills/instrument-maker/examples/bowed-string/
 python3 ~/.claude/skills/instrument-maker/scripts/apply_experimental_rig_runtime_patch.py \
       ~/.claude/skills/instrument-maker/SKILL.md
 ```
@@ -218,6 +231,10 @@ and seed the packet with:
 - `README.md`
 - `validation-plan.md`
 - `risks.md`
+
+For bowed-string packets, load `references/bowed-string-packets.md` before
+drafting CAD. Keep bridge crown, bow clearance, source posture, and no-carve
+zones explicit, and do not average incompatible scale or construction choices.
 
 For free-reed / khaen work in the canonical skill, load
 `references/free-reed-khaen-exploration.md` before drafting CAD. The first
