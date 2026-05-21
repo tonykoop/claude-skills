@@ -1,5 +1,7 @@
 ---
 name: sheet-metal
+version: 1.0.0
+last-updated: 2026-05-18
 description: Design, review, and plan sheet metal projects from concept through SolidWorks Sheet Metal features, flat patterns, DXF/plasma or laser handoff, bend sequencing, and shop-floor fabrication. Use for sheet metal boxes, modular toolboxes, storage trays, shelves, plant stands, STAS/gallery hangers, cat furniture, stackable rolling cases, hybrid wood-metal attache cases, musical horns and lofted bends, combat robot chassis, electronics or PC enclosures, automotive/off-road brackets and roof racks, lighting, kinetic sculpture, camping/outdoor gear, food or beverage tools, camera/audio rigs, costume armor, props, furniture accents, garden systems, repair panels, STEM kits, geometric folded art, and Maker Nexus-style plasma, brake, shear, slip-roll, welding, and finishing workflows.
 ---
 

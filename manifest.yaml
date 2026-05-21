@@ -155,6 +155,18 @@ skills:
     status: active
     notes: Portable snapshot from the standalone makerspace repo. v1.1.1 adds a generator-backed DXF/CNC fabrication handoff checklist on top of the structured-shop-artifacts validator; v1.1.2 adds repo-to-shop-packet routing for woodworking/mechanism fabrication handoffs.
 
+  sheet-metal:
+    canonical_version: 1.0.0
+    runtime: shared
+    repo_path: skills/sheet-metal
+    last_updated: 2026-05-18
+    status: active
+    notes: >-
+      Sheet metal CAD, SolidWorks Sheet Metal, flat-pattern, DXF/plasma,
+      brake, slip-roll, welding, Maker Nexus-style fabrication, horns/lofted
+      bends, enclosures, toolboxes, kinetic objects, and mixed-material shop
+      packet skill.
+
   laser-art:
     canonical_version: 0.1.0
     runtime: shared
