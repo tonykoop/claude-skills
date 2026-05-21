@@ -1,8 +1,8 @@
 ---
 name: instrument-maker
-version: 4.4.5
+version: 4.5.0
 last-updated: 2026-05-17
-description: (v4.4.5) Design, document, validate, and ship musical instruments end-to-end: woodwinds, strings, drums, percussion, idiophones, hybrid acoustic/electric, and brass/horn concepts. Covers acoustic physics, guided intake, parametric design tables, CAD/CNC/SolidWorks/OpenSCAD/Wolfram, DXF-first fabrication geometry, CNC setup plans, BOMs, sourcing/cut/validation packets, printable shop packets, slip-cast workflows, family-aware design, empirical learning, build-log sites, specialist sub-agents, and the Master Catalog. Trigger for instrument design, builds, BOMs, sourcing, capstone/print packets, CNC plans, Wolfram packets, OpenSCAD masters, DXF drawings, visual-output validation, and shop documentation.
+description: (v4.5.0) Design, document, validate, and ship musical instruments end-to-end: woodwinds, strings, drums, percussion, idiophones, hybrid acoustic/electric, and brass/horn concepts. Covers acoustic physics, guided intake, parametric design tables, CAD/CNC/SolidWorks/OpenSCAD/Wolfram, DXF-first fabrication geometry, CNC setup plans, BOMs, sourcing/cut/validation packets, printable shop packets, slip-cast workflows, family-aware design, empirical learning, build-log sites, specialist sub-agents, and the Master Catalog. Trigger for instrument design, builds, BOMs, sourcing, capstone/print packets, CNC plans, Wolfram packets, OpenSCAD masters, DXF drawings, visual-output validation, and shop documentation.
 ---
 
 # Instrument Maker v4.3
