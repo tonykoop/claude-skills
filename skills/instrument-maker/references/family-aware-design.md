@@ -87,6 +87,29 @@ scale), tongue lengths within each drum scale by `√(f₀ / f₁)` between
 the smallest and largest drum in the family, holding wood species and
 plate thickness constant.
 
+### Folded stopped-pipe drones — quarter-wave centerline scaling
+
+For a folded stopped-pipe drone, the acoustic path is still a
+quarter-wave stopped pipe. The fold pattern changes packaging,
+serviceability, wall friction, and bend losses; it does not remove the
+need for a straight reference tube.
+
+Use:
+
+```text
+c = 331.3 * sqrt(1 + T_C / 273.15)
+L_eff = c / (4f)
+area_rect = duct_width_mm * duct_height_mm
+d_eq = 2 * sqrt(area_rect / pi)
+L_geom_first_pass = L_eff - 0.82 * d_eq
+```
+
+Family scaling is by target frequency (`L ∝ 1/f`) at the chosen warm
+playing temperature. Generate a folded centerline station CSV for each
+member, then run `scripts/generate_folded_drone_dxf.py` to produce a
+DXF starter. Keep `tuning_tail_mm` explicit so low drones can be trimmed
+or sleeve-tuned after leak testing.
+
 ## family-spec.csv format
 
 Every family-aware packet has a `family-spec.csv` that drives the
@@ -130,6 +153,30 @@ coupling until the P0 reed coupon records reed-alone pitch, pull-down cents,
 onset pressure, leak status, and blow/draw behavior. For chalumeau-style
 beating-reed pipes, use `closed_open` or `stopped_pipe` only when the packet
 can state which end condition the reed geometry creates.
+
+### Example (folded stopped-pipe drone family)
+
+```csv
+member_id,target_hz,target_note,acoustic_law,end_condition,dimension_provenance,bore_shape,duct_width_mm,duct_height_mm,equivalent_diameter_mm,centerline_length_mm,tuning_tail_mm,straight_reference_length_mm,notes
+FDR-E2,82.41,E2,stopped_pipe,one_end_closed_stopped,physics_derived,rectangular_folded_duct,52,42,52.7,1200,180,1021,Compact E2 proof mule; untrimmed centerline includes removable tail allowance
+FDR-G2,98.00,G2,stopped_pipe,one_end_closed_stopped,physics_derived,rectangular_folded_duct,48,40,49.4,1020,160,860,Same fold grammar scaled upward with removable tail allowance
+```
+
+Pair each folded-drone family row with a centerline station CSV:
+
+```csv
+station_id,x_mm,y_mm,width_mm,height_mm,bend_radius_mm,role,note
+S0,0,0,52,42,0,mouthpiece,removable mouthpiece
+S1,360,0,52,42,75,fold,first run
+S2,360,160,54,42,75,fold,return turn
+S3,20,160,54,42,75,fold,return run
+S4,20,320,56,42,75,tuning_tail,tail sleeve starts near warm E2 length
+S5,200,320,56,42,0,closed_end,temporary tail cap
+```
+
+The station CSV is the source for `generate_folded_drone_dxf.py`; it is
+not a substitute for `family-spec.csv`, which remains the acoustic and
+validation summary.
 
 ### Example (idiophone family — tongue drum, no `acoustic_law` requirement)
 

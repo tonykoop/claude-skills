@@ -1,0 +1,46 @@
+category,parameter,value,units,notes
+weight,weight_class_limit,1361,g,3 lb beetleweight
+weight,target_weight,1290,g,95% of limit
+weight,reserve_margin,71,g,For paint/tape/zips/Sharpie weight
+footprint,length,175,mm,Overall folded shell
+footprint,width,160,mm,Outside wheel-guard to wheel-guard
+footprint,height,55,mm,Top of shell to bottom edge
+footprint,wedge_angle,15,deg,Front leading edge from horizontal
+footprint,wedge_tip_thickness,1.6,mm,Folded edge thickness (sharp but legal)
+footprint,wedge_tip_ground_gap,1.0,mm,Gap to arena floor at front
+armor,material,5052-H32 aluminum,,Forgiving alloy - bends not cracks
+armor,thickness,1.6,mm,0.063 inch nominal
+armor,yield_strength,193,MPa,5052-H32 typical
+armor,elongation_at_break,12,percent,High ductility for impact survival
+armor,bend_radius_min,2.4,mm,1.5x thickness inside radius
+armor,bend_radius_used,3.0,mm,Conservative - reduces crack risk
+armor,fold_count,6,,Two side folds two top folds two rear folds
+internal_frame,material,6061-T6 aluminum,,Stiffer plate for motor mounting
+internal_frame,thickness,3.0,mm,0.125 inch
+internal_frame,length,150,mm,Inside the shell
+internal_frame,width,80,mm,Between motor centers
+drive,motor_type,brushed gearmotor,,Repeat Robotics N20-style 1000 rpm
+drive,motor_count,2,,Differential 2WD
+drive,motor_voltage,11.1,V,3S nominal
+drive,motor_stall_current,3.0,A,Per motor at 11.1V
+drive,gear_ratio,30:1,,Output spec
+drive,output_rpm_no_load,1000,rpm,At 11.1V
+drive,wheel_diameter,40,mm,Lite-flite foam filled
+drive,wheel_width,25,mm,Wide footprint for pushing
+drive,top_speed,2.1,m/s,Pi * 0.040 * 1000/60
+drive,wheel_guard_coverage,180,deg,Top and outer half shrouded
+electronics,esc,RepeatBot brushed dual,,1.5 A continuous per channel sized to motor
+electronics,receiver,FrSky XM+ or similar 2.4GHz,,Match nieces existing transmitter
+electronics,battery_chemistry,LiPo 3S,,
+electronics,battery_capacity,450,mAh,
+electronics,battery_C_rating,35,C,15.7 A burst capability
+electronics,battery_weight,42,g,
+electronics,power_switch,IRLB3034 link OR removable link,,Use removable bolt-link for kid-safe arming
+fasteners,thread_size,M3,,Single hex key for whole bot
+fasteners,head_type,button head socket cap,,Low profile cant snag
+fasteners,top_plate_count,6,,For service access
+fasteners,total_count,~22,,Whole bot
+fasteners,thread_locker,Loctite 243 blue,,Removable - applied by adult mentor
+service,top_plate_removal_time,45,sec,Goal between matches
+service,battery_swap_time,15,sec,Velcro strap retention
+service,full_motor_replacement_time,8,min,Side panel access

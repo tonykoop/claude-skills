@@ -1,112 +1,106 @@
 ---
 name: laser-art
-version: 0.1.0
-last-updated: 2026-05-11
+version: 1.0.0
+last-updated: 2026-05-10
 description: >-
-  Design laser-cut, laser-engraved, or laser-scored decorative artwork and
-  art-adjacent fabrication packets such as layered wall art, edge-lit acrylic
-  panels, engraved plaques, signage, ornaments, stencils, and vector-ready
-  composition studies. Use when the user wants laser-friendly art direction,
-  material/process constraints, SVG/DXF preparation guidance, image-to-vector
-  planning, engraving tests, kerf/score/line-weight checklists, or a bridge
-  from generated imagery into reviewed laser artwork. Do not use for general
-  shop fixtures, CNC/plasma/mill work, structural assemblies, musical
-  instruments, or wildlife habitat welfare design; route those to makerspace,
-  instrument-maker, or habitat-maker as appropriate.
+  Cross-platform workflow for turning Adobe Illustrator/vector files, photos,
+  hand sketches, written or spoken descriptions, dreams, memories, and stories
+  into layered laser art, spray-paint stencils, laser etching/cutting/engraving
+  plans, rotary laser wraps, and CNC/laser inlay-ready design packets. Use when
+  designing parametric wall art, layered relief, multi-layer stencil posters or
+  canvas, safe-zone instrument art, LightBurn/RDWorks/Illustrator/Fusion/Blender/
+  SolidWorks handoffs, registration fixtures, layer manifests, bridge checks,
+  material/process validation, or artist-inspired fabrication studies based on
+  Gabriel Schama, Martin Tomsky, Broinwood/Nik, Eric Standley, or related
+  layered cut-paper and wood techniques.
 ---
 
 # Laser Art
 
-## Trigger Phrases
+Turn fuzzy human inputs into laser-ready layered art without losing the story.
+Support flat art, wall relief, stencil painting, engraving, inlay, rotary wraps,
+and CAD-constrained objects.
 
-- `laser art` / `laser-cut art` / `laser engraved art`
-- `make this image laser-ready`
-- `turn this into an SVG for engraving`
-- `layered wall art` / `edge-lit acrylic art` / `engraved plaque`
-- `vector-ready laser artwork`
-- `kerf test for this art piece`
+Use artist references as process inspiration, not exact imitation. Translate
+materials, layering logic, registration, rhythm, density, and negative-space
+strategies into an original design language.
 
-## Do Not Trigger For
+## Core Workflow
 
-- General jigs, fixtures, workholding, or CNC/plasma/mill process plans. Route
-  to `makerspace`.
-- Musical instruments or acoustic design. Route to `instrument-maker`.
-- Birdhouses, bat houses, bee houses, feeders, or wildlife habitat. Route to
-  `habitat-maker`.
-- Pure image generation with no laser/fabrication intent. Use image generation
-  directly instead of this skill.
+1. Capture the source: image, `.ai`, `.svg`, `.dxf`, sketch, photo, object,
+   spoken/written description, dream, memory, or story.
+2. Identify the output family:
+   - spray-paint stencil set;
+   - stacked laser-cut relief;
+   - laser etch, raster engrave, or vector engrave panel;
+   - CNC or laser inlay/veneer packet;
+   - rotary laser wrap;
+   - CAD safe-zone art for instruments, furniture, signage, or fixtures.
+3. Build a design brief: subject, emotional tone, target size, material,
+   machine/process, number of layers, color/material palette, deadline, and
+   tolerance needs.
+4. Decompose the art into layers: silhouette, shadow, midtone, highlight,
+   detail, texture, registration, jig, and optional test coupon.
+5. Apply fabrication constraints before aesthetics harden: kerf, minimum bridge
+   width, island retention, material grain, paint bleed, engraving contrast,
+   tool diameter, rotary seam, fixture pins, and safe zones.
+6. Produce the smallest useful output for the user's current stage: concept
+   directions, layer plan, file checklist, toolchain handoff, CAD sketch plan,
+   SVG/DXF naming scheme, or full fabrication packet.
+7. Close the loop with a prototype step: test coupon, one-layer proof, bridge
+   check, registration check, then revise.
 
-Use `laser-art` when the center of gravity is artwork that must survive laser
-translation: clean vector authority, material limits, line-weight choices,
-engraving tests, layer order, and honest separation between concept images and
-fabrication files.
+Ask at most three blocking questions. If the user provided enough context,
+state assumptions and proceed.
 
-## Core Boundaries
+## Load References
 
-- Generated images may inspire or preview the composition, but they are not
-  fabrication authority.
-- Treat reviewed SVG, DXF, CAD, templates, measured drawings, and material test
-  coupons as fabrication authority.
-- Do not invent machine settings. Ask for the laser model, wattage, lens,
-  material, thickness, air assist, bed size, and shop rules, then label any
-  starting settings as test-coupon candidates.
-- Keep materials safety explicit. Stop on unknown plastics, PVC/vinyl,
-  polycarbonate, PTFE/Teflon, chlorinated or fluorinated materials, mirrored
-  acrylic backings, coated metals, or mystery coatings until the shop policy or
-  material SDS clears them.
-- Keep privacy boundaries. Do not publish family photos, private names, private
-  addresses, or personal media into public examples without explicit approval.
+Read only the reference needed for the current task:
 
-## Workflow
+- Style translation: [`references/style-profiles.md`](references/style-profiles.md)
+- Process choices: [`references/fabrication-modes.md`](references/fabrication-modes.md)
+- Creative/CAD software handoffs: [`references/toolchain-handoffs.md`](references/toolchain-handoffs.md)
+- Intake and output templates: [`references/intake-output-templates.md`](references/intake-output-templates.md)
+- Validation checks: [`references/quality-gates.md`](references/quality-gates.md)
 
-1. Classify the job:
-   - concept art direction
-   - image-to-vector planning
-   - SVG/DXF readiness review
-   - layered art packet
-   - engraving test plan
-   - edge-lit acrylic or signage packet
-2. Gather inputs:
-   - artwork source or prompt
-   - material and thickness
-   - machine/shop constraints
-   - final size and display context
-   - cut/score/engrave distinction
-   - required privacy or licensing limits
-3. Establish the authority ladder:
-   - `concept`: sketches, prompts, generated images, mood references
-   - `review`: vector trace, layer plan, dimensions, material callouts
-   - `fabrication`: reviewed SVG/DXF/CAD plus shop-cleared material and test
-     coupons
-4. Produce the smallest useful artifact set:
-   - `design-brief.md`
-   - `layer-plan.md`
-   - `material-safety.md`
-   - `vector-readiness-checklist.md`
-   - optional `test-coupon-plan.csv`
-   - optional `handoff_checklist.json`
-5. Validate before calling it ready:
-   - file units are explicit
-   - cut, score, and engrave layers are separate
-   - dimensions fit the machine bed
-   - minimum bridges, islands, tabs, and line weights are reviewed
-   - kerf/char/edge finish are handled by test coupons
-   - generated or raster previews are clearly marked non-authoritative
+## Intake Heuristics
 
-## Output Rules
+- If the input is an Illustrator, SVG, PDF, or DXF file, inspect layer names,
+  artboard size, units, stroke expansion, clipping masks, embedded rasters, and
+  whether registration geometry already exists.
+- If the input is a photo or sketch, extract subject, silhouette, value range,
+  edge complexity, likely layer count, and areas that will need bridging or
+  simplification.
+- If the input is a dream, memory, or story, convert it into motifs, motion,
+  contrast, symbols, texture, and a layerable visual grammar before proposing
+  fabrication.
+- If the user wants "parametric" art, define named dimensions, safe zones,
+  layer count, material thickness, registration pin diameter, and variable
+  pattern rules rather than a single static composition.
+- If the user mentions an instrument, route acoustic calculations to
+  `instrument-maker` when available; keep this skill focused on art, safe zones,
+  paint/engrave/inlay decisions, and registration with the instrument CAD.
 
-- Mark readiness honestly: `concept`, `review-ready`, or `fabrication-ready`.
-- If no vector file has been reviewed, do not say the packet is
-  fabrication-ready.
-- For SVG/DXF handoffs, name the authoritative file and its revision.
-- For image-derived work, include a short trace plan instead of pretending the
-  raster image is directly cuttable.
-- For public repo artifacts, scrub private/person-identifying content unless
-  the user explicitly says it is publishable.
+## Required Output Fields
 
-## Version And Install Notes
+For fabrication-ready work, include:
 
-This skill is versioned through top-level `SKILL.md` frontmatter and
-`manifest.yaml`. There is no `laser-art` shell command or `laser-art --version`
-shim in v0.1.0; version checks should use `skills-meta` until a real CLI shim
-exists.
+- intent and subject;
+- selected fabrication mode;
+- material assumptions and safety notes;
+- layer manifest with names, colors/materials, purpose, and order;
+- registration plan with origin, pins/marks, jig notes, and tolerance target;
+- bridge/island strategy;
+- file export plan with units, formats, and naming;
+- prototype and validation steps.
+
+For early ideation, keep the output lighter: give 2-4 concept directions and a
+recommended first prototype.
+
+## Fabrication Safety
+
+Never recommend cutting or engraving unknown plastic, PVC, vinyl, or materials
+with unsafe fumes. Ask for material identity or SDS when uncertain. Separate
+visual settings from machine settings unless machine, lens, material, thickness,
+air assist, and ventilation are known. Prefer a test coupon over confident
+speed/power claims.

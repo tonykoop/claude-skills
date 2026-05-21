@@ -69,11 +69,39 @@ what to do and where the claim came from.
 
 - Do not publish private family, child, location, or media details.
 - Do not use generated images as dimensional or fabrication authority.
+- If the first packet includes a concept image, SVG preview, drawing PDF,
+  render, photo reference, visual BOM plate, or image-gen-2 prompt/output,
+  add `visual-output-register.csv` before citing the visual in the README,
+  design notes, or drawing brief.
 - Do not claim a price, lead time, machine setting, or supplier availability is
   current unless it was verified for this request.
 - Do not imply a full instrument family is ready when only a coupon, mockup, or
   design sketch exists.
 - Do not nest this packet under `build-packets/`; this template is repo-first.
+
+## String and Spike-Fiddle Starters
+
+For erhu, huqin, rebab, spike-fiddle, and related first packets, record the
+string setup and body-interface unknowns explicitly. Active speaking length
+means qianjin-to-bridge span, not total string length. A first-pass
+`380-420 mm` erhu/huqin setup range may be useful as an assumption, but it
+must stay `measurement-required` until selected from measured references,
+prototype data, or a reviewed drawing.
+
+Add validation rows or design-note fields for:
+
+- qianjin-to-bridge speaking length;
+- bridge placement;
+- qianjin location and height;
+- resonator/body geometry;
+- membrane/soundboard interface;
+- neck/spike alignment;
+- peg-hole and string-path geometry;
+- visual-output-register requirement when any non-authority visual appears.
+
+These rows are blockers, not polish. Do not promote the packet beyond
+bare-bones readiness until each build-controlling field has evidence or an
+owner for the next measurement.
 
 ## Promotion Gates
 
@@ -83,6 +111,10 @@ Move from bare-bones to a full packet only when:
 - `validation.csv` has a pass path for acoustics/tuning, fabrication, safety,
   and documentation.
 - The drawing brief identifies which file becomes fabrication authority.
+- Any concept image, SVG preview, drawing PDF, render, photo reference, visual
+  BOM plate, or image-gen-2 prompt/output is tracked in
+  `visual-output-register.csv` and marked as non-authority unless it is a
+  reviewed drawing or measured template.
 - BOM and sourcing rows distinguish in-hand, verified, supplier-unverified, and
   substitution-candidate parts.
 - Risks that could change the core architecture have a mitigation or a planned
@@ -91,3 +123,29 @@ Move from bare-bones to a full packet only when:
 For wind or free-reed instruments, run `scripts/validate_acoustic_law.py` when
 `family-spec.csv` exists. Until then, mark the acoustic model as
 `measurement-required` in the design notes.
+
+## String / Spike-Fiddle Variant
+
+Use this variant for huqin-family starters such as erhu when the repo is still
+bare-bones and the next useful step is to expose setup and drawing unknowns.
+This is still a repo-first readiness packet, not a build-ready spike-fiddle
+plan.
+
+Required guardrails:
+
+- Treat active string length as the qianjin-to-bridge speaking span, not total
+  string length.
+- Record `380-420 mm` only as a first-pass setup range for erhu-like starters,
+  with status `measurement-required` or `assumption` until selected or
+  measured.
+- Require separate measurement gates for bridge placement, qianjin
+  placement/height, neck/spike alignment, peg/string path, resonator/body
+  envelope, and membrane/soundboard interface.
+- Treat an `artifact:dxf` routing label as a future authority preference, not
+  permission to invent cut-ready geometry.
+- Keep concept images, SVG previews, drawing PDFs, and render previews out of
+  the fabrication authority chain unless they are derived from named DXF/CAD,
+  design-table, measured-template, or reviewed-drawing authority.
+
+For a compact starter example, see
+`examples/repo-first-bare-bones-packet/string-spike-fiddle/`.

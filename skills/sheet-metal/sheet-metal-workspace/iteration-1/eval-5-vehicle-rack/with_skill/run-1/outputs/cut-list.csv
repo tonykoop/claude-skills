@@ -1,0 +1,5 @@
+cut_id,part_id,blank_length_in,blank_width_in,material,thickness_in,qty,process,notes
+C01,P01,54.0,51.0,5052-H32 aluminum,0.102,1,plasma,Includes bend allowance and reliefs; verify fit within 48 in brake before cut
+C02,P02,53.0,3.0,5052-H32 aluminum,0.102,1,shear+plasma,Optional separate side rail; shear strip then plasma slot pattern
+C03,P03,53.0,3.0,5052-H32 aluminum,0.102,1,shear+plasma,Mirror of C02
+C04,P06,8.0,3.0,5052-H32 aluminum,0.102,1,shear,Test coupon for bend and hole-fit verification

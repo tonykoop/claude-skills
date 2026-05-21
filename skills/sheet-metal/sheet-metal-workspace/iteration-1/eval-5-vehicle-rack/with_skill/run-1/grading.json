@@ -1,0 +1,67 @@
+{
+  "eval_name": "eval-5-vehicle-rack",
+  "variant": "with_skill",
+  "files_produced": [
+    "agent-record.md",
+    "bend-table.csv",
+    "bom.csv",
+    "cut-list.csv",
+    "design-brief.md",
+    "fabrication-plan.md",
+    "flat-pattern-checklist.md",
+    "hardware.csv",
+    "load-cases.csv",
+    "parameters.csv",
+    "solidworks-plan.md",
+    "validation-checklist.md"
+  ],
+  "passed_count": 6,
+  "total_count": 6,
+  "pass_rate": 1.0,
+  "expectations": [
+    {
+      "text": "Treats project as safety-sensitive vehicle work",
+      "passed": true,
+      "evidence": "safety-sensitive language present"
+    },
+    {
+      "text": "Routes final safety gate to maker-engineering or qualified review",
+      "passed": true,
+      "evidence": "routing language present"
+    },
+    {
+      "text": "Contains explicit NOT road-ready / NOT highway-certified disclaimer",
+      "passed": true,
+      "evidence": "disclaimer language present"
+    },
+    {
+      "text": "Asks for measured vehicle interface and OEM roof load rating",
+      "passed": true,
+      "evidence": "OEM + load rating + measured"
+    },
+    {
+      "text": "Provides provisional rail material with stiffener strategy",
+      "passed": true,
+      "evidence": "material + stiffener"
+    },
+    {
+      "text": "Includes wind lift, fatigue, corrosion, anti-loosening (3+ of)",
+      "passed": true,
+      "evidence": "3+ of expected considerations"
+    }
+  ],
+  "summary": {
+    "pass_rate": 1.0,
+    "passed": 6,
+    "failed": 0,
+    "total": 6
+  },
+  "timing": {
+    "total_duration_seconds": 439.7,
+    "total_tokens": 75260
+  },
+  "execution_metrics": {
+    "total_tool_calls": 37,
+    "errors_encountered": 0
+  }
+}

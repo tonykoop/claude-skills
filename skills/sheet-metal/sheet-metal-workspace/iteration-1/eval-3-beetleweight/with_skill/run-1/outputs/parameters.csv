@@ -1,0 +1,32 @@
+name,value,units,source,confidence,notes
+Class,beetleweight,,event_rules,high,3 lb / 1360 g hard limit
+Weight_Limit_Total,1360,g,event_rules,high,Combat class hard cap
+Chassis_Budget_Min,300,g,skill_reference,medium,Beetleweight target lower bound
+Chassis_Budget_Max,400,g,skill_reference,medium,Beetleweight target upper bound
+Material_Alloy,5052-H32,,skill_planning,medium,Forgiving aluminum chosen for kid-facing build
+Material_Thickness,0.063,in,assumed,medium,Measure actual stock before cutting
+Inside_Bend_Radius,0.063,in,assumed,medium,R = T conservative on finger brake
+K_Factor,0.45,,skill_reference,medium,Mid-range planning value for common aluminum
+Bend_Allowance_90deg,0.143,in,calculated,medium,sheet_metal_math.py output rounded
+Bend_Allowance_45deg,0.072,in,calculated,medium,For wedge face fold
+Bend_Allowance_30deg,0.048,in,calculated,medium,Alternate wedge angle
+Min_Flange_Length,0.252,in,calculated,medium,4 x T grip-length floor
+Min_Hole_To_Bend,0.189,in,calculated,medium,3 x T from bend centerline
+Part_Length,7.00,in,assumed,low,Outside length, confirm with motor footprint
+Part_Width,6.00,in,assumed,low,Outside width, confirm with wheel track
+Part_Height_Rear,2.50,in,assumed,low,Rear wall height
+Front_Lip_Height,0.20,in,assumed,low,Ground clearance at wedge tip
+Wedge_Angle,20,deg,assumed,low,Top-deck slope, target 18-22 range
+Wheel_Guard_Side_Clearance,0.10,in,assumed,low,Tire to inner wall, confirm with wheel
+Hardware_Pitch,1.00,in,assumed,medium,Nominal screw spacing on top panel
+Fastener_Size,M3,,team_standard,medium,Stainless socket-head cap with nylock
+Fastener_Count_Planned,12,each,assumed,medium,Top panel plus internal tray
+Relief_Size,0.13,in,calculated,medium,Approx 2 x T circular relief at box corners
+Corner_Relief_Style,circular,,skill_reference,medium,Dogbone or circular per ref
+Edge_Treatment,deburr_plus_hem_or_flange,,skill_reference,high,Kid-facing rule
+Service_Access_Target,60,seconds,user_goal,high,Top-panel-off battery swap
+Plasma_Kerf,0.070,in,skill_reference,low,Planning estimate; verify on shop coupon
+Plasma_Margin,0.50,in,skill_reference,medium,Nesting margin around blank
+Estimated_Total_Sheet_Area,135,in^2,estimated,low,Sum of base + sides + top + wedge + guards
+Estimated_Chassis_Mass,378,g,calculated,low,At 135 in^2 x 0.063 in 5052
+Estimated_Mass_Margin,22,g,calculated,low,To upper 400 g chassis budget

@@ -70,12 +70,22 @@ DIMENSION_PROVENANCE_VOCAB = {
 }
 
 # Heuristic: which families need acoustic_law enforcement.
-# We treat any family with at least one row whose member_id matches a
-# wind/free-reed pattern as a wind/free-reed family. Idiophones (TNG, MAR,
-# GLK, KAL, RNS) and string/membrane families are skipped.
+# We treat any family with at least one row whose member_id or legacy model
+# identifier matches a wind/free-reed pattern as a wind/free-reed family.
+# Older packets such as hulusi may use model_id instead of member_id; those
+# must not be reported as a meaningful rows_checked=0 validation pass.
+# Idiophones (TNG, MAR, GLK, KAL, RNS) and string/membrane families are skipped.
 WIND_OR_REED_PREFIX_RE = re.compile(
-    r"^(KHN|SNG|SHO|HAR|MEL|ACC|BAW|HUL|HRM|CHL|FLU|NAF|TRF|GMS|OCA|UDU|FUJ|DID|PNF|QNA|XIO|TIN|SHK)\b",
+    r"^(KHN|SNG|SHO|HAR|MEL|ACC|BAW|HUL|HRM|CHL|FLU|NAF|TRF|GMS|OCA|UDU|FUJ|DID|FDR|DRN|PNF|QNA|XIO|TIN|SHK)\b",
     re.IGNORECASE,
+)
+
+WIND_OR_REED_ID_FIELDS = (
+    "member_id",
+    "model_id",
+    "pipe_id",
+    "instrument_id",
+    "build_id",
 )
 
 # Audio constant
@@ -114,9 +124,10 @@ class Report:
 
 def is_wind_or_reed_family(rows: list[dict]) -> bool:
     for r in rows:
-        mid = (r.get("member_id") or "").strip()
-        if WIND_OR_REED_PREFIX_RE.match(mid):
-            return True
+        for field_name in WIND_OR_REED_ID_FIELDS:
+            identifier = (r.get(field_name) or "").strip()
+            if WIND_OR_REED_PREFIX_RE.match(identifier):
+                return True
         # Also catch explicit acoustic_law present
         if (r.get("acoustic_law") or "").strip():
             return True

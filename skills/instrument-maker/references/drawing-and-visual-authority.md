@@ -20,8 +20,15 @@ string scale lengths, bridge placement, or CNC/laser toolpaths.
 
 ## Visual Output Register
 
-When a packet includes more than one visual artifact, add a
-`visual-output-register.csv` or equivalent JSON record. Use these fields:
+Create a `visual-output-register.csv` or equivalent JSON record before the first
+concept image, SVG preview, drawing PDF, rendered preview, visual BOM plate,
+photo reference, or image-gen-2 prompt/output is accepted into a packet.
+Do this even when no fabrication-authority DXF/CAD exists yet. The register
+can say `authority=concept_only` or `authority=reference_only`; it must not let
+an early visual sit beside a bare-bones packet as an undocumented dimensional
+hint.
+
+When a packet includes visual artifacts, use these fields:
 
 | Field | Required | Meaning |
 | --- | --- | --- |
@@ -87,10 +94,15 @@ Non-fabrication visual roles:
 
 ## Required Checks
 
+For bare-bones or concept-stage packets, run the check as soon as a visual
+register exists. A concept-only register does not prove build readiness; it
+only proves the packet has recorded that the visual artifacts are not
+fabrication authority.
+
 Before sending an instrument packet to a shop, run:
 
 ```bash
-python3 skills/instrument-maker/scripts/validate_visual_authority.py \
+python3 skills/instrument-maker-v4/scripts/validate_visual_authority.py \
   path/to/visual-output-register.csv
 ```
 
@@ -117,6 +129,21 @@ fabrication claim. A concept image may show the mood, finish, ergonomics, or
 story of a sheng/hulusi/chalumeau-inspired build, but the build dimensions
 must come from the acoustic-law record, measured reed/coupon data, and the
 governing DXF/CAD/design table.
+
+## String and Spike-Fiddle Starters
+
+For erhu, huqin, rebab, spike-fiddle, and related string starters, visual
+authority also depends on setup and interface measurements. Treat the
+qianjin-to-bridge speaking length, bridge placement, qianjin location and
+height, neck/spike alignment, peg/string path, resonator geometry, and
+membrane/soundboard interface as measurement-required until a measured template
+or reviewed drawing exists.
+
+If a concept image, SVG preview, drawing PDF, render, or photo reference shows
+any of those areas, create the visual-output register before using the visual
+in a README, design note, or drawing brief. Mark early visuals
+`concept_only` or `reference_only`, and record the missing measurement gate in
+the notes.
 
 ## Image-Gen-2 Prompt Guard
 

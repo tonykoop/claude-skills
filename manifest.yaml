@@ -118,17 +118,15 @@ skills:
   instrument-maker:
     canonical_version: 4.5.0
     runtime: shared
-    repo_path: skills/instrument-maker-v4
+    repo_path: skills/instrument-maker
     last_updated: 2026-05-17
-    status: partial
+    status: active
     notes: |
-      Official public invocation is instrument-maker. The repo path remains
-      skills/instrument-maker-v4 during the staged migration so active PRs and
-      installed aliases can continue to resolve instrument-maker-v4 while
-      user-facing routing moves to the unversioned name. The v4 label is
-      release lineage and implementation history, not the public skill name.
+      Official public invocation and repo path are now instrument-maker. The
+      v4 label remains release lineage and implementation history, not the
+      public skill name.
 
-      Partial-skill repo entry hosting the v4.4 acoustic-law / reed
+      Skill entry hosting the v4.4 acoustic-law / reed
       boundary-condition enhancement (issue #73), v4.4.1 free-reed/khaen
       exploration template (issue #109), and v4.4.2 sheng/hulusi/chalumeau
       validation guardrail, plus the v4.4.3 prototype validation-loop upgrade
@@ -136,15 +134,10 @@ skills:
       v4.4.5 DXF/image-gen-2 visual authority guard, v4.4.6 early
       visual-register trigger for concept/pre-CAD visuals, the v4.4.7
       instrument design-book chapter contract (issue #104), and the v4.5
-      experimental acoustic rig templates (issue #107). The full skill
-      body lives in the canonical install at ~/.claude/skills/instrument-maker
-      and is not yet versioned in this repo. Existing
-      ~/.claude/skills/instrument-maker-v4 and
-      ~/.codex/skills/instrument-maker-v4 installs may remain as compatibility
-      aliases until runtime roots are migrated. This entry contains the
+      experimental acoustic rig templates (issue #107). This entry contains the
       additive references, validators, tests, fixtures, and examples that
       v4.4/v4.4.1/v4.4.2/v4.4.3/v4.4.4/v4.4.5/v4.4.6/v4.4.7/v4.5 introduce.
-      See skills/instrument-maker-v4/SKILL.md for the partial-skill contract.
+      See skills/instrument-maker/SKILL.md for the skill contract.
 
   yoga-sequencer:
     canonical_version: 1.2.0

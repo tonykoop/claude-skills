@@ -1,5 +1,0 @@
-artifact_id,path,artifact_kind,role,authority,derived_from,dimension_claim,fabrication_required,notes
-DXF-001,drawings/body-layout.dxf,dxf,fabrication_geometry,fabrication,,derived_from_authority,true,Controls cut geometry and hole locations
-PDF-001,drawings/body-layout.pdf,drawing_pdf,derived_preview,derived_preview,DXF-001,derived_from_authority,false,Preview exported from DXF
-IMG-001,images/concepts/finish-study-prompt.md,image_gen_2_prompt,finish_study,concept_only,DXF-001,none,false,Prompt says concept only and names DXF authority
-IMG-002,images/concepts/visual-bom.png,image_gen_2_output,visual_bom,concept_only,DXF-001,none,false,Generated visual BOM support only

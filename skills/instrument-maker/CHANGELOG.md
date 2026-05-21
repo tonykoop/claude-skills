@@ -1,5 +1,140 @@
 # Changelog — instrument-maker
 
+## v4.4.7 — 2026-05-17 (issue #104)
+
+### Added
+
+- `references/instrument-design-book-chapter-contract.md` — Round 9
+  design-book / yearbook chapter scaffold contract for public instrument repo
+  chapters. Defines readiness mirroring, readiness banner, chapter template,
+  asset ledger, prompt appendix, Git LFS media policy, generated-image labels,
+  one L2+ pilot gate, and cross-skill routing to future `instrument-showcase`
+  plus optional `sheet-music`.
+
+### Notes
+
+- This is an additive partial-skill reference. It does not imply any current
+  instrument is public-chapter-ready and it does not batch-roll chapters.
+- Downstream scaffold issues should use `Refs #100`, not `Closes #100`, until
+  the reusable contract and one pilot are proven.
+
+## Unreleased — acoustic-law validator guard
+
+Salvages the small validator-hardening slice from stale draft PR #140.
+
+### Fixed
+
+- The acoustic-law validator now recognizes wind/reed prefixes in legacy
+  identifier columns such as `model_id`, `pipe_id`, `instrument_id`, and
+  `build_id`, not only `member_id`.
+- Hulusi-style family tables with `model_id=HUL-*` and no v4.4 acoustic-law
+  schema now fail with missing-column errors instead of returning
+  `rows_checked=0` as a non-wind skip.
+- Unit fixtures cover the Round 11 Bob-A/B finding that `rows_checked=0` must
+  not be treated as meaningful free-reed validation.
+
+## v4.4.6 — 2026-05-11 (invocation rename)
+
+Issue #157 makes `instrument-maker` the official public skill name and keeps
+`instrument-maker-v4` as a staged-migration alias / historical folder name.
+The v4 label now describes release lineage and implementation history, not the
+user-facing invocation.
+
+### Changed
+
+- Skill frontmatter `name` is now `instrument-maker`.
+- Manifest canonical key is now `instrument-maker`, while `repo_path` remains
+  `skills/instrument-maker-v4` to avoid breaking active PRs during migration.
+- Docs and routing language prefer `instrument-maker`; `instrument-maker-v4`
+  is documented as a deprecated compatibility alias.
+
+### Acceptance criteria
+
+- [x] Official skill frontmatter/name and user-facing invocation become
+      `instrument-maker`.
+- [x] Historical `instrument-maker-v4` repo path remains available for staged
+      migration and active PR compatibility.
+- [x] Docs explain that v4 is release lineage / implementation history.
+- [x] Packaging and skills-meta checks continue to resolve the historical
+      repo-path basename as an alias.
+
+## v4.4.6 — unreleased
+
+Round 12 Cindy-A adds a narrow string/spike-fiddle follow-up to the repo-first
+bare-bones template so erhu/huqin-style starters preserve the qianjin-to-bridge
+measurement boundary before any CAD/DXF authority claim.
+
+### Added
+
+- String/spike-fiddle variant guidance in
+  `references/repo-first-bare-bones-packet.md`.
+- `examples/repo-first-bare-bones-packet/string-spike-fiddle/` — compact
+  erhu/huqin guardrail example covering speaking length, bridge/qianjin setup,
+  resonator interface, neck/spike alignment, and future DXF/CAD authority.
+- Contract tests for the variant guidance and example fields.
+
+## v4.4.6 — 2026-05-11
+
+Round 12 TwinGrid lane Cindy-B tightened the visual-authority boundary learned
+from erhu/huqin bare-bones routing: early concept visuals should be registered
+before they can accidentally become dimensional hints.
+
+### Added
+
+- `references/drawing-and-visual-authority.md` now says to create a
+  `visual-output-register.csv` or JSON equivalent before the first concept
+  image, SVG preview, drawing PDF, rendered preview, visual BOM plate, photo
+  reference, or image-gen-2 prompt/output is accepted into a packet, even when
+  no fabrication-authority DXF/CAD exists yet.
+- `references/drawing-and-visual-authority.md` adds string/spike-fiddle
+  visual-authority gates for qianjin-to-bridge speaking length, bridge
+  placement, qianjin setup, neck/spike alignment, peg/string path, resonator
+  geometry, and membrane/soundboard interface.
+- `references/repo-first-bare-bones-packet.md` now requires early visual
+  registers for non-authority visuals and adds a compact string/spike-fiddle
+  starter checklist with the assumption-only `380-420 mm` erhu/huqin setup
+  range.
+- Contract tests now lock the early visual-register trigger and spike-fiddle
+  measurement-risk language.
+
+### Acceptance criteria
+
+- [x] Concept/pre-CAD visuals trigger a register before they appear in packet
+      README/design/drawing-brief material.
+- [x] Bare-bones packets keep generated images, SVG previews, renders, and
+      photo references non-authoritative unless backed by reviewed drawings or
+      measured templates.
+- [x] Spike-fiddle starters name membrane/soundboard interface and string-path
+      geometry as measurement-required gates.
+
+## Unreleased — Round 12 skill-dev follow-up
+
+Round 12 Bob-B adds hulusi/bawu-specific stopped-pipe free-reed guidance from
+the Round 11 live validation of `hulusi` issue #1.
+
+### Added
+
+- `references/hulusi-bawu-stopped-pipe-free-reed.md` — readiness-gated
+  guidance for hulusi/bawu prototype repos, including HUL-P0 reed coupon,
+  HUL-P1 single-pipe, `unknown_requires_measurement`, visual authority, and
+  validation-loop boundaries.
+- `examples/hulusi-bawu/` — small scaffold with `family-spec.csv`,
+  `validation-loop.csv`, and `visual-output-register.csv` showing how to keep
+  stopped-pipe free-reed claims measurement-required before empirical data.
+- `tests/test_hulusi_bawu_guidance.py` — contract tests for the new reference,
+  acoustic-law example, visual authority register, and skill stub wiring.
+
+### Acceptance criteria
+
+- [x] Hulusi/bawu examples do not inherit traditional `side_branch_reed`
+      assumptions.
+- [x] HUL-P0/HUL-P1 measurement gates are explicit before boundary-condition
+      claims or family scaling.
+- [x] Example visual artifacts keep concept imagery out of fabrication
+      authority.
+- [x] Existing free-reed guidance points agents to the stopped-pipe
+      hulusi/bawu reference when applicable.
+
 ## v4.4.5 — 2026-05-11
 
 Round 10 TwinGrid lane Elsa-B focused on visual authority: generated images
@@ -111,6 +246,108 @@ and measurement status agree.
 - Partner Peek v2 adds a visual-authority checkpoint for reed/free-reed
   packets that use generated concept images.
 
+## v4.5.0 — 2026-05-10 (issue #107)
+
+Round 9 TwinGrid lane Elsa showed that yaybahar-style prompts can tempt
+the skill into designing a finished performance instrument before the
+coupled string/spring/membrane behavior has been measured. v4.5 adds an
+experiment-first acoustic rig template so uncertain coupled systems ship
+as bench-rig packets first.
+
+### Added
+
+- `references/experimental-acoustic-rigs.md` — routing rule and packet
+  contract for coupled string-spring-membrane systems, with a warning
+  against over-predicting behavior from isolated string, spring, or
+  membrane formulas.
+- `assets/templates/experimental-acoustic-rig/variable-matrix.csv` —
+  standard variable matrix for staged experiments.
+- `assets/templates/experimental-acoustic-rig/measurement-log-template.csv`
+  — repeatable measurement log with sensor/capture fields.
+- `assets/templates/experimental-acoustic-rig/sensor-capture-checklist.md`
+  — mic distance, gain, contact mic mounting, environment, excitation
+  method, and subjective descriptor checklist.
+- `assets/templates/experimental-acoustic-rig/stored-energy-safety-checklist.md`
+  — spring/string stored-energy safety gates.
+- `assets/templates/experimental-acoustic-rig/README.md`,
+  `validation-plan.md`, and `risks.md` — seed files for the full
+  minimum bench-rig packet contract.
+- `scripts/apply_experimental_rig_runtime_patch.py` — idempotent helper
+  that inserts the v4.5 bench-rig-first routing rule into the canonical
+  runtime `SKILL.md`.
+- `tests/test_experimental_rig_templates.py` — content/schema smoke tests
+  for the new reference, templates, and runtime patch helper.
+
+### Acceptance criteria (issue #107)
+
+- [x] Future yaybahar-style prompts route to a bench-rig packet before a
+      performance-instrument packet.
+- [x] Coupled string/spring/membrane guidance warns against isolated
+      formula overreach.
+- [x] Standard `variable-matrix.csv` and
+      `measurement-log-template.csv` outputs are present.
+- [x] Sensor/capture checklist covers mic distance, gain, contact mic
+      mounting, environment, excitation method, and subjective
+      descriptors.
+- [x] Stored-energy safety checklist covers spring/string systems.
+- [x] Prototype maturity labels cover concept, bench rig, alpha
+      instrument, performance prototype, and production packet.
+- [x] Validation focuses on repeatable measurement and staged expansion.
+
+## v4.5.0 — 2026-05-10 (issue #106)
+
+Round 9 TwinGrid lanes Cindy and Dan exposed a repeated need for a
+standard bowed-string packet layer: bass tagelharpa with inlay and yayli
+tambur segmented-bowl studies both needed bridge crown, afterlength,
+bow-clearance, top/head load path, string schedule, source-posture, and
+SolidWorks skeleton guidance.
+
+### Added
+
+- `references/bowed-string-packets.md` — reusable packet reference for
+  bowed lyres/tagelharpa and long-neck bowl instruments. Includes packet
+  shape, source-posture tags, construction branch decisions,
+  bowed-string setup gates, top/head deflection checks, SolidWorks
+  skeleton checklist, and decorative no-carve-zone guidance.
+- `assets/templates/bowed-string-schedule.csv` — helper template for
+  pitch, scale, material/gauge, estimated tension, retuning factor,
+  percent breaking, and risk flags.
+- `assets/templates/bowed-source-posture.csv` — claim ledger template
+  for `sourced`, `prototype_assumption`, and `TBD` notes so traditional
+  instrument packets do not overclaim unsupported details.
+- `assets/templates/decorative-no-carve-zone.csv` — planning template
+  for inlay, engraving, soundboard patches, bridge patches, and other
+  exclusion zones.
+- `examples/bowed-string/tagelharpa-string-schedule.csv` — example
+  schedule preserving Round 9's 720 mm bass / 620 mm compact variants
+  without averaging them.
+- `examples/bowed-string/yayli-source-posture.csv` — example source
+  posture ledger for yayli tambur branch decisions.
+
+### Acceptance criteria (issue #106)
+
+- [x] Future tagelharpa/yayli/rebab/kemenche-adjacent prompts get a
+      consistent packet shape.
+- [x] Bowed lyre/tagelharpa guidance covers bridge crown, afterlength,
+      tailpiece load path, soundboard patch, bow clearance, and top
+      deflection.
+- [x] Long-neck bowl guidance covers source posture, bowl branch, top
+      or head mode, bridge/action, neck reinforcement, and
+      active/sympathetic string staging.
+- [x] String schedule helper includes pitch, scale, material/gauge,
+      estimated tension, retuning factor, and risk flags.
+- [x] SolidWorks checklist includes string paths, bow sweep, rim/head/top
+      planes, neck projection, and bridge crown gauge.
+- [x] Decorative no-carve-zone and inlay coupon guidance is explicit.
+
+### Known limits
+
+- This is a packet-support reference and template layer, not a new
+  generator or string-tension calculator. It standardizes the fields a
+  future generator should consume.
+- No SolidWorks files, DXF files, or physical validation coupons are
+  included. The reference defines the gates future packets must satisfy.
+
 ## v4.4.1 — 2026-05-10 (issue #109)
 
 Round 9 TwinGrid lane Alice recommended making free-reed/khaen work an
@@ -146,6 +383,56 @@ packet after measurements exist.
       gasket layer, windchest section, and side-branch/stopped-end notes.
 - [x] Ceramic shell versus removable acoustic-core guidance is documented.
 - [x] Sourcing `source_status` values are documented for free-reed parts.
+
+## v4.4.1 — 2026-05-10 (issue #108)
+
+Round 9 TwinGrid Bob produced a folded, laser-laminated stopped-pipe
+drone proof mule. The manager synthesis called for a reusable template
+so future folded drone prompts produce DXF-first, leak-testable packets
+without hand-inventing the structure every time.
+
+### Added
+
+- `references/folded-stopped-pipe-drone.md` — packet template for
+  compact folded stopped-pipe drones, didgeridoo-inspired proof mules,
+  rectangular labyrinth bores, breath-contact safety, removable tuning
+  tails, straight reference tube validation, and public-language
+  guidance.
+- `references/acoustic-models.md` — new folded stopped-pipe drone
+  subsection under **Stopped Pipes** covering rectangular duct
+  area-equivalent diameter, bend-loss assumptions, warm playing
+  temperature, leak testing, and no-CAM DXF layers.
+- `references/family-aware-design.md` — folded stopped-pipe drone
+  scaling law and example `family-spec.csv` / centerline station CSV.
+- `scripts/generate_folded_drone_dxf.py` — focused CSV-to-DXF helper for
+  centerline stations plus width schedule. Emits R12-style millimeter
+  DXF layers for centerline, wall offsets, bend zones, tuning tail,
+  leak-test notes, breath-contact safety, and no-cut assumptions.
+- `examples/folded-drone/centerline-stations.csv` — compact E2
+  proof-mule starter fixture.
+- `tests/test_generate_folded_drone_dxf.py` — unit tests for the helper,
+  fixture, equivalent-diameter calculation, CLI write path, and malformed
+  CSV handling.
+
+### Changed
+
+- `scripts/validate_acoustic_law.py` now treats `FDR` and `DRN`
+  member-id prefixes as wind/drone families, so folded-drone
+  `family-spec.csv` files must declare `acoustic_law`, `end_condition`,
+  and `dimension_provenance`.
+
+### Acceptance criteria (issue #108)
+
+- [x] Folded-drone / labyrinth stopped-pipe packet template exists.
+- [x] Template documents rectangular duct area-equivalent diameter,
+      bend-loss assumptions, warm-playing-temperature tuning, and
+      removable tuning tail.
+- [x] CSV-to-DXF helper accepts centerline stations plus width schedule.
+- [x] Validation guidance requires a straight reference tube comparison.
+- [x] Breath-contact safety checks cover cured finishes, cleanability,
+      moisture drainage, and removable mouthpiece materials.
+- [x] Public-language guidance distinguishes didgeridoo-inspired
+      experiments from traditional didgeridoo builds.
 
 ## v4.4.0 — 2026-05-10 (issue #73)
 

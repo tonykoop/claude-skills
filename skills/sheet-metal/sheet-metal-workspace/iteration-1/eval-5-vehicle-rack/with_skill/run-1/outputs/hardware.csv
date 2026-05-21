@@ -1,0 +1,12 @@
+hardware_id,description,size,material,qty,torque_in_lb,locking,notes
+H01,Crossbar clamp,commercial rated,steel/aluminum per vendor,4,per_manufacturer,vendor,User must select clamp before fabrication
+H02,Clamp stud bolt,M8 x length per clamp,stainless 18-8,4,per_manufacturer,Loctite_243,Subject to actual clamp specification
+H03,Clamp stud nut Nyloc,M8,stainless 18-8,4,per_manufacturer,Nyloc,Use with Loctite 243 on threads
+H04,Flat washer (under bolt head and nut),M8,stainless 18-8,8,n/a,n/a,
+H05,Isolation washer (under stainless against aluminum),M8 ID,HDPE or nylon,8,n/a,n/a,Galvanic isolation between dissimilar metals
+H06,Deck-to-side-rail screw (if separate side rails),M5 x 16 button head,stainless 18-8,24,30,Nyloc,4 in pitch along both side rails
+H07,Deck-to-side-rail Nyloc nut (if separate),M5,stainless 18-8,24,30,Nyloc,
+H08,Deck-to-side-rail flat washer (if separate),M5,stainless 18-8,48,n/a,n/a,Top and bottom of joint
+H09,Deck-to-side-rail isolation washer (if separate),M5 ID,HDPE or nylon,48,n/a,n/a,If side rails are mild steel; not needed for aluminum-aluminum
+H10,Torque-witness paint pen,medium-tip,nitrocellulose paint,1,n/a,n/a,Apply after final torque for inspection
+H11,Loctite 243 (blue),0.34 fl oz tube,n/a,1,n/a,n/a,Thread locker on every load-path fastener

@@ -1,8 +1,7 @@
 ---
 name: reverse-engineer
-metadata:
-  version: 1.1.0
-  last-updated: 2026-05-10
+version: 1.1.0
+last-updated: 2026-05-10
 description: >-
   Analyze objects, photos, video, sketches, descriptions, and
   named-but-unseen artifacts into disciplined reverse-engineering notes:

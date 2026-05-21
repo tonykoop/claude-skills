@@ -1,0 +1,26 @@
+part,bend_id,description,angle_deg,direction,inside_radius_in,thickness_in,k_factor,bend_allowance_in,relief_dia_in,min_flange_in,min_hole_to_bend_in
+10_SWTB_Tub,B1,Front long wall up,90,up,0.060,0.060,0.44,0.1357,0.120,0.240,0.180
+10_SWTB_Tub,B2,Back long wall up,90,up,0.060,0.060,0.44,0.1357,0.120,0.240,0.180
+10_SWTB_Tub,B3,Left short wall up,90,up,0.060,0.060,0.44,0.1357,0.120,0.240,0.180
+10_SWTB_Tub,B4,Right short wall up,90,up,0.060,0.060,0.44,0.1357,0.120,0.240,0.180
+10_SWTB_Tub,B5,Tear-drop hem on tub rim,180,inward,0.060,0.060,0.44,0.2714,n/a,0.240,0.180
+11_SWTB_Lid,B1,Front lid skirt down,90,down,0.060,0.060,0.44,0.1357,0.120,0.240,0.180
+11_SWTB_Lid,B2,Back lid skirt down,90,down,0.060,0.060,0.44,0.1357,0.120,0.240,0.180
+11_SWTB_Lid,B3,Left lid skirt down,90,down,0.060,0.060,0.44,0.1357,0.120,0.240,0.180
+11_SWTB_Lid,B4,Right lid skirt down,90,down,0.060,0.060,0.44,0.1357,0.120,0.240,0.180
+11_SWTB_Lid,B5,Stack rim front up,90,up,0.060,0.060,0.44,0.1357,0.120,0.240,0.180
+11_SWTB_Lid,B6,Stack rim back up,90,up,0.060,0.060,0.44,0.1357,0.120,0.240,0.180
+11_SWTB_Lid,B7,Stack rim left up,90,up,0.060,0.060,0.44,0.1357,0.120,0.240,0.180
+11_SWTB_Lid,B8,Stack rim right up,90,up,0.060,0.060,0.44,0.1357,0.120,0.240,0.180
+11_SWTB_Lid,B9,Tear-drop hem on skirt bottom,180,inward,0.060,0.060,0.44,0.2714,n/a,0.240,0.180
+30_SWTB_Dolly_Deck,B1,Front skirt down,90,down,0.105,0.105,0.44,0.2375,0.210,0.420,0.315
+30_SWTB_Dolly_Deck,B2,Back skirt down,90,down,0.105,0.105,0.44,0.2375,0.210,0.420,0.315
+30_SWTB_Dolly_Deck,B3,Left skirt down,90,down,0.105,0.105,0.44,0.2375,0.210,0.420,0.315
+30_SWTB_Dolly_Deck,B4,Right skirt down,90,down,0.105,0.105,0.44,0.2375,0.210,0.420,0.315
+30_SWTB_Dolly_Deck,B5,Stack rim front up,90,up,0.105,0.105,0.44,0.2375,0.210,0.420,0.315
+30_SWTB_Dolly_Deck,B6,Stack rim back up,90,up,0.105,0.105,0.44,0.2375,0.210,0.420,0.315
+30_SWTB_Dolly_Deck,B7,Stack rim left up,90,up,0.105,0.105,0.44,0.2375,0.210,0.420,0.315
+30_SWTB_Dolly_Deck,B8,Stack rim right up,90,up,0.105,0.105,0.44,0.2375,0.210,0.420,0.315
+30_SWTB_Dolly_Deck,B9,Tear-drop hem on skirt bottom,180,inward,0.105,0.105,0.44,0.4750,n/a,0.420,0.315
+32_SWTB_Dolly_Handle_Bracket,B1,Bracket fold 1,90,up,0.105,0.105,0.44,0.2375,0.210,0.420,0.315
+32_SWTB_Dolly_Handle_Bracket,B2,Bracket fold 2,90,up,0.105,0.105,0.44,0.2375,0.210,0.420,0.315

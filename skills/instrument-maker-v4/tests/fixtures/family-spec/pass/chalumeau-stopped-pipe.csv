@@ -1,3 +1,0 @@
-member_id,target_hz,target_note,acoustic_law,end_condition,dimension_provenance,predicted_L_geom_mm,wood_species,notes
-CHL-P1-A4,440.00,A4,closed_open,one_end_closed_reed,physics_derived,190.8,Cherry,Chalumeau-style control pipe; reed end acts as closed boundary
-CHL-P1-E5,659.25,E5,stopped_pipe,one_end_closed_stopped,physics_derived,126.0,Cherry,Stopped-pipe sister row for reed-pipe validation

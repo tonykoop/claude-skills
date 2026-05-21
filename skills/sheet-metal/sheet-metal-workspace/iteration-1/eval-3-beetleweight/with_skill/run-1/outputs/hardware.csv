@@ -1,0 +1,8 @@
+id,description,size,length_mm,qty,material,location,torque_in_lb,source,authority
+HW-001,Socket-head cap screw,M3,10,8,A2 stainless,top-deck to tub side walls,5,assumed,planning
+HW-002,Socket-head cap screw,M3,8,4,A2 stainless,wedge-front side ears to tub,5,assumed,planning
+HW-003,Socket-head cap screw,M3,8,6,A2 stainless,wheel-guards to tub side walls (3 per side),5,assumed,planning
+HW-004,Nylock nut,M3,,18,A2 stainless,backside of every M3 screw,5,assumed,planning
+HW-005,Flat washer,M3,,18,A2 stainless,under every screw head on hemmed edges,,assumed,planning
+HW-006,Battery strap (hook-loop),12mm wide,150,1,Nylon,across battery in tub,,assumed,planning
+HW-007,Power switch grommet,8mm hole,,1,Rubber,rear wall power-switch passthrough,,assumed,planning
