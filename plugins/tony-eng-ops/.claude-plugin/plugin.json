@@ -1,0 +1,16 @@
+{
+  "$schema": "https://claude.com/schemas/plugin.json",
+  "name": "tony-eng-ops",
+  "version": "1.0.0",
+  "description": "WRFCoin engineering operations: tmux-sprint multi-pane orchestration, merge-review PR triage, sprint-supervisor babysitter, sprint-update GitHub-Queue sync, run-swarm dispatch, ci-triage, scaffold-hygiene, and disk-cleanup.",
+  "author": {
+    "name": "Tony Koop",
+    "email": "tonykoop@gmail.com",
+    "url": "https://github.com/tonykoop"
+  },
+  "homepage": "https://github.com/tonykoop/claude-skills",
+  "repository": "https://github.com/tonykoop/claude-skills",
+  "license": "MIT",
+  "keywords": ["sprint", "tmux", "ci", "git", "wrfcoin", "internal-ops"],
+  "skills": ["skills"]
+}

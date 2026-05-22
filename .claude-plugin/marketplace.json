@@ -1,0 +1,40 @@
+{
+  "$schema": "https://claude.com/schemas/plugin-marketplace.json",
+  "name": "tony-koop",
+  "owner": {
+    "name": "Tony Koop",
+    "email": "tonykoop@gmail.com",
+    "url": "https://github.com/tonykoop"
+  },
+  "description": "Tony Koop's private skill marketplace — Heifer Zephyr maker/instrument-design skills, personal-life skills (yoga, ideas, playlists), WRFCoin engineering ops, and the skills-meta audit tool. Backed by the claude-skills git repo so all installs auto-update from main.",
+  "plugins": [
+    {
+      "name": "heifer-zephyr-maker",
+      "source": "./plugins/heifer-zephyr-maker",
+      "description": "Heifer Zephyr maker portfolio: instrument-maker, maker-engineering, makerspace, sheet-metal, laser-art, habitat-maker, reverse-engineer, sheet-music.",
+      "category": "making",
+      "tags": ["instrument-design", "maker", "fabrication", "heifer-zephyr"]
+    },
+    {
+      "name": "tony-life",
+      "source": "./plugins/tony-life",
+      "description": "Personal-practice skills: yoga-sequencer, playlist-builder, idea-incubator.",
+      "category": "personal",
+      "tags": ["yoga", "music", "ideation"]
+    },
+    {
+      "name": "tony-eng-ops",
+      "source": "./plugins/tony-eng-ops",
+      "description": "WRFCoin engineering ops: tmux-sprint, merge-review, sprint-supervisor, sprint-update, run-swarm, ci-triage, scaffold-hygiene, disk-cleanup.",
+      "category": "engineering",
+      "tags": ["sprint", "ci", "git", "wrfcoin", "internal"]
+    },
+    {
+      "name": "skills-meta",
+      "source": "./plugins/skills-meta",
+      "description": "Drift-audit tool for installed skills across Claude, Codex, and Gemini runtimes.",
+      "category": "meta",
+      "tags": ["audit", "drift", "skills"]
+    }
+  ]
+}

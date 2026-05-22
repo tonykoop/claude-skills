@@ -1,0 +1,25 @@
+{
+  "$schema": "https://claude.com/schemas/plugin.json",
+  "name": "heifer-zephyr-maker",
+  "version": "1.0.0",
+  "description": "Heifer Zephyr maker portfolio — instrument design, fabrication, acoustic physics, jigs/fixtures, sheet metal, laser art, wildlife habitat, reverse engineering, and sheet music. Anchor skills behind Tony Koop's public maker brand.",
+  "author": {
+    "name": "Tony Koop",
+    "email": "tonykoop@gmail.com",
+    "url": "https://github.com/tonykoop"
+  },
+  "homepage": "https://github.com/tonykoop/claude-skills",
+  "repository": "https://github.com/tonykoop/claude-skills",
+  "license": "MIT",
+  "keywords": [
+    "instrument-design",
+    "maker",
+    "cnc",
+    "laser",
+    "acoustic",
+    "fabrication",
+    "habitat",
+    "heifer-zephyr"
+  ],
+  "skills": ["skills"]
+}
