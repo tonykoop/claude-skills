@@ -1,0 +1,12 @@
+# Copy this file into a repo as `.citations.yaml`, then edit.
+# Keys must exist in references/registry.yaml. The `why` is YOUR sentence
+# stating how this source informed THIS instrument — it is required, and a
+# citation with a blank or generic `why` will fail the check.
+
+instrument: <Human Readable Name>      # e.g. Transverse Flute
+repo: <repo-folder-name>               # e.g. transverse-flute
+cites:
+  - key: <registry-key>                # e.g. demakein
+    why: <one specific sentence>        # how this source shaped this build
+  - key: <registry-key>
+    why: <one specific sentence>

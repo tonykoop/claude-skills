@@ -1,0 +1,3039 @@
+{
+  "version": 1,
+  "entries": [
+    {
+      "key": "demakein",
+      "title": "Demakein",
+      "url": "https://github.com/pfh/demakein",
+      "bucket": "1-Designing",
+      "section": "1",
+      "section_title": "Wind instrument acoustic solvers",
+      "tags": [
+        "solver",
+        "library"
+      ],
+      "priority": "high",
+      "license": "GPL",
+      "description": "Python solver for woodwinds; outputs STL or two-sided CNC milling pattern with peg alignment",
+      "instruments": []
+    },
+    {
+      "key": "openwind",
+      "title": "openwind",
+      "url": "https://openwind.inria.fr/",
+      "bucket": "1-Designing",
+      "section": "1",
+      "section_title": "Wind instrument acoustic solvers",
+      "tags": [
+        "solver",
+        "library"
+      ],
+      "priority": "high",
+      "license": "",
+      "description": "INRIA Bordeaux wind-instrument acoustics library; Demakein's successor; zip has paper-reproduction scripts",
+      "instruments": []
+    },
+    {
+      "key": "chalumier",
+      "title": "chalumier",
+      "url": "https://github.com/MarkChuCarroll/chalumier",
+      "bucket": "1-Designing",
+      "section": "1",
+      "section_title": "Wind instrument acoustic solvers",
+      "tags": [
+        "solver"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Kotlin port of Demakein",
+      "instruments": []
+    },
+    {
+      "key": "ness-brass-instruments",
+      "title": "NESS Brass Instruments",
+      "url": "http://www.ness.music.ed.ac.uk/archives/systems/brass-instruments-2",
+      "bucket": "1-Designing",
+      "section": "1",
+      "section_title": "Wind instrument acoustic solvers",
+      "tags": [
+        "solver"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Edinburgh boundary-layer-aware brass synthesis; can simulate hypothetical geometries",
+      "instruments": []
+    },
+    {
+      "key": "csound-reed-opcode",
+      "title": "Csound reed opcode",
+      "url": "https://github.com/csound/csound",
+      "bucket": "1-Designing",
+      "section": "1",
+      "section_title": "Wind instrument acoustic solvers",
+      "tags": [
+        "library"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Physical time-domain model of closed-open tube resonators for reeds",
+      "instruments": []
+    },
+    {
+      "key": "flutopedia-naflutomat",
+      "title": "Flutopedia + NAFlutomat",
+      "url": "https://www.flutopedia.com/naflutomat.htm",
+      "bucket": "1-Designing",
+      "section": "2",
+      "section_title": "Flute & whistle parametric calculators",
+      "tags": [
+        "calculator",
+        "community"
+      ],
+      "priority": "high",
+      "license": "",
+      "description": "Clint Goss's NAF encyclopedia + parametric NAF calculator",
+      "instruments": []
+    },
+    {
+      "key": "flutomat-ng",
+      "title": "Flutomat NG",
+      "url": "https://github.com/unityrobot/Flutomat",
+      "bucket": "1-Designing",
+      "section": "2",
+      "section_title": "Flute & whistle parametric calculators",
+      "tags": [
+        "calculator"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Modern HTML5 rewrite of Pete Kosel's Flutomat using Benade acoustic model",
+      "instruments": []
+    },
+    {
+      "key": "tin-whistle-calculator",
+      "title": "Tin Whistle Calculator (TWJCalc)",
+      "url": "https://sourceforge.net/projects/twjcalc/",
+      "bucket": "1-Designing",
+      "section": "2",
+      "section_title": "Flute & whistle parametric calculators",
+      "tags": [
+        "calculator"
+      ],
+      "priority": "normal",
+      "license": "GPL",
+      "description": "Supports TWCalc + Flutomat algorithms, multiple temperaments, thumb-hole",
+      "instruments": []
+    },
+    {
+      "key": "bracker-whistle-calculator",
+      "title": "Bracker Whistle Calculator",
+      "url": "https://music.bracker.uk/Music/Whistle-Calculator.html",
+      "bucket": "1-Designing",
+      "section": "2",
+      "section_title": "Flute & whistle parametric calculators",
+      "tags": [
+        "calculator"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "UK-hosted Flutomat-derivative with extra graphical output",
+      "instruments": []
+    },
+    {
+      "key": "freefem",
+      "title": "FreeFEM",
+      "url": "https://freefem.org/",
+      "bucket": "1-Designing",
+      "section": "3",
+      "section_title": "String-instrument design + FEM",
+      "tags": [
+        "FEM",
+        "library"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Open-source PDE solver; used in violin top-plate FEM papers",
+      "instruments": []
+    },
+    {
+      "key": "fenics",
+      "title": "FEniCS",
+      "url": "https://fenicsproject.org/",
+      "bucket": "1-Designing",
+      "section": "3",
+      "section_title": "String-instrument design + FEM",
+      "tags": [
+        "FEM",
+        "library"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Python-friendly PDE solver competitor to FreeFEM",
+      "instruments": []
+    },
+    {
+      "key": "rodrigocfd-string",
+      "title": "rodrigocfd/string-tension-calc",
+      "url": "https://github.com/rodrigocfd/string-tension-calc",
+      "bucket": "1-Designing",
+      "section": "3",
+      "section_title": "String-instrument design + FEM",
+      "tags": [
+        "calculator"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Guitar/bass string tension calculator with graphical plotting and fanned-fret support",
+      "instruments": []
+    },
+    {
+      "key": "modular-fiddle",
+      "title": "Modular Fiddle",
+      "url": "https://openfabpdx.com/modular-fiddle/",
+      "bucket": "1-Designing",
+      "section": "3",
+      "section_title": "String-instrument design + FEM",
+      "tags": [
+        "CAD",
+        "hardware"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "3D-printed violin with hot-swappable body parts for experimental lutherie",
+      "instruments": []
+    },
+    {
+      "key": "hovalin",
+      "title": "Hovalin",
+      "url": "https://hovalabs.com/hovalin/",
+      "bucket": "1-Designing",
+      "section": "3",
+      "section_title": "String-instrument design + FEM",
+      "tags": [
+        "CAD"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "3D-printed violin with editable Fusion 360 .f3d parametric files",
+      "instruments": []
+    },
+    {
+      "key": "nature-data",
+      "title": "Nature: Data-driven violin making",
+      "url": "https://www.nature.com/articles/s41598-021-88931-z",
+      "bucket": "1-Designing",
+      "section": "3",
+      "section_title": "String-instrument design + FEM",
+      "tags": [
+        "FEM"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Nature paper using ML to predict violin top-plate modal frequencies from geometry",
+      "instruments": []
+    },
+    {
+      "key": "lee-hite-s",
+      "title": "Lee Hite's Tubular Bell Chime Compendium",
+      "url": "https://leehite.org/Chimes.htm",
+      "bucket": "1-Designing",
+      "section": "4",
+      "section_title": "Percussion idiophones and bells",
+      "tags": [
+        "calculator",
+        "community"
+      ],
+      "priority": "high",
+      "license": "",
+      "description": "Canonical tubular chime/wind chime design resource with PDF handbook",
+      "instruments": []
+    },
+    {
+      "key": "snyder-family-wind",
+      "title": "Snyder Family Wind Chimes Calculator",
+      "url": "https://www.snyderfamily.com/chimecalcs/",
+      "bucket": "1-Designing",
+      "section": "4",
+      "section_title": "Percussion idiophones and bells",
+      "tags": [
+        "calculator"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Tube-length calculator",
+      "instruments": []
+    },
+    {
+      "key": "numerical-simulations-xylophone",
+      "title": "Numerical Simulations for a Xylophone",
+      "url": "https://kthompson.gitlab.io/assets/xylo.html",
+      "bucket": "1-Designing",
+      "section": "4",
+      "section_title": "Percussion idiophones and bells",
+      "tags": [
+        "library"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Student writeup of xylophone bar modal physics",
+      "instruments": []
+    },
+    {
+      "key": "euphonics",
+      "title": "Euphonics \u2013 Marimbas and xylophones",
+      "url": "https://euphonics.org/3-3-marimbas-and-xylophones/",
+      "bucket": "1-Designing",
+      "section": "4",
+      "section_title": "Percussion idiophones and bells",
+      "tags": [
+        "community"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Jim Woodhouse free online textbook chapter",
+      "instruments": []
+    },
+    {
+      "key": "bart-hopkin",
+      "title": "Bart Hopkin \u2013 Altering tubular chimes",
+      "url": "https://barthopkin.com/tubular-chimes-altered/",
+      "bucket": "1-Designing",
+      "section": "4",
+      "section_title": "Percussion idiophones and bells",
+      "tags": [
+        "community"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Experimental-instrument-builder's chime articles",
+      "instruments": []
+    },
+    {
+      "key": "helmholtz-resonator-calculator",
+      "title": "Helmholtz Resonator Calculator (TU Berlin)",
+      "url": "https://python-and-akustik-2025-helmholtz-47f389.gitlab-pages.tu-berlin.de/calculation.html",
+      "bucket": "1-Designing",
+      "section": "4",
+      "section_title": "Percussion idiophones and bells",
+      "tags": [
+        "library"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Full Python simulation of Helmholtz resonators; cylinder and cuboid geometries",
+      "instruments": []
+    },
+    {
+      "key": "open-woodwind-project",
+      "title": "Open Woodwind Project",
+      "url": "https://github.com/jeffmhopkins/Open-Woodwind-Project",
+      "bucket": "1-Designing",
+      "section": "5",
+      "section_title": "Parametric 3D-print / open hardware",
+      "tags": [
+        "hardware"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Open-source MIDI woodwind controller with Teensy + capacitive sensing",
+      "instruments": []
+    },
+    {
+      "key": "music-makers-robotic",
+      "title": "Music Makers Robotic Recorder",
+      "url": "https://github.com/The-Music-Makers/music_makers",
+      "bucket": "1-Designing",
+      "section": "5",
+      "section_title": "Parametric 3D-print / open hardware",
+      "tags": [
+        "hardware"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Robot that plays a recorder; open hardware",
+      "instruments": []
+    },
+    {
+      "key": "open",
+      "title": "Open-source Hybrid Piano",
+      "url": "https://hackaday.io/project/194217-open-source-hybrid-piano",
+      "bucket": "1-Designing",
+      "section": "5",
+      "section_title": "Parametric 3D-print / open hardware",
+      "tags": [
+        "hardware"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Acoustic-piano-action + MIDI digital hybrid",
+      "instruments": []
+    },
+    {
+      "key": "openpipes-diy-pipe",
+      "title": "OpenPipes DIY pipe organ",
+      "url": "https://makezine.com/article/craft/music/openpipes-revolutionizes-the-diy-pipe-organs/",
+      "bucket": "1-Designing",
+      "section": "5",
+      "section_title": "Parametric 3D-print / open hardware",
+      "tags": [
+        "hardware"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Open DIY pipe organ system",
+      "instruments": []
+    },
+    {
+      "key": "romansax-flute-remixes",
+      "title": "Romansax flute remixes",
+      "url": "https://makerworld.com/en/models/1230415-folk-flutes-by-pfh-original-and-remixed",
+      "bucket": "1-Designing",
+      "section": "5",
+      "section_title": "Parametric 3D-print / open hardware",
+      "tags": [
+        "CAD"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Community remixes of Demakein flute designs tuned for PLA printing",
+      "instruments": []
+    },
+    {
+      "key": "mutable-instruments-pichenettes",
+      "title": "Mutable Instruments / pichenettes/eurorack",
+      "url": "https://github.com/pichenettes/eurorack",
+      "bucket": "1-Designing",
+      "section": "6",
+      "section_title": "Open-source synth and Eurorack",
+      "tags": [
+        "hardware"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "\u00c9milie Gillet's full Mutable Instruments catalog open-sourced (Plaits, Rings, Clouds...)",
+      "instruments": []
+    },
+    {
+      "key": "newdigate-eurorack",
+      "title": "newdigate/eurorack-awesome",
+      "url": "https://github.com/newdigate/eurorack-awesome",
+      "bucket": "1-Designing",
+      "section": "6",
+      "section_title": "Open-source synth and Eurorack",
+      "tags": [
+        "community"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Curated Eurorack list",
+      "instruments": []
+    },
+    {
+      "key": "freemodular-org",
+      "title": "freemodular.org",
+      "url": "https://freemodular.org/",
+      "bucket": "1-Designing",
+      "section": "6",
+      "section_title": "Open-source synth and Eurorack",
+      "tags": [
+        "hardware"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "DIY synth module collection",
+      "instruments": []
+    },
+    {
+      "key": "quinnfreedman-modular",
+      "title": "QuinnFreedman/modular",
+      "url": "https://github.com/QuinnFreedman/modular",
+      "bucket": "1-Designing",
+      "section": "6",
+      "section_title": "Open-source synth and Eurorack",
+      "tags": [
+        "hardware"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "DIY synth module designs",
+      "instruments": []
+    },
+    {
+      "key": "erica-synths-diy",
+      "title": "Erica Synths DIY",
+      "url": "https://github.com/erica-synths/diy-eurorack",
+      "bucket": "1-Designing",
+      "section": "6",
+      "section_title": "Open-source synth and Eurorack",
+      "tags": [
+        "hardware"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Erica's legacy DIY kits open-sourced",
+      "instruments": []
+    },
+    {
+      "key": "stk",
+      "title": "STK (Synthesis ToolKit)",
+      "url": "https://ccrma.stanford.edu/software/stk/",
+      "bucket": "1-Designing",
+      "section": "7",
+      "section_title": "Physical-modeling synthesis libraries",
+      "tags": [
+        "library"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Stanford CCRMA C++ physical-modeling and modal-synthesis library",
+      "instruments": []
+    },
+    {
+      "key": "faust",
+      "title": "Faust",
+      "url": "https://faust.grame.fr/",
+      "bucket": "1-Designing",
+      "section": "7",
+      "section_title": "Physical-modeling synthesis libraries",
+      "tags": [
+        "library"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Audio DSP language compiling to C++/JS/VST",
+      "instruments": []
+    },
+    {
+      "key": "csound",
+      "title": "Csound",
+      "url": "https://csound.com/",
+      "bucket": "1-Designing",
+      "section": "7",
+      "section_title": "Physical-modeling synthesis libraries",
+      "tags": [
+        "library"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Synthesis language with physical models and FluidSynth/Faust integration",
+      "instruments": []
+    },
+    {
+      "key": "fluidsynth",
+      "title": "FluidSynth",
+      "url": "https://github.com/FluidSynth/fluidsynth",
+      "bucket": "1-Designing",
+      "section": "7",
+      "section_title": "Physical-modeling synthesis libraries",
+      "tags": [
+        "library"
+      ],
+      "priority": "normal",
+      "license": "LGPL",
+      "description": "Real-time SoundFont 2 synthesizer",
+      "instruments": []
+    },
+    {
+      "key": "openpiano",
+      "title": "OpenPiano",
+      "url": "https://github.com/michele-perrone/OpenPiano",
+      "bucket": "1-Designing",
+      "section": "7",
+      "section_title": "Physical-modeling synthesis libraries",
+      "tags": [
+        "library"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Real-time physical-modeling piano + JUCE plugin",
+      "instruments": []
+    },
+    {
+      "key": "nitnelav-awesome",
+      "title": "Nitnelav/awesome-acoustic",
+      "url": "https://github.com/Nitnelav/awesome-acoustic",
+      "bucket": "1-Designing",
+      "section": "8",
+      "section_title": "Awesome lists and aggregators",
+      "tags": [
+        "community"
+      ],
+      "priority": "high",
+      "license": "",
+      "description": "Curated list of open-source acoustic projects; Tony's first stop",
+      "instruments": []
+    },
+    {
+      "key": "webprofusion-openaudio",
+      "title": "webprofusion/OpenAudio",
+      "url": "https://github.com/webprofusion/OpenAudio",
+      "bucket": "1-Designing",
+      "section": "8",
+      "section_title": "Awesome lists and aggregators",
+      "tags": [
+        "community"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "List of open-source audio projects",
+      "instruments": []
+    },
+    {
+      "key": "synth-diy-wiki",
+      "title": "Synth DIY Wiki",
+      "url": "https://sdiy.info/wiki/Open_source_music_hardware_projects",
+      "bucket": "1-Designing",
+      "section": "8",
+      "section_title": "Awesome lists and aggregators",
+      "tags": [
+        "community"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "DIY-friendly hardware synths",
+      "instruments": []
+    },
+    {
+      "key": "thingiverse",
+      "title": "Thingiverse",
+      "url": "https://www.thingiverse.com/",
+      "bucket": "1-Designing",
+      "section": "8",
+      "section_title": "Awesome lists and aggregators",
+      "tags": [
+        "community"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Search printable instrument designs",
+      "instruments": []
+    },
+    {
+      "key": "makerworld",
+      "title": "MakerWorld",
+      "url": "https://makerworld.com/",
+      "bucket": "1-Designing",
+      "section": "8",
+      "section_title": "Awesome lists and aggregators",
+      "tags": [
+        "community"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Bambu Lab's printable model hub",
+      "instruments": []
+    },
+    {
+      "key": "chiff-fipple",
+      "title": "Chiff & Fipple",
+      "url": "https://forums.chiffandfipple.com/",
+      "bucket": "1-Designing",
+      "section": "9",
+      "section_title": "Communities and forums",
+      "tags": [
+        "community"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Canonical whistle / Irish flute / NAF forum",
+      "instruments": []
+    },
+    {
+      "key": "bart-hopkin-s",
+      "title": "Bart Hopkin's site",
+      "url": "https://barthopkin.com/",
+      "bucket": "1-Designing",
+      "section": "9",
+      "section_title": "Communities and forums",
+      "tags": [
+        "community"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Experimental-instrument-builder reference and EMI magazine archive",
+      "instruments": []
+    },
+    {
+      "key": "mechanical-music-digest",
+      "title": "Mechanical Music Digest",
+      "url": "https://www.mmdigest.com/",
+      "bucket": "1-Designing",
+      "section": "9",
+      "section_title": "Communities and forums",
+      "tags": [
+        "community"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Historical mechanical instruments with deep tech articles",
+      "instruments": []
+    },
+    {
+      "key": "freecad",
+      "title": "FreeCAD",
+      "url": "https://www.freecad.org/",
+      "bucket": "2-Making",
+      "section": "11",
+      "section_title": "Open-source parametric CAD",
+      "tags": [
+        "CAD"
+      ],
+      "priority": "high",
+      "license": "LGPL",
+      "description": "Open-source SolidWorks analog with parametric history; includes CAM via Path Workbench",
+      "instruments": []
+    },
+    {
+      "key": "openscad",
+      "title": "OpenSCAD",
+      "url": "https://openscad.org/",
+      "bucket": "2-Making",
+      "section": "11",
+      "section_title": "Open-source parametric CAD",
+      "tags": [
+        "CAD"
+      ],
+      "priority": "high",
+      "license": "GPL",
+      "description": "Code-as-CAD; spiritual sibling of Tony's Master_Inputs approach",
+      "instruments": []
+    },
+    {
+      "key": "solvespace",
+      "title": "Solvespace",
+      "url": "https://solvespace.com/index.pl",
+      "bucket": "2-Making",
+      "section": "11",
+      "section_title": "Open-source parametric CAD",
+      "tags": [
+        "CAD"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Lightweight constraint-based parametric CAD",
+      "instruments": []
+    },
+    {
+      "key": "brl",
+      "title": "BRL-CAD",
+      "url": "https://brlcad.org/",
+      "bucket": "2-Making",
+      "section": "11",
+      "section_title": "Open-source parametric CAD",
+      "tags": [
+        "CAD"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Heavy-duty CSG modeller from US Army Ballistic Research Lab",
+      "instruments": []
+    },
+    {
+      "key": "librecad",
+      "title": "LibreCAD",
+      "url": "https://librecad.org/",
+      "bucket": "2-Making",
+      "section": "11",
+      "section_title": "Open-source parametric CAD",
+      "tags": [
+        "CAD"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "2D drafting (DWG/DXF) AutoCAD-style editor",
+      "instruments": []
+    },
+    {
+      "key": "dune3d",
+      "title": "Dune3D",
+      "url": "https://dune3d.org/",
+      "bucket": "2-Making",
+      "section": "11",
+      "section_title": "Open-source parametric CAD",
+      "tags": [
+        "CAD"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Newer (2024) parametric CAD targeting OnShape-style workflow",
+      "instruments": []
+    },
+    {
+      "key": "freecad-path-workbench",
+      "title": "FreeCAD Path Workbench",
+      "url": "https://wiki.freecad.org/Path_Workbench",
+      "bucket": "2-Making",
+      "section": "12",
+      "section_title": "Open-source CAM (G-code generation)",
+      "tags": [
+        "CAM"
+      ],
+      "priority": "high",
+      "license": "",
+      "description": "Generates toolpaths inside FreeCAD with multiple post-processors",
+      "instruments": []
+    },
+    {
+      "key": "kiri-moto",
+      "title": "Kiri:Moto",
+      "url": "https://grid.space/kiri/",
+      "bucket": "2-Making",
+      "section": "12",
+      "section_title": "Open-source CAM (G-code generation)",
+      "tags": [
+        "CAM"
+      ],
+      "priority": "high",
+      "license": "",
+      "description": "Browser-based CAM handling CNC/laser/3D-print toolpaths",
+      "instruments": []
+    },
+    {
+      "key": "pycam",
+      "title": "PyCAM",
+      "url": "https://pycam.github.io/",
+      "bucket": "2-Making",
+      "section": "12",
+      "section_title": "Open-source CAM (G-code generation)",
+      "tags": [
+        "CAM"
+      ],
+      "priority": "normal",
+      "license": "GPL v3",
+      "description": "Python toolpath generator for 3-axis machining; outputs LinuxCNC/GRBL G-code",
+      "instruments": []
+    },
+    {
+      "key": "camotics",
+      "title": "CAMotics",
+      "url": "https://camotics.org/",
+      "bucket": "2-Making",
+      "section": "12",
+      "section_title": "Open-source CAM (G-code generation)",
+      "tags": [
+        "CAM",
+        "library"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "G-code simulator for sanity-checking V-Carve output",
+      "instruments": []
+    },
+    {
+      "key": "openbuilds-cam",
+      "title": "OpenBuilds CAM",
+      "url": "https://software.openbuilds.com/",
+      "bucket": "2-Making",
+      "section": "12",
+      "section_title": "Open-source CAM (G-code generation)",
+      "tags": [
+        "CAM"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Browser-based 2D/2.5D CAM emitting G-code from SVG/DXF",
+      "instruments": []
+    },
+    {
+      "key": "jscut",
+      "title": "jscut",
+      "url": "http://jscut.org/",
+      "bucket": "2-Making",
+      "section": "12",
+      "section_title": "Open-source CAM (G-code generation)",
+      "tags": [
+        "CAM"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Minimal browser-based SVG to G-code converter",
+      "instruments": []
+    },
+    {
+      "key": "blender-cam",
+      "title": "Blender CAM",
+      "url": "https://blendercam.com/",
+      "bucket": "2-Making",
+      "section": "12",
+      "section_title": "Open-source CAM (G-code generation)",
+      "tags": [
+        "CAM"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Blender addon for CAM; useful for 3D-relief inlay work",
+      "instruments": []
+    },
+    {
+      "key": "grbl",
+      "title": "GRBL",
+      "url": "https://github.com/grbl/grbl",
+      "bucket": "2-Making",
+      "section": "13",
+      "section_title": "CNC controllers and G-code senders",
+      "tags": [
+        "hardware",
+        "library"
+      ],
+      "priority": "high",
+      "license": "",
+      "description": "De facto open-source CNC firmware for hobby routers",
+      "instruments": []
+    },
+    {
+      "key": "fluidnc",
+      "title": "FluidNC",
+      "url": "https://github.com/bdring/FluidNC",
+      "bucket": "2-Making",
+      "section": "13",
+      "section_title": "CNC controllers and G-code senders",
+      "tags": [
+        "hardware",
+        "library"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "GRBL's ESP32-based modern successor with Wi-Fi web UI",
+      "instruments": []
+    },
+    {
+      "key": "linuxcnc",
+      "title": "LinuxCNC",
+      "url": "http://linuxcnc.org/",
+      "bucket": "2-Making",
+      "section": "13",
+      "section_title": "CNC controllers and G-code senders",
+      "tags": [
+        "hardware",
+        "library"
+      ],
+      "priority": "high",
+      "license": "",
+      "description": "Serious open-source machine controller for industrial-grade setups",
+      "instruments": []
+    },
+    {
+      "key": "universal-gcode-sender",
+      "title": "Universal Gcode Sender (UGS)",
+      "url": "https://winder.github.io/ugs_website/",
+      "bucket": "2-Making",
+      "section": "13",
+      "section_title": "CNC controllers and G-code senders",
+      "tags": [
+        "hardware"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Cross-platform GRBL G-code sender",
+      "instruments": []
+    },
+    {
+      "key": "bcnc",
+      "title": "bCNC",
+      "url": "https://github.com/vlachoudis/bCNC",
+      "bucket": "2-Making",
+      "section": "13",
+      "section_title": "CNC controllers and G-code senders",
+      "tags": [
+        "hardware"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Power-user GRBL sender with auto-leveling for PCB precision",
+      "instruments": []
+    },
+    {
+      "key": "openbuilds-control",
+      "title": "OpenBuilds CONTROL",
+      "url": "https://software.openbuilds.com/",
+      "bucket": "2-Making",
+      "section": "13",
+      "section_title": "CNC controllers and G-code senders",
+      "tags": [
+        "hardware"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Beginner-friendly G-code sender",
+      "instruments": []
+    },
+    {
+      "key": "lasergrbl",
+      "title": "LaserGRBL",
+      "url": "https://lasergrbl.com/",
+      "bucket": "2-Making",
+      "section": "14",
+      "section_title": "Laser cutter / engraver software",
+      "tags": [
+        "hardware"
+      ],
+      "priority": "high",
+      "license": "GPL",
+      "description": "Most-recommended free GRBL laser controller for diode lasers",
+      "instruments": []
+    },
+    {
+      "key": "laserweb-4",
+      "title": "LaserWeb 4",
+      "url": "https://laserweb.yurl.ch/",
+      "bucket": "2-Making",
+      "section": "14",
+      "section_title": "Laser cutter / engraver software",
+      "tags": [
+        "hardware"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Browser-based laser controller for GRBL/Smoothie/TinyG",
+      "instruments": []
+    },
+    {
+      "key": "rayforge",
+      "title": "Rayforge",
+      "url": "https://rayforge.org/",
+      "bucket": "2-Making",
+      "section": "14",
+      "section_title": "Laser cutter / engraver software",
+      "tags": [
+        "hardware"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Newer (2024) open-source LightBurn alternative with clean UI",
+      "instruments": []
+    },
+    {
+      "key": "meerk40t",
+      "title": "MeerK40t",
+      "url": "https://github.com/meerk40t/meerk40t",
+      "bucket": "2-Making",
+      "section": "14",
+      "section_title": "Laser cutter / engraver software",
+      "tags": [
+        "hardware"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Open-source controller for K40-class laser cutters",
+      "instruments": []
+    },
+    {
+      "key": "inkscape-laser-plugin",
+      "title": "Inkscape Laser Plugin",
+      "url": "https://github.com/jbinkscape/laserplugin",
+      "bucket": "2-Making",
+      "section": "14",
+      "section_title": "Laser cutter / engraver software",
+      "tags": [
+        "CAD"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Inkscape extension that emits G-code for laser cutting",
+      "instruments": []
+    },
+    {
+      "key": "orcaslicer",
+      "title": "OrcaSlicer",
+      "url": "https://github.com/SoftFever/OrcaSlicer",
+      "bucket": "2-Making",
+      "section": "15",
+      "section_title": "3D printing slicers",
+      "tags": [
+        "hardware",
+        "library"
+      ],
+      "priority": "high",
+      "license": "",
+      "description": "Power-user slicer; Bambu Studio fork with auto-calibration",
+      "instruments": []
+    },
+    {
+      "key": "prusaslicer",
+      "title": "PrusaSlicer",
+      "url": "https://www.prusa3d.com/page/prusaslicer_424/",
+      "bucket": "2-Making",
+      "section": "15",
+      "section_title": "3D printing slicers",
+      "tags": [
+        "hardware",
+        "library"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Stable mature slicer in the Slic3r lineage",
+      "instruments": []
+    },
+    {
+      "key": "cura",
+      "title": "Cura",
+      "url": "https://ultimaker.com/software/ultimaker-cura/",
+      "bucket": "2-Making",
+      "section": "15",
+      "section_title": "3D printing slicers",
+      "tags": [
+        "hardware",
+        "library"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Widest printer-profile support; slower than competitors",
+      "instruments": []
+    },
+    {
+      "key": "superslicer",
+      "title": "SuperSlicer",
+      "url": "https://github.com/supermerill/SuperSlicer",
+      "bucket": "2-Making",
+      "section": "15",
+      "section_title": "3D printing slicers",
+      "tags": [
+        "hardware"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "PrusaSlicer fork tuned for Klipper-based machines",
+      "instruments": []
+    },
+    {
+      "key": "inkscape",
+      "title": "Inkscape",
+      "url": "https://inkscape.org/",
+      "bucket": "2-Making",
+      "section": "16",
+      "section_title": "Vector / SVG / DXF preparation",
+      "tags": [
+        "CAD"
+      ],
+      "priority": "high",
+      "license": "",
+      "description": "Canonical open-source vector editor; Gcodetools extension emits G-code",
+      "instruments": []
+    },
+    {
+      "key": "visicut",
+      "title": "VisiCut",
+      "url": "https://visicut.org/",
+      "bucket": "2-Making",
+      "section": "16",
+      "section_title": "Vector / SVG / DXF preparation",
+      "tags": [
+        "CAM"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Inkscape to laser dispatcher with per-color cutting params",
+      "instruments": []
+    },
+    {
+      "key": "audacity",
+      "title": "Audacity",
+      "url": "https://www.audacityteam.org/",
+      "bucket": "2-Making",
+      "section": "17",
+      "section_title": "Acoustic measurement tools",
+      "tags": [
+        "library"
+      ],
+      "priority": "high",
+      "license": "",
+      "description": "Free audio editor with Plot Spectrum FFT for cents accuracy",
+      "instruments": []
+    },
+    {
+      "key": "sonic-visualiser",
+      "title": "Sonic Visualiser",
+      "url": "https://www.sonicvisualiser.org/",
+      "bucket": "2-Making",
+      "section": "17",
+      "section_title": "Acoustic measurement tools",
+      "tags": [
+        "library"
+      ],
+      "priority": "high",
+      "license": "",
+      "description": "Deep audio analysis with VAMP plugins for pitch tracking and harmonic detection",
+      "instruments": []
+    },
+    {
+      "key": "rew",
+      "title": "REW (Room EQ Wizard)",
+      "url": "https://www.roomeqwizard.com/",
+      "bucket": "2-Making",
+      "section": "17",
+      "section_title": "Acoustic measurement tools",
+      "tags": [
+        "library"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Sweep-based frequency response and modal decay analysis; pairs with UMIK-1",
+      "instruments": []
+    },
+    {
+      "key": "praat",
+      "title": "Praat",
+      "url": "https://www.fon.hum.uva.nl/praat/",
+      "bucket": "2-Making",
+      "section": "17",
+      "section_title": "Acoustic measurement tools",
+      "tags": [
+        "library"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Speech-phonetics tool with excellent pitch-tracking for sustained tones",
+      "instruments": []
+    },
+    {
+      "key": "uniontown-drum-stave",
+      "title": "Uniontown Drum Stave Calculator",
+      "url": "https://uniontownlabs.org/tools/stave/",
+      "bucket": "2-Making",
+      "section": "18",
+      "section_title": "Woodworking calculators and shop math",
+      "tags": [
+        "calculator"
+      ],
+      "priority": "high",
+      "license": "",
+      "description": "Free open-source forkable stave-construction calculator",
+      "instruments": []
+    },
+    {
+      "key": "blocklayer-segmented-turning",
+      "title": "Blocklayer Segmented Turning",
+      "url": "https://www.blocklayer.com/woodturning-segmentseng",
+      "bucket": "2-Making",
+      "section": "18",
+      "section_title": "Woodworking calculators and shop math",
+      "tags": [
+        "calculator"
+      ],
+      "priority": "high",
+      "license": "",
+      "description": "Segmented stock sizes for woodturning with printable templates",
+      "instruments": []
+    },
+    {
+      "key": "segmented-turning-project",
+      "title": "Segmented Turning Project Planner",
+      "url": "https://www.segmentedturning.com/",
+      "bucket": "2-Making",
+      "section": "18",
+      "section_title": "Woodworking calculators and shop math",
+      "tags": [
+        "calculator"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Multi-ring segmented project designer",
+      "instruments": []
+    },
+    {
+      "key": "omni-bowl-segment",
+      "title": "Omni Bowl Segment Calculator",
+      "url": "https://www.omnicalculator.com/construction/bowl-segment",
+      "bucket": "2-Making",
+      "section": "18",
+      "section_title": "Woodworking calculators and shop math",
+      "tags": [
+        "calculator"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Quick single-ring segmented stack calculator",
+      "instruments": []
+    },
+    {
+      "key": "cut-list-optimizer",
+      "title": "Cut List Optimizer (Salt n' Fork)",
+      "url": "https://cutlist.saltnfork.com/",
+      "bucket": "2-Making",
+      "section": "18",
+      "section_title": "Woodworking calculators and shop math",
+      "tags": [
+        "calculator"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Free browser-only plywood/lumber cut layout with kerf awareness",
+      "instruments": []
+    },
+    {
+      "key": "shrinkulator",
+      "title": "The Shrinkulator",
+      "url": "https://woodbin.com/calcs/shrinkulator/",
+      "bucket": "2-Making",
+      "section": "18",
+      "section_title": "Woodworking calculators and shop math",
+      "tags": [
+        "calculator"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Wood shrinkage and expansion calculator",
+      "instruments": []
+    },
+    {
+      "key": "usda-wood-handbook",
+      "title": "USDA Wood Handbook",
+      "url": "https://www.fpl.fs.usda.gov/products/publications/several_pubs.php?grouping_id=100&header_id=p",
+      "bucket": "2-Making",
+      "section": "18",
+      "section_title": "Woodworking calculators and shop math",
+      "tags": [
+        "community"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Authoritative reference for wood-as-engineering-material properties",
+      "instruments": []
+    },
+    {
+      "key": "bart-hopkin-musical",
+      "title": "Bart Hopkin \u2014 Musical Instrument Design",
+      "url": "https://www.barthopkin.com/",
+      "bucket": "2-Making",
+      "section": "19",
+      "section_title": "Build technique references",
+      "tags": [
+        "community"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Canonical experimental-instrument-builder book and EMI magazine",
+      "instruments": []
+    },
+    {
+      "key": "euphonics-woodhouse",
+      "title": "Euphonics \u2014 Jim Woodhouse",
+      "url": "https://euphonics.org/",
+      "bucket": "2-Making",
+      "section": "19",
+      "section_title": "Build technique references",
+      "tags": [
+        "community"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Free online musical-acoustics textbook",
+      "instruments": []
+    },
+    {
+      "key": "nederveen",
+      "title": "Nederveen \u2014 Acoustical Aspects of Woodwind Instruments",
+      "url": "https://www.amazon.com/Acoustical-Aspects-Woodwind-Instruments-Cornelis/dp/0875805779",
+      "bucket": "2-Making",
+      "section": "19",
+      "section_title": "Build technique references",
+      "tags": [
+        "community"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Demakein's hole-correction physics source",
+      "instruments": []
+    },
+    {
+      "key": "benade",
+      "title": "Benade \u2014 Fundamentals of Musical Acoustics",
+      "url": "https://store.doverpublications.com/0486264844.html",
+      "bucket": "2-Making",
+      "section": "19",
+      "section_title": "Build technique references",
+      "tags": [
+        "community"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Cheap Dover paperback companion to Nederveen",
+      "instruments": []
+    },
+    {
+      "key": "maslow-cnc-community",
+      "title": "Maslow CNC community",
+      "url": "https://forums.maslowcnc.com/",
+      "bucket": "2-Making",
+      "section": "19",
+      "section_title": "Build technique references",
+      "tags": [
+        "community"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Open-hardware CNC forum with open-source instrument threads",
+      "instruments": []
+    },
+    {
+      "key": "chiff-fipple-whistle",
+      "title": "Chiff & Fipple Whistle Making",
+      "url": "https://forums.chiffandfipple.com/c/whistle-making",
+      "bucket": "2-Making",
+      "section": "19",
+      "section_title": "Build technique references",
+      "tags": [
+        "community"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Hole-sizing experiments and Flutomat tweaks; fipple wisdom database",
+      "instruments": []
+    },
+    {
+      "key": "lilypond",
+      "title": "LilyPond",
+      "url": "https://lilypond.org/",
+      "bucket": "3-Playing",
+      "section": "20",
+      "section_title": "Music notation engravers and editors",
+      "tags": [
+        "library",
+        "CAD"
+      ],
+      "priority": "high",
+      "license": "",
+      "description": "Text-based music engraver; best output quality",
+      "instruments": []
+    },
+    {
+      "key": "musescore",
+      "title": "MuseScore",
+      "url": "https://musescore.org/",
+      "bucket": "3-Playing",
+      "section": "20",
+      "section_title": "Music notation engravers and editors",
+      "tags": [
+        "library"
+      ],
+      "priority": "high",
+      "license": "",
+      "description": "WYSIWYG notation editor with plugin ecosystem",
+      "instruments": []
+    },
+    {
+      "key": "frescobaldi",
+      "title": "Frescobaldi",
+      "url": "https://www.frescobaldi.org/",
+      "bucket": "3-Playing",
+      "section": "20",
+      "section_title": "Music notation engravers and editors",
+      "tags": [
+        "library"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "LilyPond IDE with syntax highlighting and score wizards",
+      "instruments": []
+    },
+    {
+      "key": "denemo",
+      "title": "Denemo",
+      "url": "https://www.denemo.org/",
+      "bucket": "3-Playing",
+      "section": "20",
+      "section_title": "Music notation engravers and editors",
+      "tags": [
+        "library"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Note-entry editor that typesets via LilyPond; accepts MIDI input",
+      "instruments": []
+    },
+    {
+      "key": "michael-eskin-s",
+      "title": "Michael Eskin's ABC Transcription Tools",
+      "url": "https://michaeleskin.com/abctools/userguide.html",
+      "bucket": "3-Playing",
+      "section": "20a",
+      "section_title": "ABC notation",
+      "tags": [
+        "library",
+        "community"
+      ],
+      "priority": "high",
+      "license": "",
+      "description": "Browser-based trad-music swiss army knife; auto-generates fingering tablature",
+      "instruments": []
+    },
+    {
+      "key": "abcjs",
+      "title": "abcjs",
+      "url": "https://www.abcjs.net/",
+      "bucket": "3-Playing",
+      "section": "20a",
+      "section_title": "ABC notation",
+      "tags": [
+        "library"
+      ],
+      "priority": "high",
+      "license": "",
+      "description": "JS engine for rendering ABC in web pages with audio playback",
+      "instruments": []
+    },
+    {
+      "key": "easyabc",
+      "title": "EasyABC",
+      "url": "https://github.com/jwdj/EasyABC",
+      "bucket": "3-Playing",
+      "section": "20a",
+      "section_title": "ABC notation",
+      "tags": [
+        "library"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Desktop ABC editor and player",
+      "instruments": []
+    },
+    {
+      "key": "abcm2ps",
+      "title": "abcm2ps",
+      "url": "https://abcplus.sourceforge.net/",
+      "bucket": "3-Playing",
+      "section": "20a",
+      "section_title": "ABC notation",
+      "tags": [
+        "library"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Command-line ABC to PostScript/PDF/SVG compiler",
+      "instruments": []
+    },
+    {
+      "key": "abc-plus-book",
+      "title": "ABC Plus book (Gonzato)",
+      "url": "https://abcplus.sourceforge.net/",
+      "bucket": "3-Playing",
+      "section": "20a",
+      "section_title": "ABC notation",
+      "tags": [
+        "community"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Free PDF book on practical ABC notation",
+      "instruments": []
+    },
+    {
+      "key": "verovio",
+      "title": "Verovio",
+      "url": "https://www.verovio.org/",
+      "bucket": "3-Playing",
+      "section": "20b",
+      "section_title": "Web-native notation rendering",
+      "tags": [
+        "library"
+      ],
+      "priority": "high",
+      "license": "LGPL",
+      "description": "C++ engraving library for MEI; renders to interactive SVG",
+      "instruments": []
+    },
+    {
+      "key": "open-sheet-music",
+      "title": "Open Sheet Music Display (OSMD)",
+      "url": "https://opensheetmusicdisplay.org/",
+      "bucket": "3-Playing",
+      "section": "20b",
+      "section_title": "Web-native notation rendering",
+      "tags": [
+        "library"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "JS MusicXML renderer for browser embeds",
+      "instruments": []
+    },
+    {
+      "key": "music21",
+      "title": "music21",
+      "url": "http://web.mit.edu/music21/",
+      "bucket": "3-Playing",
+      "section": "20c",
+      "section_title": "Programmatic music and MusicXML",
+      "tags": [
+        "library"
+      ],
+      "priority": "high",
+      "license": "BSD",
+      "description": "MIT Python toolkit for computational musicology",
+      "instruments": []
+    },
+    {
+      "key": "abjad",
+      "title": "abjad",
+      "url": "https://abjad.github.io/",
+      "bucket": "3-Playing",
+      "section": "20c",
+      "section_title": "Programmatic music and MusicXML",
+      "tags": [
+        "library"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Python API for programmatically composing LilyPond scores",
+      "instruments": []
+    },
+    {
+      "key": "bret-pimentel-s",
+      "title": "Bret Pimentel's Fingering Diagram Builder",
+      "url": "https://fingering.bretpimentel.com/",
+      "bucket": "3-Playing",
+      "section": "20d",
+      "section_title": "Fingering chart generators",
+      "tags": [
+        "calculator"
+      ],
+      "priority": "high",
+      "license": "",
+      "description": "Web-based fingering chart generator for flute/oboe/clarinet/sax/recorder",
+      "instruments": []
+    },
+    {
+      "key": "musescore-fingering-diagram",
+      "title": "MuseScore Fingering Diagram plugin",
+      "url": "https://musescore.org/en/project/fingering-diagram",
+      "bucket": "3-Playing",
+      "section": "20d",
+      "section_title": "Fingering chart generators",
+      "tags": [
+        "library"
+      ],
+      "priority": "high",
+      "license": "",
+      "description": "Auto-embeds fingering diagrams into scores for many woodwinds",
+      "instruments": []
+    },
+    {
+      "key": "woodwind-fingering-guide",
+      "title": "Woodwind Fingering Guide",
+      "url": "https://www.wfg.woodwind.org/",
+      "bucket": "3-Playing",
+      "section": "20d",
+      "section_title": "Fingering chart generators",
+      "tags": [
+        "community"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Canonical reference site for woodwind fingerings across many instruments",
+      "instruments": []
+    },
+    {
+      "key": "kaydol-recordersheetmusichelper",
+      "title": "kaydol/RecorderSheetMusicHelper",
+      "url": "https://github.com/kaydol/RecorderSheetMusicHelper",
+      "bucket": "3-Playing",
+      "section": "20d",
+      "section_title": "Fingering chart generators",
+      "tags": [
+        "library"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Python script template for note-name to recorder fingering image",
+      "instruments": []
+    },
+    {
+      "key": "tuxguitar",
+      "title": "TuxGuitar",
+      "url": "https://tuxguitar.org/",
+      "bucket": "3-Playing",
+      "section": "20e",
+      "section_title": "Tablature",
+      "tags": [
+        "library"
+      ],
+      "priority": "normal",
+      "license": "LGPL",
+      "description": "Multitrack tablature editor supporting any fretted/string instrument",
+      "instruments": []
+    },
+    {
+      "key": "mutopia-project",
+      "title": "Mutopia Project",
+      "url": "https://www.mutopiaproject.org/",
+      "bucket": "3-Playing",
+      "section": "21",
+      "section_title": "Public-domain score libraries",
+      "tags": [
+        "community"
+      ],
+      "priority": "high",
+      "license": "",
+      "description": "~2,100 public-domain pieces with editable LilyPond source",
+      "instruments": []
+    },
+    {
+      "key": "imslp-petrucci-music",
+      "title": "IMSLP / Petrucci Music Library",
+      "url": "https://imslp.org/",
+      "bucket": "3-Playing",
+      "section": "21",
+      "section_title": "Public-domain score libraries",
+      "tags": [
+        "community"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Canonical scanned public-domain score archive",
+      "instruments": []
+    },
+    {
+      "key": "cpdl-choralwiki",
+      "title": "CPDL / ChoralWiki",
+      "url": "https://www.cpdl.org/",
+      "bucket": "3-Playing",
+      "section": "21",
+      "section_title": "Public-domain score libraries",
+      "tags": [
+        "community"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Choral-music-focused public-domain repository",
+      "instruments": []
+    },
+    {
+      "key": "polyphone",
+      "title": "Polyphone",
+      "url": "https://www.polyphone.io/",
+      "bucket": "3-Playing",
+      "section": "22",
+      "section_title": "SoundFonts and sample playback",
+      "tags": [
+        "library"
+      ],
+      "priority": "high",
+      "license": "",
+      "description": "Open-source SoundFont editor for sampling built instruments",
+      "instruments": []
+    },
+    {
+      "key": "generaluser-gs",
+      "title": "GeneralUser GS",
+      "url": "http://schristiancollins.com/generaluser.php",
+      "bucket": "3-Playing",
+      "section": "22",
+      "section_title": "SoundFonts and sample playback",
+      "tags": [
+        "community"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Most-recommended free general-MIDI SoundFont; ~30 MB",
+      "instruments": []
+    },
+    {
+      "key": "sonatina-symphonic-orchestra",
+      "title": "Sonatina Symphonic Orchestra",
+      "url": "https://sso.mattiaswestlund.net/",
+      "bucket": "3-Playing",
+      "section": "22",
+      "section_title": "SoundFonts and sample playback",
+      "tags": [
+        "community"
+      ],
+      "priority": "normal",
+      "license": "CC",
+      "description": "Free orchestral sample library ~500 MB",
+      "instruments": []
+    },
+    {
+      "key": "virtual-playing-orchestra",
+      "title": "Virtual Playing Orchestra",
+      "url": "https://virtualplaying.com/virtual-playing-orchestra/",
+      "bucket": "3-Playing",
+      "section": "22",
+      "section_title": "SoundFonts and sample playback",
+      "tags": [
+        "community"
+      ],
+      "priority": "normal",
+      "license": "CC0",
+      "description": "Full free orchestral sample library",
+      "instruments": []
+    },
+    {
+      "key": "chusocol",
+      "title": "chusocol",
+      "url": "https://github.com/pakitochus/chusocol",
+      "bucket": "3-Playing",
+      "section": "22",
+      "section_title": "SoundFonts and sample playback",
+      "tags": [
+        "community"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Curated SoundFont collection for live musicians",
+      "instruments": []
+    },
+    {
+      "key": "tru",
+      "title": "Tru-Oil (Birchwood Casey)",
+      "url": "https://www.birchwoodcasey.com/firearm-care/wood-stock-finishes/tru-oil-stock-finish",
+      "bucket": "4-Owning",
+      "section": "23",
+      "section_title": "Finishing and surface treatments",
+      "tags": [
+        "community"
+      ],
+      "priority": "high",
+      "license": "",
+      "description": "Tung-oil/varnish blend wipe-on finish; already in Tony's BOM",
+      "instruments": []
+    },
+    {
+      "key": "rubio-monocoat-oil",
+      "title": "Rubio Monocoat Oil Plus 2C",
+      "url": "https://www.rubiomonocoatusa.com/pages/food-contact-compliance",
+      "bucket": "4-Owning",
+      "section": "23",
+      "section_title": "Finishing and surface treatments",
+      "tags": [
+        "community"
+      ],
+      "priority": "high",
+      "license": "",
+      "description": "Single-coat food-contact-certified hard wax oil; VOC-free",
+      "instruments": []
+    },
+    {
+      "key": "howard-s-feed",
+      "title": "Howard's Feed-N-Wax",
+      "url": "https://www.howardproducts.com/products/feed-n-wax",
+      "bucket": "4-Owning",
+      "section": "23",
+      "section_title": "Finishing and surface treatments",
+      "tags": [
+        "community"
+      ],
+      "priority": "high",
+      "license": "",
+      "description": "Maintenance wax (carnauba + orange oil + beeswax); already in Tony's BOM",
+      "instruments": []
+    },
+    {
+      "key": "tried-true-original",
+      "title": "Tried & True Original",
+      "url": "https://www.triedandtruewoodfinish.com/",
+      "bucket": "4-Owning",
+      "section": "23",
+      "section_title": "Finishing and surface treatments",
+      "tags": [
+        "community"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Pure polymerized linseed + beeswax; food-safe even uncured",
+      "instruments": []
+    },
+    {
+      "key": "osmo-polyx",
+      "title": "Osmo Polyx-Oil",
+      "url": "https://www.osmona.com/",
+      "bucket": "4-Owning",
+      "section": "23",
+      "section_title": "Finishing and surface treatments",
+      "tags": [
+        "community"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Premium German hard-wax oil; European luthier favorite",
+      "instruments": []
+    },
+    {
+      "key": "bob-flexner",
+      "title": "Bob Flexner \u2014 Understanding Wood Finishing",
+      "url": "https://www.popularwoodworking.com/store/understanding-wood-finishing/",
+      "bucket": "4-Owning",
+      "section": "23",
+      "section_title": "Finishing and surface treatments",
+      "tags": [
+        "community"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Canonical finishing textbook explaining the chemistry",
+      "instruments": []
+    },
+    {
+      "key": "ardour",
+      "title": "Ardour",
+      "url": "https://ardour.org/",
+      "bucket": "4-Owning",
+      "section": "24",
+      "section_title": "Audio recording and production",
+      "tags": [
+        "library"
+      ],
+      "priority": "high",
+      "license": "GPL",
+      "description": "Open-source professional cross-platform DAW",
+      "instruments": []
+    },
+    {
+      "key": "lmms",
+      "title": "LMMS",
+      "url": "https://lmms.io/",
+      "bucket": "4-Owning",
+      "section": "24",
+      "section_title": "Audio recording and production",
+      "tags": [
+        "library"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "FL-Studio-style open-source DAW; MIDI-focused",
+      "instruments": []
+    },
+    {
+      "key": "waveform-free",
+      "title": "Waveform Free",
+      "url": "https://www.tracktion.com/products/waveform-free",
+      "bucket": "4-Owning",
+      "section": "24",
+      "section_title": "Audio recording and production",
+      "tags": [
+        "library"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Full-featured free DAW with cross-platform Linux support",
+      "instruments": []
+    },
+    {
+      "key": "calf-studio-gear",
+      "title": "Calf Studio Gear",
+      "url": "https://calf-studio-gear.org/",
+      "bucket": "4-Owning",
+      "section": "24",
+      "section_title": "Audio recording and production",
+      "tags": [
+        "library"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Open-source LV2 plugin suite (EQ/comp/reverb)",
+      "instruments": []
+    },
+    {
+      "key": "lsp",
+      "title": "LSP (Linux Studio Plugins)",
+      "url": "https://lsp-plug.in/",
+      "bucket": "4-Owning",
+      "section": "24",
+      "section_title": "Audio recording and production",
+      "tags": [
+        "library"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Large open-source LV2/VST plugin collection",
+      "instruments": []
+    },
+    {
+      "key": "x42",
+      "title": "x42-plugins",
+      "url": "https://x42-plugins.com/x42/",
+      "bucket": "4-Owning",
+      "section": "24",
+      "section_title": "Audio recording and production",
+      "tags": [
+        "library"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Specialist LV2 plugins for measurement work",
+      "instruments": []
+    },
+    {
+      "key": "hairless-midi",
+      "title": "Hairless MIDI-Serial bridge",
+      "url": "https://projectgus.github.io/hairless-midiserial/",
+      "bucket": "4-Owning",
+      "section": "24",
+      "section_title": "Audio recording and production",
+      "tags": [
+        "library"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Bridge between MIDI and Arduino-style serial devices",
+      "instruments": []
+    },
+    {
+      "key": "boveda-49-humidity",
+      "title": "Boveda 49% humidity packs",
+      "url": "https://bovedainc.com/wood-instruments-music/",
+      "bucket": "4-Owning",
+      "section": "25",
+      "section_title": "Accessories and maintenance",
+      "tags": [
+        "community"
+      ],
+      "priority": "high",
+      "license": "",
+      "description": "Two-way humidity control packs for instrument cases; 40-60% RH",
+      "instruments": []
+    },
+    {
+      "key": "d-addario-humidipak",
+      "title": "D'Addario Humidipak",
+      "url": "https://www.daddario.com/",
+      "bucket": "4-Owning",
+      "section": "25",
+      "section_title": "Accessories and maintenance",
+      "tags": [
+        "community"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Direct Boveda competitor",
+      "instruments": []
+    },
+    {
+      "key": "cleartune-mobile-tuner",
+      "title": "Cleartune mobile tuner",
+      "url": "https://cleartune.com/",
+      "bucket": "4-Owning",
+      "section": "25",
+      "section_title": "Accessories and maintenance",
+      "tags": [
+        "community"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Standard chromatic tuner mobile app (~$5)",
+      "instruments": []
+    },
+    {
+      "key": "gstrings",
+      "title": "gStrings (F-Droid)",
+      "url": "https://f-droid.org/en/packages/org.cohortor.gstrings/",
+      "bucket": "4-Owning",
+      "section": "25",
+      "section_title": "Accessories and maintenance",
+      "tags": [
+        "library"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Open-source Android chromatic tuner",
+      "instruments": []
+    },
+    {
+      "key": "pelican-cases",
+      "title": "Pelican Cases",
+      "url": "https://www.pelican.com/",
+      "bucket": "4-Owning",
+      "section": "26",
+      "section_title": "Instrument cases",
+      "tags": [
+        "community"
+      ],
+      "priority": "high",
+      "license": "",
+      "description": "Industry-standard hard cases (1500/1510/1610 fit flute families)",
+      "instruments": []
+    },
+    {
+      "key": "nanuk-cases",
+      "title": "Nanuk Cases",
+      "url": "https://nanuk.com/",
+      "bucket": "4-Owning",
+      "section": "26",
+      "section_title": "Instrument cases",
+      "tags": [
+        "community"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Pelican competitor; often cheaper, similar quality",
+      "instruments": []
+    },
+    {
+      "key": "pelican-custom-foam",
+      "title": "Pelican Custom Foam Design Center",
+      "url": "https://foam.pelican.com/",
+      "bucket": "4-Owning",
+      "section": "26",
+      "section_title": "Instrument cases",
+      "tags": [
+        "community"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Free waterjet-cut foam design tool",
+      "instruments": []
+    },
+    {
+      "key": "mycasebuilder",
+      "title": "MyCaseBuilder",
+      "url": "https://mycasebuilder.com/",
+      "bucket": "4-Owning",
+      "section": "26",
+      "section_title": "Instrument cases",
+      "tags": [
+        "community"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Third-party custom foam shop for many case brands",
+      "instruments": []
+    },
+    {
+      "key": "hugo",
+      "title": "Hugo",
+      "url": "https://gohugo.io/",
+      "bucket": "5-Sharing",
+      "section": "27",
+      "section_title": "Build-log and documentation site generators",
+      "tags": [
+        "library"
+      ],
+      "priority": "high",
+      "license": "",
+      "description": "Go-based; near-instant build times across many instrument repos",
+      "instruments": []
+    },
+    {
+      "key": "mkdocs-material",
+      "title": "MkDocs + Material",
+      "url": "https://squidfunk.github.io/mkdocs-material/",
+      "bucket": "5-Sharing",
+      "section": "27",
+      "section_title": "Build-log and documentation site generators",
+      "tags": [
+        "library"
+      ],
+      "priority": "high",
+      "license": "",
+      "description": "Python docs SSG with polished theme; technical-doc feel",
+      "instruments": []
+    },
+    {
+      "key": "quartz",
+      "title": "Quartz",
+      "url": "https://quartz.jzhao.xyz/",
+      "bucket": "5-Sharing",
+      "section": "27",
+      "section_title": "Build-log and documentation site generators",
+      "tags": [
+        "library"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Markdown notes to wiki-style linked site; cross-repo brain candidate",
+      "instruments": []
+    },
+    {
+      "key": "astro",
+      "title": "Astro",
+      "url": "https://astro.build/",
+      "bucket": "5-Sharing",
+      "section": "27",
+      "section_title": "Build-log and documentation site generators",
+      "tags": [
+        "library"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Multi-framework SSG with islands architecture for interactive widgets",
+      "instruments": []
+    },
+    {
+      "key": "docusaurus",
+      "title": "Docusaurus",
+      "url": "https://docusaurus.io/",
+      "bucket": "5-Sharing",
+      "section": "27",
+      "section_title": "Build-log and documentation site generators",
+      "tags": [
+        "library"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Facebook React-based docs framework with versioned docs",
+      "instruments": []
+    },
+    {
+      "key": "jekyll",
+      "title": "Jekyll",
+      "url": "https://jekyllrb.com/",
+      "bucket": "5-Sharing",
+      "section": "27",
+      "section_title": "Build-log and documentation site generators",
+      "tags": [
+        "library"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Original GitHub-Pages-native generator",
+      "instruments": []
+    },
+    {
+      "key": "darktable",
+      "title": "darktable",
+      "url": "https://www.darktable.org/",
+      "bucket": "5-Sharing",
+      "section": "28",
+      "section_title": "Photography and presentation",
+      "tags": [
+        "library"
+      ],
+      "priority": "high",
+      "license": "GPL",
+      "description": "Open-source RAW developer; Lightroom analog",
+      "instruments": []
+    },
+    {
+      "key": "rawtherapee",
+      "title": "RawTherapee",
+      "url": "https://rawtherapee.com/",
+      "bucket": "5-Sharing",
+      "section": "28",
+      "section_title": "Photography and presentation",
+      "tags": [
+        "library"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "RAW developer focused on speed; lower-end hardware friendly",
+      "instruments": []
+    },
+    {
+      "key": "rapidraw",
+      "title": "RapidRAW",
+      "url": "https://rapidraw.app/",
+      "bucket": "5-Sharing",
+      "section": "28",
+      "section_title": "Photography and presentation",
+      "tags": [
+        "library"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Newer (2024) Lightroom-style open-source app",
+      "instruments": []
+    },
+    {
+      "key": "gimp",
+      "title": "GIMP",
+      "url": "https://www.gimp.org/",
+      "bucket": "5-Sharing",
+      "section": "28",
+      "section_title": "Photography and presentation",
+      "tags": [
+        "library"
+      ],
+      "priority": "high",
+      "license": "GPL",
+      "description": "Open-source Photoshop; raster editing for compositing",
+      "instruments": []
+    },
+    {
+      "key": "exiftool",
+      "title": "ExifTool",
+      "url": "https://exiftool.org/",
+      "bucket": "5-Sharing",
+      "section": "28",
+      "section_title": "Photography and presentation",
+      "tags": [
+        "library"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Command-line metadata tool for batch-tagging instrument photos",
+      "instruments": []
+    },
+    {
+      "key": "digikam",
+      "title": "digiKam",
+      "url": "https://www.digikam.org/",
+      "bucket": "5-Sharing",
+      "section": "28",
+      "section_title": "Photography and presentation",
+      "tags": [
+        "library"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Open-source photo management with tagging",
+      "instruments": []
+    },
+    {
+      "key": "cern-ohl",
+      "title": "CERN OHL-2 (P/W/S)",
+      "url": "https://cern-ohl.web.cern.ch/",
+      "bucket": "5-Sharing",
+      "section": "29",
+      "section_title": "Open-source hardware licensing",
+      "tags": [
+        "community"
+      ],
+      "priority": "high",
+      "license": "",
+      "description": "Hardware-specific licenses; 3 reciprocity flavors (Permissive/Weak/Strong)",
+      "instruments": []
+    },
+    {
+      "key": "creative-commons-by",
+      "title": "Creative Commons BY-SA 4.0",
+      "url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "bucket": "5-Sharing",
+      "section": "29",
+      "section_title": "Open-source hardware licensing",
+      "tags": [
+        "community"
+      ],
+      "priority": "high",
+      "license": "",
+      "description": "Widely-adopted attribution + share-alike; familiar to non-lawyers",
+      "instruments": []
+    },
+    {
+      "key": "tapr-open-hardware",
+      "title": "TAPR Open Hardware License",
+      "url": "https://www.tapr.org/the_tapr_open_hardware_license_v1.0.html",
+      "bucket": "5-Sharing",
+      "section": "29",
+      "section_title": "Open-source hardware licensing",
+      "tags": [
+        "community"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Older copyleft-style hardware license",
+      "instruments": []
+    },
+    {
+      "key": "oshwa-certification",
+      "title": "OSHWA Certification",
+      "url": "https://certification.oshwa.org/",
+      "bucket": "5-Sharing",
+      "section": "29",
+      "section_title": "Open-source hardware licensing",
+      "tags": [
+        "community"
+      ],
+      "priority": "high",
+      "license": "",
+      "description": "Free open-source hardware certification with UID + logo",
+      "instruments": []
+    },
+    {
+      "key": "usps-shipping-insurance",
+      "title": "USPS Shipping Insurance",
+      "url": "https://www.usps.com/ship/insurance-extra-services.htm",
+      "bucket": "5-Sharing",
+      "section": "30",
+      "section_title": "Packaging and shipping",
+      "tags": [
+        "community"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Priority Mail Express with up to $5,000 declared value",
+      "instruments": []
+    },
+    {
+      "key": "heritage-insurance",
+      "title": "Heritage Insurance",
+      "url": "https://www.heritageinsurance.com/",
+      "bucket": "5-Sharing",
+      "section": "30",
+      "section_title": "Packaging and shipping",
+      "tags": [
+        "community"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Specialty musical-instrument insurer (transit + gigs + home)",
+      "instruments": []
+    },
+    {
+      "key": "clarion-insurance",
+      "title": "Clarion Insurance",
+      "url": "https://www.clarionins.com/",
+      "bucket": "5-Sharing",
+      "section": "30",
+      "section_title": "Packaging and shipping",
+      "tags": [
+        "community"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Specialty musical-instrument insurer",
+      "instruments": []
+    },
+    {
+      "key": "reverb",
+      "title": "Reverb",
+      "url": "https://reverb.com/",
+      "bucket": "5-Sharing",
+      "section": "31",
+      "section_title": "Selling and community channels",
+      "tags": [
+        "community"
+      ],
+      "priority": "high",
+      "license": "",
+      "description": "Musician-focused marketplace; 5% capped fee post-Etsy spinout",
+      "instruments": []
+    },
+    {
+      "key": "etsy",
+      "title": "Etsy",
+      "url": "https://www.etsy.com/",
+      "bucket": "5-Sharing",
+      "section": "31",
+      "section_title": "Selling and community channels",
+      "tags": [
+        "community"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Broader handmade marketplace; higher fees but wider audience",
+      "instruments": []
+    },
+    {
+      "key": "bandcamp",
+      "title": "Bandcamp",
+      "url": "https://bandcamp.com/",
+      "bucket": "5-Sharing",
+      "section": "31",
+      "section_title": "Selling and community channels",
+      "tags": [
+        "community"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Best home for instrument demo tracks; 15% fee",
+      "instruments": []
+    },
+    {
+      "key": "hackaday-io",
+      "title": "Hackaday.io",
+      "url": "https://hackaday.io/",
+      "bucket": "5-Sharing",
+      "section": "31",
+      "section_title": "Selling and community channels",
+      "tags": [
+        "community"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Open-hardware project hub with build-log style",
+      "instruments": []
+    },
+    {
+      "key": "instructables",
+      "title": "Instructables",
+      "url": "https://www.instructables.com/",
+      "bucket": "5-Sharing",
+      "section": "31",
+      "section_title": "Selling and community channels",
+      "tags": [
+        "community"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Tutorial platform for extracted build steps",
+      "instruments": []
+    },
+    {
+      "key": "wood-whisperer",
+      "title": "The Wood Whisperer",
+      "url": "https://thewoodwhisperer.com/",
+      "bucket": "5-Sharing",
+      "section": "31",
+      "section_title": "Selling and community channels",
+      "tags": [
+        "community"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Canonical online woodworking education site (Marc Spagnuolo)",
+      "instruments": []
+    },
+    {
+      "key": "fletcher-rossing",
+      "title": "Fletcher & Rossing \u2014 The Physics of Musical Instruments",
+      "url": "https://link.springer.com/book/10.1007/978-0-387-21603-4",
+      "bucket": "6-Going Deeper",
+      "section": "32",
+      "section_title": "Acoustic theory deep-references",
+      "tags": [
+        "community"
+      ],
+      "priority": "high",
+      "license": "",
+      "description": "Most-cited textbook in musical acoustics; Springer 2nd ed 1998",
+      "instruments": []
+    },
+    {
+      "key": "rossing",
+      "title": "Rossing \u2014 Springer Handbook of Acoustics",
+      "url": "https://link.springer.com/book/10.1007/978-1-4939-0755-7",
+      "bucket": "6-Going Deeper",
+      "section": "32",
+      "section_title": "Acoustic theory deep-references",
+      "tags": [
+        "community"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "1200+ page broad acoustics reference handbook",
+      "instruments": []
+    },
+    {
+      "key": "helmholtz",
+      "title": "Helmholtz \u2014 On the Sensations of Tone",
+      "url": "https://archive.org/details/onsensationston00helmgoog",
+      "bucket": "6-Going Deeper",
+      "section": "32",
+      "section_title": "Acoustic theory deep-references",
+      "tags": [
+        "community"
+      ],
+      "priority": "normal",
+      "license": "public domain",
+      "description": "1885 founding text of psychoacoustics; free on archive.org",
+      "instruments": []
+    },
+    {
+      "key": "pierce",
+      "title": "Pierce \u2014 The Science of Musical Sound",
+      "url": "https://www.amazon.com/Science-Musical-Sound-John-Pierce/dp/0716760053",
+      "bucket": "6-Going Deeper",
+      "section": "32",
+      "section_title": "Acoustic theory deep-references",
+      "tags": [
+        "community"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Approachable companion to Fletcher & Rossing",
+      "instruments": []
+    },
+    {
+      "key": "jasa",
+      "title": "JASA",
+      "url": "https://pubs.aip.org/asa/jasa",
+      "bucket": "6-Going Deeper",
+      "section": "32",
+      "section_title": "Acoustic theory deep-references",
+      "tags": [
+        "community"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Leading musical-acoustics journal since 1929; subscription",
+      "instruments": []
+    },
+    {
+      "key": "jasa-express-letters",
+      "title": "JASA Express Letters",
+      "url": "https://pubs.aip.org/asa/jel",
+      "bucket": "6-Going Deeper",
+      "section": "32",
+      "section_title": "Acoustic theory deep-references",
+      "tags": [
+        "community"
+      ],
+      "priority": "high",
+      "license": "gold open access",
+      "description": "Open-access rapid-turnaround letters journal since 2021",
+      "instruments": []
+    },
+    {
+      "key": "poma",
+      "title": "POMA (ASA Proceedings)",
+      "url": "https://pubs.aip.org/asa/poma",
+      "bucket": "6-Going Deeper",
+      "section": "32",
+      "section_title": "Acoustic theory deep-references",
+      "tags": [
+        "community"
+      ],
+      "priority": "normal",
+      "license": "open access",
+      "description": "Editor-reviewed open-access ASA conference proceedings",
+      "instruments": []
+    },
+    {
+      "key": "acoustics-today",
+      "title": "Acoustics Today",
+      "url": "https://acousticstoday.org/",
+      "bucket": "6-Going Deeper",
+      "section": "32",
+      "section_title": "Acoustic theory deep-references",
+      "tags": [
+        "community"
+      ],
+      "priority": "normal",
+      "license": "open access",
+      "description": "Open-access magazine from the Acoustical Society of America",
+      "instruments": []
+    },
+    {
+      "key": "journal-sound-vibration",
+      "title": "Journal of Sound and Vibration",
+      "url": "https://www.sciencedirect.com/journal/journal-of-sound-and-vibration",
+      "bucket": "6-Going Deeper",
+      "section": "32",
+      "section_title": "Acoustic theory deep-references",
+      "tags": [
+        "community"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Elsevier subscription; structural vibration focus",
+      "instruments": []
+    },
+    {
+      "key": "acta-acustica",
+      "title": "Acta Acustica",
+      "url": "https://acta-acustica.edpsciences.org/",
+      "bucket": "6-Going Deeper",
+      "section": "32",
+      "section_title": "Acoustic theory deep-references",
+      "tags": [
+        "community"
+      ],
+      "priority": "normal",
+      "license": "gold open access",
+      "description": "European acoustics journal; Bordeaux openwind team publishes here",
+      "instruments": []
+    },
+    {
+      "key": "stanford-ccrma-courses",
+      "title": "Stanford CCRMA courses",
+      "url": "https://ccrma.stanford.edu/courses/",
+      "bucket": "6-Going Deeper",
+      "section": "32",
+      "section_title": "Acoustic theory deep-references",
+      "tags": [
+        "community"
+      ],
+      "priority": "high",
+      "license": "",
+      "description": "Music 150 Musical Acoustics + public online courses",
+      "instruments": []
+    },
+    {
+      "key": "mit-opencourseware",
+      "title": "MIT OpenCourseWare",
+      "url": "https://ocw.mit.edu/search/?q=acoustics",
+      "bucket": "6-Going Deeper",
+      "section": "32",
+      "section_title": "Acoustic theory deep-references",
+      "tags": [
+        "community"
+      ],
+      "priority": "normal",
+      "license": "CC",
+      "description": "Free MIT course materials; search 'acoustics'",
+      "instruments": []
+    },
+    {
+      "key": "bill-pentz-dust",
+      "title": "Bill Pentz Dust Collection Research",
+      "url": "https://billpentz.com/woodworking/cyclone/",
+      "bucket": "6-Going Deeper",
+      "section": "33",
+      "section_title": "Shop setup and tool maintenance",
+      "tags": [
+        "community"
+      ],
+      "priority": "high",
+      "license": "CC",
+      "description": "Canonical free woodworking dust-collection resource; cyclone plans + safety",
+      "instruments": []
+    },
+    {
+      "key": "clearvue-cyclones",
+      "title": "ClearVue Cyclones",
+      "url": "https://www.clearvuecyclones.com/",
+      "bucket": "6-Going Deeper",
+      "section": "33",
+      "section_title": "Shop setup and tool maintenance",
+      "tags": [
+        "community"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Only commercial vendor licensed to manufacture Pentz-design cyclones",
+      "instruments": []
+    },
+    {
+      "key": "oneida-air-systems",
+      "title": "Oneida Air Systems",
+      "url": "https://www.oneida-air.com/",
+      "bucket": "6-Going Deeper",
+      "section": "33",
+      "section_title": "Shop setup and tool maintenance",
+      "tags": [
+        "community"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Commercial dust-collection systems",
+      "instruments": []
+    },
+    {
+      "key": "3m-7500",
+      "title": "3M 7500-series respirator + P100",
+      "url": "https://www.3m.com/",
+      "bucket": "6-Going Deeper",
+      "section": "33",
+      "section_title": "Shop setup and tool maintenance",
+      "tags": [
+        "community"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "NIOSH-approved half-face respirator standard for woodworking",
+      "instruments": []
+    },
+    {
+      "key": "paul-sellers-sharpening",
+      "title": "Paul Sellers sharpening videos",
+      "url": "https://paulsellers.com/",
+      "bucket": "6-Going Deeper",
+      "section": "33",
+      "section_title": "Shop setup and tool maintenance",
+      "tags": [
+        "community"
+      ],
+      "priority": "high",
+      "license": "",
+      "description": "Free traditional-woodworker sharpening tutorials",
+      "instruments": []
+    },
+    {
+      "key": "stumpy-nubs-woodworking",
+      "title": "Stumpy Nubs Woodworking",
+      "url": "https://www.stumpynubs.com/",
+      "bucket": "6-Going Deeper",
+      "section": "33",
+      "section_title": "Shop setup and tool maintenance",
+      "tags": [
+        "community"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "YouTube channel for jigs and sharpening tips",
+      "instruments": []
+    },
+    {
+      "key": "lie",
+      "title": "Lie-Nielsen Toolworks guides",
+      "url": "https://www.lie-nielsen.com/",
+      "bucket": "6-Going Deeper",
+      "section": "33",
+      "section_title": "Shop setup and tool maintenance",
+      "tags": [
+        "community"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Premium plane/chisel maker's free tutorials",
+      "instruments": []
+    },
+    {
+      "key": "osha-wood-dust",
+      "title": "OSHA Wood Dust Standard",
+      "url": "https://www.osha.gov/wood-dust",
+      "bucket": "6-Going Deeper",
+      "section": "33",
+      "section_title": "Shop setup and tool maintenance",
+      "tags": [
+        "community"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Federal occupational standard for wood dust exposure",
+      "instruments": []
+    },
+    {
+      "key": "niosh-wood-dust",
+      "title": "NIOSH wood dust page",
+      "url": "https://www.cdc.gov/niosh/topics/wooddust/",
+      "bucket": "6-Going Deeper",
+      "section": "33",
+      "section_title": "Shop setup and tool maintenance",
+      "tags": [
+        "community"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "CDC research on wood dust health effects and allergens",
+      "instruments": []
+    },
+    {
+      "key": "numpy",
+      "title": "NumPy",
+      "url": "https://numpy.org/",
+      "bucket": "6-Going Deeper",
+      "section": "34",
+      "section_title": "Programming and scripting references",
+      "tags": [
+        "library"
+      ],
+      "priority": "high",
+      "license": "BSD",
+      "description": "Scientific Python foundation; array math",
+      "instruments": []
+    },
+    {
+      "key": "scipy",
+      "title": "SciPy",
+      "url": "https://scipy.org/",
+      "bucket": "6-Going Deeper",
+      "section": "34",
+      "section_title": "Programming and scripting references",
+      "tags": [
+        "library"
+      ],
+      "priority": "high",
+      "license": "BSD",
+      "description": "Scientific computing including optimize module for custom solvers",
+      "instruments": []
+    },
+    {
+      "key": "matplotlib",
+      "title": "matplotlib",
+      "url": "https://matplotlib.org/",
+      "bucket": "6-Going Deeper",
+      "section": "34",
+      "section_title": "Programming and scripting references",
+      "tags": [
+        "library"
+      ],
+      "priority": "high",
+      "license": "BSD",
+      "description": "Print-quality plotting library",
+      "instruments": []
+    },
+    {
+      "key": "plotly",
+      "title": "Plotly (Python)",
+      "url": "https://plotly.com/python/",
+      "bucket": "6-Going Deeper",
+      "section": "34",
+      "section_title": "Programming and scripting references",
+      "tags": [
+        "library"
+      ],
+      "priority": "high",
+      "license": "MIT",
+      "description": "Interactive web-embeddable plots",
+      "instruments": []
+    },
+    {
+      "key": "cadquery",
+      "title": "CadQuery",
+      "url": "https://cadquery.github.io/",
+      "bucket": "6-Going Deeper",
+      "section": "34",
+      "section_title": "Programming and scripting references",
+      "tags": [
+        "CAD",
+        "library"
+      ],
+      "priority": "high",
+      "license": "Apache 2",
+      "description": "Python parametric CAD using OpenCASCADE kernel",
+      "instruments": []
+    },
+    {
+      "key": "cqparts",
+      "title": "cqparts",
+      "url": "https://cqparts.github.io/",
+      "bucket": "6-Going Deeper",
+      "section": "34",
+      "section_title": "Programming and scripting references",
+      "tags": [
+        "CAD",
+        "library"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Assembly and parts management layer on CadQuery",
+      "instruments": []
+    },
+    {
+      "key": "build123d",
+      "title": "Build123d",
+      "url": "https://github.com/gumyr/build123d",
+      "bucket": "6-Going Deeper",
+      "section": "34",
+      "section_title": "Programming and scripting references",
+      "tags": [
+        "CAD",
+        "library"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Newer (2023) friendlier API over CadQuery kernel",
+      "instruments": []
+    },
+    {
+      "key": "jupyter-notebooks",
+      "title": "Jupyter notebooks",
+      "url": "https://jupyter.org/",
+      "bucket": "6-Going Deeper",
+      "section": "34",
+      "section_title": "Programming and scripting references",
+      "tags": [
+        "library"
+      ],
+      "priority": "normal",
+      "license": "BSD",
+      "description": "Standard exploratory Python environment with inline plots",
+      "instruments": []
+    },
+    {
+      "key": "tone-js",
+      "title": "Tone.js",
+      "url": "https://tonejs.github.io/",
+      "bucket": "6-Going Deeper",
+      "section": "34",
+      "section_title": "Programming and scripting references",
+      "tags": [
+        "library"
+      ],
+      "priority": "high",
+      "license": "MIT",
+      "description": "Web Audio framework for interactive browser music",
+      "instruments": []
+    },
+    {
+      "key": "d3-js",
+      "title": "D3.js",
+      "url": "https://d3js.org/",
+      "bucket": "6-Going Deeper",
+      "section": "34",
+      "section_title": "Programming and scripting references",
+      "tags": [
+        "library"
+      ],
+      "priority": "normal",
+      "license": "BSD",
+      "description": "Data visualization library for the web",
+      "instruments": []
+    },
+    {
+      "key": "web-audio-api",
+      "title": "Web Audio API (MDN)",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API",
+      "bucket": "6-Going Deeper",
+      "section": "34",
+      "section_title": "Programming and scripting references",
+      "tags": [
+        "community"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Browser audio standard reference",
+      "instruments": []
+    },
+    {
+      "key": "awesome",
+      "title": "awesome-javascript-audio",
+      "url": "https://github.com/sc0ttj/awesome-javascript-audio",
+      "bucket": "6-Going Deeper",
+      "section": "34",
+      "section_title": "Programming and scripting references",
+      "tags": [
+        "community"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Curated list of JS audio libraries",
+      "instruments": []
+    },
+    {
+      "key": "go-standard-library",
+      "title": "Go standard library",
+      "url": "https://pkg.go.dev/std",
+      "bucket": "6-Going Deeper",
+      "section": "34",
+      "section_title": "Programming and scripting references",
+      "tags": [
+        "library"
+      ],
+      "priority": "normal",
+      "license": "BSD",
+      "description": "Single static binary CLI tool builds",
+      "instruments": []
+    },
+    {
+      "key": "wolfram-language-documentation",
+      "title": "Wolfram Language documentation",
+      "url": "https://reference.wolfram.com/language/",
+      "bucket": "6-Going Deeper",
+      "section": "34",
+      "section_title": "Programming and scripting references",
+      "tags": [
+        "library"
+      ],
+      "priority": "high",
+      "license": "",
+      "description": "Symbolic-math-first language for acoustic derivations",
+      "instruments": []
+    },
+    {
+      "key": "wolfram-cloud",
+      "title": "Wolfram Cloud (free tier)",
+      "url": "https://www.wolframcloud.com/",
+      "bucket": "6-Going Deeper",
+      "section": "34",
+      "section_title": "Programming and scripting references",
+      "tags": [
+        "library"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Run Wolfram code in browser without buying Mathematica",
+      "instruments": []
+    },
+    {
+      "key": "wolfram-formula-repository",
+      "title": "Wolfram Formula Repository \u2014 Helmholtz Resonator",
+      "url": "https://resources.wolframcloud.com/FormulaRepository/resources/Helmholtz-Resonator-Frequency",
+      "bucket": "6-Going Deeper",
+      "section": "34",
+      "section_title": "Programming and scripting references",
+      "tags": [
+        "library"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Community-contributed Helmholtz resonator formula",
+      "instruments": []
+    },
+    {
+      "key": "awesome-awesome",
+      "title": "awesome-cad",
+      "url": "https://github.com/strootman/awesome-CAD",
+      "bucket": "6-Going Deeper",
+      "section": "34",
+      "section_title": "Programming and scripting references",
+      "tags": [
+        "community"
+      ],
+      "priority": "normal",
+      "license": "",
+      "description": "Open-source CAD ecosystem index",
+      "instruments": []
+    }
+  ]
+}

@@ -1,5 +1,18 @@
 # Changelog
 
+## 2026-05-22
+
+- Added `source-citations` skill (v0.1.0) at `skills/source-citations/`.
+  Installs the keyed bibliography registry (201 entries from the Drive source
+  library) and the companion techniques catalog (maker demonstrations with a
+  `confirmed`/`unconfirmed` status that hard-gates citation). Per-repo
+  `SOURCES.md` / `TECHNIQUES.md` are generated from `.citations.yaml` /
+  `.techniques.yaml`; both generators refuse to ship without a maker-written
+  `why` for every cited key. Registered in `manifest.yaml`. The pilot
+  rollout across the public "done-bar" instrument repos and promotion of
+  unconfirmed technique seeds happen on the desktop where those repos live;
+  this commit only ships the skill.
+
 ## 2026-05-09
 
 - Added `docs/pr-review-gate.md`: sprint-manager PR readiness and issue-closure

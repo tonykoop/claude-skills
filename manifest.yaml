@@ -3,7 +3,7 @@
 # Update this file whenever a skill version is bumped, packaged, or deprecated.
 
 schema_version: 1
-last_updated: 2026-05-11
+last_updated: 2026-05-22
 
 install_roots:
   windows:
@@ -210,6 +210,21 @@ skills:
     last_updated: 2026-05-11
     status: active
     notes: Adds duplicate-aware issue filing, related-issue handling, gated label creation, manager summary queues, Tony-decision queues, skill-owner routing, and machine-readable JSON/CSV queue artifacts while preserving personal GitHub and WRFCoin swarm behavior.
+
+  source-citations:
+    canonical_version: 0.1.0
+    runtime: shared
+    repo_path: skills/source-citations
+    last_updated: 2026-05-22
+    status: active
+    notes: >-
+      Bibliography + techniques catalog for instrument repos. Builds a keyed
+      registry from the Drive source library (201 entries) and a companion
+      maker-demonstrations catalog with confirmed-vs-unconfirmed status that
+      hard-gates citation. Per-repo SOURCES.md / TECHNIQUES.md are generated;
+      never hand-edited. Pilot rollout (3-5 done-bar instrument repos) and
+      promotion of unconfirmed technique seeds run on the desktop where the
+      individual instrument repos live; this entry only ships the skill.
 
 planned_skills:
   energy-management:

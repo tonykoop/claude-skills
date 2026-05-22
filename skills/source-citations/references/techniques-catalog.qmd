@@ -1,0 +1,16 @@
+---
+title: "Techniques Catalog"
+format:
+  html:
+    toc: true
+    embed-resources: false
+---
+
+Demonstrations of technique by real makers. Videos jump to the exact moment shown. The companion source bibliography covers the underlying tools and theory.
+
+## Unconfirmed seeds (not citable)
+
+These are real makers/pages, but the specific technique moment is not yet verified. Watch, then promote to confirmed.
+
+- **Gabriel Schama** — Layered laser-cut plywood relief assembly ([web              # youtube | maker-tok | instagram | wikihow | makerspace | web](https://www.gabrielschama.com/))
+- **Martin Tomsky** — Deep multi-layer laser-cut illustrative scenes ([web](https://www.martintomsky.com/))

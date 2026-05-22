@@ -1,0 +1,202 @@
+bucket	section	section_title	entry	url	tags	priority	license	description
+1-Designing	1	Wind instrument acoustic solvers	Demakein	https://github.com/pfh/demakein	solver;library	star	GPL	Python solver for woodwinds; outputs STL or two-sided CNC milling pattern with peg alignment
+1-Designing	1	Wind instrument acoustic solvers	openwind	https://openwind.inria.fr/	solver;library	star		INRIA Bordeaux wind-instrument acoustics library; Demakein's successor; zip has paper-reproduction scripts
+1-Designing	1	Wind instrument acoustic solvers	chalumier	https://github.com/MarkChuCarroll/chalumier	solver			Kotlin port of Demakein
+1-Designing	1	Wind instrument acoustic solvers	NESS Brass Instruments	http://www.ness.music.ed.ac.uk/archives/systems/brass-instruments-2	solver			Edinburgh boundary-layer-aware brass synthesis; can simulate hypothetical geometries
+1-Designing	1	Wind instrument acoustic solvers	Csound reed opcode	https://github.com/csound/csound	library			Physical time-domain model of closed-open tube resonators for reeds
+1-Designing	2	Flute & whistle parametric calculators	Flutopedia + NAFlutomat	https://www.flutopedia.com/naflutomat.htm	calculator;community	star		Clint Goss's NAF encyclopedia + parametric NAF calculator
+1-Designing	2	Flute & whistle parametric calculators	Flutomat NG	https://github.com/unityrobot/Flutomat	calculator			Modern HTML5 rewrite of Pete Kosel's Flutomat using Benade acoustic model
+1-Designing	2	Flute & whistle parametric calculators	Tin Whistle Calculator (TWJCalc)	https://sourceforge.net/projects/twjcalc/	calculator		GPL	Supports TWCalc + Flutomat algorithms, multiple temperaments, thumb-hole
+1-Designing	2	Flute & whistle parametric calculators	Bracker Whistle Calculator	https://music.bracker.uk/Music/Whistle-Calculator.html	calculator			UK-hosted Flutomat-derivative with extra graphical output
+1-Designing	3	String-instrument design + FEM	FreeFEM	https://freefem.org/	FEM;library			Open-source PDE solver; used in violin top-plate FEM papers
+1-Designing	3	String-instrument design + FEM	FEniCS	https://fenicsproject.org/	FEM;library			Python-friendly PDE solver competitor to FreeFEM
+1-Designing	3	String-instrument design + FEM	rodrigocfd/string-tension-calc	https://github.com/rodrigocfd/string-tension-calc	calculator			Guitar/bass string tension calculator with graphical plotting and fanned-fret support
+1-Designing	3	String-instrument design + FEM	Modular Fiddle	https://openfabpdx.com/modular-fiddle/	CAD;hardware			3D-printed violin with hot-swappable body parts for experimental lutherie
+1-Designing	3	String-instrument design + FEM	Hovalin	https://hovalabs.com/hovalin/	CAD			3D-printed violin with editable Fusion 360 .f3d parametric files
+1-Designing	3	String-instrument design + FEM	Nature: Data-driven violin making	https://www.nature.com/articles/s41598-021-88931-z	FEM			Nature paper using ML to predict violin top-plate modal frequencies from geometry
+1-Designing	4	Percussion idiophones and bells	Lee Hite's Tubular Bell Chime Compendium	https://leehite.org/Chimes.htm	calculator;community	star		Canonical tubular chime/wind chime design resource with PDF handbook
+1-Designing	4	Percussion idiophones and bells	Snyder Family Wind Chimes Calculator	https://www.snyderfamily.com/chimecalcs/	calculator			Tube-length calculator
+1-Designing	4	Percussion idiophones and bells	Numerical Simulations for a Xylophone	https://kthompson.gitlab.io/assets/xylo.html	library			Student writeup of xylophone bar modal physics
+1-Designing	4	Percussion idiophones and bells	Euphonics – Marimbas and xylophones	https://euphonics.org/3-3-marimbas-and-xylophones/	community			Jim Woodhouse free online textbook chapter
+1-Designing	4	Percussion idiophones and bells	Bart Hopkin – Altering tubular chimes	https://barthopkin.com/tubular-chimes-altered/	community			Experimental-instrument-builder's chime articles
+1-Designing	4	Percussion idiophones and bells	Helmholtz Resonator Calculator (TU Berlin)	https://python-and-akustik-2025-helmholtz-47f389.gitlab-pages.tu-berlin.de/calculation.html	library			Full Python simulation of Helmholtz resonators; cylinder and cuboid geometries
+1-Designing	5	Parametric 3D-print / open hardware	Open Woodwind Project	https://github.com/jeffmhopkins/Open-Woodwind-Project	hardware			Open-source MIDI woodwind controller with Teensy + capacitive sensing
+1-Designing	5	Parametric 3D-print / open hardware	Music Makers Robotic Recorder	https://github.com/The-Music-Makers/music_makers	hardware			Robot that plays a recorder; open hardware
+1-Designing	5	Parametric 3D-print / open hardware	Open-source Hybrid Piano	https://hackaday.io/project/194217-open-source-hybrid-piano	hardware			Acoustic-piano-action + MIDI digital hybrid
+1-Designing	5	Parametric 3D-print / open hardware	OpenPipes DIY pipe organ	https://makezine.com/article/craft/music/openpipes-revolutionizes-the-diy-pipe-organs/	hardware			Open DIY pipe organ system
+1-Designing	5	Parametric 3D-print / open hardware	Romansax flute remixes	https://makerworld.com/en/models/1230415-folk-flutes-by-pfh-original-and-remixed	CAD			Community remixes of Demakein flute designs tuned for PLA printing
+1-Designing	6	Open-source synth and Eurorack	Mutable Instruments / pichenettes/eurorack	https://github.com/pichenettes/eurorack	hardware			Émilie Gillet's full Mutable Instruments catalog open-sourced (Plaits, Rings, Clouds...)
+1-Designing	6	Open-source synth and Eurorack	newdigate/eurorack-awesome	https://github.com/newdigate/eurorack-awesome	community			Curated Eurorack list
+1-Designing	6	Open-source synth and Eurorack	freemodular.org	https://freemodular.org/	hardware			DIY synth module collection
+1-Designing	6	Open-source synth and Eurorack	QuinnFreedman/modular	https://github.com/QuinnFreedman/modular	hardware			DIY synth module designs
+1-Designing	6	Open-source synth and Eurorack	Erica Synths DIY	https://github.com/erica-synths/diy-eurorack	hardware			Erica's legacy DIY kits open-sourced
+1-Designing	7	Physical-modeling synthesis libraries	STK (Synthesis ToolKit)	https://ccrma.stanford.edu/software/stk/	library			Stanford CCRMA C++ physical-modeling and modal-synthesis library
+1-Designing	7	Physical-modeling synthesis libraries	Faust	https://faust.grame.fr/	library			Audio DSP language compiling to C++/JS/VST
+1-Designing	7	Physical-modeling synthesis libraries	Csound	https://csound.com/	library			Synthesis language with physical models and FluidSynth/Faust integration
+1-Designing	7	Physical-modeling synthesis libraries	FluidSynth	https://github.com/FluidSynth/fluidsynth	library		LGPL	Real-time SoundFont 2 synthesizer
+1-Designing	7	Physical-modeling synthesis libraries	OpenPiano	https://github.com/michele-perrone/OpenPiano	library			Real-time physical-modeling piano + JUCE plugin
+1-Designing	8	Awesome lists and aggregators	Nitnelav/awesome-acoustic	https://github.com/Nitnelav/awesome-acoustic	community	star		Curated list of open-source acoustic projects; Tony's first stop
+1-Designing	8	Awesome lists and aggregators	webprofusion/OpenAudio	https://github.com/webprofusion/OpenAudio	community			List of open-source audio projects
+1-Designing	8	Awesome lists and aggregators	Synth DIY Wiki	https://sdiy.info/wiki/Open_source_music_hardware_projects	community			DIY-friendly hardware synths
+1-Designing	8	Awesome lists and aggregators	Thingiverse	https://www.thingiverse.com/	community			Search printable instrument designs
+1-Designing	8	Awesome lists and aggregators	MakerWorld	https://makerworld.com/	community			Bambu Lab's printable model hub
+1-Designing	9	Communities and forums	Chiff & Fipple	https://forums.chiffandfipple.com/	community			Canonical whistle / Irish flute / NAF forum
+1-Designing	9	Communities and forums	Bart Hopkin's site	https://barthopkin.com/	community			Experimental-instrument-builder reference and EMI magazine archive
+1-Designing	9	Communities and forums	Mechanical Music Digest	https://www.mmdigest.com/	community			Historical mechanical instruments with deep tech articles
+2-Making	11	Open-source parametric CAD	FreeCAD	https://www.freecad.org/	CAD	star	LGPL	Open-source SolidWorks analog with parametric history; includes CAM via Path Workbench
+2-Making	11	Open-source parametric CAD	OpenSCAD	https://openscad.org/	CAD	star	GPL	Code-as-CAD; spiritual sibling of Tony's Master_Inputs approach
+2-Making	11	Open-source parametric CAD	Solvespace	https://solvespace.com/index.pl	CAD			Lightweight constraint-based parametric CAD
+2-Making	11	Open-source parametric CAD	BRL-CAD	https://brlcad.org/	CAD			Heavy-duty CSG modeller from US Army Ballistic Research Lab
+2-Making	11	Open-source parametric CAD	LibreCAD	https://librecad.org/	CAD			2D drafting (DWG/DXF) AutoCAD-style editor
+2-Making	11	Open-source parametric CAD	Dune3D	https://dune3d.org/	CAD			Newer (2024) parametric CAD targeting OnShape-style workflow
+2-Making	12	Open-source CAM (G-code generation)	FreeCAD Path Workbench	https://wiki.freecad.org/Path_Workbench	CAM	star		Generates toolpaths inside FreeCAD with multiple post-processors
+2-Making	12	Open-source CAM (G-code generation)	Kiri:Moto	https://grid.space/kiri/	CAM	star		Browser-based CAM handling CNC/laser/3D-print toolpaths
+2-Making	12	Open-source CAM (G-code generation)	PyCAM	https://pycam.github.io/	CAM		GPL v3	Python toolpath generator for 3-axis machining; outputs LinuxCNC/GRBL G-code
+2-Making	12	Open-source CAM (G-code generation)	CAMotics	https://camotics.org/	CAM;library			G-code simulator for sanity-checking V-Carve output
+2-Making	12	Open-source CAM (G-code generation)	OpenBuilds CAM	https://software.openbuilds.com/	CAM			Browser-based 2D/2.5D CAM emitting G-code from SVG/DXF
+2-Making	12	Open-source CAM (G-code generation)	jscut	http://jscut.org/	CAM			Minimal browser-based SVG to G-code converter
+2-Making	12	Open-source CAM (G-code generation)	Blender CAM	https://blendercam.com/	CAM			Blender addon for CAM; useful for 3D-relief inlay work
+2-Making	13	CNC controllers and G-code senders	GRBL	https://github.com/grbl/grbl	hardware;library	star		De facto open-source CNC firmware for hobby routers
+2-Making	13	CNC controllers and G-code senders	FluidNC	https://github.com/bdring/FluidNC	hardware;library			GRBL's ESP32-based modern successor with Wi-Fi web UI
+2-Making	13	CNC controllers and G-code senders	LinuxCNC	http://linuxcnc.org/	hardware;library	star		Serious open-source machine controller for industrial-grade setups
+2-Making	13	CNC controllers and G-code senders	Universal Gcode Sender (UGS)	https://winder.github.io/ugs_website/	hardware			Cross-platform GRBL G-code sender
+2-Making	13	CNC controllers and G-code senders	bCNC	https://github.com/vlachoudis/bCNC	hardware			Power-user GRBL sender with auto-leveling for PCB precision
+2-Making	13	CNC controllers and G-code senders	OpenBuilds CONTROL	https://software.openbuilds.com/	hardware			Beginner-friendly G-code sender
+2-Making	14	Laser cutter / engraver software	LaserGRBL	https://lasergrbl.com/	hardware	star	GPL	Most-recommended free GRBL laser controller for diode lasers
+2-Making	14	Laser cutter / engraver software	LaserWeb 4	https://laserweb.yurl.ch/	hardware			Browser-based laser controller for GRBL/Smoothie/TinyG
+2-Making	14	Laser cutter / engraver software	Rayforge	https://rayforge.org/	hardware			Newer (2024) open-source LightBurn alternative with clean UI
+2-Making	14	Laser cutter / engraver software	MeerK40t	https://github.com/meerk40t/meerk40t	hardware			Open-source controller for K40-class laser cutters
+2-Making	14	Laser cutter / engraver software	Inkscape Laser Plugin	https://github.com/jbinkscape/laserplugin	CAD			Inkscape extension that emits G-code for laser cutting
+2-Making	15	3D printing slicers	OrcaSlicer	https://github.com/SoftFever/OrcaSlicer	hardware;library	star		Power-user slicer; Bambu Studio fork with auto-calibration
+2-Making	15	3D printing slicers	PrusaSlicer	https://www.prusa3d.com/page/prusaslicer_424/	hardware;library			Stable mature slicer in the Slic3r lineage
+2-Making	15	3D printing slicers	Cura	https://ultimaker.com/software/ultimaker-cura/	hardware;library			Widest printer-profile support; slower than competitors
+2-Making	15	3D printing slicers	SuperSlicer	https://github.com/supermerill/SuperSlicer	hardware			PrusaSlicer fork tuned for Klipper-based machines
+2-Making	16	Vector / SVG / DXF preparation	Inkscape	https://inkscape.org/	CAD	star		Canonical open-source vector editor; Gcodetools extension emits G-code
+2-Making	16	Vector / SVG / DXF preparation	VisiCut	https://visicut.org/	CAM			Inkscape to laser dispatcher with per-color cutting params
+2-Making	17	Acoustic measurement tools	Audacity	https://www.audacityteam.org/	library	star		Free audio editor with Plot Spectrum FFT for cents accuracy
+2-Making	17	Acoustic measurement tools	Sonic Visualiser	https://www.sonicvisualiser.org/	library	star		Deep audio analysis with VAMP plugins for pitch tracking and harmonic detection
+2-Making	17	Acoustic measurement tools	REW (Room EQ Wizard)	https://www.roomeqwizard.com/	library			Sweep-based frequency response and modal decay analysis; pairs with UMIK-1
+2-Making	17	Acoustic measurement tools	Praat	https://www.fon.hum.uva.nl/praat/	library			Speech-phonetics tool with excellent pitch-tracking for sustained tones
+2-Making	18	Woodworking calculators and shop math	Uniontown Drum Stave Calculator	https://uniontownlabs.org/tools/stave/	calculator	star		Free open-source forkable stave-construction calculator
+2-Making	18	Woodworking calculators and shop math	Blocklayer Segmented Turning	https://www.blocklayer.com/woodturning-segmentseng	calculator	star		Segmented stock sizes for woodturning with printable templates
+2-Making	18	Woodworking calculators and shop math	Segmented Turning Project Planner	https://www.segmentedturning.com/	calculator			Multi-ring segmented project designer
+2-Making	18	Woodworking calculators and shop math	Omni Bowl Segment Calculator	https://www.omnicalculator.com/construction/bowl-segment	calculator			Quick single-ring segmented stack calculator
+2-Making	18	Woodworking calculators and shop math	Cut List Optimizer (Salt n' Fork)	https://cutlist.saltnfork.com/	calculator			Free browser-only plywood/lumber cut layout with kerf awareness
+2-Making	18	Woodworking calculators and shop math	The Shrinkulator	https://woodbin.com/calcs/shrinkulator/	calculator			Wood shrinkage and expansion calculator
+2-Making	18	Woodworking calculators and shop math	USDA Wood Handbook	https://www.fpl.fs.usda.gov/products/publications/several_pubs.php?grouping_id=100&header_id=p	community			Authoritative reference for wood-as-engineering-material properties
+2-Making	19	Build technique references	Bart Hopkin — Musical Instrument Design	https://www.barthopkin.com/	community			Canonical experimental-instrument-builder book and EMI magazine
+2-Making	19	Build technique references	Euphonics — Jim Woodhouse	https://euphonics.org/	community			Free online musical-acoustics textbook
+2-Making	19	Build technique references	Nederveen — Acoustical Aspects of Woodwind Instruments	https://www.amazon.com/Acoustical-Aspects-Woodwind-Instruments-Cornelis/dp/0875805779	community			Demakein's hole-correction physics source
+2-Making	19	Build technique references	Benade — Fundamentals of Musical Acoustics	https://store.doverpublications.com/0486264844.html	community			Cheap Dover paperback companion to Nederveen
+2-Making	19	Build technique references	Maslow CNC community	https://forums.maslowcnc.com/	community			Open-hardware CNC forum with open-source instrument threads
+2-Making	19	Build technique references	Chiff & Fipple Whistle Making	https://forums.chiffandfipple.com/c/whistle-making	community			Hole-sizing experiments and Flutomat tweaks; fipple wisdom database
+3-Playing	20	Music notation engravers and editors	LilyPond	https://lilypond.org/	library;CAD	star		Text-based music engraver; best output quality
+3-Playing	20	Music notation engravers and editors	MuseScore	https://musescore.org/	library	star		WYSIWYG notation editor with plugin ecosystem
+3-Playing	20	Music notation engravers and editors	Frescobaldi	https://www.frescobaldi.org/	library			LilyPond IDE with syntax highlighting and score wizards
+3-Playing	20	Music notation engravers and editors	Denemo	https://www.denemo.org/	library			Note-entry editor that typesets via LilyPond; accepts MIDI input
+3-Playing	20a	ABC notation	Michael Eskin's ABC Transcription Tools	https://michaeleskin.com/abctools/userguide.html	library;community	star		Browser-based trad-music swiss army knife; auto-generates fingering tablature
+3-Playing	20a	ABC notation	abcjs	https://www.abcjs.net/	library	star		JS engine for rendering ABC in web pages with audio playback
+3-Playing	20a	ABC notation	EasyABC	https://github.com/jwdj/EasyABC	library			Desktop ABC editor and player
+3-Playing	20a	ABC notation	abcm2ps	https://abcplus.sourceforge.net/	library			Command-line ABC to PostScript/PDF/SVG compiler
+3-Playing	20a	ABC notation	ABC Plus book (Gonzato)	https://abcplus.sourceforge.net/	community			Free PDF book on practical ABC notation
+3-Playing	20b	Web-native notation rendering	Verovio	https://www.verovio.org/	library	star	LGPL	C++ engraving library for MEI; renders to interactive SVG
+3-Playing	20b	Web-native notation rendering	Open Sheet Music Display (OSMD)	https://opensheetmusicdisplay.org/	library			JS MusicXML renderer for browser embeds
+3-Playing	20c	Programmatic music and MusicXML	music21	http://web.mit.edu/music21/	library	star	BSD	MIT Python toolkit for computational musicology
+3-Playing	20c	Programmatic music and MusicXML	abjad	https://abjad.github.io/	library			Python API for programmatically composing LilyPond scores
+3-Playing	20d	Fingering chart generators	Bret Pimentel's Fingering Diagram Builder	https://fingering.bretpimentel.com/	calculator	star		Web-based fingering chart generator for flute/oboe/clarinet/sax/recorder
+3-Playing	20d	Fingering chart generators	MuseScore Fingering Diagram plugin	https://musescore.org/en/project/fingering-diagram	library	star		Auto-embeds fingering diagrams into scores for many woodwinds
+3-Playing	20d	Fingering chart generators	Woodwind Fingering Guide	https://www.wfg.woodwind.org/	community			Canonical reference site for woodwind fingerings across many instruments
+3-Playing	20d	Fingering chart generators	kaydol/RecorderSheetMusicHelper	https://github.com/kaydol/RecorderSheetMusicHelper	library			Python script template for note-name to recorder fingering image
+3-Playing	20e	Tablature	TuxGuitar	https://tuxguitar.org/	library		LGPL	Multitrack tablature editor supporting any fretted/string instrument
+3-Playing	21	Public-domain score libraries	Mutopia Project	https://www.mutopiaproject.org/	community	star		~2,100 public-domain pieces with editable LilyPond source
+3-Playing	21	Public-domain score libraries	IMSLP / Petrucci Music Library	https://imslp.org/	community			Canonical scanned public-domain score archive
+3-Playing	21	Public-domain score libraries	CPDL / ChoralWiki	https://www.cpdl.org/	community			Choral-music-focused public-domain repository
+3-Playing	22	SoundFonts and sample playback	Polyphone	https://www.polyphone.io/	library	star		Open-source SoundFont editor for sampling built instruments
+3-Playing	22	SoundFonts and sample playback	GeneralUser GS	http://schristiancollins.com/generaluser.php	community			Most-recommended free general-MIDI SoundFont; ~30 MB
+3-Playing	22	SoundFonts and sample playback	Sonatina Symphonic Orchestra	https://sso.mattiaswestlund.net/	community		CC	Free orchestral sample library ~500 MB
+3-Playing	22	SoundFonts and sample playback	Virtual Playing Orchestra	https://virtualplaying.com/virtual-playing-orchestra/	community		CC0	Full free orchestral sample library
+3-Playing	22	SoundFonts and sample playback	chusocol	https://github.com/pakitochus/chusocol	community			Curated SoundFont collection for live musicians
+4-Owning	23	Finishing and surface treatments	Tru-Oil (Birchwood Casey)	https://www.birchwoodcasey.com/firearm-care/wood-stock-finishes/tru-oil-stock-finish	community	star		Tung-oil/varnish blend wipe-on finish; already in Tony's BOM
+4-Owning	23	Finishing and surface treatments	Rubio Monocoat Oil Plus 2C	https://www.rubiomonocoatusa.com/pages/food-contact-compliance	community	star		Single-coat food-contact-certified hard wax oil; VOC-free
+4-Owning	23	Finishing and surface treatments	Howard's Feed-N-Wax	https://www.howardproducts.com/products/feed-n-wax	community	star		Maintenance wax (carnauba + orange oil + beeswax); already in Tony's BOM
+4-Owning	23	Finishing and surface treatments	Tried & True Original	https://www.triedandtruewoodfinish.com/	community			Pure polymerized linseed + beeswax; food-safe even uncured
+4-Owning	23	Finishing and surface treatments	Osmo Polyx-Oil	https://www.osmona.com/	community			Premium German hard-wax oil; European luthier favorite
+4-Owning	23	Finishing and surface treatments	Bob Flexner — Understanding Wood Finishing	https://www.popularwoodworking.com/store/understanding-wood-finishing/	community			Canonical finishing textbook explaining the chemistry
+4-Owning	24	Audio recording and production	Ardour	https://ardour.org/	library	star	GPL	Open-source professional cross-platform DAW
+4-Owning	24	Audio recording and production	LMMS	https://lmms.io/	library			FL-Studio-style open-source DAW; MIDI-focused
+4-Owning	24	Audio recording and production	Waveform Free	https://www.tracktion.com/products/waveform-free	library			Full-featured free DAW with cross-platform Linux support
+4-Owning	24	Audio recording and production	Calf Studio Gear	https://calf-studio-gear.org/	library			Open-source LV2 plugin suite (EQ/comp/reverb)
+4-Owning	24	Audio recording and production	LSP (Linux Studio Plugins)	https://lsp-plug.in/	library			Large open-source LV2/VST plugin collection
+4-Owning	24	Audio recording and production	x42-plugins	https://x42-plugins.com/x42/	library			Specialist LV2 plugins for measurement work
+4-Owning	24	Audio recording and production	Hairless MIDI-Serial bridge	https://projectgus.github.io/hairless-midiserial/	library			Bridge between MIDI and Arduino-style serial devices
+4-Owning	25	Accessories and maintenance	Boveda 49% humidity packs	https://bovedainc.com/wood-instruments-music/	community	star		Two-way humidity control packs for instrument cases; 40-60% RH
+4-Owning	25	Accessories and maintenance	D'Addario Humidipak	https://www.daddario.com/	community			Direct Boveda competitor
+4-Owning	25	Accessories and maintenance	Cleartune mobile tuner	https://cleartune.com/	community			Standard chromatic tuner mobile app (~$5)
+4-Owning	25	Accessories and maintenance	gStrings (F-Droid)	https://f-droid.org/en/packages/org.cohortor.gstrings/	library			Open-source Android chromatic tuner
+4-Owning	26	Instrument cases	Pelican Cases	https://www.pelican.com/	community	star		Industry-standard hard cases (1500/1510/1610 fit flute families)
+4-Owning	26	Instrument cases	Nanuk Cases	https://nanuk.com/	community			Pelican competitor; often cheaper, similar quality
+4-Owning	26	Instrument cases	Pelican Custom Foam Design Center	https://foam.pelican.com/	community			Free waterjet-cut foam design tool
+4-Owning	26	Instrument cases	MyCaseBuilder	https://mycasebuilder.com/	community			Third-party custom foam shop for many case brands
+5-Sharing	27	Build-log and documentation site generators	Hugo	https://gohugo.io/	library	star		Go-based; near-instant build times across many instrument repos
+5-Sharing	27	Build-log and documentation site generators	MkDocs + Material	https://squidfunk.github.io/mkdocs-material/	library	star		Python docs SSG with polished theme; technical-doc feel
+5-Sharing	27	Build-log and documentation site generators	Quartz	https://quartz.jzhao.xyz/	library			Markdown notes to wiki-style linked site; cross-repo brain candidate
+5-Sharing	27	Build-log and documentation site generators	Astro	https://astro.build/	library			Multi-framework SSG with islands architecture for interactive widgets
+5-Sharing	27	Build-log and documentation site generators	Docusaurus	https://docusaurus.io/	library			Facebook React-based docs framework with versioned docs
+5-Sharing	27	Build-log and documentation site generators	Jekyll	https://jekyllrb.com/	library			Original GitHub-Pages-native generator
+5-Sharing	28	Photography and presentation	darktable	https://www.darktable.org/	library	star	GPL	Open-source RAW developer; Lightroom analog
+5-Sharing	28	Photography and presentation	RawTherapee	https://rawtherapee.com/	library			RAW developer focused on speed; lower-end hardware friendly
+5-Sharing	28	Photography and presentation	RapidRAW	https://rapidraw.app/	library			Newer (2024) Lightroom-style open-source app
+5-Sharing	28	Photography and presentation	GIMP	https://www.gimp.org/	library	star	GPL	Open-source Photoshop; raster editing for compositing
+5-Sharing	28	Photography and presentation	ExifTool	https://exiftool.org/	library			Command-line metadata tool for batch-tagging instrument photos
+5-Sharing	28	Photography and presentation	digiKam	https://www.digikam.org/	library			Open-source photo management with tagging
+5-Sharing	29	Open-source hardware licensing	CERN OHL-2 (P/W/S)	https://cern-ohl.web.cern.ch/	community	star		Hardware-specific licenses; 3 reciprocity flavors (Permissive/Weak/Strong)
+5-Sharing	29	Open-source hardware licensing	Creative Commons BY-SA 4.0	https://creativecommons.org/licenses/by-sa/4.0/	community	star		Widely-adopted attribution + share-alike; familiar to non-lawyers
+5-Sharing	29	Open-source hardware licensing	TAPR Open Hardware License	https://www.tapr.org/the_tapr_open_hardware_license_v1.0.html	community			Older copyleft-style hardware license
+5-Sharing	29	Open-source hardware licensing	OSHWA Certification	https://certification.oshwa.org/	community	star		Free open-source hardware certification with UID + logo
+5-Sharing	30	Packaging and shipping	USPS Shipping Insurance	https://www.usps.com/ship/insurance-extra-services.htm	community			Priority Mail Express with up to $5,000 declared value
+5-Sharing	30	Packaging and shipping	Heritage Insurance	https://www.heritageinsurance.com/	community			Specialty musical-instrument insurer (transit + gigs + home)
+5-Sharing	30	Packaging and shipping	Clarion Insurance	https://www.clarionins.com/	community			Specialty musical-instrument insurer
+5-Sharing	31	Selling and community channels	Reverb	https://reverb.com/	community	star		Musician-focused marketplace; 5% capped fee post-Etsy spinout
+5-Sharing	31	Selling and community channels	Etsy	https://www.etsy.com/	community			Broader handmade marketplace; higher fees but wider audience
+5-Sharing	31	Selling and community channels	Bandcamp	https://bandcamp.com/	community			Best home for instrument demo tracks; 15% fee
+5-Sharing	31	Selling and community channels	Hackaday.io	https://hackaday.io/	community			Open-hardware project hub with build-log style
+5-Sharing	31	Selling and community channels	Instructables	https://www.instructables.com/	community			Tutorial platform for extracted build steps
+5-Sharing	31	Selling and community channels	The Wood Whisperer	https://thewoodwhisperer.com/	community			Canonical online woodworking education site (Marc Spagnuolo)
+6-Going Deeper	32	Acoustic theory deep-references	Fletcher & Rossing — The Physics of Musical Instruments	https://link.springer.com/book/10.1007/978-0-387-21603-4	community	star		Most-cited textbook in musical acoustics; Springer 2nd ed 1998
+6-Going Deeper	32	Acoustic theory deep-references	Rossing — Springer Handbook of Acoustics	https://link.springer.com/book/10.1007/978-1-4939-0755-7	community			1200+ page broad acoustics reference handbook
+6-Going Deeper	32	Acoustic theory deep-references	Helmholtz — On the Sensations of Tone	https://archive.org/details/onsensationston00helmgoog	community		public domain	1885 founding text of psychoacoustics; free on archive.org
+6-Going Deeper	32	Acoustic theory deep-references	Pierce — The Science of Musical Sound	https://www.amazon.com/Science-Musical-Sound-John-Pierce/dp/0716760053	community			Approachable companion to Fletcher & Rossing
+6-Going Deeper	32	Acoustic theory deep-references	JASA	https://pubs.aip.org/asa/jasa	community			Leading musical-acoustics journal since 1929; subscription
+6-Going Deeper	32	Acoustic theory deep-references	JASA Express Letters	https://pubs.aip.org/asa/jel	community	star	gold open access	Open-access rapid-turnaround letters journal since 2021
+6-Going Deeper	32	Acoustic theory deep-references	POMA (ASA Proceedings)	https://pubs.aip.org/asa/poma	community		open access	Editor-reviewed open-access ASA conference proceedings
+6-Going Deeper	32	Acoustic theory deep-references	Acoustics Today	https://acousticstoday.org/	community		open access	Open-access magazine from the Acoustical Society of America
+6-Going Deeper	32	Acoustic theory deep-references	Journal of Sound and Vibration	https://www.sciencedirect.com/journal/journal-of-sound-and-vibration	community			Elsevier subscription; structural vibration focus
+6-Going Deeper	32	Acoustic theory deep-references	Acta Acustica	https://acta-acustica.edpsciences.org/	community		gold open access	European acoustics journal; Bordeaux openwind team publishes here
+6-Going Deeper	32	Acoustic theory deep-references	Stanford CCRMA courses	https://ccrma.stanford.edu/courses/	community	star		Music 150 Musical Acoustics + public online courses
+6-Going Deeper	32	Acoustic theory deep-references	MIT OpenCourseWare	https://ocw.mit.edu/search/?q=acoustics	community		CC	Free MIT course materials; search 'acoustics'
+6-Going Deeper	33	Shop setup and tool maintenance	Bill Pentz Dust Collection Research	https://billpentz.com/woodworking/cyclone/	community	star	CC	Canonical free woodworking dust-collection resource; cyclone plans + safety
+6-Going Deeper	33	Shop setup and tool maintenance	ClearVue Cyclones	https://www.clearvuecyclones.com/	community			Only commercial vendor licensed to manufacture Pentz-design cyclones
+6-Going Deeper	33	Shop setup and tool maintenance	Oneida Air Systems	https://www.oneida-air.com/	community			Commercial dust-collection systems
+6-Going Deeper	33	Shop setup and tool maintenance	3M 7500-series respirator + P100	https://www.3m.com/	community			NIOSH-approved half-face respirator standard for woodworking
+6-Going Deeper	33	Shop setup and tool maintenance	Paul Sellers sharpening videos	https://paulsellers.com/	community	star		Free traditional-woodworker sharpening tutorials
+6-Going Deeper	33	Shop setup and tool maintenance	Stumpy Nubs Woodworking	https://www.stumpynubs.com/	community			YouTube channel for jigs and sharpening tips
+6-Going Deeper	33	Shop setup and tool maintenance	Lie-Nielsen Toolworks guides	https://www.lie-nielsen.com/	community			Premium plane/chisel maker's free tutorials
+6-Going Deeper	33	Shop setup and tool maintenance	OSHA Wood Dust Standard	https://www.osha.gov/wood-dust	community			Federal occupational standard for wood dust exposure
+6-Going Deeper	33	Shop setup and tool maintenance	NIOSH wood dust page	https://www.cdc.gov/niosh/topics/wooddust/	community			CDC research on wood dust health effects and allergens
+6-Going Deeper	34	Programming and scripting references	NumPy	https://numpy.org/	library	star	BSD	Scientific Python foundation; array math
+6-Going Deeper	34	Programming and scripting references	SciPy	https://scipy.org/	library	star	BSD	Scientific computing including optimize module for custom solvers
+6-Going Deeper	34	Programming and scripting references	matplotlib	https://matplotlib.org/	library	star	BSD	Print-quality plotting library
+6-Going Deeper	34	Programming and scripting references	Plotly (Python)	https://plotly.com/python/	library	star	MIT	Interactive web-embeddable plots
+6-Going Deeper	34	Programming and scripting references	CadQuery	https://cadquery.github.io/	CAD;library	star	Apache 2	Python parametric CAD using OpenCASCADE kernel
+6-Going Deeper	34	Programming and scripting references	cqparts	https://cqparts.github.io/	CAD;library			Assembly and parts management layer on CadQuery
+6-Going Deeper	34	Programming and scripting references	Build123d	https://github.com/gumyr/build123d	CAD;library			Newer (2023) friendlier API over CadQuery kernel
+6-Going Deeper	34	Programming and scripting references	Jupyter notebooks	https://jupyter.org/	library		BSD	Standard exploratory Python environment with inline plots
+6-Going Deeper	34	Programming and scripting references	Tone.js	https://tonejs.github.io/	library	star	MIT	Web Audio framework for interactive browser music
+6-Going Deeper	34	Programming and scripting references	D3.js	https://d3js.org/	library		BSD	Data visualization library for the web
+6-Going Deeper	34	Programming and scripting references	Web Audio API (MDN)	https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API	community			Browser audio standard reference
+6-Going Deeper	34	Programming and scripting references	awesome-javascript-audio	https://github.com/sc0ttj/awesome-javascript-audio	community			Curated list of JS audio libraries
+6-Going Deeper	34	Programming and scripting references	Go standard library	https://pkg.go.dev/std	library		BSD	Single static binary CLI tool builds
+6-Going Deeper	34	Programming and scripting references	Wolfram Language documentation	https://reference.wolfram.com/language/	library	star		Symbolic-math-first language for acoustic derivations
+6-Going Deeper	34	Programming and scripting references	Wolfram Cloud (free tier)	https://www.wolframcloud.com/	library			Run Wolfram code in browser without buying Mathematica
+6-Going Deeper	34	Programming and scripting references	Wolfram Formula Repository — Helmholtz Resonator	https://resources.wolframcloud.com/FormulaRepository/resources/Helmholtz-Resonator-Frequency	library			Community-contributed Helmholtz resonator formula
+6-Going Deeper	34	Programming and scripting references	awesome-cad	https://github.com/strootman/awesome-CAD	community			Open-source CAD ecosystem index
