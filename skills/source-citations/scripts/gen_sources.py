@@ -65,13 +65,24 @@ def load_registry(path: Path):
 
 
 def _scalar(v: str):
-    v = v.strip()
+    v = _strip_inline_comment(v.strip())
     if v.startswith("[") and v.endswith("]"):
         inner = v[1:-1].strip()
         if not inner:
             return []
         return [_unquote(x.strip()) for x in inner.split(",")]
     return _unquote(v)
+
+
+def _strip_inline_comment(v: str) -> str:
+    # Drop a YAML inline comment ( ` #...` ) from an unquoted scalar. A `#`
+    # only starts a comment when preceded by whitespace; mid-token `#` (e.g.
+    # in a URL fragment) stays. Quoted scalars pass through untouched.
+    v = v.strip()
+    if v.startswith('"') or v.startswith("'"):
+        return v
+    i = v.find(" #")
+    return v[:i].rstrip() if i != -1 else v
 
 
 def _unquote(v: str) -> str:

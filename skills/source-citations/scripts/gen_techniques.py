@@ -30,8 +30,19 @@ def _unquote(v: str) -> str:
     return v
 
 
-def _scalar(v: str):
+def _strip_inline_comment(v: str) -> str:
+    # Strip a YAML inline comment ( ` #...` ) from an unquoted scalar. A `#`
+    # only starts a comment when preceded by whitespace; mid-token `#` (e.g. in
+    # a URL fragment) stays. Quoted scalars pass through untouched.
     v = v.strip()
+    if v.startswith('"') or v.startswith("'"):
+        return v
+    i = v.find(" #")
+    return v[:i].rstrip() if i != -1 else v
+
+
+def _scalar(v: str):
+    v = _strip_inline_comment(v.strip())
     if v.startswith("[") and v.endswith("]"):
         inner = v[1:-1].strip()
         return [_unquote(x.strip()) for x in inner.split(",")] if inner else []
