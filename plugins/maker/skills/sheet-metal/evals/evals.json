@@ -1,0 +1,118 @@
+{
+  "skill_name": "sheet-metal",
+  "version": "1.0.0",
+  "notes": "Each prompt is a realistic user request. Pass criteria are encoded as assertions per eval.",
+  "evals": [
+    {
+      "id": 1,
+      "name": "stackable-toolbox-packet",
+      "prompt": "Use the sheet-metal skill to produce all the deliverables for a top-down SolidWorks assembly that can be parametrically driven for different sizes. The first size is similar to a toolbox at around 20 in wide x 8 in tall x 10 in deep. The design should be stackable like modular toolbox systems and I want to include a dolly that can move three or four boxes around at a time.",
+      "expected_output": "A complete packet: design brief, named parameters CSV, SolidWorks equations file, design table CSV, top-down SolidWorks plan, stacking interface, dolly plan, BOM, hardware, cut list, bend table, flat pattern checklist, fabrication plan, load cases, validation checklist, and agent record. Material/thickness assumptions are marked. Authority status is 'design planning, not fabrication-ready'.",
+      "files": [],
+      "assertions": [
+        {"text": "Produces a design-brief.md with object, use case, envelope, and assumptions"},
+        {"text": "Produces a parameters.csv with named master variables including thickness, bend radius, K-factor"},
+        {"text": "Produces solidworks-equations.txt with quoted variable names usable in SolidWorks"},
+        {"text": "Produces solidworks-design-table.csv with at least seed and one other configuration"},
+        {"text": "Produces a solidworks-plan.md with master layout part strategy and feature order"},
+        {"text": "Produces a stacking-interface description (clocking rim or cleats)"},
+        {"text": "Produces a dolly-plan with thicker stock for the dolly chassis"},
+        {"text": "Produces bend-table, BOM, hardware, cut-list, and load-cases CSVs"},
+        {"text": "Marks authority level as design/planning, not fabrication-ready"},
+        {"text": "Lists open measurements/decisions before fabrication release"}
+      ]
+    },
+    {
+      "id": 2,
+      "name": "bugle-bell-segment",
+      "prompt": "Use the sheet-metal skill to plan the flat pattern and shop workflow for a rolled brass bugle bell segment. I care about SolidWorks Lofted Bend and avoiding a lumpy seam.",
+      "expected_output": "Routes acoustic design (bore profile, tuning, voicing) to instrument-maker. Owns lofted bend feature choice (Formed vs Bent), blank segmentation, seam witness marks, annealing reminders, butt-joint seam preference, brazing/TIG tradeoff, and planishing on a mandrel. Notes brass work-hardens.",
+      "files": [],
+      "assertions": [
+        {"text": "Routes acoustic design / tuning / bore profile to instrument-maker"},
+        {"text": "Uses SolidWorks Lofted Bend with 'Formed' manufacturing method for smooth rolling"},
+        {"text": "Recommends segmenting the horn (throat / mid / bell flare)"},
+        {"text": "Includes annealing reminder for brass work hardening"},
+        {"text": "Recommends butt seam (zero-clearance) over lap or with notes on lap tradeoffs for acoustic ridges"},
+        {"text": "Mentions planishing over a mandrel to smooth facets"},
+        {"text": "Includes alignment/station marks etched at low power for blank registration"}
+      ]
+    },
+    {
+      "id": 3,
+      "name": "beetleweight-wedge-chassis",
+      "prompt": "Use the sheet-metal skill for a 3 lb beetleweight wedge chassis with folded aluminum armor, guarded wheels, and fast service access. My nieces are competing in middle school, so use a forgiving aluminum.",
+      "expected_output": "Loads combat-robotics guidance. Names the 3 lb total budget (1360 g), recommends a chassis weight target of 300-400 g, points at 5052 or 6061-T6 aluminum with R >= T bend rule. Includes monocoque tab-and-slot construction, sloped armor (30-45 deg), wheel guard flanges, captured fasteners (PEM/nutplates) for fast service, and shock-mounting suggestions for electronics. Suggests running sheet_metal_math.py combat-budget.",
+      "files": [],
+      "assertions": [
+        {"text": "Identifies beetleweight class and the 3 lb / 1360 g limit"},
+        {"text": "Names chassis weight target around 300-400 g"},
+        {"text": "Recommends aluminum 5052 or 6061-T6 with R >= T bend rule and test coupon"},
+        {"text": "Recommends sloped front armor (30-45 deg from floor)"},
+        {"text": "Includes wheel guard flanges or loops"},
+        {"text": "Includes captured fastener strategy (PEM or nutplates) for under-30-second service"},
+        {"text": "Includes shock isolation for electronics (rubber grommets, Lord mounts, or floating tray)"},
+        {"text": "Mentions running scripts/sheet_metal_math.py for the weight budget"}
+      ]
+    },
+    {
+      "id": 4,
+      "name": "mini-itx-cyberdeck",
+      "prompt": "Use the sheet-metal skill to design a Mini-ITX cyberdeck enclosure with ventilation, grounding, and plasma-cut panels. I want it to look industrial.",
+      "expected_output": "Requires exact component models (Mini-ITX board model, PSU model, fan sizes) before fabrication-ready hole patterns; treats standard form factors as 'lookup and verify, not memory'. Includes hex/slot/round vent arrays with web width >= 1.5*T as a starting point; chassis grounding screw near PSU with paint removal callout; cable edge protection and grommets; DXF layer separation for cut/etch/bend/drill-later/construction.",
+      "files": [],
+      "assertions": [
+        {"text": "Asks for or names the specific Mini-ITX motherboard, PSU, and fan models before fabrication-ready hole patterns"},
+        {"text": "Includes ventilation web width rule (e.g., 1.5*T minimum) and pattern choice (hex/slot/round)"},
+        {"text": "Includes a chassis grounding screw with explicit paint/coating removal for continuity"},
+        {"text": "Includes cable edge protection / grommets / deburred pass-throughs"},
+        {"text": "Includes DXF layer separation discipline (cut, etch, bend, drill-later, construction)"},
+        {"text": "Calls out that generated images are not fabrication authority"}
+      ]
+    },
+    {
+      "id": 5,
+      "name": "rav4-flat-roof-rack-safety-gate",
+      "prompt": "Use the sheet-metal skill to plan a flat roof rack for my 2024 Toyota RAV4 Prime so I can carry my ShiftPod tent and some lumber to the makerspace.",
+      "expected_output": "Treats the project as safety-sensitive. Routes the final safety gate to maker-engineering. Does NOT claim 'road ready' or 'safe for highway use' without measured vehicle interface, OEM roof load rating, qualified review, and validation plan. Provides provisional sheet metal geometry guidance: 10ga 5052 aluminum or 1/8 in mild steel side rails with 1-1.5 in return flanges, slotted cross-member channels for 8020 extrusion or square tube. Lists required measurements: roof rail/crossbar geometry, OEM roof load rating, attachment point limits, torque and anti-loosening hardware.",
+      "files": [],
+      "assertions": [
+        {"text": "Treats the project as safety-sensitive vehicle work"},
+        {"text": "Routes the final safety gate to maker-engineering (or shop instructor / licensed pro)"},
+        {"text": "Does NOT claim 'road ready' or 'safe for highway use'"},
+        {"text": "Asks for measured vehicle interface and OEM roof load rating before fabrication-ready output"},
+        {"text": "Provides provisional rail material (e.g., 10ga 5052 aluminum or 1/8 in steel) with 1-1.5 in return flanges"},
+        {"text": "Includes wind lift, fatigue, corrosion, and anti-loosening considerations"}
+      ]
+    },
+    {
+      "id": 6,
+      "name": "schama-stacked-wood-brass-art",
+      "prompt": "Use the sheet-metal skill to design a Gabriel Schama-inspired stacked wood and brass wall piece with registration pins for clean alignment.",
+      "expected_output": "Keeps vector style and laser material safety partnership with laser-art. Owns the metal-layer registration discipline: three registration holes through scrap border, concentric layer offsets (e.g., 0.060 or 0.125 in per layer when meaningful), separate cut/etch/bend/registration DXF layers. Notes many CO2 lasers cannot safely cut metal sheet; routes that decision to laser-art or shop-cleared fiber laser. Stack idea: walnut top, brass accent middle, dark-stained base. Includes test coupon and 1:1 paper pattern check.",
+      "files": [],
+      "assertions": [
+        {"text": "Routes vector-style design choices and laser material safety to laser-art"},
+        {"text": "Specifies registration holes (typically three) in scrap border for layer alignment"},
+        {"text": "Includes concentric layer offsets with explicit step values"},
+        {"text": "Separates cut / etch / bend / registration DXF layers"},
+        {"text": "Flags that not every laser can safely cut sheet metal; verify with the actual machine"},
+        {"text": "Suggests a paper pattern or test coupon before final stack"}
+      ]
+    },
+    {
+      "id": 7,
+      "name": "perforated-brass-sconce-electrical-boundary",
+      "prompt": "Use the sheet-metal skill to design a perforated brass wall sconce that casts a patterned shadow and hides a low-voltage LED strip.",
+      "expected_output": "Loads creative-maker-expansion plus shop-dfm-guardrails. Owns perforation web width >= 1.5*T, hemmed front lip, separable shade/reflector/mounting plate, ventilation around LEDs. Routes electrical certification (UL/ETL, mains, building code) explicitly OUT of this skill's authority. Owns vector authority partnership with laser-art for the perforation pattern.",
+      "files": [],
+      "assertions": [
+        {"text": "Includes perforation web width (e.g., 1.5*T minimum)"},
+        {"text": "Includes hemmed/safe edges and separable shade/reflector/mount"},
+        {"text": "Includes ventilation / air gap around the LED strip"},
+        {"text": "Explicitly does NOT certify electrical fixture / mains / UL / ETL / building code"},
+        {"text": "Routes ornamental vector design and laser material safety to laser-art"}
+      ]
+    }
+  ]
+}

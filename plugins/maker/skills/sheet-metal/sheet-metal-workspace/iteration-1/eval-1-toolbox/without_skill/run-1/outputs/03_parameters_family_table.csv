@@ -1,0 +1,9 @@
+Configuration,BoxWidth_in,BoxHeight_in,BoxDepth_in,SheetThk_in,LidHeight_in,InterlockSize_in,InterlockHt_in,BoxesOnDolly,Notes
+Small-Half,14,4,8,0.048,1.000,0.75,0.25,4,Organizer / small parts tray
+Small-Full,14,8,8,0.048,1.250,0.75,0.25,4,Hand-tool box small footprint
+Medium-Half,20,4,10,0.048,1.000,1.00,0.25,4,Wide shallow drawer-style
+Medium-Full,20,8,10,0.048,1.250,1.00,0.25,4,DEFAULT - matches user spec
+Medium-Deep,20,12,10,0.048,1.500,1.00,0.25,3,Power-tool box; 3 on dolly
+Large-Half,24,4,12,0.060,1.000,1.25,0.25,3,16 ga for stiffness at width
+Large-Full,24,8,12,0.060,1.500,1.25,0.25,3,Top-stack box, locking lid
+Large-Deep,24,14,12,0.060,1.500,1.25,0.25,3,Heaviest member; 16 ga

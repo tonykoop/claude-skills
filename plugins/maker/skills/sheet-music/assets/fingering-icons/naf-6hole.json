@@ -1,0 +1,25 @@
+{
+  "scheme": "naf-6hole",
+  "instrument_family": "flute",
+  "instrument_subfamily": "ducted",
+  "tuning_assumed": "A-minor pentatonic, A-tuned NAF",
+  "holes": [
+    { "id": "h1", "y": 0, "label": "top hand index" },
+    { "id": "h2", "y": 1, "label": "top hand middle" },
+    { "id": "h3", "y": 2, "label": "top hand ring" },
+    { "id": "h4", "y": 3, "label": "bottom hand index" },
+    { "id": "h5", "y": 4, "label": "bottom hand middle" },
+    { "id": "h6", "y": 5, "label": "bottom hand ring" }
+  ],
+  "fingerings": {
+    "A4": ["h1","h2","h3","h4","h5","h6"],
+    "C5": ["h1","h2","h3","h4","h5"],
+    "D5": ["h1","h2","h3","h4"],
+    "E5": ["h1","h2","h3"],
+    "G5": ["h1","h2"],
+    "A5": [],
+    "C6": ["h2","h3","h4","h5"],
+    "D6": ["h2","h3","h4"]
+  },
+  "notes": "Pentatonic core. The 5th-mode cross-fingerings (for the major mode) are not encoded yet — add a 'cross_fingerings' map in v0.2 if needed."
+}

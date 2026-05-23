@@ -1,0 +1,41 @@
+{
+  "tune": "catalog/public-domain/celtic/loch-lomond/tune.abc",
+  "instrument": "great-highland-pipe",
+  "stages": {
+    "lilypond": {
+      "status": "error",
+      "ok": false,
+      "log": "music21 path failed: Cannot find a copy of Lilypond installed on your system. Please be sure it is installed. And that your environment.UserSettings()['lilypondPath'] is set to find it.\nno LilyPond converter worked. Install music21 (pip install music21) or LilyPond (provides abc2ly)."
+    },
+    "musicxml": {
+      "status": "ok",
+      "ok": true,
+      "log": ""
+    },
+    "midi": {
+      "status": "ok",
+      "ok": true,
+      "log": ""
+    },
+    "fingering": {
+      "status": "ok",
+      "ok": true,
+      "log": ""
+    },
+    "audio": {
+      "status": "error",
+      "ok": false,
+      "log": "audio rendering skipped: no working renderer.\nOptions:\n  - install fluidsynth and a soundfont (see references/audio-rendering.md)\n  - install timidity\nMIDI is at: examples/great-highland-pipe-songbook/01-easy/loch-lomond/tune.mid"
+    },
+    "svg-staff": {
+      "status": "error",
+      "ok": false,
+      "log": "missing lilypond input: examples/great-highland-pipe-songbook/01-easy/loch-lomond/tune.ly"
+    },
+    "songsheet": {
+      "status": "ok",
+      "ok": true,
+      "log": ""
+    }
+  }
+}

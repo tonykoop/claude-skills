@@ -1,0 +1,50 @@
+# DoE study protocol template
+# Copy into <project>/doe/study-NN-protocol.yaml and edit.
+# Schema reference: references/doe-integration.md
+
+study_id: 1
+project_slug: my-project
+title: Short descriptive title
+date_planned: 2026-01-01
+hypothesis: |
+  One paragraph stating what you expect to find and why you're
+  bothering to run the study.
+
+factors:
+  - name: factor_a
+    levels: [low, mid, high]   # 2-3 levels typical
+    unit: ""
+  - name: factor_b
+    levels: [low, high]
+    unit: ""
+  # Up to 3 factors comfortably; more requires a custom design
+
+replicates: 2                  # ≥2 to estimate within-cell variance
+randomize: true
+
+response_variable:
+  name: primary_response_name
+  unit: ""
+  measurement_method: how the response is measured
+
+secondary_responses:
+  - name: secondary_response_a
+    scale: 1-5
+  - name: cycle_time
+    unit: seconds
+
+materials:
+  - id: material-id-from-space-profile
+    qty: 1
+    notes: ""
+
+tools:
+  - id: tool-id-from-space-profile
+    space: space-slug
+
+total_estimated_runtime_min: 60
+
+analysis_plan: |
+  Describe how you will analyze the data. Most maker-scale DoEs
+  benefit from per-cell mean + stddev tables and a visual plot.
+  Mention if you'll do ANOVA or just visual inspection.

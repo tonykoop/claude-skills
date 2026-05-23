@@ -1,0 +1,21 @@
+X:1
+T:Intervals — GHP chanter
+C:Tony Koop / sheet-music skill (warmup)
+M:4/4
+L:1/4
+Q:1/4=72
+K:Amix
+H:Walk through the chanter in 2nds, 3rds, 4ths, and 5ths. Sit on
+H:the destination note long enough to settle the tone before moving
+H:on. NO RESTS — the long tones replace what would be silences in
+H:a non-pipe instrument's interval drill.
+% --- 2nds (step pairs) ---
+G2 A2 | A2 B2 | B2 c2 | c2 d2 | d2 e2 | e2 f2 | f2 g2 | g2 a2 |
+% --- 3rds ---
+G2 B2 | A2 c2 | B2 d2 | c2 e2 | d2 f2 | e2 g2 | f2 a2 |
+% --- 4ths ---
+G2 c2 | A2 d2 | B2 e2 | c2 f2 | d2 g2 | e2 a2 |
+% --- 5ths ---
+G2 d2 | A2 e2 | B2 f2 | c2 g2 | d2 a2 |
+% --- Cadence: held low A under continuous bag ---
+A8 |]

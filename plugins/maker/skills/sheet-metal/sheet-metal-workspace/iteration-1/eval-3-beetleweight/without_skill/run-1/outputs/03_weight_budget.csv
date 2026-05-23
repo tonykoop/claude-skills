@@ -1,0 +1,28 @@
+item,qty,unit_weight_g,subtotal_g,notes
+Folded armor shell 5052-H32 1.6mm,1,310,310,Top wedge sides rear - one piece blank
+Internal frame plate 6061-T6 3mm,1,180,180,Motor mount + electronics tray
+Front wedge tip reinforcement strip,1,28,28,Doubler welded--actually riveted--at leading edge
+N20-style gearmotor 1000rpm 30:1,2,52,104,Drive motors
+Lite-flite wheel 40mm OD foam-filled,2,18,36,Includes hub
+Wheel hub set screw + key,2,3,6,Hardware
+Wheel guard / fender 1.6mm 5052,2,22,44,Folded U-channel over each wheel
+Motor coupler / shaft adapter,2,6,12,M3 set screw style
+ESC dual brushed,1,18,18,
+Receiver 2.4GHz micro,1,5,5,
+3S 450mAh 35C LiPo battery,1,42,42,Primary
+Battery velcro strap,1,4,4,Quick-swap retention
+Removable arming link (bolt+lug),1,8,8,Kid-safe arm/disarm
+Power wiring 16AWG silicone,1,18,18,Internal harness
+XT30 connector pair,1,5,5,Battery interface
+Wheel-side bearing 3x8x4 flanged,2,2,4,Outboard support if needed
+M3 button head SHCS assorted,22,1,22,Fasteners total
+M3 locknut,4,1,4,Wheel guard anchors
+Loctite 243 application,1,0,0,Negligible
+Paint / vinyl wrap,1,8,8,Bright color for niece team identity
+Skid pads UHMW for wedge bottom edge,2,3,6,Reduce arena floor drag
+Tournament tag holder,1,2,2,For weigh-in
+Spare hardware reserve,1,0,0,Carried in pit not bot
+TOTAL,,,866,
+TARGET (95% of 1361g),,,1290,
+HEADROOM,,,424,Room for paint armor doublers extra battery
+NOTES,,,,Conservative estimate. Real builds run 80-95% of class limit. Headroom can absorb second battery for backup or thicker wedge tip doubler.

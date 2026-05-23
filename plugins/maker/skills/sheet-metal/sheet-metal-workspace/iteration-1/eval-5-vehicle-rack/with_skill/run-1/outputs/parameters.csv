@@ -1,0 +1,33 @@
+name,value,units,source,confidence,notes
+Vehicle_Make,Toyota,,user,high,2024 RAV4 Prime
+Vehicle_Model,RAV4 Prime,,user,high,PHEV variant
+Vehicle_Year,2024,,user,high,
+OEM_Crossbar_Profile,unknown,,needs_measurement,none,Must measure cross-section before clamp selection
+OEM_Roof_Load_Rating_Dynamic,unknown,lb,needs_lookup,none,User must check owner's manual; do not assume
+OEM_Crossbar_Spread,unknown,in,needs_measurement,none,Distance between front and rear factory bar centerlines
+OEM_Crossbar_Feet_Spacing,unknown,in,needs_measurement,none,Distance between attachment feet on each bar
+Platform_Length,52,in,planning_assumption,low,Provisional; verify fits within OEM-allowed overhang
+Platform_Width,48,in,planning_assumption,low,Fits 48 in plasma bed and 48 in brake
+Side_Rail_Return_Flange,1.5,in,planning_assumption,medium,Adds stiffness without big windage
+Deck_Material,5052-H32 aluminum,,planning_assumption,medium,Corrosion resistant and formable; alternative is 1/8 in mild steel
+Deck_Thickness,0.102,in,planning_assumption,medium,10 ga; verify brake capacity for full 48 in width
+Material_Thickness,0.102,in,planning_assumption,medium,Same as Deck_Thickness; named for SolidWorks variable
+Inside_Bend_Radius,0.125,in,planning_assumption,medium,R approximately T+ for 5052; verify with test coupon
+K_Factor,0.44,unitless,planning_range,medium,5052 aluminum planning range 0.42 to 0.48
+Clearance_Gap,0.06,in,planning_assumption,low,For deck slat / extrusion fit
+Kerf,0.07,in,planning_assumption,medium,Plasma planning range 0.06 to 0.08 in
+Hardware_Pitch,4.0,in,planning_assumption,medium,Tie-down slot pitch around perimeter
+Relief_Size,0.20,in,planning_assumption,medium,Approx 2x thickness for corner reliefs
+Crossbar_Mount_Count,4,count,planning_assumption,medium,2 clamps per OEM bar x 2 bars
+Crossbar_Clamp_Make,unknown,,user_selects,none,Must be commercially rated; user picks Rhino-Rack/Yakima/Front Runner
+Clamp_Bolt_Size,M8,,planning_assumption,low,Subject to actual clamp specification
+Deck_Slot_Width,0.25,in,planning_assumption,medium,For ratchet hook clearance
+Deck_Slot_Length,1.00,in,planning_assumption,medium,Allows soft shackle
+Deck_Slot_Pitch,4.0,in,planning_assumption,medium,Around the perimeter rail
+ShiftPod_Weight_Estimate,55,lb,user_estimate_needs_verify,low,Bagged ShiftPod 2 nominal; user must weigh actual unit
+Lumber_Max_Weight,150,lb,user_estimate_needs_verify,low,Per trip; example: 6 sheets 1/2 in plywood ~ 250 lb (over budget)
+Static_Payload_Budget,135,lb,planning_assumption,low,Below assumed OEM 150 lb dynamic minus tent and straps; CONFIRM OEM rating first
+Dynamic_Factor,3.0,unitless,planning_assumption,medium,Roof rack rule-of-thumb x2 to x4 for road impacts
+Wind_Lift_Estimate,unknown,lb,needs_calculation,none,Depends on frontal area and speed; user provides
+Safety_Factor_Target,2.0,unitless,planning_assumption,medium,Provisional only; final SF set by qualified review
+Authority_Level,design_and_CAD_planning,,skill_policy,high,Not fabrication-ready; not road-ready

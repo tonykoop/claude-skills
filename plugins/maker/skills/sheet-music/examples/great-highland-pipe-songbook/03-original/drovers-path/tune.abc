@@ -1,0 +1,23 @@
+X:1
+T:Drover's Path
+C:Heifer Zephyr / Tony Koop (2026)
+S:Original — MIT-licensed within sheet-music repo
+M:4/4
+L:1/8
+Q:1/4=76
+K:Amix
+H:Composed for Great Highland Pipe (chanter).
+H:Range: G4 - A5. Scale: A mixolydian (9-note chanter, all notes used).
+H:Form: AABA, 32 bars total. Slow march, q = 76.
+H:Mood: dignified, drover walking cattle through highland mist.
+H:NO RESTS — phrase ends are held tones, not silences. Doublings on
+H:long notes; throw on D when D follows a lower pitch.
+% --- A part (8 bars, repeated; the home phrase: low A -> fifth -> return) ---
+|: {GdG}A2 {GBG}A2 {GdG}c2 d2 | {GeG}e4 {GeG}d2 c2 | {GdG}A2 {GBG}B2 {GdG}c2 d2 | {gf}f2 e2 {GeG}d2 c2 |
+   {GdG}A2 {GBG}A2 {GdG}c2 d2 | {GeG}e4 {GeG}d2 c2 | {GdG}A2 c2 d2 e2 | {GBG}A8 :|
+% --- B part (8 bars; rises into the high half of the chanter) ---
+{ge}e2 {gf}f2 {gag}a2 g2 | {gf}f2 e2 c2 d2 | {ge}e2 {gf}f2 {gag}a4 | {gag}a2 g2 f2 e2 |
+{ge}e2 {gf}f2 {gag}a2 g2 | {gf}f2 e2 c2 d2 | {GeG}e2 d2 c2 {GdG}A2 | {GBG}A8 |
+% --- Final A part (8 bars; restates the home phrase with a longer cadence) ---
+{GdG}A2 {GBG}A2 {GdG}c2 d2 | {GeG}e4 {GeG}d2 c2 | {GdG}A2 {GBG}B2 {GdG}c2 d2 | {gf}f2 e2 {GeG}d2 c2 |
+{GdG}A2 {GBG}A2 {GdG}c2 d2 | {GeG}e4 {GeG}d2 c2 | {GdG}A2 c2 d2 e2 | {GBG}A8 |]

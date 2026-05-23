@@ -1,0 +1,4 @@
+interface:
+  display_name: "Reverse Engineer"
+  short_description: "Uncertainty-aware object analysis"
+  default_prompt: "Use $reverse-engineer to analyze this object from photos, separate observations from inferences, and tell me what measurements are needed next."

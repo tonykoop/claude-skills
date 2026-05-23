@@ -1,0 +1,48 @@
+name: makerspace
+version: 1.1.3
+description: |
+  Fabrication specialist for jigs, fixtures, workholding, machine-aware
+  process plans, and make/order/buy/borrow decisions. Uses shop profiles
+  or lightweight equipment templates to produce repeatable shop packets
+  with safety, tolerance, setup, DXF/CNC handoff, and repo-backed fabrication
+  handoff checks.
+authors:
+  - name: <your-name>
+    url: https://github.com/<your-username>
+license: MIT
+homepage: https://github.com/<your-username>/makerspace
+keywords:
+  - makerspace
+  - fabrication
+  - jig
+  - fixture
+  - workholding
+  - shop-process
+  - machine-planning
+  - make-order-buy-borrow
+  - tooling
+  - cnc
+  - laser
+  - dxf
+  - woodworking
+  - mechanism
+  - handoff
+  - mill
+  - router
+  - makerspace-profile
+compatibility:
+  cowork: ">=0.1"
+  claude-code: ">=0.1"
+  features:
+    - subagents       # nice to have, not required for v0.1
+    - bash            # required for scripts/
+    - file-write      # required to emit packets
+artifacts:
+  - SKILL.md
+  - agents/
+  - references/
+  - scripts/
+  - assets/
+  - spaces/
+  - examples/
+  - evals/

@@ -1,0 +1,5 @@
+part_id,part_name,qty,material,stock_id,length_in,width_in,thickness_in,grain_dir,kerf_in,notes
+p001,sign body,1,baltic-birch-quarter,b001,18,6,0.25,length,0.0625,"primary part; CNC-cut from sheet center"
+p002,mounting cleat,2,baltic-birch-quarter,b001,6,0.75,0.25,length,0.0625,"glue-and-screw to back of sign"
+p003,spacer block,4,baltic-birch-quarter,b001,1,1,0.25,length,0.0625,"used to standoff sign from siding"
+p004,test coupon,1,baltic-birch-quarter,b001,4,4,0.25,length,0.0625,"for first-cut feeds/speeds verification before main cut"
