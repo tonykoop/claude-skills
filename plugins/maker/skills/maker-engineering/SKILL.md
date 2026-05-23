@@ -16,6 +16,13 @@ description: >-
 
 # Maker Engineering
 
+## Connectors
+
+This skill works best with these MCP connectors. Claude will suggest connecting any that aren't already linked at the point they're needed (via `mcp__mcp-registry__suggest_connectors`).
+
+- **Wolfram** (`de1d1dc7-ec10-459d-b511-797982834b43`) — required for DoE math, statistical sample sizing, mechanical feasibility checks, safety-gate computations on human-carrying/floatable objects.
+- **GitHub** — optional for routing accepted projects into the right specialist repo and creating intake/handoff issues. No registry UUID; configure via the Claude Code GitHub connector if available.
+
 ## Trigger phrases
 
 - `I want to make X` / `help me design this physical thing`

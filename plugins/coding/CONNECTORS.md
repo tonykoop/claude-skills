@@ -22,6 +22,22 @@ calling them automatically once they're available.
 | **Slack** | `sprint-supervisor` (morning summary delivery), `run-swarm` (manager-pane notifications), `merge-review` (PR ping to channel) | Push the artifacts your skills produce into the channel where standups already happen. |
 | **Notion** | `idea-incubator` (workspace alt to GitHub issues), `scaffold-hygiene` runbooks, `sprint-update` docs | If the team's source of truth is Notion. |
 
+## Codex Desktop integrations
+
+Codex Desktop exposes several app and runtime tools that are not the same as
+Claude's connector registry. When these are available, coding skills should use
+them directly and keep a local-file or CLI fallback.
+
+| Codex app/tool | Pairs with | What it adds |
+|---|---|---|
+| **GitHub** | `merge-review`, `sprint-update`, `run-swarm`, `ci-triage`, `scaffold-hygiene` | Repository, issue, and PR metadata through Codex app tools, useful when `gh` is not authenticated or when a structured API result is cleaner than shell output. |
+| **Gmail** | `sprint-supervisor`, `run-swarm`, `merge-review` | Draft or send summaries, review requests, and handoff emails with artifacts attached. Prefer drafts unless the user explicitly asks to send. |
+| **Google Calendar** | `sprint-supervisor`, `sprint-update`, `tmux-sprint` | Schedule review blocks, sprint ceremonies, or follow-up sessions after checking availability. |
+| **Google Drive / Docs / Sheets / Slides** | `sprint-update`, `ci-triage`, `skills-meta`, `scaffold-hygiene` | Read shared planning docs, import generated reports, inspect comments, and publish status spreadsheets or decks. |
+| **Browser / Chrome** | `merge-review`, `scaffold-hygiene`, UI-heavy PR review | Verify local web apps with screenshots and inspect authenticated remote pages when the user's Chrome profile is required. |
+| **node_repl** | `scaffold-hygiene`, `merge-review`, `skills-meta` | Run quick JS/TS inspections, parse package metadata, and prototype transformations without adding project dependencies. |
+| **multi-agent** | `run-swarm`, `merge-review`, `ci-triage` | Spawn parallel reviewer/explorer agents when the user explicitly asks for agent delegation or swarm-style work. |
+
 ## Wishlist / not yet available
 
 - **Codecov / Coveralls** — coverage delta for `merge-review`. No registry connector yet.

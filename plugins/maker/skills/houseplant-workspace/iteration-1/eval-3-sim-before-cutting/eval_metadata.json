@@ -1,0 +1,15 @@
+{
+  "eval_id": 3,
+  "eval_name": "sim-before-cutting",
+  "prompt": "My ficus twin is already built in Blender — collection is Plant_ficus-benjamina-01, the trunk is `ficus-benjamina-01_trunk_curve`, and I've got primary branches `ficus-benjamina-01_branch_L01` through `_L03` on the left and `_R01` through `_R02` on the right. Before I take the shears to the live plant, I want to see what removing branch L03 (the secondary leader competing with the main apex) and bringing R02 down with wire would actually look like. Build me the simulation, take a viewport screenshot when you're done, and tell me the silhouette change. Do not touch the current-state collections.",
+  "assertions": [
+    {"text": "Calls get_objects_summary or get_blendfile_summary_* before execute_blender_code (verify the named objects exist)"},
+    {"text": "Creates a new sim_<scenario>_<date> collection under 05_simulations/ (uses sim_collection.py OR equivalent)"},
+    {"text": "Generates a wire coil around R02 (uses wire_coil.py OR equivalent helical curve)"},
+    {"text": "Ghosts/hides L03 in the sim WITHOUT mutating the canonical current-state object"},
+    {"text": "Captures a viewport screenshot or render via mcp__Blender__get_screenshot_of_window_as_image or render_thumbnail_to_path / render_viewport_to_path"},
+    {"text": "Describes the silhouette change concretely (apex/right-side weight/canopy asymmetry)"},
+    {"text": "Includes a pruning plan table or equivalent risk-leveled action list"},
+    {"text": "Ends with a Digital twin sync log entry"}
+  ]
+}

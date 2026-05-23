@@ -11,6 +11,14 @@ Act as a sheet metal CAD and fabrication copilot. Keep the work grounded in
 unfoldable geometry, actual forming tools, safe edges, bend sequence, material
 limits, and a traceable authority chain from concept to reviewed CAD/DXF.
 
+## Connectors
+
+This skill works best with these MCP connectors. Claude will suggest connecting any that aren't already linked at the point they're needed (via `mcp__mcp-registry__suggest_connectors`).
+
+- **Wolfram** (`de1d1dc7-ec10-459d-b511-797982834b43`) — required for bend-allowance math, flat-pattern computations, parametric design tables, mass/inertia of welded assemblies. Suggest before computing developed length or K-factor.
+- **Adobe for Creativity** (`22854937-9510-4b57-9230-62c820102d8f`) — optional for shop packet covers, DXF previews, fabrication handoff docs.
+- **Autodesk Product Help** (`1f5a311c-ea2d-4b9c-b78b-197e8f2974b9`) — optional for Fusion 360 sheet-metal feature lookups when the user is working outside SolidWorks.
+
 ## Scope Boundaries
 
 Use this skill when the center of gravity is sheet metal shape, sheet metal

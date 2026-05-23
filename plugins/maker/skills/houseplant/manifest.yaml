@@ -1,0 +1,143 @@
+# Houseplant — Skill Manifest (v0.2.0)
+# Structured discoverability so an agent can read this manifest first,
+# decide what to load, and skip the prose. SKILL.md is the orchestrator;
+# this is its index.
+
+name: houseplant
+version: 0.2.0
+display_name: Houseplant
+audience:
+  - Tony (primary)
+  - Anyone keeping a houseplant or bonsai collection with photo or scan-based digital twins
+
+# Triggers that should reliably invoke this skill. Keep aligned with the
+# SKILL.md frontmatter description.
+triggers:
+  primary:
+    - "plan a structural prune on [plant]"
+    - "wire bend [branch] on my bonsai"
+    - "build a digital twin for [plant]"
+    - "import my [polycam|luma|realityscan] scan of [plant] into Blender"
+    - "set scale from the ruler in my [plant] scan"
+    - "simulate removing [branch] before I cut"
+    - "log that I just pruned/wired/removed wire from [plant]"
+    - "update my [obsidian|spreadsheet] record for [plant]"
+  capture:
+    - "lazy susan video of my plant"
+    - "multi-angle photos with a ruler"
+    - "orbit video of my bonsai"
+  bonsai_specific:
+    - "where should I cut my ficus"
+    - "how to train aerial roots"
+    - "should I rewire my [branch]"
+  records_only:
+    - "log that I watered/fertilized/repotted [plant]"
+    - "draft a calendar reminder for the next inspection"
+
+# References — load only the ones that match the current task.
+references:
+  - path: references/capture-pipeline.md
+    purpose: "Phone-capture modes (multi-angle photos, photogrammetry, orbit video, lazy-susan), required captures per mode, ruler-based scale calibration"
+    load_when: "User is at capture/intake stage with photos, video, scan files, or a ruler in frame"
+  - path: references/blender-digital-twin.md
+    purpose: "Blender MCP tool order, scene contract, bpy patterns, hybrid scan-to-twin recipe, pruning/wiring sims"
+    load_when: "Any task involves Blender, MCP, .blend files, bpy, photogrammetry mesh import, or digital-twin updates"
+  - path: references/bonsai-module.md
+    purpose: "Bonsai intake, styling priorities, pruning plan format, wire/bend planning, aerial-root and bud tracking, ficus-specific notes"
+    load_when: "User asks about pruning, wiring, branch selection, aerial roots, nebari, or bonsai styling"
+  - path: references/collection-records-and-care.md
+    purpose: "Plant-record schema, event log types, care scheduling principles, calendar-ready reminder format"
+    load_when: "Updating a plant record, logging a physical action, drafting a care checklist or reminder"
+
+# Scripts — bundled bpy patterns. Each declares input and output. Scripts
+# are designed to be pasted into mcp__Blender__execute_blender_code with the
+# CALLER setting the documented globals before exec().
+scripts:
+  - path: scripts/scene_scaffold.py
+    purpose: "Idempotently build the Plant_<plant_id>/ collection hierarchy and stamp custom properties"
+    inputs: ["PLANT_ID", "optional SCIENTIFIC_NAME / COMMON_NAME / FRONT_AXIS / SCALE_UNITS / SOURCE_RECORD"]
+    outputs: ["Plant_<plant_id>/ collection tree with seven child collections"]
+    requires_blender: true
+  - path: scripts/scale_from_ruler.py
+    purpose: "Calibrate scene scale from two ruler endpoints and a known real distance"
+    inputs: ["POINT_A", "POINT_B", "REAL_DISTANCE_METERS", "TARGET_COLLECTION", "optional APPLY_SCALE"]
+    outputs: ["uniform scale applied to target collection, scale factor printed"]
+    requires_blender: true
+  - path: scripts/wire_coil.py
+    purpose: "Generate a helical wire-coil curve wrapped around a branch curve"
+    inputs: ["BRANCH_OBJ_NAME", "PLANT_ID", "BRANCH_ID", "optional SUFFIX/TURNS_PER_METER/WIRE_RADIUS/COIL_RADIUS"]
+    outputs: ["new curve object <plant_id>_wire_sim_<branch_id>_<suffix> with copper material and metadata"]
+    requires_blender: true
+  - path: scripts/cut_marker.py
+    purpose: "Place a colored marker at a coordinate per the skill's color semantics"
+    inputs: ["PLANT_ID", "BRANCH_ID", "SUFFIX", "LOCATION", "SEMANTIC (cut|watch|wire|preserve|bud|aerial_root)", "optional RADIUS"]
+    outputs: ["sphere marker in Plant_<plant_id>/04_markers/ with correct material color"]
+    requires_blender: true
+  - path: scripts/sim_collection.py
+    purpose: "Clone current-state twin into a dated simulation collection without mutating the canonical twin"
+    inputs: ["PLANT_ID", "SCENARIO", "SOURCE_COLLECTIONS", "optional DATE_OVERRIDE"]
+    outputs: ["new collection Plant_<plant_id>/05_simulations/sim_<scenario>_<date>/ with linked source objects"]
+    requires_blender: true
+
+# Assets — non-code material the skill ships.
+assets:
+  - path: assets/ficus-benjamina-starter.md
+    purpose: "Starter plant record + Ficus benjamina-specific care, wire-window, and aerial-root guidance"
+    load_when: "User mentions a ficus / Ficus benjamina or has no existing plant record"
+
+# Color semantics — keep consistent across SKILL.md, references, scripts.
+color_semantics:
+  cut_remove: red
+  watch_uncertain: amber
+  wire_bend: blue
+  preserve_encourage: green
+  bud_bloom: pink
+  aerial_root: teal
+
+# Blender MCP tools the skill expects.
+blender_mcp_tools:
+  inspect_first:
+    - mcp__Blender__get_blendfile_summary_path_info
+    - mcp__Blender__get_blendfile_summary_datablocks
+    - mcp__Blender__get_objects_summary
+    - mcp__Blender__get_object_detail_summary
+  execute:
+    - mcp__Blender__execute_blender_code
+  verify:
+    - mcp__Blender__get_screenshot_of_window_as_image
+    - mcp__Blender__render_thumbnail_to_path
+    - mcp__Blender__render_viewport_to_path
+  docs:
+    - mcp__Blender__search_api_docs
+    - mcp__Blender__search_manual_docs
+    - mcp__Blender__get_python_api_docs
+
+# Benchmark suite — iterative skill-creator workspace.
+benchmark:
+  workspace: ../houseplant-workspace
+  evals: evals/evals.json
+  iterations:
+    - dir: iteration-1
+      date: 2026-05-17
+      against: codex-draft-snapshot
+      result_summary: "Pass rate parity (97% old vs 94% new) within single-run noise; qualitative review flagged v0.2.0 as significantly improved on eval-3 (sim-before-cutting), parity on the others."
+
+# Deferred features tracked in the repo's GitHub issues.
+deferred:
+  - issue: 172
+    feature: chrono-horticultural calendar engine
+  - issue: 173
+    feature: bud and bloom chrono-tracker
+  - issue: 174
+    feature: aerial-root and nebari guidance tracker
+  - issue: 175
+    feature: computer-vision plant health diagnostics
+  - issue: 176
+    feature: virtual grafting sandbox in Blender
+  - issue: 177
+    feature: propagation tracker
+
+# Sibling skills the houseplant skill may hand off to.
+hand_offs:
+  reverse-engineer: "When the user needs to reconstruct an unknown object or mechanism from sparse photos before turning it into a plant-related artifact (e.g. inferred pot/planter geometry)."
+  makerspace: "When the user wants fabrication plans for plant stands, jigs, fixtures, shelves, irrigation hardware, or any wood/metal/plastic build that supports the collection."

@@ -17,6 +17,14 @@ description: >-
 
 # Laser Art
 
+## Connectors
+
+This skill works best with these MCP connectors. Claude will suggest connecting any that aren't already linked at the point they're needed (via `mcp__mcp-registry__suggest_connectors`).
+
+- **Adobe for Creativity** (`22854937-9510-4b57-9230-62c820102d8f`) — required for template-driven art design, vectorization, image-to-SVG bridges, batch editing, social variations. Suggest at first request for a designed laser-art file.
+- **Figma** (`c758d038-d8eb-4421-b426-9dd68dc7f84a`) — optional for pulling design context, iterating posters/labels/cut-sheets that started on a tablet.
+- **Canva** (`eb9240f2-e1c1-43c1-828f-0fda40c22e4c`) — optional alternative to Adobe for templated visuals, especially quick mood boards and social mockups.
+
 ## Trigger Phrases
 
 - `laser art` / `laser-cut art` / `laser engraved art`

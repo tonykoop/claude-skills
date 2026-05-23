@@ -1,7 +1,7 @@
 {
   "name": "maker",
-  "version": "1.0.0",
-  "description": "Tony Koop's maker portfolio: instrument design, fabrication, shop-floor planning, habitat making, reverse engineering, sheet music, yoga sequencing, playlist building, and idea capture.",
+  "version": "1.1.0",
+  "description": "Tony Koop's maker portfolio: instrument design, fabrication (CNC, laser, sheet-metal), shop-floor planning, wildlife habitat, reverse engineering, sheet music, plus personal-practice skills for yoga sequencing, playlist building, and idea capture.",
   "author": {
     "name": "Tony Koop",
     "email": "tonykoop@gmail.com",
@@ -26,13 +26,14 @@
   "interface": {
     "displayName": "Maker",
     "shortDescription": "Physical-world design, fabrication, music, habitat, and practice skills.",
-    "longDescription": "A bundled maker toolkit for instrument design, fabrication planning, CNC and laser workflows, sheet metal, habitat projects, reverse engineering, sheet music, yoga sequencing, playlists, and idea capture.",
+    "longDescription": "A bundled maker toolkit for instrument design, fabrication planning, CNC and laser workflows, sheet metal, habitat projects, reverse engineering, sheet music, yoga sequencing, playlists, and idea capture. Several skills include connector-aware workflows and Codex fallbacks for Drive, Docs, Sheets, Slides, browser verification, and GitHub handoffs.",
     "developerName": "Tony Koop",
     "category": "Making",
     "capabilities": [
       "Skills",
       "Design",
-      "Fabrication"
+      "Fabrication",
+      "Connector-aware"
     ],
     "websiteURL": "https://github.com/tonykoop/claude-skills",
     "defaultPrompt": [

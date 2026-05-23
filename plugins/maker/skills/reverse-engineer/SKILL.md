@@ -21,6 +21,14 @@ description: >-
 
 # Reverse Engineer
 
+## Connectors
+
+This skill works best with these MCP connectors. Claude will suggest connecting any that aren't already linked at the point they're needed (via `mcp__mcp-registry__suggest_connectors`).
+
+- **Adobe for Creativity** (`22854937-9510-4b57-9230-62c820102d8f`) — optional for photo analysis, scale-bar overlay, multi-image stacking for dimension extraction.
+- **Wolfram** (`de1d1dc7-ec10-459d-b511-797982834b43`) — optional for dimension/mass back-calculation, mechanism-hypothesis math, statistical confidence intervals on inferred dimensions.
+- **Blender** (local stdio MCP — no registry UUID, requires the Blender MCP add-on) — optional for recreating the object as a parametric 3D model during teardown documentation. Skip `suggest_connectors`; direct the user to install the add-on.
+
 ## Trigger phrases
 
 - `reverse engineer this` / `analyze this object`

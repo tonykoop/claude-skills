@@ -1,0 +1,1325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eval Review</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&family=Lora:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js" integrity="sha384-EnyY0/GSHQGSxSgMwaIPzSESbqoOLSexfnSMN2AP+39Ckmn92stwABZynq1JyzdT" crossorigin="anonymous"></script>
+  <style>
+    :root {
+      --bg: #faf9f5;
+      --surface: #ffffff;
+      --border: #e8e6dc;
+      --text: #141413;
+      --text-muted: #b0aea5;
+      --accent: #d97757;
+      --accent-hover: #c4613f;
+      --green: #788c5d;
+      --green-bg: #eef2e8;
+      --red: #c44;
+      --red-bg: #fceaea;
+      --header-bg: #141413;
+      --header-text: #faf9f5;
+      --radius: 6px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Lora', Georgia, serif;
+      background: var(--bg);
+      color: var(--text);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ---- Header ---- */
+    .header {
+      background: var(--header-bg);
+      color: var(--header-text);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    .header h1 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+    .header .instructions {
+      font-size: 0.8rem;
+      opacity: 0.7;
+      margin-top: 0.25rem;
+    }
+    .header .progress {
+      font-size: 0.875rem;
+      opacity: 0.8;
+      text-align: right;
+    }
+
+    /* ---- Main content ---- */
+    .main {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1.5rem 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    /* ---- Sections ---- */
+    .section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      flex-shrink: 0;
+    }
+    .section-header {
+      font-family: 'Poppins', sans-serif;
+      padding: 0.75rem 1rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border);
+      background: var(--bg);
+    }
+    .section-body {
+      padding: 1rem;
+    }
+
+    /* ---- Config badge ---- */
+    .config-badge {
+      display: inline-block;
+      padding: 0.2rem 0.625rem;
+      border-radius: 9999px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.6875rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      margin-left: 0.75rem;
+      vertical-align: middle;
+    }
+    .config-badge.config-primary {
+      background: rgba(33, 150, 243, 0.12);
+      color: #1976d2;
+    }
+    .config-badge.config-baseline {
+      background: rgba(255, 193, 7, 0.15);
+      color: #f57f17;
+    }
+
+    /* ---- Prompt ---- */
+    .prompt-text {
+      white-space: pre-wrap;
+      font-size: 0.9375rem;
+      line-height: 1.6;
+    }
+
+    /* ---- Outputs ---- */
+    .output-file {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .output-file + .output-file {
+      margin-top: 1rem;
+    }
+    .output-file-header {
+      padding: 0.5rem 0.75rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      font-family: 'SF Mono', SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .output-file-header .dl-btn {
+      font-size: 0.7rem;
+      color: var(--accent);
+      text-decoration: none;
+      cursor: pointer;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-weight: 500;
+      opacity: 0.8;
+    }
+    .output-file-header .dl-btn:hover {
+      opacity: 1;
+      text-decoration: underline;
+    }
+    .output-file-content {
+      padding: 0.75rem;
+      overflow-x: auto;
+    }
+    .output-file-content pre {
+      font-size: 0.8125rem;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-family: 'SF Mono', SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace;
+    }
+    .output-file-content img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 4px;
+    }
+    .output-file-content iframe {
+      width: 100%;
+      height: 600px;
+      border: none;
+    }
+    .output-file-content table {
+      border-collapse: collapse;
+      font-size: 0.8125rem;
+      width: 100%;
+    }
+    .output-file-content table td,
+    .output-file-content table th {
+      border: 1px solid var(--border);
+      padding: 0.375rem 0.5rem;
+      text-align: left;
+    }
+    .output-file-content table th {
+      background: var(--bg);
+      font-weight: 600;
+    }
+    .output-file-content .download-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 0.875rem;
+      cursor: pointer;
+    }
+    .output-file-content .download-link:hover {
+      background: var(--border);
+    }
+    .empty-state {
+      color: var(--text-muted);
+      font-style: italic;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    /* ---- Feedback ---- */
+    .prev-feedback {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 0.625rem 0.75rem;
+      margin-top: 0.75rem;
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+    .prev-feedback-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.25rem;
+      color: var(--text-muted);
+    }
+    .feedback-textarea {
+      width: 100%;
+      min-height: 100px;
+      padding: 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-family: inherit;
+      font-size: 0.9375rem;
+      line-height: 1.5;
+      resize: vertical;
+      color: var(--text);
+    }
+    .feedback-textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+    .feedback-status {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 0.5rem;
+      min-height: 1.1em;
+    }
+
+    /* ---- Grades (collapsible) ---- */
+    .grades-toggle {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+    }
+    .grades-toggle:hover {
+      color: var(--accent);
+    }
+    .grades-toggle .arrow {
+      margin-right: 0.5rem;
+      transition: transform 0.15s;
+      font-size: 0.75rem;
+    }
+    .grades-toggle .arrow.open {
+      transform: rotate(90deg);
+    }
+    .grades-content {
+      display: none;
+      margin-top: 0.75rem;
+    }
+    .grades-content.open {
+      display: block;
+    }
+    .grades-summary {
+      font-size: 0.875rem;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .grade-badge {
+      display: inline-block;
+      padding: 0.125rem 0.5rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .grade-pass { background: var(--green-bg); color: var(--green); }
+    .grade-fail { background: var(--red-bg); color: var(--red); }
+    .assertion-list {
+      list-style: none;
+    }
+    .assertion-item {
+      padding: 0.625rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.8125rem;
+    }
+    .assertion-item:last-child { border-bottom: none; }
+    .assertion-status {
+      font-weight: 600;
+      margin-right: 0.5rem;
+    }
+    .assertion-status.pass { color: var(--green); }
+    .assertion-status.fail { color: var(--red); }
+    .assertion-evidence {
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      margin-top: 0.25rem;
+      padding-left: 1.5rem;
+    }
+
+    /* ---- View tabs ---- */
+    .view-tabs {
+      display: flex;
+      gap: 0;
+      padding: 0 2rem;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .view-tab {
+      font-family: 'Poppins', sans-serif;
+      padding: 0.625rem 1.25rem;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      background: none;
+      color: var(--text-muted);
+      border-bottom: 2px solid transparent;
+      transition: all 0.15s;
+    }
+    .view-tab:hover { color: var(--text); }
+    .view-tab.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+    .view-panel { display: none; }
+    .view-panel.active { display: flex; flex-direction: column; flex: 1; overflow: hidden; }
+
+    /* ---- Benchmark view ---- */
+    .benchmark-view {
+      padding: 1.5rem 2rem;
+      overflow-y: auto;
+      flex: 1;
+    }
+    .benchmark-table {
+      border-collapse: collapse;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 0.8125rem;
+      width: 100%;
+      margin-bottom: 1.5rem;
+    }
+    .benchmark-table th, .benchmark-table td {
+      padding: 0.625rem 0.75rem;
+      text-align: left;
+      border: 1px solid var(--border);
+    }
+    .benchmark-table th {
+      font-family: 'Poppins', sans-serif;
+      background: var(--header-bg);
+      color: var(--header-text);
+      font-weight: 500;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .benchmark-table tr:hover { background: var(--bg); }
+    .benchmark-table tr.benchmark-row-with { background: rgba(33, 150, 243, 0.06); }
+    .benchmark-table tr.benchmark-row-without { background: rgba(255, 193, 7, 0.06); }
+    .benchmark-table tr.benchmark-row-with:hover { background: rgba(33, 150, 243, 0.12); }
+    .benchmark-table tr.benchmark-row-without:hover { background: rgba(255, 193, 7, 0.12); }
+    .benchmark-table tr.benchmark-row-avg { font-weight: 600; border-top: 2px solid var(--border); }
+    .benchmark-table tr.benchmark-row-avg.benchmark-row-with { background: rgba(33, 150, 243, 0.12); }
+    .benchmark-table tr.benchmark-row-avg.benchmark-row-without { background: rgba(255, 193, 7, 0.12); }
+    .benchmark-delta-positive { color: var(--green); font-weight: 600; }
+    .benchmark-delta-negative { color: var(--red); font-weight: 600; }
+    .benchmark-notes {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem;
+    }
+    .benchmark-notes h3 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.875rem;
+      margin-bottom: 0.75rem;
+    }
+    .benchmark-notes ul {
+      list-style: disc;
+      padding-left: 1.25rem;
+    }
+    .benchmark-notes li {
+      font-size: 0.8125rem;
+      line-height: 1.6;
+      margin-bottom: 0.375rem;
+    }
+    .benchmark-empty {
+      color: var(--text-muted);
+      font-style: italic;
+      text-align: center;
+      padding: 3rem;
+    }
+
+    /* ---- Navigation ---- */
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+      flex-shrink: 0;
+    }
+    .nav-btn {
+      font-family: 'Poppins', sans-serif;
+      padding: 0.5rem 1.25rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      cursor: pointer;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text);
+      transition: all 0.15s;
+    }
+    .nav-btn:hover:not(:disabled) {
+      background: var(--bg);
+      border-color: var(--text-muted);
+    }
+    .nav-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+    .done-btn {
+      font-family: 'Poppins', sans-serif;
+      padding: 0.5rem 1.5rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      color: var(--text);
+      cursor: pointer;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: all 0.15s;
+    }
+    .done-btn:hover {
+      background: var(--bg);
+      border-color: var(--text-muted);
+    }
+    .done-btn.ready {
+      border: none;
+      background: var(--accent);
+      color: white;
+      font-weight: 600;
+    }
+    .done-btn.ready:hover {
+      background: var(--accent-hover);
+    }
+    /* ---- Done overlay ---- */
+    .done-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 100;
+      justify-content: center;
+      align-items: center;
+    }
+    .done-overlay.visible {
+      display: flex;
+    }
+    .done-card {
+      background: var(--surface);
+      border-radius: 12px;
+      padding: 2rem 3rem;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      max-width: 500px;
+    }
+    .done-card h2 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .done-card p {
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+      line-height: 1.5;
+    }
+    .done-card .btn-row {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: center;
+    }
+    .done-card button {
+      padding: 0.5rem 1.25rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      cursor: pointer;
+      font-size: 0.875rem;
+    }
+    .done-card button:hover {
+      background: var(--bg);
+    }
+    /* ---- Toast ---- */
+    .toast {
+      position: fixed;
+      bottom: 5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--header-bg);
+      color: var(--header-text);
+      padding: 0.625rem 1.25rem;
+      border-radius: var(--radius);
+      font-size: 0.875rem;
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+      z-index: 200;
+    }
+    .toast.visible {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <div id="app" style="height:100vh; display:flex; flex-direction:column;">
+    <div class="header">
+      <div>
+        <h1>Eval Review: <span id="skill-name"></span></h1>
+        <div class="instructions">Review each output and leave feedback below. Navigate with arrow keys or buttons. When done, copy feedback and paste into Claude Code.</div>
+      </div>
+      <div class="progress" id="progress"></div>
+    </div>
+
+    <!-- View tabs (only shown when benchmark data exists) -->
+    <div class="view-tabs" id="view-tabs" style="display:none;">
+      <button class="view-tab active" onclick="switchView('outputs')">Outputs</button>
+      <button class="view-tab" onclick="switchView('benchmark')">Benchmark</button>
+    </div>
+
+    <!-- Outputs panel (qualitative review) -->
+    <div class="view-panel active" id="panel-outputs">
+    <div class="main">
+      <!-- Prompt -->
+      <div class="section">
+        <div class="section-header">Prompt <span class="config-badge" id="config-badge" style="display:none;"></span></div>
+        <div class="section-body">
+          <div class="prompt-text" id="prompt-text"></div>
+        </div>
+      </div>
+
+      <!-- Outputs -->
+      <div class="section">
+        <div class="section-header">Output</div>
+        <div class="section-body" id="outputs-body">
+          <div class="empty-state">No output files found</div>
+        </div>
+      </div>
+
+      <!-- Previous Output (collapsible) -->
+      <div class="section" id="prev-outputs-section" style="display:none;">
+        <div class="section-header">
+          <div class="grades-toggle" onclick="togglePrevOutputs()">
+            <span class="arrow" id="prev-outputs-arrow">&#9654;</span>
+            Previous Output
+          </div>
+        </div>
+        <div class="grades-content" id="prev-outputs-content"></div>
+      </div>
+
+      <!-- Grades (collapsible) -->
+      <div class="section" id="grades-section" style="display:none;">
+        <div class="section-header">
+          <div class="grades-toggle" onclick="toggleGrades()">
+            <span class="arrow" id="grades-arrow">&#9654;</span>
+            Formal Grades
+          </div>
+        </div>
+        <div class="grades-content" id="grades-content"></div>
+      </div>
+
+      <!-- Feedback -->
+      <div class="section">
+        <div class="section-header">Your Feedback</div>
+        <div class="section-body">
+          <textarea
+            class="feedback-textarea"
+            id="feedback"
+            placeholder="What do you think of this output? Any issues, suggestions, or things that look great?"
+          ></textarea>
+          <div class="feedback-status" id="feedback-status"></div>
+          <div class="prev-feedback" id="prev-feedback" style="display:none;">
+            <div class="prev-feedback-label">Previous feedback</div>
+            <div id="prev-feedback-text"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav" id="outputs-nav">
+      <button class="nav-btn" id="prev-btn" onclick="navigate(-1)">&#8592; Previous</button>
+      <button class="done-btn" id="done-btn" onclick="showDoneDialog()">Submit All Reviews</button>
+      <button class="nav-btn" id="next-btn" onclick="navigate(1)">Next &#8594;</button>
+    </div>
+    </div><!-- end panel-outputs -->
+
+    <!-- Benchmark panel (quantitative stats) -->
+    <div class="view-panel" id="panel-benchmark">
+      <div class="benchmark-view" id="benchmark-content">
+        <div class="benchmark-empty">No benchmark data available. Run a benchmark to see quantitative results here.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Done overlay -->
+  <div class="done-overlay" id="done-overlay">
+    <div class="done-card">
+      <h2>Review Complete</h2>
+      <p>Your feedback has been saved. Go back to your Claude Code session and tell Claude you're done reviewing.</p>
+      <div class="btn-row">
+        <button onclick="closeDoneDialog()">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // ---- Embedded data (injected by generate_review.py) ----
+    const EMBEDDED_DATA = {"skill_name": "houseplant", "runs": [{"id": "eval-1-ficus-scan-to-prune-plan-old_skill-run-1", "prompt": "(No prompt found)", "eval_id": null, "outputs": [{"name": "response.md", "type": "text", "content": "# Ficus benjamina-01 \u2014 Scan-to-Prune-Plan, 2026-05-17\n\nGood capture method, Tony \u2014 the fixed-tripod-on-lazy-susan with two height passes is exactly the right Polycam setup for a trunk-and-branch reconstruction, and the ruler photo gives us a clean metric anchor. The \"melted blob\" foliage is expected and fine; per `references/blender-digital-twin.md` we keep the trunk/root scan as evidence and replace foliage procedurally only where useful.\n\nBelow is the full plan: routing, scene contract, Blender MCP call sequence with pseudocode, the structural prune, and the wire simulation for the front-right primary \u2014 all reversible, all in `05_simulations/` until you greenlight any cut.\n\n---\n\n## 1. Plant record (collection-records-and-care.md)\n\nTreating this as a sync session against `ficus-benjamina-01`. If you don't have that record yet, here's the minimal stub I'll write/append; otherwise I'll merge into the existing one.\n\n```yaml\n---\nplant_id: ficus-benjamina-01\ncommon_name: Weeping fig (bonsai-in-training)\nscientific_name: Ficus benjamina\nlocation: <fill \u2014 indoor bench? south window?>\nindoor_outdoor: indoor (assumed)\npot:\nsubstrate:\nlast_repotted:\nlast_pruned:\nlast_wired:\nlast_fertilized:\ndigital_twin: //Blender/ficus-benjamina-01.blend\nmedia_folder: //media/ficus-benjamina-01/\nhealth_flags: []\n---\n```\n\nOpen questions I need from you to firm the record up (none are blockers for the Blender work):\n\n- Last repot date and substrate type (drives pruning risk).\n- Is the plant in active growth right now? (Mid-May 2026 in your hemisphere \u2014 I'm assuming northern, warm-season, healthy and actively pushing. Tell me if not.)\n- Wire gauges and material you have on hand (I'll size the coil suggestion now and you can confirm).\n\n---\n\n## 2. Routing decision\n\n- **Blender digital twin work** \u2192 `references/blender-digital-twin.md` (primary).\n- **Pruning + wire plan** \u2192 `references/bonsai-module.md`.\n- **Record + reminders** \u2192 `references/collection-records-and-care.md`.\n\nNo handoff to `reverse-engineer` or `makerspace` \u2014 we have direct geometry from Polycam, not sparse photos of an unknown object.\n\n---\n\n## 3. Blender scene contract\n\nPer `blender-digital-twin.md` scene contract, I'll build:\n\n```\nPlant_ficus-benjamina-01/\n  00_source_scan/\n    ficus-benjamina-01_source_scan_20260517         (raw GLB import, locked)\n    ficus-benjamina-01_trunk_mesh_cleaned           (duplicate, decimated, foliage-blob removed)\n  01_reference_photos/\n    ficus-benjamina-01_ruler_photo_20260517         (image-empty for scale check)\n    ficus-benjamina-01_front_photo_20260517         (image-empty, oriented to chosen front)\n  02_skeleton_curves/\n    ficus-benjamina-01_trunk_curve\n    ficus-benjamina-01_branch_FR01                  (front-right primary \u2014 wire target)\n    ficus-benjamina-01_branch_FL01\n    ficus-benjamina-01_branch_B01                   (back branch)\n    ficus-benjamina-01_branch_L02, R02, ...         (secondaries, as resolved)\n  03_procedural_geometry/\n    ficus-benjamina-01_foliage_proc                 (instanced leaves on terminal curves)\n  04_markers/\n    ficus-benjamina-01_cut_marker_APEX_A            (red \u2014 apex reduction)\n    ficus-benjamina-01_cut_marker_INNER_<n>         (red \u2014 inner-canopy thinning)\n    ficus-benjamina-01_keep_marker_<n>              (green \u2014 do not cut)\n    ficus-benjamina-01_wire_anchor_FR01             (blue)\n  05_simulations/\n    sim_prune_apex_2026-05-17/                      (apex \u221220% ghost geometry)\n    sim_prune_inner_canopy_2026-05-17/              (inner thinning ghost)\n    sim_wire_FR01_down_25deg_2026-05-17/            (bent duplicate of FR01)\n  99_exports/\n```\n\nCustom properties on `Plant_ficus-benjamina-01` collection:\n\n```python\nplant_id        = \"ficus-benjamina-01\"\nscientific_name = \"Ficus benjamina\"\ncommon_name     = \"Weeping fig\"\nsource_record   = \"obsidian://ficus-benjamina-01\"   # or your spreadsheet row\ncapture_date    = \"2026-05-17\"\nscale_units     = \"cm\"\nfront_axis      = \"+Y\"                              # facing camera in default view\nconfidence      = \"scale: high; branch IDs: medium until you confirm\"\nlast_synced     = \"2026-05-17\"\nnotes           = \"Polycam GLB, foliage noisy and replaced procedurally\"\n```\n\n---\n\n## 4. Blender MCP call sequence\n\nBlender MCP isn't connected in this sandbox, so this is the call plan I'd execute. Each `execute_blender_code` block is idempotent \u2014 it looks up by name before creating.\n\n### Step 4.1 \u2014 Inspect first, don't assume\n\n**Tool:** `mcp__Blender__get_blendfile_summary_datablocks` then `mcp__Blender__get_objects_summary`\n\nReason: per the reference, \"use `bpy` to inspect before writing; do not assume object names from memory.\" If the `.blend` is empty I scaffold; if it already has a `Plant_ficus-benjamina-01` collection I merge.\n\n### Step 4.2 \u2014 Scaffold collections + custom properties\n\n**Tool:** `mcp__Blender__execute_blender_code`\n\n```python\nimport bpy\n\nPLANT_ID = \"ficus-benjamina-01\"\nPARENT = f\"Plant_{PLANT_ID}\"\nSUBS = [\n    \"00_source_scan\", \"01_reference_photos\", \"02_skeleton_curves\",\n    \"03_procedural_geometry\", \"04_markers\", \"05_simulations\", \"99_exports\",\n]\n\ndef ensure_collection(name, parent=None):\n    col = bpy.data.collections.get(name)\n    if col is None:\n        col = bpy.data.collections.new(name)\n        (parent or bpy.context.scene.collection).children.link(col)\n    return col\n\nparent_col = ensure_collection(PARENT)\nfor s in SUBS:\n    ensure_collection(s, parent_col)\n\nprops = {\n    \"plant_id\": PLANT_ID,\n    \"scientific_name\": \"Ficus benjamina\",\n    \"common_name\": \"Weeping fig\",\n    \"capture_date\": \"2026-05-17\",\n    \"scale_units\": \"cm\",\n    \"front_axis\": \"+Y\",\n    \"confidence\": \"scale:high; branch_ids:medium\",\n    \"last_synced\": \"2026-05-17\",\n}\nfor k, v in props.items():\n    parent_col[k] = v\n\n# Units \u2192 centimeters so 1 BU = 1 cm matches the ruler.\nbpy.context.scene.unit_settings.system = 'METRIC'\nbpy.context.scene.unit_settings.scale_length = 0.01\nbpy.context.scene.unit_settings.length_unit = 'CENTIMETERS'\n```\n\n### Step 4.3 \u2014 Import the GLB into `00_source_scan/` and lock it\n\n**Tool:** `mcp__Blender__execute_blender_code`\n\n```python\nimport bpy, os\n\nGLB_PATH = r\"<path you'll give me>/ficus-benjamina-01_polycam_20260517.glb\"\ntarget = bpy.data.collections[\"00_source_scan\"]\n\nbefore = set(bpy.data.objects)\nbpy.ops.import_scene.gltf(filepath=GLB_PATH)\nnew_objs = [o for o in bpy.data.objects if o not in before]\n\n# Move imports under 00_source_scan, rename, lock transforms\nfor i, o in enumerate(new_objs):\n    for c in list(o.users_collection):\n        c.objects.unlink(o)\n    target.objects.link(o)\n    o.name = f\"ficus-benjamina-01_source_scan_20260517\" + (f\"_{i:02d}\" if i else \"\")\n    o.hide_select = True   # treat as evidence \u2014 protect from accidental edits\n    o.lock_location = o.lock_rotation = o.lock_scale = (True, True, True)\n```\n\n### Step 4.4 \u2014 Set scale from the ruler photo\n\nYou said: 0 cm mark = one corner of the pot rim, 10 cm mark = a known point on the trunk base. In the viewport I'll:\n\n1. Click those two points on the source scan to capture world-space coords.\n2. Compute the current distance; the desired distance is 10.0 cm.\n3. Scale the source scan (and any descendants) by `10.0 / current_distance` about the pot-rim corner.\n\n**Tool:** `mcp__Blender__execute_blender_code`\n\n```python\nimport bpy\nfrom mathutils import Vector\n\n# You'll paste these in after I show you the two points in the viewport,\n# or I'll prompt via MCP screenshot + click confirmation.\nP_RIM_CORNER = Vector((x0, y0, z0))   # 0 cm\nP_TRUNK_BASE = Vector((x1, y1, z1))   # 10 cm\nTARGET_CM = 10.0\n\ncurrent = (P_TRUNK_BASE - P_RIM_CORNER).length\nscale_factor = TARGET_CM / current\n\n# Apply about P_RIM_CORNER so the rim corner stays put\nsrc = bpy.data.collections[\"00_source_scan\"]\nfor o in src.objects:\n    o.hide_select = False\n    o.lock_scale = (False, False, False)\n    o.location = P_RIM_CORNER + (o.location - P_RIM_CORNER) * scale_factor\n    o.scale = tuple(s * scale_factor for s in o.scale)\n    o.lock_scale = (True, True, True)\n    o.hide_select = True\n\nbpy.data.collections[\"Plant_ficus-benjamina-01\"][\"scale_calibrated\"] = True\nbpy.data.collections[\"Plant_ficus-benjamina-01\"][\"scale_factor_applied\"] = scale_factor\n```\n\nRisk note: Polycam's exported scale is sometimes correct already. We'll check `current` against 10 cm before scaling \u2014 if it's already within ~3% we just lock it and record `scale_factor_applied = 1.0`.\n\n### Step 4.5 \u2014 Orient + define the front\n\n`mcp__Blender__jump_to_view3d_object_by_name` to frame the trunk, then a small operator that rotates the collection so the chosen front faces `+Y` and the trunk base sits at world origin. Store `front_axis = \"+Y\"` on the parent collection.\n\n### Step 4.6 \u2014 Build the branch skeleton (trunk + primaries as curves)\n\nPer the reference: \"one curve per meaningful decision unit.\" I'll trace these by clicking nodes along the scan in front view:\n\n- `ficus-benjamina-01_trunk_curve` (base \u2192 apex)\n- `ficus-benjamina-01_branch_FR01` (front-right primary \u2014 your wire target)\n- `ficus-benjamina-01_branch_FL01`\n- `ficus-benjamina-01_branch_B01` (back branch for depth)\n- Whatever secondaries are visible in the GLB\n\n**Tool:** `mcp__Blender__execute_blender_code`\n\n```python\nimport bpy\n\ndef make_branch_curve(name, points, bevel_depth=0.15):\n    if name in bpy.data.objects:\n        return bpy.data.objects[name]\n    curve = bpy.data.curves.new(name, 'CURVE')\n    curve.dimensions = '3D'\n    curve.bevel_depth = bevel_depth   # cm \u2014 rough visual thickness\n    spline = curve.splines.new('BEZIER')\n    spline.bezier_points.add(len(points) - 1)\n    for bp, (co, handle_len) in zip(spline.bezier_points, points):\n        bp.co = co\n        bp.handle_left_type = bp.handle_right_type = 'AUTO'\n    obj = bpy.data.objects.new(name, curve)\n    bpy.data.collections[\"02_skeleton_curves\"].objects.link(obj)\n    obj[\"branch_id\"] = name.split(\"_\")[-1]\n    obj[\"diameter_cm_estimate\"] = bevel_depth * 2\n    return obj\n\n# Placeholder points \u2014 I'll click these along the source scan\nmake_branch_curve(\"ficus-benjamina-01_trunk_curve\",\n                  [((0,0,0),0), ((0.2,0,8),0), ((0.4,0,18),0), ((0.6,0,26),0)],\n                  bevel_depth=1.1)   # ~22 mm trunk\nmake_branch_curve(\"ficus-benjamina-01_branch_FR01\",\n                  [((0.4,0,18),0), ((4,-3,19),0), ((8,-5,18),0), ((12,-7,17),0)],\n                  bevel_depth=0.4)   # ~8 mm \u2014 drives wire gauge\n```\n\nCustom property `branch_id` on each curve keeps IDs stable for future plans, exactly per the reference.\n\n### Step 4.7 \u2014 Procedural foliage replacement\n\nHide the foliage blob on the scan duplicate, then instance a small leaf mesh along the terminal portions of each branch curve via a Geometry Nodes \"Distribute Points on Curve \u2192 Instance on Points\" setup. Material: matte green, low-poly. This isn't botanically accurate \u2014 it's a silhouette aid for the prune simulation.\n\n---\n\n## 5. Pruning plan (bonsai-module.md)\n\n**Specimen:** `ficus-benjamina-01` \u2014 Ficus benjamina, multi-year training, structural prune.\n**Assumptions (state these aloud, per Decision Rules):**\n- Healthy, in active warm-season growth (mid-May, indoor northern hemisphere assumed).\n- Not recently repotted (>6 weeks) \u2014 confirm before cutting.\n- You're styling toward an informal upright; the apex is currently the tallest leader and there's congestion in the inner canopy.\n\n**Goals you set:**\n1. Drop apex by ~20% of current height.\n2. Open inner canopy for back-budding.\n3. Preview wiring on front-right primary (FR01) to lower it ~25\u00b0.\n\n### 5.1 Pruning Plan table\n\n| Id | Action | Why | Risk | Verify Before Cutting | Aftercare | Follow-up |\n|---|---|---|---|---|---|---|\n| APEX-A | Reduce apex by ~20% of measured trunk-to-apex height, cutting back to the next viable outward/forward-facing node | Lowers profile, shifts vigor to lower branches, encourages back-budding | **Medium** | In Blender, confirm the red `cut_marker_APEX_A` lands on a node, not mid-internode. Physically: that node has a visible bud or leaf scar and the cut leaves at least 2 leaves on the leader below it | Bright stable light, normal moisture, hold fertilizer 7-10 days, seal large cuts with cut paste if >6 mm diameter | Photograph 3 weeks out; expect back-budding 3-6 weeks at warm-season ficus rates |\n| INNER-1 | Remove inward-growing twigs in upper-third interior (mark each in Blender as `cut_marker_INNER_<n>`) | Opens light to inner buds for back-budding; reduces fungal/airflow risk | Low | Confirm each marked twig points *toward* the trunk centerline from the chosen front, not away | Same | 3 weeks |\n| INNER-2 | Remove any bar branches (two opposite branches at the same node) by keeping the stronger one | Avoids reverse-taper and visual symmetry flaws | Medium | Confirm the pair is truly at the same node \u2014 Polycam can fuse nearby nodes; check on the physical plant before cutting | Same | 3 weeks |\n| INNER-3 | Shorten downward-hanging weak shoots to 2 nodes | Eliminates sap-draining weak growth, redirects vigor upward and outward | Low | Confirm the shoot is genuinely weak (thin, pale, few leaves) and not a planned cascade element | Same | 3 weeks |\n| FR01-W | **No cut.** Wire-and-bend simulation only \u2014 see \u00a76 | Bring front-right primary down ~25\u00b0 for visual weight and depth | Medium (if executed) | See \u00a76 verification | See \u00a76 | Bite-in checks every 7-10 days |\n\n**Do-not-cut list (green markers):**\n\n- Trunk leader below APEX-A.\n- Back branch `B01` \u2014 provides depth; if anything, encourage it.\n- Any visible aerial roots forming on trunk \u2014 mark teal per the bonsai reference; ficus rewards keeping these.\n- Any branch with a fresh terminal bud cluster you've been counting on for next flush.\n\n### 5.2 Apex-reduction simulation\n\n**Tool:** `mcp__Blender__execute_blender_code`\n\n```python\nimport bpy\nfrom mathutils import Vector\n\ntrunk = bpy.data.objects[\"ficus-benjamina-01_trunk_curve\"]\nspline = trunk.data.splines[0]\n\n# Apex point = last bezier point. Drop it by 20% of trunk vertical extent.\npts = [bp.co.copy() for bp in spline.bezier_points]\nbase_z = pts[0].z\napex_z = pts[-1].z\nnew_apex_z = base_z + 0.8 * (apex_z - base_z)\n\n# Build a *simulation duplicate*, do not mutate the current-state trunk\nsim_col = bpy.data.collections.get(\"sim_prune_apex_2026-05-17\") \\\n          or bpy.data.collections.new(\"sim_prune_apex_2026-05-17\")\nif sim_col.name not in [c.name for c in bpy.data.collections[\"05_simulations\"].children]:\n    bpy.data.collections[\"05_simulations\"].children.link(sim_col)\n\nsim_trunk_data = trunk.data.copy()\nsim_trunk = bpy.data.objects.new(\"ficus-benjamina-01_trunk_curve__sim_apex_-20pct\", sim_trunk_data)\nsim_col.objects.link(sim_trunk)\n\nsim_spline = sim_trunk_data.splines[0]\n# Walk from apex back until we find the first bezier point at or below new_apex_z, drop the rest\nkeep = [bp for bp in sim_spline.bezier_points if bp.co.z <= new_apex_z]\n# (rebuild spline with `keep` \u2014 bezier rebuild snippet omitted for brevity)\n\n# Place a red cut marker at the new apex\nmarker = bpy.data.objects.new(\"ficus-benjamina-01_cut_marker_APEX_A\", None)\nmarker.empty_display_type = 'SPHERE'\nmarker.empty_display_size = 0.5\nmarker.location = (pts[-1].x, pts[-1].y, new_apex_z)\nmarker[\"risk\"] = \"Medium\"\nmarker[\"action\"] = \"apex reduction -20%\"\nbpy.data.collections[\"04_markers\"].objects.link(marker)\n```\n\nThen render a front-view comparison: hide the original trunk curve, show the simulation duplicate, screenshot via `mcp__Blender__render_viewport_to_path` \u2192 `99_exports/sim_prune_apex_2026-05-17_front.png`. Repeat for side view.\n\n### 5.3 Inner-canopy thinning simulation\n\nFor each inner twig you and I tag in the viewport, place a red empty (`cut_marker_INNER_<n>`) and add a \"ghost\" duplicate of the twig curve with material set to 20% red, 50% transparent, inside `sim_prune_inner_canopy_2026-05-17/`. Originals stay untouched. Toggle the sim collection on/off to A/B the canopy openness.\n\n---\n\n## 6. Wire-and-bend simulation \u2014 FR01 down 25\u00b0\n\n`bonsai-module.md` says: wire only with a clear design goal, estimate gauge ~\u2153 of branch diameter, plan anchor + coil + bend amount + bite-in cadence.\n\n**Plan inputs:**\n- Branch: `ficus-benjamina-01_branch_FR01`\n- Estimated diameter at base: ~8 mm (will be re-measured from the calibrated scan)\n- Target bend: \u221225\u00b0 at the base, easing along the branch (don't kink the tip)\n- Wire gauge estimate: **2.5 mm aluminum** (\u2248\u2153 of 8 mm; bump to 3 mm if the branch is more lignified than it looks)\n- Coil direction: clockwise viewed from anchor \u2192 tip when bending the branch *downward on the right side* (this is the convention that tightens, not loosens, under the bend)\n- Anchor: wrap one full turn around the trunk just below the FR01 takeoff; if FR01 has a sibling branch nearby, anchor across both as a paired wire instead.\n\n### 6.1 Blender simulation\n\n**Tool:** `mcp__Blender__execute_blender_code`\n\n```python\nimport bpy, math\nfrom mathutils import Vector, Matrix\n\nsrc = bpy.data.objects[\"ficus-benjamina-01_branch_FR01\"]\nsim_col = bpy.data.collections.new(\"sim_wire_FR01_down_25deg_2026-05-17\")\nbpy.data.collections[\"05_simulations\"].children.link(sim_col)\n\n# 1) Duplicate the branch curve \u2014 bend the duplicate, not the original\nsim_branch_data = src.data.copy()\nsim_branch = bpy.data.objects.new(\"ficus-benjamina-01_branch_FR01__sim_bend_-25deg\", sim_branch_data)\nsim_col.objects.link(sim_branch)\n\n# 2) Apply a graded rotation: 0\u00b0 at the anchor (first point), full -25\u00b0 at the tip\nspline = sim_branch_data.splines[0]\npts = spline.bezier_points\nanchor = pts[0].co.copy()\nn = len(pts) - 1\naxis = Vector((1, 0, 0))   # bend axis \u2014 roughly tangent to trunk at takeoff; adjust after inspection\n\nfor i, bp in enumerate(pts):\n    t = i / n\n    angle = math.radians(-25.0) * t   # ease-in linear; swap for smoothstep if needed\n    rel = bp.co - anchor\n    bp.co = anchor + (Matrix.Rotation(angle, 4, axis) @ rel)\n    bp.handle_left  = anchor + (Matrix.Rotation(angle, 4, axis) @ (bp.handle_left  - anchor))\n    bp.handle_right = anchor + (Matrix.Rotation(angle, 4, axis) @ (bp.handle_right - anchor))\n\n# 3) Build a blue helical wire curve along the bent branch\nwire = bpy.data.curves.new(\"ficus-benjamina-01_wire_sim_FR01_20260517\", 'CURVE')\nwire.dimensions = '3D'\nwire.bevel_depth = 0.125   # 2.5 mm wire => 1.25 mm radius\nhelix_spline = wire.splines.new('POLY')\nsamples = 60\nturns = 6   # ~one wrap per 1.5-2 cm along an 8-10 cm branch\nhelix_pts = []\nfor i in range(samples + 1):\n    t = i / samples\n    # Sample along the bent branch (approximation \u2014 full surface eval would use evaluated_get)\n    p = pts[0].co.lerp(pts[-1].co, t)\n    # Add a perpendicular offset that rotates with t\n    angle = turns * 2 * math.pi * t\n    radius = 0.5   # 5 mm \u2014 branch radius + wire radius\n    offset = Vector((math.cos(angle) * radius, math.sin(angle) * radius, 0))\n    helix_pts.append(p + offset)\nhelix_spline.points.add(len(helix_pts) - 1)\nfor sp, p in zip(helix_spline.points, helix_pts):\n    sp.co = (*p, 1)\nwire_obj = bpy.data.objects.new(wire.name, wire)\nsim_col.objects.link(wire_obj)\n\n# Blue material per SKILL.md color semantics\nmat = bpy.data.materials.get(\"mat_wire_blue\") or bpy.data.materials.new(\"mat_wire_blue\")\nmat.diffuse_color = (0.15, 0.45, 1.0, 1.0)\nwire_obj.data.materials.append(mat)\n\n# 4) Metadata on the simulation\nsim_col[\"target_branch\"] = \"FR01\"\nsim_col[\"bend_deg\"]      = -25.0\nsim_col[\"wire_gauge_mm\"] = 2.5\nsim_col[\"wire_material\"] = \"aluminum\"\nsim_col[\"applied_date\"]  = \"\"   # blank until you physically apply\nsim_col[\"inspection_interval_days\"] = 10\nsim_col[\"removal_window_weeks\"] = \"6-10 (sooner if bite-in visible)\"\n```\n\nThis gives you a viewport you can A/B by toggling `sim_wire_FR01_down_25deg_2026-05-17` on/off against the untouched original branch curve. Render front + top-down via `mcp__Blender__render_viewport_to_path` for the comparison stills.\n\n### 6.2 Wire plan summary\n\n| Field | Value |\n|---|---|\n| Target branch | FR01 (front-right primary) |\n| Bend goal | \u221225\u00b0 at base, eased to tip |\n| Wire material | Aluminum |\n| Gauge estimate | 2.5 mm (confirm against branch caliper; 3 mm if it resists) |\n| Anchor | One full wrap around trunk below takeoff, or paired with adjacent primary if applicable |\n| Coil direction | CW viewed anchor\u2192tip (tightens under the downward bend) |\n| Staging | Single stage if the branch flexes freely to ~30\u00b0 by hand; otherwise stage at \u221215\u00b0 now, \u221225\u00b0 in 3-4 weeks |\n| Risk | Medium |\n| Verify before bending | Branch flexes without audible cracking; bark is supple, not papery; node at the base isn't already a healed wound |\n| Bite-in inspections | Every 7-10 days in active growth |\n| Removal window | 6-10 weeks, **sooner** at first sign of bark swelling over the wire |\n\n---\n\n## 7. Exports + sync log\n\nAfter running the above I'd produce, via `mcp__Blender__render_viewport_to_path`:\n\n- `99_exports/ficus-benjamina-01_current_state_front_20260517.png`\n- `99_exports/sim_prune_apex_2026-05-17_front.png` + `_side.png`\n- `99_exports/sim_prune_inner_canopy_2026-05-17_front.png`\n- `99_exports/sim_wire_FR01_down_25deg_2026-05-17_front.png` + `_top.png`\n- `99_exports/ficus-benjamina-01_combined_plan_20260517.png` (all sims toggled on)\n- `99_exports/ficus-benjamina-01_digital_twin_20260517.glb` (full export for archive)\n\n### Digital twin sync \u2014 2026-05-17\n\n- **Scene/file:** `//Blender/ficus-benjamina-01.blend`\n- **Inputs:** Polycam GLB (lazy-susan + dual-height orbit, 2026-05-17); ruler photo (0 cm = pot rim corner, 10 cm = trunk base point)\n- **Changed objects:** scaffolded `Plant_ficus-benjamina-01` hierarchy; imported + locked source scan; created trunk + FR01/FL01/B01 skeleton curves; added APEX-A red cut marker + inner-canopy red markers; added blue wire sim on FR01\n- **Simulations created:** `sim_prune_apex_2026-05-17`, `sim_prune_inner_canopy_2026-05-17`, `sim_wire_FR01_down_25deg_2026-05-17` \u2014 all in `05_simulations/`, current-state twin untouched\n- **Exported artifacts:** see \u00a77 list above\n- **Care or styling decisions:** none physical yet \u2014 sim only\n- **Follow-ups:** confirm branch IDs on the physical plant; confirm last-repot date; confirm wire gauges on hand\n- **Uncertainties:** branch ID confidence is medium (Polycam foliage blob obscured some takeoffs); scale confidence high pending ruler-point click verification; species-specific bite-in rate assumed typical-vigorous warm-season ficus\n\n---\n\n## 8. Calendar-ready reminders\n\n```markdown\n### Reminder\n- Title: Ficus-01 \u2014 back-bud check after structural prune\n- Plant: ficus-benjamina-01\n- Date/time: 2026-06-07 (3 weeks after planned cut date)\n- Recurrence: one-off, then re-evaluate\n- Priority: Medium\n- Trigger/evidence: APEX-A apex reduction + inner-canopy thinning on 2026-05-17 (if executed)\n- Checklist:\n  - Photograph from the same front angle as the 05-17 capture\n  - Count new buds on the upper-third interior\n  - Compare canopy openness to sim render\n  - Note any dieback near APEX-A cut\n- Done condition: photo logged + bud count entered in record\n```\n\n```markdown\n### Reminder\n- Title: Ficus-01 \u2014 FR01 wire bite-in check\n- Plant: ficus-benjamina-01\n- Date/time: starts 7 days after wire application\n- Recurrence: every 7-10 days until removal\n- Priority: High (wire scarring is fast on vigorous ficus)\n- Trigger/evidence: 2.5 mm aluminum wire on FR01, \u221225\u00b0 bend\n- Checklist:\n  - Inspect bark above and below each coil for swelling\n  - If swelling visible, remove wire immediately and re-wire only if branch hasn't set\n  - Confirm bend has held (or note spring-back angle)\n- Done condition: wire removed cleanly, bend set, no scarring\n```\n\n```markdown\n### Reminder\n- Title: Ficus-01 \u2014 re-scan for digital twin update\n- Plant: ficus-benjamina-01\n- Date/time: 2026-08-17 (3 months out, or after FR01 wire comes off \u2014 whichever is later)\n- Recurrence: quarterly during training\n- Priority: Low\n- Trigger/evidence: structural prune + wire applied 2026-05-17\n- Checklist:\n  - Same lazy-susan + dual-height orbit method\n  - Same ruler placement (0 = pot rim corner, 10 = trunk base point)\n  - Same front orientation\n  - Re-run Polycam, drop GLB into Blender, version the scene\n- Done condition: new source_scan_YYYYMMDD locked and old one archived\n```\n\nI'll only create live calendar events if you ask \u2014 drafts only, per the reference.\n\n---\n\n## 9. Care checklist \u2014 `ficus-benjamina-01` \u2014 2026-05-17 (post-prune, if executed)\n\n- Place in stable bright indirect light; no relocation for 2 weeks.\n- Check soil moisture at root depth daily for the first week; water on the dry side of normal.\n- Hold fertilizer for 7-10 days, then resume at half strength for the first feed.\n- Inspect cut sites for clean callusing; seal any cut >6 mm with cut paste if not already done.\n- Inspect FR01 wire coils every 7-10 days (see reminder).\n- Watch upper-third interior for back-budding starting week 3.\n- Log any aerial-root tips with a teal marker in Blender and a dated photo.\n- Re-capture front photo from the same angle weekly for the first month.\n\n---\n\n## 10. What I need from you to actually run this\n\n1. **GLB file path** (and the ruler photo path) \u2014 drop them in the chat and I'll wire them into the import step.\n2. **Confirm scale anchors** \u2014 I'll show you the source scan and you click the pot-rim-corner and trunk-base points, or paste coords.\n3. **Confirm front** \u2014 I'll render four candidate fronts; you pick.\n4. **Confirm branch IDs** \u2014 I'll annotate the front render with FR01/FL01/B01/etc. labels; you sign off before any cut markers are treated as physical guidance.\n5. **Confirm wire gauge** \u2014 what's actually in your wire kit?\n6. **Last repot date + current health** \u2014 to keep risk levels honest.\n\nNothing physical happens until those five are confirmed and you explicitly greenlight the cut. Everything above is reversible: simulations live in `05_simulations/`, the source scan is locked and hide-selected, and the current-state skeleton curves stay untouched until you tell me to commit a simulation back to the current state.\n"}], "grading": {"summary": {"pass_rate": 0.9090909090909091, "passed": 10, "failed": 1, "total": 11}, "expectations": [{"text": "Routes capture intake through the lazy-susan / ruler workflow (mentions capture-pipeline.md OR explicitly handles Mode D lazy-susan capture)", "passed": true, "evidence": ""}, {"text": "Names the Plant_<plant_id>/ scene contract and the 00_source_scan/...05_simulations/ child collections", "passed": true, "evidence": ""}, {"text": "Uses or references scene_scaffold.py for building the collection hierarchy", "passed": false, "evidence": ""}, {"text": "Calibrates scene scale from the 10 cm ruler segment (mentions scale_from_ruler.py OR shows equivalent scale-factor math with the two ruler endpoints)", "passed": true, "evidence": ""}, {"text": "Generates a wire coil via wire_coil.py OR shows an equivalent helical curve construction around the target branch", "passed": true, "evidence": ""}, {"text": "Places cut and wire markers in a sim_<scenario>_<date> sub-collection rather than mutating the current-state twin (uses sim_collection.py OR explicit sim collection creation)", "passed": true, "evidence": ""}, {"text": "Calls get_objects_summary or get_blendfile_summary_* BEFORE execute_blender_code (orient before write)", "passed": true, "evidence": ""}, {"text": "Produces a pruning plan table with at minimum Id, Action, Why, Risk, Verify, Aftercare, Follow-up columns", "passed": true, "evidence": ""}, {"text": "Uses correct color semantics (red for cut, blue for wire)", "passed": true, "evidence": ""}, {"text": "Includes Ficus-specific note about fast cambium / short wire-removal window (e.g. inspect every 1-2 weeks during active growth)", "passed": true, "evidence": ""}, {"text": "Ends with a Digital twin sync log entry in the markdown template format", "passed": true, "evidence": ""}]}}, {"id": "eval-1-ficus-scan-to-prune-plan-with_skill-run-1", "prompt": "(No prompt found)", "eval_id": null, "outputs": [{"name": "response.md", "type": "text", "content": "# Ficus benjamina 01 \u2014 scan to reversible prune + wire plan\n\nGood capture setup. Lazy-susan + dual-height orbits + a ruler-in-frame is the cleanest of the four modes the capture pipeline describes \u2014 the melted foliage is exactly the expected failure mode and we don't care, we're keeping the trunk and primaries and replacing leaves procedurally. Plan below is fully reversible: everything happens inside `05_simulations/` until you say \"commit to the physical plant.\"\n\nI'll assume `plant_id = ficus-benjamina-01` (matches `assets/ficus-benjamina-starter.md`). If you've renamed it in your Obsidian record, tell me and I'll re-key.\n\n---\n\n## Phase 0 \u2014 Orient before touching the file\n\nFirst MCP calls, in order:\n\n1. `mcp__Blender__get_blendfile_summary_path_info` \u2014 confirm which `.blend` we're in.\n2. `mcp__Blender__get_blendfile_summary_datablocks` \u2014 see if a `Plant_ficus-benjamina-01/` collection already exists from a prior session.\n3. `mcp__Blender__get_objects_summary` \u2014 list current objects so I don't collide names.\n4. If the root collection exists, `mcp__Blender__get_object_detail_summary` on it to read `last_synced`, `front_axis`, and `scale_units` custom properties.\n\nI won't write anything until those four reads come back. That's the orient step from `blender-digital-twin.md`.\n\n---\n\n## Phase 1 \u2014 Scaffold + import the Polycam .glb\n\nSingle `mcp__Blender__execute_blender_code` call running `scripts/scene_scaffold.py` with:\n\n```python\nPLANT_ID = \"ficus-benjamina-01\"\nSCIENTIFIC_NAME = \"Ficus benjamina\"\nCOMMON_NAME = \"Weeping fig\"\nFRONT_AXIS = \"+Y\"          # we'll confirm by screenshot, can flip later\nSCALE_UNITS = \"meters\"\nSOURCE_RECORD = \"<path to your Obsidian note if you have one>\"\nexec(open(r\"<skill>/scripts/scene_scaffold.py\").read())\n```\n\nThat gives me the seven-child contract (`00_source_scan` through `99_exports`) and stamps the parent collection.\n\nThen I import the Polycam `.glb` into `ficus-benjamina-01__00_source_scan`:\n\n```python\nimport bpy\nbpy.ops.import_scene.gltf(filepath=r\"<your .glb path>\")\nimported = bpy.context.selected_objects\nsrc_coll = bpy.data.collections[\"ficus-benjamina-01__00_source_scan\"]\nfor o in imported:\n    for c in list(o.users_collection):\n        c.objects.unlink(o)\n    src_coll.objects.link(o)\n    o.name = f\"ficus-benjamina-01_source_scan_20260517\"\n```\n\nRaw scan stays parked in `00_source_scan/` forever \u2014 that's the \"preserve evidence\" rule.\n\n---\n\n## Phase 2 \u2014 Scale calibration from the ruler photo\n\nThis is the load-bearing step. Everything downstream (wire gauge math, prune projection, bite-in timing) is meaningless until the scene is in real meters.\n\nWorkflow per `capture-pipeline.md` \u2192 \"Scale Calibration\":\n\n1. In the viewport, find the ruler in the scan mesh. The 0 cm mark is at the pot rim corner, the 10 cm mark is on the trunk base \u2014 both should be visible in the reconstructed geometry since they were in the same orbit.\n2. Snap two empties (`_ruler_0cm` and `_ruler_10cm`) to those points using the 3D cursor. I'd ask you to do this manually in the viewport, then read the coordinates back via `get_object_detail_summary`, because eyeballing the mark in code from a `.glb` is unreliable.\n3. Run `scripts/scale_from_ruler.py`:\n\n```python\nPOINT_A = (<empty _ruler_0cm coords>)\nPOINT_B = (<empty _ruler_10cm coords>)\nREAL_DISTANCE_METERS = 0.10\nTARGET_COLLECTION = \"Plant_ficus-benjamina-01\"\nAPPLY_SCALE = True\nexec(open(r\"<skill>/scripts/scale_from_ruler.py\").read())\n```\n\nThat parents the whole collection to a temp pivot, scales uniformly by `0.10 / current_distance`, and bakes the transform.\n\nEyeball sanity check after scaling: measure pot rim diameter in Blender, compare to the real pot. If it's within ~3%, we're good. If not, the ruler marks were picked badly and we redo step 2.\n\nStamp `scale_units = \"meters\"` and `scale_confidence = \"high|medium|low\"` on the root collection. Verify with `mcp__Blender__get_screenshot_of_window_as_image` looking at the scaled scan next to a 10 cm reference cube.\n\n---\n\n## Phase 3 \u2014 Skeletonize trunk + primary branches\n\nThe Polycam mesh is evidence; we need editable curves for decisions. Hybrid recipe from `blender-digital-twin.md`:\n\n1. Duplicate the source mesh into `02_skeleton_curves/` as `ficus-benjamina-01_scan_working`.\n2. Hand-place Bezier curves through the visible trunk and each primary. Naming convention from the scene contract:\n   - `ficus-benjamina-01_trunk_curve`\n   - `ficus-benjamina-01_branch_L01`, `_L02`, \u2026 (left primaries as seen from chosen front)\n   - `ficus-benjamina-01_branch_R01`, `_R02`, \u2026 (right primaries)\n   - `ficus-benjamina-01_branch_B01` for back branch(es)\n   - `ficus-benjamina-01_apex_curve` for the current leader\n\nI'd do this with two-or-three-point Bezier curves per decision unit (one curve per branch you might want to cut or wire). Give each a `bevel_depth` matching the measured branch diameter at mid-length so it visually resembles the branch.\n\n3. Discard the melted foliage faces from the working duplicate; keep only trunk + primaries. The scan in `00_source_scan/` is untouched.\n\n4. In `03_procedural_geometry/`, instance simple leaf cards on the terminal portions of the branch curves via a Geometry Nodes modifier (Instance on Points along curve, ~200\u2013400 instances per branch). Color drives off a `leaf_density` attribute we can dial down to preview the open-canopy result.\n\n---\n\n## Phase 4 \u2014 Front choice + apex measurement\n\nBefore any prune sim, lock the design front. From `bonsai-module.md` styling priority order, the front is the second decision (after health, which you've already assessed since you're doing structural work).\n\n`mcp__Blender__render_thumbnail_to_path` for four orthographic-ish views (+Y, -Y, +X, -X), look at trunk movement and nebari, pick the best. Stamp `front_axis` on the root collection. Default I'll start with `+Y`; we change it if a screenshot says otherwise.\n\nThen measure current apex height in scene units (top of `_apex_curve` minus top of nebari). Call this `H_apex_current`. Target reduction is 20% \u2014 so we're cutting back to a node at `0.80 * H_apex_current` (measured from nebari top). I'll pick the nearest outward-facing node *below* that line, not above; never above target.\n\n---\n\n## Phase 5 \u2014 Build the simulation collection (this is the reversibility step)\n\nOne call to `scripts/sim_collection.py`:\n\n```python\nPLANT_ID = \"ficus-benjamina-01\"\nSCENARIO = \"structural-prune-2026-05-17\"\nSOURCE_COLLECTIONS = [\"02_skeleton_curves\", \"03_procedural_geometry\"]\nexec(open(r\"<skill>/scripts/sim_collection.py\").read())\n```\n\nThat creates `sim_structural-prune-2026-05-17_2026-05-17` under `ficus-benjamina-01__05_simulations/` and **links** (does not copy) the skeleton curves and procedural geo into it. Current-state twin is untouched.\n\nFor the curves I actually want to cut or shorten in sim, I'll select them inside the sim collection and `Object > Make Single User > Object & Data` so edits diverge from the canonical twin. The other linked objects stay shared \u2014 that way only the diverged objects carry sim-specific state.\n\nThis is the bright line: anything inside `sim_structural-prune-2026-05-17_*` is reversible. Delete the collection and the twin reverts.\n\n---\n\n## Phase 6 \u2014 Plan the cuts (in sim, with markers)\n\nThree goals from your prompt: drop apex 20%, open inner canopy for back-budding, preview the R01 wire bend. I'll place cut markers first so you can review before any curve is actually shortened.\n\nFor each candidate cut, run `scripts/cut_marker.py` with `SEMANTIC = \"cut\"` for removes, `\"preserve\"` for explicit do-not-cuts, `\"watch\"` for \"I want to see how the plant responds before deciding.\" Example for the apex cut:\n\n```python\nPLANT_ID = \"ficus-benjamina-01\"\nBRANCH_ID = \"APEX\"\nSUFFIX = \"20pct\"\nLOCATION = (<x,y,z at the 0.80*H_apex node>)\nSEMANTIC = \"cut\"\nRADIUS = 0.005\nexec(open(r\"<skill>/scripts/cut_marker.py\").read())\n```\n\nMarkers land in `ficus-benjamina-01__04_markers/` (the script auto-routes them) and the rest of the twin is undisturbed.\n\n### Pruning Plan (provisional \u2014 refined after I see screenshots)\n\n| Id | Action | Why | Risk | Verify Before Cutting | Aftercare | Follow-up |\n|---|---|---|---|---|---|---|\n| APEX-20pct | Cut leader back to first outward node below `0.80 * H_apex_current` | Drops apex ~20%, shifts vigor downward into inner canopy, sets up replacement leader at a lower node | Medium | Confirm the red APEX-20pct marker sits at an outward-facing node, not an inward one; confirm a viable replacement bud/branch is below the cut | Sterile cut paste over weeping latex; bright indirect light; pause fertilizer 7 days; do not move plant | Photo + viewport screenshot at 2 weeks, 4 weeks; expect back-budding in 3\u20134 weeks |\n| INNER-A | Remove 2\u20133 strongest crossing/bar branches inside the canopy (specific ids assigned after I see the skeleton) | Opens light + airflow to dormant inner buds; back-budding driver | Medium | Each red marker should be at the branch base, not mid-length; confirm no marker is on a primary you want to keep for structure | Same as APEX | 3\u20134 weeks; mark new buds with pink `bud_marker_<date>` |\n| INNER-B | Shorten 3\u20135 long lateral whips to the second node | Reduces apical dominance on extensions; encourages internal buds | Low | Confirm node is outward-facing | Light water check only | 2 weeks |\n| R01-WIRE | Wire-bend front-right primary downward ~25\u00b0 (see Phase 7) | Lowers branch line, improves visual depth, opens space above for back-budding light | Medium | Confirm wire goes around at 45\u00b0 pitch, anchored at a sub-branch crotch, not floating | Wire-bite-in checks every 7\u201310 days during active growth | Remove wire when set; reapply if needed |\n\nDo-not-cut list (green `preserve` markers):\n- The trunk line itself below the apex cut.\n- Any branch contributing to the braided aerial-root nebari at the base.\n- Any healthy back branch \u2014 those are gold for visual depth.\n\nI'll run `scripts/cut_marker.py` once per row above, then `render_thumbnail_to_path` of the sim collection alone (hide the current-state twin) for the side-by-side.\n\n---\n\n## Phase 7 \u2014 Wire-coil preview on R01 (~25\u00b0 downward)\n\nEstimate first, simulate second:\n\n1. Read R01 branch diameter from the scan at the wire-application point (mid-length, just past the crotch). Use Blender's measure tool or `get_object_detail_summary` on a measurement empty.\n2. Heuristic from `bonsai-module.md`: wire diameter \u2248 branch diameter / 3 for ficus (warm-season cambium is fast, so I'd round *up* if the bend is meaningful). For ficus benjamina with a ~6 mm primary, that's ~2 mm wire (\u2248 12 AWG aluminum or annealed copper). If the user's actual stock differs, swap `WIRE_RADIUS`.\n3. Anchor: in real life this is a sub-branch crotch or the trunk itself. In sim, the helix simply runs along the branch curve; I'll annotate the anchor point with a blue `wire` semantic marker via `cut_marker.py` with `SEMANTIC = \"wire\"`.\n\nGenerate the coil with `scripts/wire_coil.py`:\n\n```python\nBRANCH_OBJ_NAME = \"ficus-benjamina-01_branch_R01\"\nPLANT_ID = \"ficus-benjamina-01\"\nBRANCH_ID = \"R01\"\nSUFFIX = \"2026-05-17\"\nTURNS_PER_METER = 18      # loose-ish starting wrap per skill default\nWIRE_RADIUS = 0.001       # 2 mm wire => radius 1 mm; adjust to your stock\nCOIL_RADIUS = None        # auto from wire radius\nexec(open(r\"<skill>/scripts/wire_coil.py\").read())\n```\n\nThen re-link the resulting `ficus-benjamina-01_wire_sim_R01_2026-05-17` curve into the sim collection (script drops it in the branch's parent collection by default per its docstring; I'll move it).\n\nTo preview the 25\u00b0 bend without destroying the original R01 curve:\n\n1. In the sim, single-user the R01 curve.\n2. Edit-mode: select the bezier handles from mid-length outward and rotate around the wire anchor empty by -25\u00b0 about the local horizontal axis (the axis perpendicular to the branch's outward direction at the anchor). I'd do this by setting the 3D cursor to the anchor empty, pivot point = 3D cursor, then `R Y -25` (or whichever axis matches the front-right geometry after I look at the screenshot).\n3. The wire helix is bound to the curve via the helix being built from the same backbone samples \u2014 I'll regenerate the helix after the bend by re-running `wire_coil.py` so the coil follows the new shape. Alternatively, parent the wire curve to the branch curve via a Hook modifier before the bend; that's cleaner for iterating.\n\nCustom properties stamped automatically by `wire_coil.py`: `wire_radius_m`, `turns_per_meter`, `applied_date`. I'll also stamp `target_bend_degrees = -25` and `inspection_cadence_days = 10` on the wire object so future sessions inherit context.\n\nRender comparison: `mcp__Blender__render_viewport_to_path` of the sim with three states \u2014 pre-bend (hide wire), wire-applied-no-bend, wire-applied-bent \u2014 into `99_exports/`.\n\n---\n\n## Phase 8 \u2014 Side-by-side review render\n\nBefore you cut anything physical:\n\n1. Hide `04_markers/` overlay temporarily.\n2. Render `99_exports/ficus_currentstate_front_2026-05-17.png` from the current-state twin.\n3. Render `99_exports/ficus_postprune_front_2026-05-17.png` from the sim collection (apex cut + inner thinning + R01 bent + procedural foliage `leaf_density` reduced ~30% to approximate the opened canopy).\n4. Repeat both renders from the side view.\n\nYou eyeball the comparison. If the silhouette doesn't read the way you want, we iterate inside the sim \u2014 no physical cuts yet.\n\n---\n\n## Phase 9 \u2014 Commit or discard\n\n- **Discard:** delete `sim_structural-prune-2026-05-17_2026-05-17` collection. Twin reverts.\n- **Commit (physical):** keep the sim collection as the historical \"intended state.\" Do the physical cuts using the markers as your map. After cutting, take fresh phone photos; in a future session, update `02_skeleton_curves/` to match reality (shorten the curves to where the cuts actually landed). The sim then becomes a documented before/after pair.\n\nI will *not* mutate the current-state twin until you've made the physical cuts and confirmed. The Blender markers are recommendations, not confirmation.\n\n---\n\n## Digital twin sync log entry (drop this into your Obsidian note)\n\n```markdown\n### Digital twin sync - 2026-05-17\n- Scene/file: <your .blend path>\n- Inputs: Polycam .glb from lazy-susan + dual-orbit phone capture; ruler photo (0 cm at pot rim corner, 10 cm on trunk base)\n- Changed objects: Plant_ficus-benjamina-01/ scaffold + all child collections; ficus-benjamina-01_source_scan_20260517 imported to 00_source_scan; trunk and primary branch curves built in 02_skeleton_curves; procedural foliage in 03_procedural_geometry; cut/preserve/wire markers in 04_markers\n- Simulations created: sim_structural-prune-2026-05-17_2026-05-17 (apex -20%, inner-canopy thinning, R01 wire @ -25\u00b0)\n- Exported artifacts: 99_exports/ficus_currentstate_front_2026-05-17.png, ficus_postprune_front_2026-05-17.png (+ side views)\n- Care or styling decisions: drop apex ~20% to first outward node below 0.80*H_apex; thin 2-3 inner crossings; wire-bend front-right primary R01 down ~25\u00b0\n- Follow-ups:\n    - Physical cuts pending user confirmation of sim\n    - Wire bite-in inspection every 7-10 days during active growth\n    - Photo review at 2 weeks and 4 weeks; expect back-budding in 3-4 weeks\n- Uncertainties: branch ids L01/L02/R01/R02 provisional until skeleton screenshot is approved; wire gauge assumes ~6 mm R01 diameter \u2014 confirm by measuring on the scaled scan; front_axis defaulted to +Y, may flip after ortho-view review\n```\n\n---\n\n## What I need from you to run this for real\n\n1. The path to the Polycam `.glb`.\n2. The path to the `.blend` you want to use (or \"make a new one\").\n3. After Phase 2 step 2, the coordinates of the two ruler-mark empties (I'll guide you to set them; you read them back to me).\n4. Confirmation of the design front after I send the four ortho renders.\n5. Your wire stock (gauges/material on hand) so I can match `WIRE_RADIUS` to reality.\n\nOnce I have 1\u20132, I'll run Phases 0\u20133 and send a screenshot for you to mark the ruler endpoints. Everything from there is reversible until you make a physical cut.\n"}], "grading": {"summary": {"pass_rate": 1.0, "passed": 11, "failed": 0, "total": 11}, "expectations": [{"text": "Routes capture intake through the lazy-susan / ruler workflow (mentions capture-pipeline.md OR explicitly handles Mode D lazy-susan capture)", "passed": true, "evidence": ""}, {"text": "Names the Plant_<plant_id>/ scene contract and the 00_source_scan/...05_simulations/ child collections", "passed": true, "evidence": ""}, {"text": "Uses or references scene_scaffold.py for building the collection hierarchy", "passed": true, "evidence": "ute_blender_code` call running `scripts/scene_scaffold.py` with:  ```python PLANT_ID = \"ficus-benjamina-01\" SCIENTIFIC_N"}, {"text": "Calibrates scene scale from the 10 cm ruler segment (mentions scale_from_ruler.py OR shows equivalent scale-factor math with the two ruler endpoints)", "passed": true, "evidence": "a `.glb` is unreliable. 3. Run `scripts/scale_from_ruler.py`:  ```python POINT_A = (<empty _ruler_0cm coords>) POINT_B ="}, {"text": "Generates a wire coil via wire_coil.py OR shows an equivalent helical curve construction around the target branch", "passed": true, "evidence": "ire\"`.  Generate the coil with `scripts/wire_coil.py`:  ```python BRANCH_OBJ_NAME = \"ficus-benjamina-01_branch_R01\" PLAN"}, {"text": "Places cut and wire markers in a sim_<scenario>_<date> sub-collection rather than mutating the current-state twin (uses sim_collection.py OR explicit sim collection creation)", "passed": true, "evidence": "versibility step)  One call to `scripts/sim_collection.py`:  ```python PLANT_ID = \"ficus-benjamina-01\" SCENARIO = \"struc"}, {"text": "Calls get_objects_summary or get_blendfile_summary_* BEFORE execute_blender_code (orient before write)", "passed": true, "evidence": ""}, {"text": "Produces a pruning plan table with at minimum Id, Action, Why, Risk, Verify, Aftercare, Follow-up columns", "passed": true, "evidence": ""}, {"text": "Uses correct color semantics (red for cut, blue for wire)", "passed": true, "evidence": ""}, {"text": "Includes Ficus-specific note about fast cambium / short wire-removal window (e.g. inspect every 1-2 weeks during active growth)", "passed": true, "evidence": ""}, {"text": "Ends with a Digital twin sync log entry in the markdown template format", "passed": true, "evidence": ""}]}}, {"id": "eval-2-wire-removal-physical-log-old_skill-run-1", "prompt": "(No prompt found)", "eval_id": null, "outputs": [{"name": "response.md", "type": "text", "content": "Logged. Here's the record entry and what I'd watch next.\n\n## Record update \u2014 `ficus-benjamina-01`\n\nAppend to the timeline:\n\n```markdown\n### 2026-05-17 - wire_removed\n- Branch: R02\n- Goal: Hold ~30\u00b0 downward bend set on 2026-03-29 (~7 weeks under wire)\n- Inputs: Visual inspection at removal\n- Actions: Removed copper wire from R02\n- Outputs:\n  - Bend held; no rebound observed\n  - Slight wire impression on underside of branch bark\n  - No bite-in (wire was not embedded in cambium)\n- Conditions during wiring window: Balcony, full morning sun, daytime ~27\u00b0C\n- Risk: Low (clean removal, no cambium damage)\n- Follow-up: Inspect mark and bend retention in 2 weeks; photo from same angle for twin\n- Open questions: None\n```\n\nField updates:\n- `last_wired`: 2026-03-29 (unchanged, original application date)\n- Add `2026-05-17` to wire removal log\n- Clear any active \"wire bite-in check\" reminder for R02\n\n## Will the impression scar permanently?\n\nShort answer: almost certainly fades, will not scar permanently.\n\nWhat you're describing \u2014 a *slight impression on the underside, no bite-in* \u2014 is the best-case outcome. The wire pressed into the bark but didn't break the cambium or get overgrown. On *Ficus benjamina*, which has thin, smooth, fast-renewing bark and is in active warm-season growth right now (27\u00b0C, full morning sun is prime growing weather), here's what typically happens:\n\n- **Next 2\u20136 weeks:** the indentation softens visibly as the branch resumes radial growth and the bark plumps back out.\n- **2\u20134 months:** mark fades to a faint helical shadow, often only visible at certain light angles.\n- **By next growing season:** usually indistinguishable from surrounding bark on a vigorous ficus.\n\nThe thing that *does* scar permanently is bite-in \u2014 when bark grows *over* the wire and you have to cut it out, leaving a spiral groove or ridge. You avoided that. A pressure mark with intact bark is cosmetic and temporary.\n\nOne caveat: if the underside mark is on what will become the *front* of the tree, photograph it now at a consistent angle so you can confirm fading rather than guessing later.\n\n## What to check next\n\n**This week**\n- Photograph R02 from the same angle you've been using for the twin \u2014 front, and a close-up of the underside showing the impression. Baseline for tracking fade.\n- Check the bend angle is actually holding at ~30\u00b0 (eyeball or protractor). 7 weeks is on the short end for lignified ficus wood; some species creep back slightly in the first month after removal.\n\n**2 weeks out (~2026-05-31)**\n- Re-photograph same angles. Compare impression depth.\n- Confirm no rebound on the bend.\n- Check for back-budding along R02 \u2014 wire removal often coincides with a flush on the released branch in warm weather.\n\n**4\u20136 weeks out (~mid/late June)**\n- If the bend has crept back more than ~5\u201310\u00b0, you have two options: re-wire with a single staged correction, or accept the new angle. Re-wiring the same spot is fine since there was no bite-in, but use a slightly different coil path so you're not pressing into the existing impression.\n- If the impression is still clearly visible at this point, it'll still fade \u2014 just slower than I'd guess. Not a concern.\n\n**Calendar-ready reminder**\n\n```markdown\n### Reminder\n- Title: ficus-benjamina-01 R02 \u2014 post-wire check\n- Plant: ficus-benjamina-01\n- Date/time: 2026-05-31\n- Recurrence: Once, then re-evaluate\n- Priority: Low\n- Trigger/evidence: Wire removed 2026-05-17 after 7 weeks; tracking bend retention + bark mark fade\n- Checklist:\n  - Photograph R02 same angle as 2026-05-17\n  - Measure/eyeball bend angle vs. ~30\u00b0 target\n  - Compare bark impression depth\n  - Note any back-budding on R02\n  - Check the rest of the canopy for any other wire still on\n- Done condition: Photos logged, bend confirmed holding (or re-wire decision made)\n```\n\n**General aftercare while it's on the balcony**\n- Light stays stable (you're already in full morning sun, don't move it).\n- Normal watering \u2014 ficus on a hot balcony at 27\u00b0C will drink faster than indoor; check soil daily, water when the top 2\u20133 cm feels dry.\n- Hold off on heavy fertilizer for ~7 days post-wire-removal as a default, though honestly with no cambium damage you could resume normal feeding now if it was due.\n\nRisk level on the whole operation: **Low**. Clean removal, good bend retention, no structural damage. This is what a wiring cycle is supposed to look like.\n"}], "grading": {"summary": {"pass_rate": 1.0, "passed": 6, "failed": 0, "total": 6}, "expectations": [{"text": "Does NOT initiate a sprawling Blender digital-twin session for what is a simple record update", "passed": true, "evidence": ""}, {"text": "Appends a wire_removed event to the plant record with date, evidence, and aftercare", "passed": true, "evidence": ""}, {"text": "Directly answers whether the wire impression will scar \u2014 fades on healthy bark without bite-in, with caveats", "passed": true, "evidence": ""}, {"text": "Recommends inspection cadence for the bend setting and bark recovery", "passed": true, "evidence": ""}, {"text": "Produces a calendar-ready reminder using the skill's reminder format", "passed": true, "evidence": ""}, {"text": "Stays scoped to what was asked (record + bark question + next checks); no generic care lecture", "passed": true, "evidence": ""}]}}, {"id": "eval-2-wire-removal-physical-log-with_skill-run-1", "prompt": "(No prompt found)", "eval_id": null, "outputs": [{"name": "response.md", "type": "text", "content": "Logged. Bend held, no bite-in \u2014 good wire-removal outcome for a 7-week window on a vigorous summer ficus. Paste this into the `ficus-benjamina-01` timeline:\n\n```markdown\n### 2026-05-17 - wire_removed\n- Event: wire_removed\n- Plant: ficus-benjamina-01\n- Branch: R02\n- Goal: hold ~30\u00b0 downward set applied 2026-03-29 (approx., ~7 weeks prior)\n- Inputs: copper wire (gauge unrecorded), branch R02, balcony placement, full morning sun, daytime ~27\u00b0C\n- Actions: removed copper wire from R02\n- Result: bend held, no rebound. Slight wire impression on bark on underside of branch. No bite-in (wire did not embed; bark did not swell over the coil).\n- Risk: Low\n- Follow-up:\n  - 2026-05-24: inspect R02 impression \u2014 check for swelling along the spiral line, sap weep, any darkening.\n  - 2026-06-07: re-photograph R02 from the same angle as the pre-wiring shot to confirm the set is still holding.\n  - Watch any new shoots emerging along R02 \u2014 vigorous regrowth can re-lift the branch even after a clean set.\n- Open questions: wire gauge used (record for the wire-gauge heuristic on next bend); exact application date (estimate 2026-03-29).\n```\n\nAlso bump the frontmatter:\n\n```yaml\nlast_wired: 2026-03-29   # approximate, from \"about 7 weeks ago\"\n# add:\nlast_wire_removed: 2026-05-17\n```\n\n## What to check next\n\n1. **R02 for rebound (next ~2 weeks).** Freshly-set branches sometimes lift 5\u201310\u00b0 in the first fortnight after wire comes off, especially with strong apical pull on a ficus in active growth. Photograph from a fixed angle now so you have a baseline. If it rebounds noticeably, you can re-wire \u2014 but go to a slightly lower angle than the final goal so the spring-back lands you where you want.\n2. **The impression line itself.** Inspect weekly for the next month. Flag any of: sap weep along the spiral, dark sunken tissue, or a raised welt forming on either side of the line. Absence of those = cosmetic only.\n3. **New shoots on R02 and just above it.** Wire removal often coincides with a flush; on a ficus at 27\u00b0C in full morning sun you may see push within days. Decide early whether you want those shoots (taper, ramification) or whether they're competing with the line you just set.\n4. **General aftercare for ~7 days.** Normal moisture checks, no fertilizer bump, no other structural work on R02. The branch isn't injured but the cambium has been compressed along the wire path and is busy normalizing.\n\n## Will the wire mark scar permanently or fade?\n\nAlmost certainly fade \u2014 and on this species, fairly quickly.\n\nWhat you described is a **wire impression**, not **bite-in**:\n- *Impression* = the wire pressed into the bark surface but the branch did not grow around it. Bark is intact, no callus ridge, no sap. This is what you've got.\n- *Bite-in* = the branch swelled and the bark grew up over the wire, leaving a permanent spiral scar or ridge after removal. That's the one that scars.\n\nOn a healthy *Ficus benjamina* in warm-season growth, surface impressions like yours typically smooth out as the branch continues to thicken. The bark cells expand outward and the spiral groove flattens \u2014 usually noticeably better within 4\u20138 weeks, mostly invisible by the end of the growth season, especially on younger smoother bark. Older, more corky sections of bark fade slower but still go. The fact that you caught it before bite-in is the whole reason it'll disappear.\n\nTwo things that would change that answer:\n- If you spot a **callus ridge** forming on either side of the spiral over the next couple of weeks, that's the start of bite-in remodeling and the line will stay visible longer (still usually not permanent on ficus, but slower \u2014 months not weeks).\n- If the impression is on a section already heavily lignified and corky, expect a faint trace to linger into next year even though it's healing fine.\n\nNet: low risk, good catch on the timing, no action needed on the mark itself. Just keep the weekly photo discipline on R02 for a month and you'll see it fade in the timeline.\n"}], "grading": {"summary": {"pass_rate": 0.8333333333333334, "passed": 5, "failed": 1, "total": 6}, "expectations": [{"text": "Does NOT initiate a sprawling Blender digital-twin session for what is a simple record update", "passed": true, "evidence": ""}, {"text": "Appends a wire_removed event to the plant record with date, evidence, and aftercare", "passed": true, "evidence": ""}, {"text": "Directly answers whether the wire impression will scar \u2014 fades on healthy bark without bite-in, with caveats", "passed": true, "evidence": ""}, {"text": "Recommends inspection cadence for the bend setting and bark recovery", "passed": true, "evidence": ""}, {"text": "Produces a calendar-ready reminder using the skill's reminder format", "passed": false, "evidence": ""}, {"text": "Stays scoped to what was asked (record + bark question + next checks); no generic care lecture", "passed": true, "evidence": ""}]}}, {"id": "eval-3-sim-before-cutting-old_skill-run-1", "prompt": "(No prompt found)", "eval_id": null, "outputs": [{"name": "response.md", "type": "text", "content": "# Ficus benjamina-01 \u2014 Pruning + Wiring Simulation (Blender-only)\n\nGot it. I'll build this entirely inside a new `05_simulations/` subcollection so `Plant_ficus-benjamina-01` current-state collections stay untouched. Two simulations, one combined view, one screenshot, then a silhouette read.\n\nSim names I'll use (dated today, 2026-05-17):\n\n- `sim_prune_L03_apex_2026-05-17`\n- `sim_wire_R02_down_2026-05-17`\n- `sim_combined_2026-05-17` (the one I'll screenshot)\n\n## Step 1 \u2014 Inspect before I touch anything\n\nI always look at the live scene before writing. Tools, in order:\n\n1. `mcp__Blender__get_blendfile_summary_path_info` \u2014 confirm which `.blend` is open.\n2. `mcp__Blender__get_blendfile_summary_datablocks` \u2014 verify the collection + curve names exist exactly as Tony described.\n3. `mcp__Blender__get_objects_summary` \u2014 pull current transforms, parents, and the curve point data for `_trunk_curve`, `_branch_L01..L03`, `_branch_R01..R02`.\n4. `mcp__Blender__get_object_detail_summary` on `ficus-benjamina-01_branch_L03` and `_R02` specifically \u2014 I need spline point count, bevel depth, and the tip world position so the silhouette comparison is honest.\n\nPseudocode I'd send through `mcp__Blender__execute_blender_code` for the inspection pass:\n\n```python\nimport bpy\n\nPID = \"ficus-benjamina-01\"\nPARENT = bpy.data.collections[\"Plant_ficus-benjamina-01\"]\n\ntargets = [f\"{PID}_trunk_curve\",\n           f\"{PID}_branch_L01\", f\"{PID}_branch_L02\", f\"{PID}_branch_L03\",\n           f\"{PID}_branch_R01\", f\"{PID}_branch_R02\"]\n\nreport = {}\nfor name in targets:\n    ob = bpy.data.objects.get(name)\n    if not ob:\n        report[name] = \"MISSING\"\n        continue\n    if ob.type == 'CURVE':\n        spl = ob.data.splines[0]\n        pts = [p.co.xyz for p in (spl.bezier_points if spl.type=='BEZIER' else spl.points)]\n        report[name] = {\n            \"world_head\": list(ob.matrix_world @ pts[0]),\n            \"world_tail\": list(ob.matrix_world @ pts[-1]),\n            \"bevel_depth\": ob.data.bevel_depth,\n            \"points\": len(pts),\n        }\nprint(report)\n```\n\nThis is the \"verify before cutting\" step from the skill \u2014 I want the tip of L03 located in world space before I claim it's the competing leader.\n\n## Step 2 \u2014 Build the simulation collection scaffold\n\nI'd create the parent sim collection (idempotent) and link it under `Plant_ficus-benjamina-01/05_simulations/`. I won't unlink, hide, or modify any current-state object.\n\n```python\nimport bpy\n\ndef ensure_collection(name, parent):\n    c = bpy.data.collections.get(name)\n    if not c:\n        c = bpy.data.collections.new(name)\n        parent.children.link(c)\n    return c\n\nroot = bpy.data.collections[\"Plant_ficus-benjamina-01\"]\nsims = ensure_collection(\"05_simulations\", root)\nsim_prune = ensure_collection(\"sim_prune_L03_apex_2026-05-17\", sims)\nsim_wire  = ensure_collection(\"sim_wire_R02_down_2026-05-17\", sims)\nsim_combo = ensure_collection(\"sim_combined_2026-05-17\", sims)\n```\n\n## Step 3 \u2014 Sim A: prune L03 (the secondary leader)\n\nApproach: duplicate `L03` into the sim collection as a \"ghost\" stub showing what gets removed, and add a red cut marker at the branch base. The original `_branch_L03` is untouched.\n\nNaming follows the scene contract:\n\n- `ficus-benjamina-01_cut_marker_L03_A` \u2014 small red sphere at the base node\n- `ficus-benjamina-01_branch_L03_GHOST_2026-05-17` \u2014 duplicate, hidden in the combined view, kept for reference\n- The \"after\" look in the combined view is simply: current-state `L03` hidden via a viewport collection toggle on the *sim* duplicate, not on the original.\n\n```python\nimport bpy\nfrom mathutils import Vector\n\nPID = \"ficus-benjamina-01\"\nsrc = bpy.data.objects[f\"{PID}_branch_L03\"]\n\n# Ghost duplicate (linked data, separate transform), parked in the prune sim collection\nghost = src.copy()\nghost.data = src.data  # share curve data; we don't edit it\nghost.name = f\"{PID}_branch_L03_GHOST_2026-05-17\"\nbpy.data.collections[\"sim_prune_L03_apex_2026-05-17\"].objects.link(ghost)\nghost.hide_viewport = True  # hidden in the combined screenshot; \"removed\" look\nghost[\"sim_role\"] = \"removed_branch\"\nghost[\"removed_from\"] = src.name\n\n# Red cut marker at branch base (world space)\nbase_world = src.matrix_world @ src.data.splines[0].bezier_points[0].co\nbpy.ops.mesh.primitive_uv_sphere_add(radius=0.004, location=base_world)  # ~4mm\nmarker = bpy.context.active_object\nmarker.name = f\"{PID}_cut_marker_L03_A\"\n# Move to sim collection\nfor c in marker.users_collection: c.objects.unlink(marker)\nbpy.data.collections[\"sim_prune_L03_apex_2026-05-17\"].objects.link(marker)\n\n# Red emission material per skill color semantics\nmat = bpy.data.materials.get(\"sim_mat_cut_red\") or bpy.data.materials.new(\"sim_mat_cut_red\")\nmat.use_nodes = True\nbsdf = mat.node_tree.nodes.get(\"Principled BSDF\")\nbsdf.inputs[\"Base Color\"].default_value = (0.85, 0.10, 0.10, 1.0)\nbsdf.inputs[\"Emission Color\"].default_value = (0.85, 0.10, 0.10, 1.0)\nbsdf.inputs[\"Emission Strength\"].default_value = 2.0\nmarker.data.materials.append(mat)\n\nmarker[\"plant_id\"] = PID\nmarker[\"branch_id\"] = \"L03\"\nmarker[\"action\"] = \"remove_secondary_leader\"\nmarker[\"risk\"] = \"Medium\"\n```\n\n## Step 4 \u2014 Sim B: wire R02 down\n\nApproach for the bend: I duplicate the `R02` curve into the sim collection and bend the *duplicate's* control points downward. The original curve doesn't move. Then I generate a blue helical wire curve riding along the bent path.\n\nTarget bend: pull the R02 tip ~25\u201330\u00b0 below its current angle (typical \"settle the right primary\" move on a ficus informal upright). Staged \u2014 Tony can dial it via a custom prop before re-rendering.\n\n```python\nimport bpy, math\nfrom mathutils import Vector, Matrix\n\nPID = \"ficus-benjamina-01\"\nsrc = bpy.data.objects[f\"{PID}_branch_R02\"]\n\n# Duplicate curve with its OWN data so we can deform safely\ndup = src.copy()\ndup.data = src.data.copy()\ndup.name = f\"{PID}_branch_R02_SIM_2026-05-17\"\nbpy.data.collections[\"sim_wire_R02_down_2026-05-17\"].objects.link(dup)\ndup[\"sim_role\"] = \"bent_branch\"\ndup[\"target_bend_deg\"] = -28.0  # negative = downward in world Z\ndup[\"wire_gauge_mm\"] = 2.0      # starting guess; ask Tony to confirm\n\n# Pivot at base point of the duplicate spline\nspl = dup.data.splines[0]\npts = spl.bezier_points if spl.type == 'BEZIER' else spl.points\npivot_local = pts[0].co.xyz.copy()\nangle = math.radians(dup[\"target_bend_deg\"])\n\n# Rotate every point AFTER the base around the local Y axis (side-to-side trunk axis)\nR = Matrix.Rotation(angle, 3, 'Y')\nfor i, p in enumerate(pts):\n    if i == 0: continue\n    rel = (p.co.xyz - pivot_local)\n    # Ease in: more bend toward the tip, less near the base\n    t = i / (len(pts) - 1)\n    rel_bent = (R @ rel) * t + rel * (1 - t)\n    p.co.xyz = pivot_local + rel_bent\n    if spl.type == 'BEZIER':\n        # nudge handles roughly along the new tangent\n        p.handle_left.xyz  = pivot_local + (R @ (p.handle_left.xyz  - pivot_local)) * t + (p.handle_left.xyz  - pivot_local) * (1-t)\n        p.handle_right.xyz = pivot_local + (R @ (p.handle_right.xyz - pivot_local)) * t + (p.handle_right.xyz - pivot_local) * (1-t)\n\n# Helical wire wrap: small bezier with screw-like spiral following the bent path\nimport bpy\nwire_curve = bpy.data.curves.new(f\"{PID}_wire_R02_curve_2026-05-17\", 'CURVE')\nwire_curve.dimensions = '3D'\nwire_curve.bevel_depth = 0.001  # ~1mm wire visualization\nwire_obj = bpy.data.objects.new(f\"{PID}_wire_sim_R02_2026-05-17\", wire_curve)\nbpy.data.collections[\"sim_wire_R02_down_2026-05-17\"].objects.link(wire_obj)\n\n# Approximate helix sampled along bent spline\nspline = wire_curve.splines.new('POLY')\nN = 80\nturns = 6\nradius_local = src.data.bevel_depth + 0.0015  # branch radius + a hair\n# Sample positions from the duplicated, bent curve via Blender's curve evaluator\ndep = bpy.context.evaluated_depsgraph_get()\ndup_eval = dup.evaluated_get(dep)\nmesh_proxy = dup_eval.to_mesh()  # cheap polyline sample\nverts = [dup.matrix_world @ v.co for v in mesh_proxy.vertices]\ndup_eval.to_mesh_clear()\n\nspline.points.add(len(verts) - 1)\nfor i, co in enumerate(verts):\n    t = i / max(1, len(verts) - 1)\n    # tangent approximation\n    j = min(i+1, len(verts)-1)\n    tan = (verts[j] - verts[max(i-1,0)]).normalized()\n    # build a perpendicular frame\n    up = Vector((0,0,1))\n    side = tan.cross(up).normalized()\n    upn = side.cross(tan).normalized()\n    theta = turns * 2 * math.pi * t\n    offset = (math.cos(theta) * side + math.sin(theta) * upn) * radius_local\n    p = co + offset\n    spline.points[i].co = (p.x, p.y, p.z, 1.0)\n\n# Blue wire material\nmat = bpy.data.materials.get(\"sim_mat_wire_blue\") or bpy.data.materials.new(\"sim_mat_wire_blue\")\nmat.use_nodes = True\nbsdf = mat.node_tree.nodes.get(\"Principled BSDF\")\nbsdf.inputs[\"Base Color\"].default_value = (0.10, 0.35, 0.95, 1.0)\nbsdf.inputs[\"Metallic\"].default_value = 0.8\nbsdf.inputs[\"Roughness\"].default_value = 0.35\nwire_obj.data.materials.append(mat)\n\nwire_obj[\"plant_id\"] = PID\nwire_obj[\"branch_id\"] = \"R02\"\nwire_obj[\"wire_gauge_mm\"] = 2.0\nwire_obj[\"target_bend_deg\"] = -28.0\nwire_obj[\"applied_date\"] = \"2026-05-17\"\nwire_obj[\"inspect_every_days\"] = 10\n```\n\n## Step 5 \u2014 Combined view for the screenshot\n\nThe combined collection holds *visibility instructions*, not new geometry. I hide the originals of L03 and R02 only at the **viewport collection** level inside `sim_combined_2026-05-17` via a temporary \"exclude\" toggle while screenshotting. The originals themselves never get `hide_viewport=True` set on them.\n\n```python\n# Set up the screenshot view: show current state minus L03, with R02 replaced by the bent SIM duplicate\nimport bpy\nview_layer = bpy.context.view_layer\n\ndef find_layer_coll(layer_coll, name):\n    if layer_coll.collection.name == name: return layer_coll\n    for c in layer_coll.children:\n        r = find_layer_coll(c, name)\n        if r: return r\n\n# Temporarily exclude the originals we're \"replacing\"\n# (we toggle visibility via layer_collection.hide_viewport = True, NOT object.hide_viewport)\nfor obj_name in [\"ficus-benjamina-01_branch_L03\", \"ficus-benjamina-01_branch_R02\"]:\n    bpy.data.objects[obj_name].hide_set(True)  # viewport-only; reversible, scene data intact\n\n# Frame the plant from the established front axis\nbpy.ops.object.select_all(action='DESELECT')\nbpy.data.objects[\"ficus-benjamina-01_trunk_curve\"].select_set(True)\nbpy.ops.view3d.view_selected(use_all_regions=False)\n```\n\n## Step 6 \u2014 Take the screenshot\n\nTools:\n\n1. `mcp__Blender__jump_to_tab_by_space_type` \u2192 `VIEW_3D` so the screenshot grabs the viewport.\n2. `mcp__Blender__render_viewport_to_path` with a path like\n   `C:/Users/Tony/Documents/plants/ficus-benjamina-01/sims/sim_combined_2026-05-17.png`\n   (front camera, shaded view, transparent BG off so the silhouette reads against a neutral world).\n3. `mcp__Blender__get_screenshot_of_window_as_image` as the chat-visible confirmation.\n\nThen I restore visibility:\n\n```python\nfor obj_name in [\"ficus-benjamina-01_branch_L03\", \"ficus-benjamina-01_branch_R02\"]:\n    bpy.data.objects[obj_name].hide_set(False)\n```\n\n## Silhouette change (what the screenshot would show)\n\nBased on the inspection numbers I'd pull in Step 1, here's what to expect \u2014 I'll re-confirm against actual world coords once the inspect call runs:\n\n- **Apex tightens.** Removing L03 collapses the \"double-Y\" at the top into a single dominant apex coming off the trunk curve. The canopy's upper-left lobe \u2014 currently the visual rival to the true apex \u2014 disappears. Net: the silhouette goes from a forked candelabra read to a clearer informal-upright triangle.\n- **Visual weight shifts inward and slightly right.** With L03 gone, the L01/L02 mid-canopy carries the left side alone. That actually *helps* \u2014 those branches sit lower and read as proper \"first/second branch\" rather than understudies to a competing leader.\n- **R02 drops the right shoulder.** Bent ~28\u00b0 down, R02's tip moves from roughly horizontal-rising to clearly descending. The right edge of the silhouette gains depth (more front-to-back layering) and the canopy's overall outline widens at mid-height instead of bulging at the top right.\n- **Negative space opens up between R01 and R02.** Previously they read as one mass; the wire pulls R02 below R01's plane, which is the classic ficus \"show the trunk movement through the gap\" move.\n- **Overall:** silhouette becomes shorter at top, wider at mid, with a single defined apex. Closer to a styled informal upright; further from a wild houseplant.\n\nIf the actual scene inspection shows L03's tip is *lower* than the trunk apex (i.e., not actually competing), I'd flag that and ask Tony to re-confirm the branch id before I commit to \"remove\" framing \u2014 that's the verify-before-cutting check the skill requires.\n\n## Pruning + Wiring Plan\n\n| Id | Action | Why | Risk | Verify Before Cutting/Bending | Aftercare | Follow-up |\n|---|---|---|---|---|---|---|\n| L03-A | Remove `_branch_L03` at the trunk collar; clean cut, slight concave if you have the knob cutter | Eliminates the secondary leader competing with the true apex; consolidates upper canopy | Medium | Confirm L03 is the upper-left branch whose tip sits closest in height to the trunk apex (match the red marker `cut_marker_L03_A` in the sim screenshot) | Bright indirect light, normal moisture, skip fertilizer 7\u201310 days, watch the cut site for clean callus | Inspect back-budding around the cut in 3\u20134 weeks |\n| R02-W | Wire `_branch_R02` with ~2mm aluminum, anchor at trunk just above R01, coil outward, target ~25\u201330\u00b0 downward bend, staged | Drops the right shoulder, opens negative space between R01 and R02, reveals trunk movement | Medium | Confirm R02 is flexible at the base (gentle test bend before applying wire); confirm gauge \u2248 1/3 of branch diameter | Stable light, no repotting, monitor for bite-in given ficus's vigor in May | Bite-in check at 10 days, then every 10\u201314 days; plan removal in 6\u201310 weeks or sooner if marking |\n\n**Do not cut:** `_branch_L01`, `_branch_L02`, `_branch_R01`, `_trunk_curve`. L01/L02 are your structural left side and R01 is the anchor for the R02 wire \u2014 all three stay.\n\n## Digital twin sync \u2014 2026-05-17\n\n- Scene/file: current `Plant_ficus-benjamina-01` `.blend` (confirmed via `get_blendfile_summary_path_info`)\n- Inputs: existing trunk + 5 primary branch curves; no new scan\n- Changed objects: none in current-state collections. New objects all under `05_simulations/`:\n  - `ficus-benjamina-01_branch_L03_GHOST_2026-05-17`\n  - `ficus-benjamina-01_cut_marker_L03_A`\n  - `ficus-benjamina-01_branch_R02_SIM_2026-05-17`\n  - `ficus-benjamina-01_wire_sim_R02_2026-05-17`\n- Simulations created: `sim_prune_L03_apex_2026-05-17`, `sim_wire_R02_down_2026-05-17`, `sim_combined_2026-05-17`\n- Exported artifacts: `sim_combined_2026-05-17.png` viewport screenshot\n- Care/styling decisions drafted: remove L03 (Medium), wire R02 down 25\u201330\u00b0 (Medium)\n- Follow-ups: back-bud check in 3\u20134 weeks; wire bite-in check at 10 days\n- Uncertainties: exact L03 tip height vs. true apex until Step 1 inspection returns; R02 lignification (affects whether 2mm aluminum is right gauge \u2014 confirm by gentle hand-test before wiring)\n\n## Pre-action verification before you take shears to the live plant\n\n1. Pull up `sim_combined_2026-05-17.png` next to the actual plant.\n2. Match the red `cut_marker_L03_A` to a branch on the real ficus \u2014 it should be the upper-left branch whose tip is closest in height to the trunk's apex.\n3. Gently flex R02 at the base. If it cracks or refuses to move, drop to a thinner gauge and a smaller bend, or stage the wire over two sessions a week apart.\n4. Only then make the L03 cut. Wire R02 *after* the cut, same session is fine on a healthy ficus in May.\n\nNothing in the current-state collections was modified. Re-run the screenshot anytime \u2014 the sim collections are the only thing you'd need to toggle.\n"}], "grading": {"summary": {"pass_rate": 1.0, "passed": 8, "failed": 0, "total": 8}, "expectations": [{"text": "Calls get_objects_summary or get_blendfile_summary_* before execute_blender_code (verify the named objects exist)", "passed": true, "evidence": ""}, {"text": "Creates a new sim_<scenario>_<date> collection under 05_simulations/ (uses sim_collection.py OR equivalent)", "passed": true, "evidence": ""}, {"text": "Generates a wire coil around R02 (uses wire_coil.py OR equivalent helical curve)", "passed": true, "evidence": ""}, {"text": "Ghosts/hides L03 in the sim WITHOUT mutating the canonical current-state object", "passed": true, "evidence": ""}, {"text": "Captures a viewport screenshot or render via mcp__Blender__get_screenshot_of_window_as_image or render_thumbnail_to_path / render_viewport_to_path", "passed": true, "evidence": ""}, {"text": "Describes the silhouette change concretely (apex/right-side weight/canopy asymmetry)", "passed": true, "evidence": ""}, {"text": "Includes a pruning plan table or equivalent risk-leveled action list", "passed": true, "evidence": ""}, {"text": "Ends with a Digital twin sync log entry", "passed": true, "evidence": ""}]}}, {"id": "eval-3-sim-before-cutting-with_skill-run-1", "prompt": "(No prompt found)", "eval_id": null, "outputs": [{"name": "response.md", "type": "text", "content": "# Pruning + wiring simulation: ficus-benjamina-01\n\nGood instinct simulating first. L03 is structural-removal territory (Medium-to-High risk) and R02 down-bending with wire is a Medium-risk staged bend on a fast-cambium species, so seeing both in the twin before you reach for the shears is worth ten minutes of Blender time.\n\nI will not touch `Plant_ficus-benjamina-01__02_skeleton_curves` or `__03_procedural_geometry`. Everything lands in a fresh dated sim collection under `__05_simulations/`, plus markers in `__04_markers/`.\n\n## MCP tool call order\n\n1. `mcp__Blender__get_blendfile_summary_path_info` \u2014 confirm the .blend path so the sync log records it.\n2. `mcp__Blender__get_objects_summary` \u2014 confirm the seven branch curves and the trunk curve exist under `Plant_ficus-benjamina-01` and that the `__05_simulations` collection is present (if not, I scaffold it).\n3. `mcp__Blender__get_object_detail_summary` on `ficus-benjamina-01_branch_L03` and `_R02` \u2014 read their world matrix, spline endpoints, and current users_collection so I can compute the L03 base point (cut location) and the R02 tip (current vs. target end position for the bend).\n4. `mcp__Blender__execute_blender_code` \u2014 run **Pass 1: scaffold + sim collection** (block A below).\n5. `mcp__Blender__execute_blender_code` \u2014 run **Pass 2: prune L03** (block B). Makes L03 single-user inside the sim, hides + ghosts it, and drops a red cut marker at its base.\n6. `mcp__Blender__execute_blender_code` \u2014 run **Pass 3: bend R02 + wire coil** (block C). Single-users R02's curve, rotates a control point about the R02 base to drop the tip ~25 degrees, places a blue wire-anchor marker at the base, then runs `wire_coil.py` against the simulated curve.\n7. `mcp__Blender__execute_blender_code` \u2014 run **Pass 4: framing** (block D). Sets the active camera or viewport to the recorded front axis, frames the `Plant_ficus-benjamina-01` collection, and isolates the current-state twin + the sim collection.\n8. `mcp__Blender__get_screenshot_of_window_as_image` \u2014 capture the viewport. (Also `render_thumbnail_to_path` to `99_exports/sim_prune-L03_wire-R02-down_2026-05-17.png` for the record.)\n9. `mcp__Blender__execute_blender_code` \u2014 run **Pass 5: silhouette diff** (block E). Projects both versions' branch curves onto the front-view plane and prints bounding-box deltas (width, height, apex shift, right-side droop) so the silhouette change is a number, not a vibe.\n\n## Code I would send through `execute_blender_code`\n\n### Block A \u2014 sim collection (uses bundled `sim_collection.py`)\n\n```python\nPLANT_ID = \"ficus-benjamina-01\"\nSCENARIO = \"prune-L03_wire-R02-down\"\nSOURCE_COLLECTIONS = [\"02_skeleton_curves\", \"03_procedural_geometry\"]\nDATE_OVERRIDE = \"2026-05-17\"\nexec(open(r\"C:/Users/Tony/Documents/GitHub/claude-skills/skills/houseplant/scripts/sim_collection.py\").read())\n# -> sim_prune-L03_wire-R02-down_2026-05-17 under ficus-benjamina-01__05_simulations\n```\n\nThe script links (does not copy) the current-state curves into the sim. Anything I want to diverge gets `Make Single User` next.\n\n### Block B \u2014 prune L03 (red marker + ghosted curve)\n\n```python\nimport bpy\nfrom mathutils import Vector\n\nPLANT_ID = \"ficus-benjamina-01\"\nSIM_NAME = \"sim_prune-L03_wire-R02-down_2026-05-17\"\nsim = bpy.data.collections[SIM_NAME]\n\n# 1. Single-user L03 inside the sim so hiding/recoloring it doesn't touch the canonical curve.\nsrc = bpy.data.objects[\"ficus-benjamina-01_branch_L03\"]\nghost = src.copy()\nghost.data = src.data.copy()\nghost.name = \"ficus-benjamina-01_branch_L03__sim_removed\"\nsim.objects.link(ghost)\n# Unlink the linked-from-canonical L03 from the sim only.\nif src.name in sim.objects:\n    sim.objects.unlink(src)\n\n# 2. Ghost material (semi-transparent red) so the removed branch is visible as \"gone-but-where\".\nmat = bpy.data.materials.get(\"mat_sim_removed_ghost\") or bpy.data.materials.new(\"mat_sim_removed_ghost\")\nmat.diffuse_color = (1.0, 0.15, 0.15, 0.25)\nmat.use_nodes = False\nif ghost.data.materials:\n    ghost.data.materials[0] = mat\nelse:\n    ghost.data.materials.append(mat)\nghost.hide_render = True  # ghost shows in viewport only; the silhouette render uses the unghosted set\nghost.display_type = \"WIRE\"\n\n# 3. Red cut marker at the L03 base (first control point in world space).\nspline = src.data.splines[0]\nbase_local = spline.bezier_points[0].co if len(spline.bezier_points) else Vector(spline.points[0].co.xyz)\nbase_world = src.matrix_world @ base_local\n\nPLANT_ID = \"ficus-benjamina-01\"\nBRANCH_ID = \"L03\"\nSUFFIX = \"A\"\nLOCATION = tuple(base_world)\nSEMANTIC = \"cut\"\nRADIUS = 0.006\nexec(open(r\"C:/Users/Tony/Documents/GitHub/claude-skills/skills/houseplant/scripts/cut_marker.py\").read())\n```\n\n### Block C \u2014 bend R02 down + wire coil\n\n```python\nimport bpy, math\nfrom mathutils import Vector, Matrix\n\nPLANT_ID = \"ficus-benjamina-01\"\nSIM_NAME = \"sim_prune-L03_wire-R02-down_2026-05-17\"\nsim = bpy.data.collections[SIM_NAME]\n\n# 1. Single-user R02 in the sim.\nsrc = bpy.data.objects[\"ficus-benjamina-01_branch_R02\"]\nbent = src.copy()\nbent.data = src.data.copy()\nbent.name = \"ficus-benjamina-01_branch_R02__sim_bent\"\nsim.objects.link(bent)\nif src.name in sim.objects:\n    sim.objects.unlink(src)\n\n# 2. Rotate downstream control points about the branch base to drop the tip ~25 degrees.\n#    Axis of rotation: branch-base tangent crossed with world up, so the bend is \"downward in the front view\".\nspline = bent.data.splines[0]\npts = spline.bezier_points if len(spline.bezier_points) else spline.points\nbase = pts[0].co.xyz.copy()\ntip_dir = (pts[-1].co.xyz - base).normalized()\naxis = tip_dir.cross(Vector((0, 0, 1)))\nif axis.length < 1e-4:\n    axis = Vector((1, 0, 0))\naxis.normalize()\nbend_deg = 25.0\nR = Matrix.Rotation(math.radians(-bend_deg), 4, axis)  # negative = downward in front view\n\nfor i in range(1, len(pts)):  # leave the base anchor fixed\n    rel = pts[i].co.xyz - base\n    pts[i].co.xyz = base + (R @ rel)\n    if hasattr(pts[i], \"handle_left\"):\n        rel_l = pts[i].handle_left.xyz - base\n        rel_r = pts[i].handle_right.xyz - base\n        pts[i].handle_left.xyz  = base + (R @ rel_l)\n        pts[i].handle_right.xyz = base + (R @ rel_r)\n\n# 3. Blue wire-anchor marker at the bend's anchor point.\nbase_world = bent.matrix_world @ base\nPLANT_ID = \"ficus-benjamina-01\"\nBRANCH_ID = \"R02\"\nSUFFIX = \"anchor\"\nLOCATION = tuple(base_world)\nSEMANTIC = \"wire\"\nRADIUS = 0.005\nexec(open(r\"C:/Users/Tony/Documents/GitHub/claude-skills/skills/houseplant/scripts/cut_marker.py\").read())\n\n# 4. Wire coil around the *bent* curve (~2.0 mm wire is a reasonable starting gauge for an R02-sized branch;\n#    re-estimate from real caliper measurement before applying).\nBRANCH_OBJ_NAME = \"ficus-benjamina-01_branch_R02__sim_bent\"\nPLANT_ID = \"ficus-benjamina-01\"\nBRANCH_ID = \"R02\"\nSUFFIX = \"2026-05-17\"\nTURNS_PER_METER = 18\nWIRE_RADIUS = 0.0010   # 1.0 mm copper as a placeholder; bump if your branch caliper is >6 mm\nCOIL_RADIUS = None\nexec(open(r\"C:/Users/Tony/Documents/GitHub/claude-skills/skills/houseplant/scripts/wire_coil.py\").read())\n\n# 5. Re-link the coil into the sim collection so it lives with the rest of the scenario.\ncoil = bpy.data.objects.get(\"ficus-benjamina-01_wire_sim_R02_2026-05-17\")\nif coil and coil.name not in sim.objects:\n    for c in list(coil.users_collection):\n        c.objects.unlink(coil)\n    sim.objects.link(coil)\n```\n\n### Block D \u2014 viewport framing\n\n```python\nimport bpy\n\n# Hide L03 in the sim's viewport so the prune actually reads.\nghost = bpy.data.objects[\"ficus-benjamina-01_branch_L03__sim_removed\"]\nghost.hide_set(True)  # silhouette will see \"L03 gone\"; un-hide for the annotated still pass\n\n# Isolate canonical twin + sim collection.\nview_layer = bpy.context.view_layer\nfor layer_coll in view_layer.layer_collection.children:\n    layer_coll.exclude = False\n# Face the recorded front. Defaults to -Y if no front_axis property is set.\nroot = bpy.data.collections[\"Plant_ficus-benjamina-01\"]\nfront_axis = root.get(\"front_axis\", \"-Y\")\n\nfor area in bpy.context.screen.areas:\n    if area.type == \"VIEW_3D\":\n        with bpy.context.temp_override(area=area):\n            bpy.ops.view3d.view_axis(type={\"+X\":\"RIGHT\",\"-X\":\"LEFT\",\"+Y\":\"BACK\",\"-Y\":\"FRONT\",\"+Z\":\"TOP\",\"-Z\":\"BOTTOM\"}.get(front_axis, \"FRONT\"))\n            bpy.ops.view3d.view_selected(use_all_regions=False)\n        break\n```\n\n### Block E \u2014 silhouette diff (front-view projection)\n\n```python\nimport bpy\nfrom mathutils import Vector\n\nPLANT_ID = \"ficus-benjamina-01\"\nROOT = bpy.data.collections[f\"Plant_{PLANT_ID}\"]\nfront_axis = ROOT.get(\"front_axis\", \"-Y\")\n# Project to the plane perpendicular to the front axis.\n# For -Y front: silhouette = (X, Z). For +X: silhouette = (Y, Z). Etc.\nPROJECT = {\n    \"-Y\": lambda v: (v.x, v.z), \"+Y\": lambda v: (-v.x, v.z),\n    \"+X\": lambda v: (-v.y, v.z), \"-X\": lambda v: (v.y, v.z),\n    \"+Z\": lambda v: (v.x, v.y),  \"-Z\": lambda v: (v.x, -v.y),\n}[front_axis]\n\ndef sample_obj(obj):\n    if obj.type != \"CURVE\":\n        return []\n    out = []\n    for spl in obj.data.splines:\n        pts = spl.bezier_points if len(spl.bezier_points) else spl.points\n        for p in pts:\n            out.append(obj.matrix_world @ p.co.xyz)\n    return out\n\n# Current-state set: all canonical L01..L03 / R01..R02 plus trunk.\ncurrent_names = [f\"{PLANT_ID}_trunk_curve\"] + \\\n    [f\"{PLANT_ID}_branch_L0{i}\" for i in (1,2,3)] + \\\n    [f\"{PLANT_ID}_branch_R0{i}\" for i in (1,2)]\n# Sim set: L03 removed, R02 replaced by the bent copy.\nsim_names = [f\"{PLANT_ID}_trunk_curve\",\n             f\"{PLANT_ID}_branch_L01\", f\"{PLANT_ID}_branch_L02\",\n             f\"{PLANT_ID}_branch_R01\",\n             f\"{PLANT_ID}_branch_R02__sim_bent\"]\n\ndef silhouette(names):\n    pts2d = []\n    for n in names:\n        o = bpy.data.objects.get(n)\n        if o is None: continue\n        for w in sample_obj(o):\n            pts2d.append(PROJECT(w))\n    if not pts2d: return None\n    xs = [p[0] for p in pts2d]; zs = [p[1] for p in pts2d]\n    return {\n        \"min_x\": min(xs), \"max_x\": max(xs),\n        \"min_z\": min(zs), \"max_z\": max(zs),\n        \"width\": max(xs) - min(xs),\n        \"height\": max(zs) - min(zs),\n        \"apex_z\": max(zs),\n        \"right_tip_z\": max((p[1] for p in pts2d if p[0] > 0), default=None),\n        \"n\": len(pts2d),\n    }\n\ncur = silhouette(current_names)\nsim = silhouette(sim_names)\nprint(\"CURRENT\", cur)\nprint(\"SIM    \", sim)\nprint(\"DELTAS\",\n      \"width\", round(sim[\"width\"]-cur[\"width\"], 4),\n      \"height\", round(sim[\"height\"]-cur[\"height\"], 4),\n      \"apex_z\", round(sim[\"apex_z\"]-cur[\"apex_z\"], 4),\n      \"right_tip_z\", round(sim[\"right_tip_z\"]-cur[\"right_tip_z\"], 4))\n```\n\nThe print line is what I'd read off the MCP response to give you actual numbers.\n\n## What you'd see on the screenshot (and the silhouette call)\n\nWithout live MCP I can't paste real numbers, but here is the predicted silhouette change for this exact pair of edits on a top-heavy ficus with L03 acting as the secondary leader and R02 reaching upper-right:\n\n- **Apex height:** unchanged (the main apex is on the trunk curve, not on L03), or slightly lower if L03's tip was the highest sample. If L03's tip was poking above the trunk apex you'll see `apex_z` drop by the gap between trunk apex and L03 tip.\n- **Upper-left mass:** noticeably reduced. The left side of the canopy becomes cleaner and the trunk line reads more dominantly because the competing leader is gone. Expect `max_x` on the left side (i.e. `min_x` becoming less negative) to shrink by the projected L03 reach.\n- **Right side:** the R02 tip drops. With a 25-degree downward rotation about the R02 base, `right_tip_z` decreases by roughly `R02_length * sin(25\u00b0) \u2248 0.42 * R02_length`. So if R02 is ~22 cm tip-to-base, the tip falls about 9 cm in front-view.\n- **Overall canopy width:** modestly narrower (L03 gone reduces left reach) and a touch taller-feeling because the silhouette is no longer competing at the top.\n- **Visual read:** trunk line + apex become the single clear \"story\" of the tree, with the new R02 angle pulling the eye downward to the right \u2014 the classic asymmetric bonsai silhouette that lets the nebari and trunk movement speak.\n\nWhen you actually run this I'll replace the prediction above with the exact deltas from Block E's print line.\n\n## Pruning + wiring plan\n\n| Id | Action | Why | Risk | Verify before cutting/bending | Aftercare | Follow-up |\n|---|---|---|---|---|---|---|\n| L03-A | Remove branch L03 at its base, clean cut just outside the collar | L03 is acting as a secondary leader; removing it commits the trunk apex as the single leader and opens the upper-left canopy | Medium-to-High | Confirm the red marker `ficus-benjamina-01_cut_marker_L03_A` sits at the junction where L03 leaves the trunk on the upper-left from the chosen front. Confirm L03 is what's reaching up-and-left and competing with the apex, not L02 | Seal with sterile cut paste if available; stable bright indirect light; normal moisture; pause fertilizer 7 days | Photo + back-budding check at 3-4 weeks |\n| R02-W | Wire R02 with ~1.0 mm copper, ~18 turns/m, bend tip down ~25 degrees | Lowers the right-side line so the silhouette reads asymmetric and the R02 tip stops competing for vertical attention | Medium | Confirm R02 caliper at the base (target wire ~1/3 of branch diameter \u2014 re-pick gauge if branch is >6 mm); confirm blue anchor marker sits at the R02 base, not partway up; bend in one continuous motion to avoid cracking | Inspect for wire bite every 7-10 days during active growth; remove wire as soon as the set is taken or bark starts to swell | First bite-in inspection in 7 days; full set typically 4-8 weeks on ficus |\n\n**Do not cut:** L01, L02, R01, trunk apex. L01 and L02 are part of the keeper structure on the left after L03 comes off; the trunk apex becomes the sole leader.\n\n## Output contract: Blender scene update\n\n- **Scene file:** the `.blend` reported by `get_blendfile_summary_path_info`.\n- **Untouched collections:** `Plant_ficus-benjamina-01__02_skeleton_curves`, `__03_procedural_geometry` (current-state twin preserved).\n- **New simulation collection:** `Plant_ficus-benjamina-01__05_simulations/sim_prune-L03_wire-R02-down_2026-05-17`.\n- **New objects:**\n  - `ficus-benjamina-01_branch_L03__sim_removed` (single-user copy, ghost material, hidden in viewport for the silhouette pass)\n  - `ficus-benjamina-01_branch_R02__sim_bent` (single-user copy, control points rotated -25 deg about base, downward in front view)\n  - `ficus-benjamina-01_wire_sim_R02_2026-05-17` (copper helix curve, bevel_depth = 0.0010 m)\n- **New markers** (in `__04_markers`):\n  - `ficus-benjamina-01_cut_marker_L03_A` (red, at L03 base)\n  - `ficus-benjamina-01_wire_anchor_R02_anchor` (blue, at R02 base)\n- **Exports:** `99_exports/sim_prune-L03_wire-R02-down_2026-05-17.png` (viewport thumbnail render).\n- **Custom properties:** sim collection stamped with `scenario`, `created`, `plant_id`. Wire object stamped with `wire_radius_m`, `turns_per_meter`, `applied_date`, `branch_id`.\n- **Assumptions:**\n  - Front axis = the `front_axis` custom property on `Plant_ficus-benjamina-01`, or `-Y` if unset.\n  - Scene units in meters (the bundled scripts assume meters).\n  - R02 wire gauge picked as a placeholder; the real number comes from a caliper read on the live branch.\n  - L03 is the visually-up-and-left secondary leader, matching your description. The marker placement makes this verifiable before any cut.\n- **Unresolved uncertainties:** R02 caliper (drives wire gauge); whether the bend should be staged in two passes (15 deg now, +10 deg in 2-3 weeks) on a ficus that's been recently stressed.\n\n## Digital twin sync log entry to append to the plant record\n\n```markdown\n### Digital twin sync - 2026-05-17\n- Scene/file: <as reported by Blender>\n- Inputs: existing Plant_ficus-benjamina-01 curves (trunk, L01-L03, R01-R02)\n- Changed objects: none in canonical collections; new sim copies of L03 and R02\n- Simulations created: sim_prune-L03_wire-R02-down_2026-05-17\n- Exported artifacts: 99_exports/sim_prune-L03_wire-R02-down_2026-05-17.png\n- Care or styling decisions: planning structural prune of L03 + downward wire on R02; not yet executed on live plant\n- Follow-ups: caliper R02 to confirm wire gauge; verify L03 identity from chosen front; if approved, execute prune then wire; bite-in check 7 days after wiring\n- Uncertainties: R02 diameter, whether bend should be staged, plant's recent stress state\n```\n\n## Pre-action verification (before you touch the live plant)\n\n1. Open the screenshot and confirm the red marker is on the branch you call L03 \u2014 the upper-left secondary leader.\n2. Confirm the blue anchor marker is at the R02 base, not partway up the branch.\n3. Caliper R02 at the base. If it's >6 mm, step up to 1.5 mm wire and re-run Block C with `WIRE_RADIUS = 0.0015`.\n4. If the plant has had any stress in the last 2-3 weeks (move, repot, leaf drop), defer the L03 removal \u2014 combining a structural cut with a wire bend on a stressed ficus pushes this from Medium to High risk.\n\nWhen you've run the MCP calls I'll swap the predicted silhouette deltas above for the real numbers from Block E.\n"}], "grading": {"summary": {"pass_rate": 1.0, "passed": 8, "failed": 0, "total": 8}, "expectations": [{"text": "Calls get_objects_summary or get_blendfile_summary_* before execute_blender_code (verify the named objects exist)", "passed": true, "evidence": ""}, {"text": "Creates a new sim_<scenario>_<date> collection under 05_simulations/ (uses sim_collection.py OR equivalent)", "passed": true, "evidence": "Block A \u2014 sim collection (uses bundled `sim_collection.py`)  ```python PLANT_ID = \"ficus-benjamina-01\" SCENARIO = \"prune"}, {"text": "Generates a wire coil around R02 (uses wire_coil.py OR equivalent helical curve)", "passed": true, "evidence": "e-anchor marker at the base, then runs `wire_coil.py` against the simulated curve. 7. `mcp__Blender__execute_blender_cod"}, {"text": "Ghosts/hides L03 in the sim WITHOUT mutating the canonical current-state object", "passed": true, "evidence": ""}, {"text": "Captures a viewport screenshot or render via mcp__Blender__get_screenshot_of_window_as_image or render_thumbnail_to_path / render_viewport_to_path", "passed": true, "evidence": ""}, {"text": "Describes the silhouette change concretely (apex/right-side weight/canopy asymmetry)", "passed": true, "evidence": ""}, {"text": "Includes a pruning plan table or equivalent risk-leveled action list", "passed": true, "evidence": ""}, {"text": "Ends with a Digital twin sync log entry", "passed": true, "evidence": ""}]}}], "previous_feedback": {}, "previous_outputs": {}, "benchmark": {"metadata": {"skill_name": "houseplant", "skill_path": "<path/to/skill>", "executor_model": "<model-name>", "analyzer_model": "<model-name>", "timestamp": "2026-05-18T06:19:02Z", "evals_run": [1, 2, 3], "runs_per_configuration": 3}, "runs": [{"eval_id": 1, "configuration": "old_skill", "run_number": 1, "result": {"pass_rate": 0.9090909090909091, "passed": 10, "failed": 1, "total": 11, "time_seconds": 200.83, "tokens": 50954, "tool_calls": 0, "errors": 0}, "expectations": [{"text": "Routes capture intake through the lazy-susan / ruler workflow (mentions capture-pipeline.md OR explicitly handles Mode D lazy-susan capture)", "passed": true, "evidence": ""}, {"text": "Names the Plant_<plant_id>/ scene contract and the 00_source_scan/...05_simulations/ child collections", "passed": true, "evidence": ""}, {"text": "Uses or references scene_scaffold.py for building the collection hierarchy", "passed": false, "evidence": ""}, {"text": "Calibrates scene scale from the 10 cm ruler segment (mentions scale_from_ruler.py OR shows equivalent scale-factor math with the two ruler endpoints)", "passed": true, "evidence": ""}, {"text": "Generates a wire coil via wire_coil.py OR shows an equivalent helical curve construction around the target branch", "passed": true, "evidence": ""}, {"text": "Places cut and wire markers in a sim_<scenario>_<date> sub-collection rather than mutating the current-state twin (uses sim_collection.py OR explicit sim collection creation)", "passed": true, "evidence": ""}, {"text": "Calls get_objects_summary or get_blendfile_summary_* BEFORE execute_blender_code (orient before write)", "passed": true, "evidence": ""}, {"text": "Produces a pruning plan table with at minimum Id, Action, Why, Risk, Verify, Aftercare, Follow-up columns", "passed": true, "evidence": ""}, {"text": "Uses correct color semantics (red for cut, blue for wire)", "passed": true, "evidence": ""}, {"text": "Includes Ficus-specific note about fast cambium / short wire-removal window (e.g. inspect every 1-2 weeks during active growth)", "passed": true, "evidence": ""}, {"text": "Ends with a Digital twin sync log entry in the markdown template format", "passed": true, "evidence": ""}], "notes": []}, {"eval_id": 2, "configuration": "old_skill", "run_number": 1, "result": {"pass_rate": 1.0, "passed": 6, "failed": 0, "total": 6, "time_seconds": 53.67, "tokens": 37739, "tool_calls": 0, "errors": 0}, "expectations": [{"text": "Does NOT initiate a sprawling Blender digital-twin session for what is a simple record update", "passed": true, "evidence": ""}, {"text": "Appends a wire_removed event to the plant record with date, evidence, and aftercare", "passed": true, "evidence": ""}, {"text": "Directly answers whether the wire impression will scar \u2014 fades on healthy bark without bite-in, with caveats", "passed": true, "evidence": ""}, {"text": "Recommends inspection cadence for the bend setting and bark recovery", "passed": true, "evidence": ""}, {"text": "Produces a calendar-ready reminder using the skill's reminder format", "passed": true, "evidence": ""}, {"text": "Stays scoped to what was asked (record + bark question + next checks); no generic care lecture", "passed": true, "evidence": ""}], "notes": []}, {"eval_id": 3, "configuration": "old_skill", "run_number": 1, "result": {"pass_rate": 1.0, "passed": 8, "failed": 0, "total": 8, "time_seconds": 126.66, "tokens": 43653, "tool_calls": 0, "errors": 0}, "expectations": [{"text": "Calls get_objects_summary or get_blendfile_summary_* before execute_blender_code (verify the named objects exist)", "passed": true, "evidence": ""}, {"text": "Creates a new sim_<scenario>_<date> collection under 05_simulations/ (uses sim_collection.py OR equivalent)", "passed": true, "evidence": ""}, {"text": "Generates a wire coil around R02 (uses wire_coil.py OR equivalent helical curve)", "passed": true, "evidence": ""}, {"text": "Ghosts/hides L03 in the sim WITHOUT mutating the canonical current-state object", "passed": true, "evidence": ""}, {"text": "Captures a viewport screenshot or render via mcp__Blender__get_screenshot_of_window_as_image or render_thumbnail_to_path / render_viewport_to_path", "passed": true, "evidence": ""}, {"text": "Describes the silhouette change concretely (apex/right-side weight/canopy asymmetry)", "passed": true, "evidence": ""}, {"text": "Includes a pruning plan table or equivalent risk-leveled action list", "passed": true, "evidence": ""}, {"text": "Ends with a Digital twin sync log entry", "passed": true, "evidence": ""}], "notes": []}, {"eval_id": 1, "configuration": "with_skill", "run_number": 1, "result": {"pass_rate": 1.0, "passed": 11, "failed": 0, "total": 11, "time_seconds": 151.05, "tokens": 61434, "tool_calls": 0, "errors": 0}, "expectations": [{"text": "Routes capture intake through the lazy-susan / ruler workflow (mentions capture-pipeline.md OR explicitly handles Mode D lazy-susan capture)", "passed": true, "evidence": ""}, {"text": "Names the Plant_<plant_id>/ scene contract and the 00_source_scan/...05_simulations/ child collections", "passed": true, "evidence": ""}, {"text": "Uses or references scene_scaffold.py for building the collection hierarchy", "passed": true, "evidence": "ute_blender_code` call running `scripts/scene_scaffold.py` with:  ```python PLANT_ID = \"ficus-benjamina-01\" SCIENTIFIC_N"}, {"text": "Calibrates scene scale from the 10 cm ruler segment (mentions scale_from_ruler.py OR shows equivalent scale-factor math with the two ruler endpoints)", "passed": true, "evidence": "a `.glb` is unreliable. 3. Run `scripts/scale_from_ruler.py`:  ```python POINT_A = (<empty _ruler_0cm coords>) POINT_B ="}, {"text": "Generates a wire coil via wire_coil.py OR shows an equivalent helical curve construction around the target branch", "passed": true, "evidence": "ire\"`.  Generate the coil with `scripts/wire_coil.py`:  ```python BRANCH_OBJ_NAME = \"ficus-benjamina-01_branch_R01\" PLAN"}, {"text": "Places cut and wire markers in a sim_<scenario>_<date> sub-collection rather than mutating the current-state twin (uses sim_collection.py OR explicit sim collection creation)", "passed": true, "evidence": "versibility step)  One call to `scripts/sim_collection.py`:  ```python PLANT_ID = \"ficus-benjamina-01\" SCENARIO = \"struc"}, {"text": "Calls get_objects_summary or get_blendfile_summary_* BEFORE execute_blender_code (orient before write)", "passed": true, "evidence": ""}, {"text": "Produces a pruning plan table with at minimum Id, Action, Why, Risk, Verify, Aftercare, Follow-up columns", "passed": true, "evidence": ""}, {"text": "Uses correct color semantics (red for cut, blue for wire)", "passed": true, "evidence": ""}, {"text": "Includes Ficus-specific note about fast cambium / short wire-removal window (e.g. inspect every 1-2 weeks during active growth)", "passed": true, "evidence": ""}, {"text": "Ends with a Digital twin sync log entry in the markdown template format", "passed": true, "evidence": ""}], "notes": []}, {"eval_id": 2, "configuration": "with_skill", "run_number": 1, "result": {"pass_rate": 0.8333333333333334, "passed": 5, "failed": 1, "total": 6, "time_seconds": 59.42, "tokens": 40576, "tool_calls": 0, "errors": 0}, "expectations": [{"text": "Does NOT initiate a sprawling Blender digital-twin session for what is a simple record update", "passed": true, "evidence": ""}, {"text": "Appends a wire_removed event to the plant record with date, evidence, and aftercare", "passed": true, "evidence": ""}, {"text": "Directly answers whether the wire impression will scar \u2014 fades on healthy bark without bite-in, with caveats", "passed": true, "evidence": ""}, {"text": "Recommends inspection cadence for the bend setting and bark recovery", "passed": true, "evidence": ""}, {"text": "Produces a calendar-ready reminder using the skill's reminder format", "passed": false, "evidence": ""}, {"text": "Stays scoped to what was asked (record + bark question + next checks); no generic care lecture", "passed": true, "evidence": ""}], "notes": []}, {"eval_id": 3, "configuration": "with_skill", "run_number": 1, "result": {"pass_rate": 1.0, "passed": 8, "failed": 0, "total": 8, "time_seconds": 128.92, "tokens": 56676, "tool_calls": 0, "errors": 0}, "expectations": [{"text": "Calls get_objects_summary or get_blendfile_summary_* before execute_blender_code (verify the named objects exist)", "passed": true, "evidence": ""}, {"text": "Creates a new sim_<scenario>_<date> collection under 05_simulations/ (uses sim_collection.py OR equivalent)", "passed": true, "evidence": "Block A \u2014 sim collection (uses bundled `sim_collection.py`)  ```python PLANT_ID = \"ficus-benjamina-01\" SCENARIO = \"prune"}, {"text": "Generates a wire coil around R02 (uses wire_coil.py OR equivalent helical curve)", "passed": true, "evidence": "e-anchor marker at the base, then runs `wire_coil.py` against the simulated curve. 7. `mcp__Blender__execute_blender_cod"}, {"text": "Ghosts/hides L03 in the sim WITHOUT mutating the canonical current-state object", "passed": true, "evidence": ""}, {"text": "Captures a viewport screenshot or render via mcp__Blender__get_screenshot_of_window_as_image or render_thumbnail_to_path / render_viewport_to_path", "passed": true, "evidence": ""}, {"text": "Describes the silhouette change concretely (apex/right-side weight/canopy asymmetry)", "passed": true, "evidence": ""}, {"text": "Includes a pruning plan table or equivalent risk-leveled action list", "passed": true, "evidence": ""}, {"text": "Ends with a Digital twin sync log entry", "passed": true, "evidence": ""}], "notes": []}], "run_summary": {"old_skill": {"pass_rate": {"mean": 0.9697, "stddev": 0.0525, "min": 0.9091, "max": 1.0}, "time_seconds": {"mean": 127.0533, "stddev": 73.5808, "min": 53.67, "max": 200.83}, "tokens": {"mean": 44115.3333, "stddev": 6619.6201, "min": 37739, "max": 50954}}, "with_skill": {"pass_rate": {"mean": 0.9444, "stddev": 0.0962, "min": 0.8333, "max": 1.0}, "time_seconds": {"mean": 113.13, "stddev": 47.8122, "min": 59.42, "max": 151.05}, "tokens": {"mean": 52895.3333, "stddev": 10930.8793, "min": 40576, "max": 61434}}, "delta": {"pass_rate": "+0.03", "time_seconds": "+13.9", "tokens": "-8780"}}, "notes": []}};
+
+    // ---- State ----
+    let feedbackMap = {};  // run_id -> feedback text
+    let currentIndex = 0;
+    let visitedRuns = new Set();
+
+    // ---- Init ----
+    async function init() {
+      // Load saved feedback from server — but only if this isn't a fresh
+      // iteration (indicated by previous_feedback being present). When
+      // previous feedback exists, the feedback.json on disk is stale from
+      // the prior iteration and should not pre-fill the textareas.
+      const hasPrevious = Object.keys(EMBEDDED_DATA.previous_feedback || {}).length > 0
+        || Object.keys(EMBEDDED_DATA.previous_outputs || {}).length > 0;
+      if (!hasPrevious) {
+        try {
+          const resp = await fetch("/api/feedback");
+          const data = await resp.json();
+          if (data.reviews) {
+            for (const r of data.reviews) feedbackMap[r.run_id] = r.feedback;
+          }
+        } catch { /* first run, no feedback yet */ }
+      }
+
+      document.getElementById("skill-name").textContent = EMBEDDED_DATA.skill_name;
+      showRun(0);
+
+      // Wire up feedback auto-save
+      const textarea = document.getElementById("feedback");
+      let saveTimeout = null;
+      textarea.addEventListener("input", () => {
+        clearTimeout(saveTimeout);
+        document.getElementById("feedback-status").textContent = "";
+        saveTimeout = setTimeout(() => saveCurrentFeedback(), 800);
+      });
+    }
+
+    // ---- Navigation ----
+    function navigate(delta) {
+      const newIndex = currentIndex + delta;
+      if (newIndex >= 0 && newIndex < EMBEDDED_DATA.runs.length) {
+        saveCurrentFeedback();
+        showRun(newIndex);
+      }
+    }
+
+    function updateNavButtons() {
+      document.getElementById("prev-btn").disabled = currentIndex === 0;
+      document.getElementById("next-btn").disabled =
+        currentIndex === EMBEDDED_DATA.runs.length - 1;
+    }
+
+    // ---- Show a run ----
+    function showRun(index) {
+      currentIndex = index;
+      const run = EMBEDDED_DATA.runs[index];
+
+      // Progress
+      document.getElementById("progress").textContent =
+        `${index + 1} of ${EMBEDDED_DATA.runs.length}`;
+
+      // Prompt
+      document.getElementById("prompt-text").textContent = run.prompt;
+
+      // Config badge
+      const badge = document.getElementById("config-badge");
+      const configMatch = run.id.match(/(with_skill|without_skill|new_skill|old_skill)/);
+      if (configMatch) {
+        const config = configMatch[1];
+        const isBaseline = config === "without_skill" || config === "old_skill";
+        badge.textContent = config.replace(/_/g, " ");
+        badge.className = "config-badge " + (isBaseline ? "config-baseline" : "config-primary");
+        badge.style.display = "inline-block";
+      } else {
+        badge.style.display = "none";
+      }
+
+      // Outputs
+      renderOutputs(run);
+
+      // Previous outputs
+      renderPrevOutputs(run);
+
+      // Grades
+      renderGrades(run);
+
+      // Previous feedback
+      const prevFb = (EMBEDDED_DATA.previous_feedback || {})[run.id];
+      const prevEl = document.getElementById("prev-feedback");
+      if (prevFb) {
+        document.getElementById("prev-feedback-text").textContent = prevFb;
+        prevEl.style.display = "block";
+      } else {
+        prevEl.style.display = "none";
+      }
+
+      // Feedback
+      document.getElementById("feedback").value = feedbackMap[run.id] || "";
+      document.getElementById("feedback-status").textContent = "";
+
+      updateNavButtons();
+
+      // Track visited runs and promote done button when all visited
+      visitedRuns.add(index);
+      const doneBtn = document.getElementById("done-btn");
+      if (visitedRuns.size >= EMBEDDED_DATA.runs.length) {
+        doneBtn.classList.add("ready");
+      }
+
+      // Scroll main content to top
+      document.querySelector(".main").scrollTop = 0;
+    }
+
+    // ---- Render outputs ----
+    function renderOutputs(run) {
+      const container = document.getElementById("outputs-body");
+      container.innerHTML = "";
+
+      const outputs = run.outputs || [];
+      if (outputs.length === 0) {
+        container.innerHTML = '<div class="empty-state">No output files</div>';
+        return;
+      }
+
+      for (const file of outputs) {
+        const fileDiv = document.createElement("div");
+        fileDiv.className = "output-file";
+
+        // Always show file header with download link
+        const header = document.createElement("div");
+        header.className = "output-file-header";
+        const nameSpan = document.createElement("span");
+        nameSpan.textContent = file.name;
+        header.appendChild(nameSpan);
+        const dlBtn = document.createElement("a");
+        dlBtn.className = "dl-btn";
+        dlBtn.textContent = "Download";
+        dlBtn.download = file.name;
+        dlBtn.href = getDownloadUri(file);
+        header.appendChild(dlBtn);
+        fileDiv.appendChild(header);
+
+        const content = document.createElement("div");
+        content.className = "output-file-content";
+
+        if (file.type === "text") {
+          const pre = document.createElement("pre");
+          pre.textContent = file.content;
+          content.appendChild(pre);
+        } else if (file.type === "image") {
+          const img = document.createElement("img");
+          img.src = file.data_uri;
+          img.alt = file.name;
+          content.appendChild(img);
+        } else if (file.type === "pdf") {
+          const iframe = document.createElement("iframe");
+          iframe.src = file.data_uri;
+          content.appendChild(iframe);
+        } else if (file.type === "xlsx") {
+          renderXlsx(content, file.data_b64);
+        } else if (file.type === "binary") {
+          const a = document.createElement("a");
+          a.className = "download-link";
+          a.href = file.data_uri;
+          a.download = file.name;
+          a.textContent = "Download " + file.name;
+          content.appendChild(a);
+        } else if (file.type === "error") {
+          const pre = document.createElement("pre");
+          pre.textContent = file.content;
+          pre.style.color = "var(--red)";
+          content.appendChild(pre);
+        }
+
+        fileDiv.appendChild(content);
+        container.appendChild(fileDiv);
+      }
+    }
+
+    // ---- XLSX rendering via SheetJS ----
+    function renderXlsx(container, b64Data) {
+      try {
+        const raw = Uint8Array.from(atob(b64Data), c => c.charCodeAt(0));
+        const wb = XLSX.read(raw, { type: "array" });
+
+        for (let i = 0; i < wb.SheetNames.length; i++) {
+          const sheetName = wb.SheetNames[i];
+          const ws = wb.Sheets[sheetName];
+
+          if (wb.SheetNames.length > 1) {
+            const sheetLabel = document.createElement("div");
+            sheetLabel.style.cssText =
+              "font-weight:600; font-size:0.8rem; color:#b0aea5; margin-top:0.5rem; margin-bottom:0.25rem;";
+            sheetLabel.textContent = "Sheet: " + sheetName;
+            container.appendChild(sheetLabel);
+          }
+
+          const htmlStr = XLSX.utils.sheet_to_html(ws, { editable: false });
+          const wrapper = document.createElement("div");
+          wrapper.innerHTML = htmlStr;
+          container.appendChild(wrapper);
+        }
+      } catch (err) {
+        container.textContent = "Error rendering spreadsheet: " + err.message;
+      }
+    }
+
+    // ---- Grades ----
+    function renderGrades(run) {
+      const section = document.getElementById("grades-section");
+      const content = document.getElementById("grades-content");
+
+      if (!run.grading) {
+        section.style.display = "none";
+        return;
+      }
+
+      const grading = run.grading;
+      section.style.display = "block";
+      // Reset to collapsed
+      content.classList.remove("open");
+      document.getElementById("grades-arrow").classList.remove("open");
+
+      const summary = grading.summary || {};
+      const expectations = grading.expectations || [];
+
+      let html = '<div style="padding: 1rem;">';
+
+      // Summary line
+      const passRate = summary.pass_rate != null
+        ? Math.round(summary.pass_rate * 100) + "%"
+        : "?";
+      const badgeClass = summary.pass_rate >= 0.8 ? "grade-pass" : summary.pass_rate >= 0.5 ? "" : "grade-fail";
+      html += '<div class="grades-summary">';
+      html += '<span class="grade-badge ' + badgeClass + '">' + passRate + '</span>';
+      html += '<span>' + (summary.passed || 0) + ' passed, ' + (summary.failed || 0) + ' failed of ' + (summary.total || 0) + '</span>';
+      html += '</div>';
+
+      // Assertions list
+      html += '<ul class="assertion-list">';
+      for (const exp of expectations) {
+        const statusClass = exp.passed ? "pass" : "fail";
+        const statusIcon = exp.passed ? "\u2713" : "\u2717";
+        html += '<li class="assertion-item">';
+        html += '<span class="assertion-status ' + statusClass + '">' + statusIcon + '</span>';
+        html += '<span>' + escapeHtml(exp.text) + '</span>';
+        if (exp.evidence) {
+          html += '<div class="assertion-evidence">' + escapeHtml(exp.evidence) + '</div>';
+        }
+        html += '</li>';
+      }
+      html += '</ul>';
+
+      html += '</div>';
+      content.innerHTML = html;
+    }
+
+    function toggleGrades() {
+      const content = document.getElementById("grades-content");
+      const arrow = document.getElementById("grades-arrow");
+      content.classList.toggle("open");
+      arrow.classList.toggle("open");
+    }
+
+    // ---- Previous outputs (collapsible) ----
+    function renderPrevOutputs(run) {
+      const section = document.getElementById("prev-outputs-section");
+      const content = document.getElementById("prev-outputs-content");
+      const prevOutputs = (EMBEDDED_DATA.previous_outputs || {})[run.id];
+
+      if (!prevOutputs || prevOutputs.length === 0) {
+        section.style.display = "none";
+        return;
+      }
+
+      section.style.display = "block";
+      // Reset to collapsed
+      content.classList.remove("open");
+      document.getElementById("prev-outputs-arrow").classList.remove("open");
+
+      // Render the files into the content area
+      content.innerHTML = "";
+      const wrapper = document.createElement("div");
+      wrapper.style.padding = "1rem";
+
+      for (const file of prevOutputs) {
+        const fileDiv = document.createElement("div");
+        fileDiv.className = "output-file";
+
+        const header = document.createElement("div");
+        header.className = "output-file-header";
+        const nameSpan = document.createElement("span");
+        nameSpan.textContent = file.name;
+        header.appendChild(nameSpan);
+        const dlBtn = document.createElement("a");
+        dlBtn.className = "dl-btn";
+        dlBtn.textContent = "Download";
+        dlBtn.download = file.name;
+        dlBtn.href = getDownloadUri(file);
+        header.appendChild(dlBtn);
+        fileDiv.appendChild(header);
+
+        const fc = document.createElement("div");
+        fc.className = "output-file-content";
+
+        if (file.type === "text") {
+          const pre = document.createElement("pre");
+          pre.textContent = file.content;
+          fc.appendChild(pre);
+        } else if (file.type === "image") {
+          const img = document.createElement("img");
+          img.src = file.data_uri;
+          img.alt = file.name;
+          fc.appendChild(img);
+        } else if (file.type === "pdf") {
+          const iframe = document.createElement("iframe");
+          iframe.src = file.data_uri;
+          fc.appendChild(iframe);
+        } else if (file.type === "xlsx") {
+          renderXlsx(fc, file.data_b64);
+        } else if (file.type === "binary") {
+          const a = document.createElement("a");
+          a.className = "download-link";
+          a.href = file.data_uri;
+          a.download = file.name;
+          a.textContent = "Download " + file.name;
+          fc.appendChild(a);
+        }
+
+        fileDiv.appendChild(fc);
+        wrapper.appendChild(fileDiv);
+      }
+
+      content.appendChild(wrapper);
+    }
+
+    function togglePrevOutputs() {
+      const content = document.getElementById("prev-outputs-content");
+      const arrow = document.getElementById("prev-outputs-arrow");
+      content.classList.toggle("open");
+      arrow.classList.toggle("open");
+    }
+
+    // ---- Feedback (saved to server -> feedback.json) ----
+    function saveCurrentFeedback() {
+      const run = EMBEDDED_DATA.runs[currentIndex];
+      const text = document.getElementById("feedback").value;
+
+      if (text.trim() === "") {
+        delete feedbackMap[run.id];
+      } else {
+        feedbackMap[run.id] = text;
+      }
+
+      // Build reviews array from map
+      const reviews = [];
+      for (const [run_id, feedback] of Object.entries(feedbackMap)) {
+        if (feedback.trim()) {
+          reviews.push({ run_id, feedback, timestamp: new Date().toISOString() });
+        }
+      }
+
+      fetch("/api/feedback", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ reviews, status: "in_progress" }),
+      }).then(() => {
+        document.getElementById("feedback-status").textContent = "Saved";
+      }).catch(() => {
+        // Static mode or server unavailable — no-op on auto-save,
+        // feedback will be downloaded on final submit
+        document.getElementById("feedback-status").textContent = "Will download on submit";
+      });
+    }
+
+    // ---- Done ----
+    function showDoneDialog() {
+      // Save current textarea to feedbackMap (but don't POST yet)
+      const run = EMBEDDED_DATA.runs[currentIndex];
+      const text = document.getElementById("feedback").value;
+      if (text.trim() === "") {
+        delete feedbackMap[run.id];
+      } else {
+        feedbackMap[run.id] = text;
+      }
+
+      // POST once with status: complete — include ALL runs so the model
+      // can distinguish "no feedback" (looks good) from "not reviewed"
+      const reviews = [];
+      const ts = new Date().toISOString();
+      for (const r of EMBEDDED_DATA.runs) {
+        reviews.push({ run_id: r.id, feedback: feedbackMap[r.id] || "", timestamp: ts });
+      }
+      const payload = JSON.stringify({ reviews, status: "complete" }, null, 2);
+      fetch("/api/feedback", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: payload,
+      }).then(() => {
+        document.getElementById("done-overlay").classList.add("visible");
+      }).catch(() => {
+        // Server not available (static mode) — download as file
+        const blob = new Blob([payload], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "feedback.json";
+        a.click();
+        URL.revokeObjectURL(url);
+        document.getElementById("done-overlay").classList.add("visible");
+      });
+    }
+
+    function closeDoneDialog() {
+      // Reset status back to in_progress
+      saveCurrentFeedback();
+      document.getElementById("done-overlay").classList.remove("visible");
+    }
+
+    // ---- Toast ----
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.classList.add("visible");
+      setTimeout(() => toast.classList.remove("visible"), 2000);
+    }
+
+    // ---- Keyboard nav ----
+    document.addEventListener("keydown", (e) => {
+      // Don't capture when typing in textarea
+      if (e.target.tagName === "TEXTAREA") return;
+
+      if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+        e.preventDefault();
+        navigate(-1);
+      } else if (e.key === "ArrowRight" || e.key === "ArrowDown") {
+        e.preventDefault();
+        navigate(1);
+      }
+    });
+
+    // ---- Util ----
+    function getDownloadUri(file) {
+      if (file.data_uri) return file.data_uri;
+      if (file.data_b64) return "data:application/octet-stream;base64," + file.data_b64;
+      if (file.type === "text") return "data:text/plain;charset=utf-8," + encodeURIComponent(file.content);
+      return "#";
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement("div");
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // ---- View switching ----
+    function switchView(view) {
+      document.querySelectorAll(".view-tab").forEach(t => t.classList.remove("active"));
+      document.querySelectorAll(".view-panel").forEach(p => p.classList.remove("active"));
+      document.querySelector(`[onclick="switchView('${view}')"]`).classList.add("active");
+      document.getElementById("panel-" + view).classList.add("active");
+    }
+
+    // ---- Benchmark rendering ----
+    function renderBenchmark() {
+      const data = EMBEDDED_DATA.benchmark;
+      if (!data) return;
+
+      // Show the tabs
+      document.getElementById("view-tabs").style.display = "flex";
+
+      const container = document.getElementById("benchmark-content");
+      const summary = data.run_summary || {};
+      const metadata = data.metadata || {};
+      const notes = data.notes || [];
+
+      let html = "";
+
+      // Header
+      html += "<h2 style='font-family: Poppins, sans-serif; margin-bottom: 0.5rem;'>Benchmark Results</h2>";
+      html += "<p style='color: var(--text-muted); font-size: 0.875rem; margin-bottom: 1.25rem;'>";
+      if (metadata.skill_name) html += "<strong>" + escapeHtml(metadata.skill_name) + "</strong> &mdash; ";
+      if (metadata.timestamp) html += metadata.timestamp + " &mdash; ";
+      if (metadata.evals_run) html += "Evals: " + metadata.evals_run.join(", ") + " &mdash; ";
+      html += (metadata.runs_per_configuration || "?") + " runs per configuration";
+      html += "</p>";
+
+      // Summary table
+      html += '<table class="benchmark-table">';
+
+      function fmtStat(stat, pct) {
+        if (!stat) return "—";
+        const suffix = pct ? "%" : "";
+        const m = pct ? (stat.mean * 100).toFixed(0) : stat.mean.toFixed(1);
+        const s = pct ? (stat.stddev * 100).toFixed(0) : stat.stddev.toFixed(1);
+        return m + suffix + " ± " + s + suffix;
+      }
+
+      function deltaClass(val) {
+        if (!val) return "";
+        const n = parseFloat(val);
+        if (n > 0) return "benchmark-delta-positive";
+        if (n < 0) return "benchmark-delta-negative";
+        return "";
+      }
+
+      // Discover config names dynamically (everything except "delta")
+      const configs = Object.keys(summary).filter(k => k !== "delta");
+      const configA = configs[0] || "config_a";
+      const configB = configs[1] || "config_b";
+      const labelA = configA.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+      const labelB = configB.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+      const a = summary[configA] || {};
+      const b = summary[configB] || {};
+      const delta = summary.delta || {};
+
+      html += "<thead><tr><th>Metric</th><th>" + escapeHtml(labelA) + "</th><th>" + escapeHtml(labelB) + "</th><th>Delta</th></tr></thead>";
+      html += "<tbody>";
+
+      html += "<tr><td><strong>Pass Rate</strong></td>";
+      html += "<td>" + fmtStat(a.pass_rate, true) + "</td>";
+      html += "<td>" + fmtStat(b.pass_rate, true) + "</td>";
+      html += '<td class="' + deltaClass(delta.pass_rate) + '">' + (delta.pass_rate || "—") + "</td></tr>";
+
+      // Time (only show row if data exists)
+      if (a.time_seconds || b.time_seconds) {
+        html += "<tr><td><strong>Time (s)</strong></td>";
+        html += "<td>" + fmtStat(a.time_seconds, false) + "</td>";
+        html += "<td>" + fmtStat(b.time_seconds, false) + "</td>";
+        html += '<td class="' + deltaClass(delta.time_seconds) + '">' + (delta.time_seconds ? delta.time_seconds + "s" : "—") + "</td></tr>";
+      }
+
+      // Tokens (only show row if data exists)
+      if (a.tokens || b.tokens) {
+        html += "<tr><td><strong>Tokens</strong></td>";
+        html += "<td>" + fmtStat(a.tokens, false) + "</td>";
+        html += "<td>" + fmtStat(b.tokens, false) + "</td>";
+        html += '<td class="' + deltaClass(delta.tokens) + '">' + (delta.tokens || "—") + "</td></tr>";
+      }
+
+      html += "</tbody></table>";
+
+      // Per-eval breakdown (if runs data available)
+      const runs = data.runs || [];
+      if (runs.length > 0) {
+        const evalIds = [...new Set(runs.map(r => r.eval_id))].sort((a, b) => a - b);
+
+        html += "<h3 style='font-family: Poppins, sans-serif; margin-bottom: 0.75rem;'>Per-Eval Breakdown</h3>";
+
+        const hasTime = runs.some(r => r.result && r.result.time_seconds != null);
+        const hasErrors = runs.some(r => r.result && r.result.errors > 0);
+
+        for (const evalId of evalIds) {
+          const evalRuns = runs.filter(r => r.eval_id === evalId);
+          const evalName = evalRuns[0] && evalRuns[0].eval_name ? evalRuns[0].eval_name : "Eval " + evalId;
+
+          html += "<h4 style='font-family: Poppins, sans-serif; margin: 1rem 0 0.5rem; color: var(--text);'>" + escapeHtml(evalName) + "</h4>";
+          html += '<table class="benchmark-table">';
+          html += "<thead><tr><th>Config</th><th>Run</th><th>Pass Rate</th>";
+          if (hasTime) html += "<th>Time (s)</th>";
+          if (hasErrors) html += "<th>Crashes During Execution</th>";
+          html += "</tr></thead>";
+          html += "<tbody>";
+
+          // Group by config and render with average rows
+          const configGroups = [...new Set(evalRuns.map(r => r.configuration))];
+          for (let ci = 0; ci < configGroups.length; ci++) {
+            const config = configGroups[ci];
+            const configRuns = evalRuns.filter(r => r.configuration === config);
+            if (configRuns.length === 0) continue;
+
+            const rowClass = ci === 0 ? "benchmark-row-with" : "benchmark-row-without";
+            const configLabel = config.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+
+            for (const run of configRuns) {
+              const r = run.result || {};
+              const prClass = r.pass_rate >= 0.8 ? "benchmark-delta-positive" : r.pass_rate < 0.5 ? "benchmark-delta-negative" : "";
+              html += '<tr class="' + rowClass + '">';
+              html += "<td>" + configLabel + "</td>";
+              html += "<td>" + run.run_number + "</td>";
+              html += '<td class="' + prClass + '">' + ((r.pass_rate || 0) * 100).toFixed(0) + "% (" + (r.passed || 0) + "/" + (r.total || 0) + ")</td>";
+              if (hasTime) html += "<td>" + (r.time_seconds != null ? r.time_seconds.toFixed(1) : "—") + "</td>";
+              if (hasErrors) html += "<td>" + (r.errors || 0) + "</td>";
+              html += "</tr>";
+            }
+
+            // Average row
+            const rates = configRuns.map(r => (r.result || {}).pass_rate || 0);
+            const avgRate = rates.reduce((a, b) => a + b, 0) / rates.length;
+            const avgPrClass = avgRate >= 0.8 ? "benchmark-delta-positive" : avgRate < 0.5 ? "benchmark-delta-negative" : "";
+            html += '<tr class="benchmark-row-avg ' + rowClass + '">';
+            html += "<td>" + configLabel + "</td>";
+            html += "<td>Avg</td>";
+            html += '<td class="' + avgPrClass + '">' + (avgRate * 100).toFixed(0) + "%</td>";
+            if (hasTime) {
+              const times = configRuns.map(r => (r.result || {}).time_seconds).filter(t => t != null);
+              html += "<td>" + (times.length ? (times.reduce((a, b) => a + b, 0) / times.length).toFixed(1) : "—") + "</td>";
+            }
+            if (hasErrors) html += "<td></td>";
+            html += "</tr>";
+          }
+          html += "</tbody></table>";
+
+          // Per-assertion detail for this eval
+          const runsWithExpectations = {};
+          for (const config of configGroups) {
+            runsWithExpectations[config] = evalRuns.filter(r => r.configuration === config && r.expectations && r.expectations.length > 0);
+          }
+          const hasAnyExpectations = Object.values(runsWithExpectations).some(runs => runs.length > 0);
+          if (hasAnyExpectations) {
+            // Collect all unique assertion texts across all configs
+            const allAssertions = [];
+            const seen = new Set();
+            for (const config of configGroups) {
+              for (const run of runsWithExpectations[config]) {
+                for (const exp of (run.expectations || [])) {
+                  if (!seen.has(exp.text)) {
+                    seen.add(exp.text);
+                    allAssertions.push(exp.text);
+                  }
+                }
+              }
+            }
+
+            html += '<table class="benchmark-table" style="margin-top: 0.5rem;">';
+            html += "<thead><tr><th>Assertion</th>";
+            for (const config of configGroups) {
+              const label = config.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+              html += "<th>" + escapeHtml(label) + "</th>";
+            }
+            html += "</tr></thead><tbody>";
+
+            for (const assertionText of allAssertions) {
+              html += "<tr><td>" + escapeHtml(assertionText) + "</td>";
+
+              for (const config of configGroups) {
+                html += "<td>";
+                for (const run of runsWithExpectations[config]) {
+                  const exp = (run.expectations || []).find(e => e.text === assertionText);
+                  if (exp) {
+                    const cls = exp.passed ? "benchmark-delta-positive" : "benchmark-delta-negative";
+                    const icon = exp.passed ? "\u2713" : "\u2717";
+                    html += '<span class="' + cls + '" title="Run ' + run.run_number + ': ' + escapeHtml(exp.evidence || "") + '">' + icon + "</span> ";
+                  } else {
+                    html += "— ";
+                  }
+                }
+                html += "</td>";
+              }
+              html += "</tr>";
+            }
+            html += "</tbody></table>";
+          }
+        }
+      }
+
+      // Notes
+      if (notes.length > 0) {
+        html += '<div class="benchmark-notes">';
+        html += "<h3>Analysis Notes</h3>";
+        html += "<ul>";
+        for (const note of notes) {
+          html += "<li>" + escapeHtml(note) + "</li>";
+        }
+        html += "</ul></div>";
+      }
+
+      container.innerHTML = html;
+    }
+
+    // ---- Start ----
+    init();
+    renderBenchmark();
+  </script>
+</body>
+</html>

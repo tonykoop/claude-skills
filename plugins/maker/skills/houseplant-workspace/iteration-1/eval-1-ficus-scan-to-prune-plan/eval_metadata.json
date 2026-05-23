@@ -1,0 +1,18 @@
+{
+  "eval_id": 1,
+  "eval_name": "ficus-scan-to-prune-plan",
+  "prompt": "I have a Ficus benjamina I've been training into a bonsai for several years. Today I'm doing a structural prune. I captured it on a lazy susan: a phone tripod sat fixed while I rotated the plant 360° slowly, then I raised the tripod for an upper-canopy orbit and lowered it for the nebari/root flare orbit. I ran the video through Polycam and exported a .glb of the trunk and primary branches (the foliage came out as a melted blob, as expected). I also took one photo with a metric ruler taped to the pot — the 0 cm mark is at one corner of the pot rim and the 10 cm mark is at a known point on the trunk base. Help me get this into Blender as an editable digital twin (I have Blender MCP installed), then plan a structural prune that drops the apex by roughly 20%, opens the inner canopy for back-budding, and previews wire-coil training on the front-right primary branch to bring it down ~25°. The plan needs to be reversible — I want to simulate before I cut anything.",
+  "assertions": [
+    {"text": "Routes capture intake through the lazy-susan / ruler workflow (mentions capture-pipeline.md OR explicitly handles Mode D lazy-susan capture)"},
+    {"text": "Names the Plant_<plant_id>/ scene contract and the 00_source_scan/...05_simulations/ child collections"},
+    {"text": "Uses or references scene_scaffold.py for building the collection hierarchy"},
+    {"text": "Calibrates scene scale from the 10 cm ruler segment (mentions scale_from_ruler.py OR shows equivalent scale-factor math with the two ruler endpoints)"},
+    {"text": "Generates a wire coil via wire_coil.py OR shows an equivalent helical curve construction around the target branch"},
+    {"text": "Places cut and wire markers in a sim_<scenario>_<date> sub-collection rather than mutating the current-state twin (uses sim_collection.py OR explicit sim collection creation)"},
+    {"text": "Calls get_objects_summary or get_blendfile_summary_* BEFORE execute_blender_code (orient before write)"},
+    {"text": "Produces a pruning plan table with at minimum Id, Action, Why, Risk, Verify, Aftercare, Follow-up columns"},
+    {"text": "Uses correct color semantics (red for cut, blue for wire)"},
+    {"text": "Includes Ficus-specific note about fast cambium / short wire-removal window (e.g. inspect every 1-2 weeks during active growth)"},
+    {"text": "Ends with a Digital twin sync log entry in the markdown template format"}
+  ]
+}

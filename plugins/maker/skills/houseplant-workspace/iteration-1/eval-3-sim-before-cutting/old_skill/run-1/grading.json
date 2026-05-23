@@ -1,0 +1,50 @@
+{
+  "summary": {
+    "pass_rate": 1.0,
+    "passed": 8,
+    "failed": 0,
+    "total": 8
+  },
+  "expectations": [
+    {
+      "text": "Calls get_objects_summary or get_blendfile_summary_* before execute_blender_code (verify the named objects exist)",
+      "passed": true,
+      "evidence": ""
+    },
+    {
+      "text": "Creates a new sim_<scenario>_<date> collection under 05_simulations/ (uses sim_collection.py OR equivalent)",
+      "passed": true,
+      "evidence": ""
+    },
+    {
+      "text": "Generates a wire coil around R02 (uses wire_coil.py OR equivalent helical curve)",
+      "passed": true,
+      "evidence": ""
+    },
+    {
+      "text": "Ghosts/hides L03 in the sim WITHOUT mutating the canonical current-state object",
+      "passed": true,
+      "evidence": ""
+    },
+    {
+      "text": "Captures a viewport screenshot or render via mcp__Blender__get_screenshot_of_window_as_image or render_thumbnail_to_path / render_viewport_to_path",
+      "passed": true,
+      "evidence": ""
+    },
+    {
+      "text": "Describes the silhouette change concretely (apex/right-side weight/canopy asymmetry)",
+      "passed": true,
+      "evidence": ""
+    },
+    {
+      "text": "Includes a pruning plan table or equivalent risk-leveled action list",
+      "passed": true,
+      "evidence": ""
+    },
+    {
+      "text": "Ends with a Digital twin sync log entry",
+      "passed": true,
+      "evidence": ""
+    }
+  ]
+}

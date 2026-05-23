@@ -20,6 +20,14 @@ DAW-side rendering), the skill orchestrates handoff. When tools are missing,
 it gracefully degrades to text-only deliverables (ABC + ASCII fingering)
 and explicitly marks which generators were skipped.
 
+## Connectors
+
+This skill works best with these MCP connectors. Claude will suggest connecting any that aren't already linked at the point they're needed (via `mcp__mcp-registry__suggest_connectors`).
+
+- **Spotify** (`86925244-b3bb-415b-b7e8-6e3cd1392247`) — optional for referencing recorded versions of public-domain tunes, building a "listen-along" playlist for the starter songbook, and pulling track audio features.
+- **Adobe for Creativity** (`22854937-9510-4b57-9230-62c820102d8f`) — optional for SVG to PDF polish on songsheets, photo overlays on cover pages, Quick Cut of performance videos.
+- **GitHub** — optional for depositing the per-build `learn-to-play/` folder as a PR or commit into the target instrument repo. No registry UUID; configure via the Claude Code GitHub connector if available.
+
 ## Output shape: per-build "starter songbook" + central catalog
 
 The skill produces deliverables in **one of two folder shapes**, picked by

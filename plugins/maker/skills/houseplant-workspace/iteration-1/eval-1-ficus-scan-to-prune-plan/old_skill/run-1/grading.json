@@ -1,0 +1,65 @@
+{
+  "summary": {
+    "pass_rate": 0.9090909090909091,
+    "passed": 10,
+    "failed": 1,
+    "total": 11
+  },
+  "expectations": [
+    {
+      "text": "Routes capture intake through the lazy-susan / ruler workflow (mentions capture-pipeline.md OR explicitly handles Mode D lazy-susan capture)",
+      "passed": true,
+      "evidence": ""
+    },
+    {
+      "text": "Names the Plant_<plant_id>/ scene contract and the 00_source_scan/...05_simulations/ child collections",
+      "passed": true,
+      "evidence": ""
+    },
+    {
+      "text": "Uses or references scene_scaffold.py for building the collection hierarchy",
+      "passed": false,
+      "evidence": ""
+    },
+    {
+      "text": "Calibrates scene scale from the 10 cm ruler segment (mentions scale_from_ruler.py OR shows equivalent scale-factor math with the two ruler endpoints)",
+      "passed": true,
+      "evidence": ""
+    },
+    {
+      "text": "Generates a wire coil via wire_coil.py OR shows an equivalent helical curve construction around the target branch",
+      "passed": true,
+      "evidence": ""
+    },
+    {
+      "text": "Places cut and wire markers in a sim_<scenario>_<date> sub-collection rather than mutating the current-state twin (uses sim_collection.py OR explicit sim collection creation)",
+      "passed": true,
+      "evidence": ""
+    },
+    {
+      "text": "Calls get_objects_summary or get_blendfile_summary_* BEFORE execute_blender_code (orient before write)",
+      "passed": true,
+      "evidence": ""
+    },
+    {
+      "text": "Produces a pruning plan table with at minimum Id, Action, Why, Risk, Verify, Aftercare, Follow-up columns",
+      "passed": true,
+      "evidence": ""
+    },
+    {
+      "text": "Uses correct color semantics (red for cut, blue for wire)",
+      "passed": true,
+      "evidence": ""
+    },
+    {
+      "text": "Includes Ficus-specific note about fast cambium / short wire-removal window (e.g. inspect every 1-2 weeks during active growth)",
+      "passed": true,
+      "evidence": ""
+    },
+    {
+      "text": "Ends with a Digital twin sync log entry in the markdown template format",
+      "passed": true,
+      "evidence": ""
+    }
+  ]
+}

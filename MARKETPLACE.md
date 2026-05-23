@@ -33,13 +33,19 @@ Use **Add marketplace** with:
 Source: https://github.com/tonykoop/claude-skills.git
 Git ref: main
 Sparse paths:
+.claude-plugin
 .codex-plugin
 plugins/coding
 plugins/maker
 ```
 
-The `.codex-plugin` path is required. Without it, Codex stages only the plugin
-folders and the marketplace root is missing `.codex-plugin/marketplace.json`.
+The `.claude-plugin` path is required by the marketplace loader. The
+`.codex-plugin` path keeps the Codex-specific marketplace metadata available
+too. Without these root manifest directories, Codex stages only the plugin
+folders and the marketplace root is missing a supported manifest.
+
+Codex-specific app/tool mappings are documented in
+[`docs/codex-integrations.md`](docs/codex-integrations.md).
 
 ## Auto-update
 

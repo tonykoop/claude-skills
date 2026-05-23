@@ -195,6 +195,14 @@ skills:
     status: active
     notes: Bat/bee/observation-hive welfare gates and camera/electronics caveats, plus bird-bath/balcony support, first canonical chickadee laser packet, and a concept-only observation-hive preflight template.
 
+  houseplant:
+    canonical_version: 0.2.0
+    runtime: shared
+    repo_path: plugins/maker/skills/houseplant
+    last_updated: 2026-05-17
+    status: active
+    notes: 'Houseplant and bonsai digital twins plus care workflows, with first-class Blender MCP support. Recovered 2026-05-23 from stash@(0)^3 after a 2026-05-18 hygiene-bot stash. Now at plugins/maker/skills/houseplant. v0.2.0 adds capture-pipeline routing for four phone modes (multi-angle photos with ruler, photogrammetry mesh, orbit video, lazy-susan stabilized video), ruler-based scale calibration, bundled bpy patterns (scene_scaffold, scale_from_ruler, wire_coil, cut_marker, sim_collection), Ficus benjamina starter profile, and a smoke-test suite. Six deferred modules filed as issues 172-177.'
+
   playlist-builder:
     canonical_version: 0.1.0
     runtime: shared

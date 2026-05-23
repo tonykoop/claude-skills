@@ -1,0 +1,423 @@
+{
+  "metadata": {
+    "skill_name": "houseplant",
+    "skill_path": "<path/to/skill>",
+    "executor_model": "<model-name>",
+    "analyzer_model": "<model-name>",
+    "timestamp": "2026-05-18T06:19:02Z",
+    "evals_run": [
+      1,
+      2,
+      3
+    ],
+    "runs_per_configuration": 3
+  },
+  "runs": [
+    {
+      "eval_id": 1,
+      "configuration": "old_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.9090909090909091,
+        "passed": 10,
+        "failed": 1,
+        "total": 11,
+        "time_seconds": 200.83,
+        "tokens": 50954,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Routes capture intake through the lazy-susan / ruler workflow (mentions capture-pipeline.md OR explicitly handles Mode D lazy-susan capture)",
+          "passed": true,
+          "evidence": ""
+        },
+        {
+          "text": "Names the Plant_<plant_id>/ scene contract and the 00_source_scan/...05_simulations/ child collections",
+          "passed": true,
+          "evidence": ""
+        },
+        {
+          "text": "Uses or references scene_scaffold.py for building the collection hierarchy",
+          "passed": false,
+          "evidence": ""
+        },
+        {
+          "text": "Calibrates scene scale from the 10 cm ruler segment (mentions scale_from_ruler.py OR shows equivalent scale-factor math with the two ruler endpoints)",
+          "passed": true,
+          "evidence": ""
+        },
+        {
+          "text": "Generates a wire coil via wire_coil.py OR shows an equivalent helical curve construction around the target branch",
+          "passed": true,
+          "evidence": ""
+        },
+        {
+          "text": "Places cut and wire markers in a sim_<scenario>_<date> sub-collection rather than mutating the current-state twin (uses sim_collection.py OR explicit sim collection creation)",
+          "passed": true,
+          "evidence": ""
+        },
+        {
+          "text": "Calls get_objects_summary or get_blendfile_summary_* BEFORE execute_blender_code (orient before write)",
+          "passed": true,
+          "evidence": ""
+        },
+        {
+          "text": "Produces a pruning plan table with at minimum Id, Action, Why, Risk, Verify, Aftercare, Follow-up columns",
+          "passed": true,
+          "evidence": ""
+        },
+        {
+          "text": "Uses correct color semantics (red for cut, blue for wire)",
+          "passed": true,
+          "evidence": ""
+        },
+        {
+          "text": "Includes Ficus-specific note about fast cambium / short wire-removal window (e.g. inspect every 1-2 weeks during active growth)",
+          "passed": true,
+          "evidence": ""
+        },
+        {
+          "text": "Ends with a Digital twin sync log entry in the markdown template format",
+          "passed": true,
+          "evidence": ""
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 2,
+      "configuration": "old_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 6,
+        "failed": 0,
+        "total": 6,
+        "time_seconds": 53.67,
+        "tokens": 37739,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Does NOT initiate a sprawling Blender digital-twin session for what is a simple record update",
+          "passed": true,
+          "evidence": ""
+        },
+        {
+          "text": "Appends a wire_removed event to the plant record with date, evidence, and aftercare",
+          "passed": true,
+          "evidence": ""
+        },
+        {
+          "text": "Directly answers whether the wire impression will scar \u2014 fades on healthy bark without bite-in, with caveats",
+          "passed": true,
+          "evidence": ""
+        },
+        {
+          "text": "Recommends inspection cadence for the bend setting and bark recovery",
+          "passed": true,
+          "evidence": ""
+        },
+        {
+          "text": "Produces a calendar-ready reminder using the skill's reminder format",
+          "passed": true,
+          "evidence": ""
+        },
+        {
+          "text": "Stays scoped to what was asked (record + bark question + next checks); no generic care lecture",
+          "passed": true,
+          "evidence": ""
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 3,
+      "configuration": "old_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 8,
+        "failed": 0,
+        "total": 8,
+        "time_seconds": 126.66,
+        "tokens": 43653,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Calls get_objects_summary or get_blendfile_summary_* before execute_blender_code (verify the named objects exist)",
+          "passed": true,
+          "evidence": ""
+        },
+        {
+          "text": "Creates a new sim_<scenario>_<date> collection under 05_simulations/ (uses sim_collection.py OR equivalent)",
+          "passed": true,
+          "evidence": ""
+        },
+        {
+          "text": "Generates a wire coil around R02 (uses wire_coil.py OR equivalent helical curve)",
+          "passed": true,
+          "evidence": ""
+        },
+        {
+          "text": "Ghosts/hides L03 in the sim WITHOUT mutating the canonical current-state object",
+          "passed": true,
+          "evidence": ""
+        },
+        {
+          "text": "Captures a viewport screenshot or render via mcp__Blender__get_screenshot_of_window_as_image or render_thumbnail_to_path / render_viewport_to_path",
+          "passed": true,
+          "evidence": ""
+        },
+        {
+          "text": "Describes the silhouette change concretely (apex/right-side weight/canopy asymmetry)",
+          "passed": true,
+          "evidence": ""
+        },
+        {
+          "text": "Includes a pruning plan table or equivalent risk-leveled action list",
+          "passed": true,
+          "evidence": ""
+        },
+        {
+          "text": "Ends with a Digital twin sync log entry",
+          "passed": true,
+          "evidence": ""
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 1,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 11,
+        "failed": 0,
+        "total": 11,
+        "time_seconds": 151.05,
+        "tokens": 61434,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Routes capture intake through the lazy-susan / ruler workflow (mentions capture-pipeline.md OR explicitly handles Mode D lazy-susan capture)",
+          "passed": true,
+          "evidence": ""
+        },
+        {
+          "text": "Names the Plant_<plant_id>/ scene contract and the 00_source_scan/...05_simulations/ child collections",
+          "passed": true,
+          "evidence": ""
+        },
+        {
+          "text": "Uses or references scene_scaffold.py for building the collection hierarchy",
+          "passed": true,
+          "evidence": "ute_blender_code` call running `scripts/scene_scaffold.py` with:  ```python PLANT_ID = \"ficus-benjamina-01\" SCIENTIFIC_N"
+        },
+        {
+          "text": "Calibrates scene scale from the 10 cm ruler segment (mentions scale_from_ruler.py OR shows equivalent scale-factor math with the two ruler endpoints)",
+          "passed": true,
+          "evidence": "a `.glb` is unreliable. 3. Run `scripts/scale_from_ruler.py`:  ```python POINT_A = (<empty _ruler_0cm coords>) POINT_B ="
+        },
+        {
+          "text": "Generates a wire coil via wire_coil.py OR shows an equivalent helical curve construction around the target branch",
+          "passed": true,
+          "evidence": "ire\"`.  Generate the coil with `scripts/wire_coil.py`:  ```python BRANCH_OBJ_NAME = \"ficus-benjamina-01_branch_R01\" PLAN"
+        },
+        {
+          "text": "Places cut and wire markers in a sim_<scenario>_<date> sub-collection rather than mutating the current-state twin (uses sim_collection.py OR explicit sim collection creation)",
+          "passed": true,
+          "evidence": "versibility step)  One call to `scripts/sim_collection.py`:  ```python PLANT_ID = \"ficus-benjamina-01\" SCENARIO = \"struc"
+        },
+        {
+          "text": "Calls get_objects_summary or get_blendfile_summary_* BEFORE execute_blender_code (orient before write)",
+          "passed": true,
+          "evidence": ""
+        },
+        {
+          "text": "Produces a pruning plan table with at minimum Id, Action, Why, Risk, Verify, Aftercare, Follow-up columns",
+          "passed": true,
+          "evidence": ""
+        },
+        {
+          "text": "Uses correct color semantics (red for cut, blue for wire)",
+          "passed": true,
+          "evidence": ""
+        },
+        {
+          "text": "Includes Ficus-specific note about fast cambium / short wire-removal window (e.g. inspect every 1-2 weeks during active growth)",
+          "passed": true,
+          "evidence": ""
+        },
+        {
+          "text": "Ends with a Digital twin sync log entry in the markdown template format",
+          "passed": true,
+          "evidence": ""
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 2,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.8333333333333334,
+        "passed": 5,
+        "failed": 1,
+        "total": 6,
+        "time_seconds": 59.42,
+        "tokens": 40576,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Does NOT initiate a sprawling Blender digital-twin session for what is a simple record update",
+          "passed": true,
+          "evidence": ""
+        },
+        {
+          "text": "Appends a wire_removed event to the plant record with date, evidence, and aftercare",
+          "passed": true,
+          "evidence": ""
+        },
+        {
+          "text": "Directly answers whether the wire impression will scar \u2014 fades on healthy bark without bite-in, with caveats",
+          "passed": true,
+          "evidence": ""
+        },
+        {
+          "text": "Recommends inspection cadence for the bend setting and bark recovery",
+          "passed": true,
+          "evidence": ""
+        },
+        {
+          "text": "Produces a calendar-ready reminder using the skill's reminder format",
+          "passed": false,
+          "evidence": ""
+        },
+        {
+          "text": "Stays scoped to what was asked (record + bark question + next checks); no generic care lecture",
+          "passed": true,
+          "evidence": ""
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 3,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 8,
+        "failed": 0,
+        "total": 8,
+        "time_seconds": 128.92,
+        "tokens": 56676,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Calls get_objects_summary or get_blendfile_summary_* before execute_blender_code (verify the named objects exist)",
+          "passed": true,
+          "evidence": ""
+        },
+        {
+          "text": "Creates a new sim_<scenario>_<date> collection under 05_simulations/ (uses sim_collection.py OR equivalent)",
+          "passed": true,
+          "evidence": "Block A \u2014 sim collection (uses bundled `sim_collection.py`)  ```python PLANT_ID = \"ficus-benjamina-01\" SCENARIO = \"prune"
+        },
+        {
+          "text": "Generates a wire coil around R02 (uses wire_coil.py OR equivalent helical curve)",
+          "passed": true,
+          "evidence": "e-anchor marker at the base, then runs `wire_coil.py` against the simulated curve. 7. `mcp__Blender__execute_blender_cod"
+        },
+        {
+          "text": "Ghosts/hides L03 in the sim WITHOUT mutating the canonical current-state object",
+          "passed": true,
+          "evidence": ""
+        },
+        {
+          "text": "Captures a viewport screenshot or render via mcp__Blender__get_screenshot_of_window_as_image or render_thumbnail_to_path / render_viewport_to_path",
+          "passed": true,
+          "evidence": ""
+        },
+        {
+          "text": "Describes the silhouette change concretely (apex/right-side weight/canopy asymmetry)",
+          "passed": true,
+          "evidence": ""
+        },
+        {
+          "text": "Includes a pruning plan table or equivalent risk-leveled action list",
+          "passed": true,
+          "evidence": ""
+        },
+        {
+          "text": "Ends with a Digital twin sync log entry",
+          "passed": true,
+          "evidence": ""
+        }
+      ],
+      "notes": []
+    }
+  ],
+  "run_summary": {
+    "old_skill": {
+      "pass_rate": {
+        "mean": 0.9697,
+        "stddev": 0.0525,
+        "min": 0.9091,
+        "max": 1.0
+      },
+      "time_seconds": {
+        "mean": 127.0533,
+        "stddev": 73.5808,
+        "min": 53.67,
+        "max": 200.83
+      },
+      "tokens": {
+        "mean": 44115.3333,
+        "stddev": 6619.6201,
+        "min": 37739,
+        "max": 50954
+      }
+    },
+    "with_skill": {
+      "pass_rate": {
+        "mean": 0.9444,
+        "stddev": 0.0962,
+        "min": 0.8333,
+        "max": 1.0
+      },
+      "time_seconds": {
+        "mean": 113.13,
+        "stddev": 47.8122,
+        "min": 59.42,
+        "max": 151.05
+      },
+      "tokens": {
+        "mean": 52895.3333,
+        "stddev": 10930.8793,
+        "min": 40576,
+        "max": 61434
+      }
+    },
+    "delta": {
+      "pass_rate": "+0.03",
+      "time_seconds": "+13.9",
+      "tokens": "-8780"
+    }
+  },
+  "notes": []
+}

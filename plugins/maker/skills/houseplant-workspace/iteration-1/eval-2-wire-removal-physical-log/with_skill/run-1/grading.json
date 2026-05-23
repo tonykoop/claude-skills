@@ -1,0 +1,40 @@
+{
+  "summary": {
+    "pass_rate": 0.8333333333333334,
+    "passed": 5,
+    "failed": 1,
+    "total": 6
+  },
+  "expectations": [
+    {
+      "text": "Does NOT initiate a sprawling Blender digital-twin session for what is a simple record update",
+      "passed": true,
+      "evidence": ""
+    },
+    {
+      "text": "Appends a wire_removed event to the plant record with date, evidence, and aftercare",
+      "passed": true,
+      "evidence": ""
+    },
+    {
+      "text": "Directly answers whether the wire impression will scar \u2014 fades on healthy bark without bite-in, with caveats",
+      "passed": true,
+      "evidence": ""
+    },
+    {
+      "text": "Recommends inspection cadence for the bend setting and bark recovery",
+      "passed": true,
+      "evidence": ""
+    },
+    {
+      "text": "Produces a calendar-ready reminder using the skill's reminder format",
+      "passed": false,
+      "evidence": ""
+    },
+    {
+      "text": "Stays scoped to what was asked (record + bark question + next checks); no generic care lecture",
+      "passed": true,
+      "evidence": ""
+    }
+  ]
+}

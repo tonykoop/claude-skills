@@ -1,0 +1,4 @@
+interface:
+  display_name: "Houseplant"
+  short_description: "Houseplant digital twins and care planning"
+  default_prompt: "Use $houseplant to update my plant digital twin and plan the next bonsai pruning pass."
