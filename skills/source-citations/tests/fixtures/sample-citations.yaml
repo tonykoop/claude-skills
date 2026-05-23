@@ -1,0 +1,7 @@
+instrument: Sample Flute
+repo: sample-flute
+cites:
+  - key: demakein
+    why: Generated the bore profile this design started from.
+  - key: audacity
+    why: Used Plot Spectrum to measure played pitch in cents.

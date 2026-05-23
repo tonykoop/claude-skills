@@ -1,0 +1,4 @@
+bucket	section	section_title	entry	url	tags	priority	license	description
+1-Designing	1	Wind instrument acoustic solvers	Demakein	https://github.com/pfh/demakein	solver;library	star	GPL	Python solver for woodwinds.
+1-Designing	1	Wind instrument acoustic solvers	openwind	https://openwind.inria.fr/	solver;library	star		INRIA Bordeaux wind-instrument library.
+2-Making	17	Acoustic measurement tools	Audacity	https://www.audacityteam.org/	library	star		Free audio editor with FFT.

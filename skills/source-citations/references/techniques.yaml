@@ -1,0 +1,52 @@
+# Techniques registry — demonstrations of HOW, by real makers.
+#
+# Unit of record: a person showing a technique. NOT a tool homepage (that's
+# the source bibliography). The live URL is a disposable POINTER; the durable
+# record is `what_they_show` plus an optional local Obsidian capture.
+#
+# STATUS field is load-bearing:
+#   confirmed   — a human watched/read it and the timestamp + what_they_show
+#                 are verified accurate.
+#   unconfirmed — creator/platform/url are real, but the moment, timestamp, and
+#                 technique description are NOT yet verified. These are seeds.
+#                 NEVER render an unconfirmed entry as a verified citation.
+#
+# `start` (seconds) is meaningful ONLY when status is confirmed. Leaving it
+# blank on an unconfirmed entry is correct — do not guess it.
+version: 1
+techniques:
+
+  - key: schama-layered-relief
+    technique: Layered laser-cut plywood relief assembly
+    creator: Gabriel Schama
+    platform: web              # youtube | maker-tok | instagram | wikihow | makerspace | web
+    url: https://www.gabrielschama.com/
+    instagram: https://www.instagram.com/gabrielschama/
+    start:                     # seconds — fill ONLY when confirmed
+    capture:                   # e.g. captures/schama-layered-relief.md (Obsidian clip)
+    grounds: [inkscape]        # cross-links into the source registry (registry.yaml keys)
+    instruments: []
+    tags: [laser, layered-relief, assembly, glue-up]
+    status: unconfirmed
+    what_they_show: >-
+      UNVERIFIED SEED. Confirmed facts only: Oakland-based artist who builds
+      densely layered relief sculptures from thin laser-cut mahogany plywood,
+      each starting as a vector illustration. No verified process video or
+      timestamp yet — watch a real demo, then fill start/what_they_show and set
+      status: confirmed. (Pairs with the laser-art skill.)
+
+  - key: martin-tomsky-layered-stories
+    technique: Deep multi-layer laser-cut illustrative scenes
+    creator: Martin Tomsky
+    platform: web
+    url: https://www.martintomsky.com/
+    start:
+    capture:
+    grounds: []
+    instruments: []
+    tags: [laser, layered-relief, plywood, illustration]
+    status: unconfirmed
+    what_they_show: >-
+      UNVERIFIED SEED. Known for stacked laser-cut plywood pieces that build
+      depth from many thin layers. Verify any specific technique moment before
+      citing.
