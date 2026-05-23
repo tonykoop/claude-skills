@@ -17,6 +17,14 @@ description: >-
 
 # Makerspace
 
+## Connectors
+
+This skill works best with these MCP connectors. Claude will suggest connecting any that aren't already linked at the point they're needed (via `mcp__mcp-registry__suggest_connectors`).
+
+- **Wolfram** (`de1d1dc7-ec10-459d-b511-797982834b43`) — optional for mass/inertia calculations on fixtures, workholding force budgets, repeatable-shop-packet math.
+- **Adobe for Creativity** (`22854937-9510-4b57-9230-62c820102d8f`) — optional for shop packet covers, jig fabrication packet imagery, DXF preview rendering.
+- **Lumin** (`b04d70ca-c220-4d15-b7c9-e2eb6ace0a2c`) — optional for Markdown to PDF of signed-off build packets and signature requests for shop checkouts (Maker Nexus, fabricator handoffs).
+
 ## Trigger phrases
 
 - `design a jig` / `I need a fixture for this`

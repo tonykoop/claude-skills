@@ -19,6 +19,15 @@ Use this skill to turn rough ideas into a searchable GitHub issue inbox,
 connect them to related work, review the backlog, and promote ready ideas
 into specialist handoffs.
 
+## Connectors
+
+This skill works best with these MCP connectors. Claude will suggest connecting any that aren't already linked at the point they're needed (via `mcp__mcp-registry__suggest_connectors`).
+
+- **GitHub** — required to create, label, search, and promote idea-issues. The default issue inbox lives in a GitHub repo. No registry UUID; configure via the Claude Code GitHub connector if available.
+- **Linear** (`fa50c30c-9f62-4f94-b851-217868185db6`) — optional alternative inbox if the team uses Linear instead of GitHub Issues.
+- **Notion** (`69f3a300-cc60-48c4-b237-dfac56530dbf`) — optional alternative inbox for workspace-based capture.
+- **Atlassian Rovo** (`11ba10d9-477b-4988-bd1c-90a7fa680dc1`) — optional alternative for Jira/Confluence shops.
+
 ## Trigger phrases
 
 - `new idea`

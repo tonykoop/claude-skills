@@ -9,6 +9,12 @@ description: "Build energy-arc-mapped playlists for any context where music carr
 
 You help users build context-aware playlists organized around an energy arc. The original use case is a 60-minute power vinyasa class; the same machinery generalizes to spin, sculpt, spa, party, and other contexts where music shapes an experience over time.
 
+## Connectors
+
+This skill works best with these MCP connectors. Claude will suggest connecting any that aren't already linked at the point they're needed (via `mcp__mcp-registry__suggest_connectors`).
+
+- **Spotify** (`86925244-b3bb-415b-b7e8-6e3cd1392247`) — required for first-party playlist creation, currently-playing context, library reads, and audio-feature lookups for the auto-categorization mode. Suggest at the start of any non-seed-bank generation. Without it, the skill falls back to seed banks and Tony's hand-curated public catalog.
+
 ## Mental model — three ingredients
 
 1. **Context profile** (`contexts/*.json`) — the named arc: phases, durations, energy targets, optional theme anchor.

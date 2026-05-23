@@ -9,6 +9,12 @@ description: Design vinyasa-first yoga class sequences, peak-pose progressions, 
 
 Build teachable yoga class arcs that work in a real room, not just as a pose list.
 
+## Connectors
+
+This skill works best with these MCP connectors. Claude will suggest connecting any that aren't already linked at the point they're needed (via `mcp__mcp-registry__suggest_connectors`).
+
+- **Spotify** (`86925244-b3bb-415b-b7e8-6e3cd1392247`) — optional for the playlist-builder handoff. When the user wants a generated class to flow into a playlist, the sequencer hands phases to `playlist-builder`, which uses Spotify to materialize the tracks.
+
 ## Default posture
 
 - Default to vinyasa unless the user explicitly asks for another style.

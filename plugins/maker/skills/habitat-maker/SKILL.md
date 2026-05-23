@@ -24,6 +24,14 @@ camera/electronics welfare gates on top of the first working canonical example
 (chickadee laser birdhouse). Some habitat types are still scaffolded; see
 "Open work" below.
 
+## Connectors
+
+This skill works best with these MCP connectors. Claude will suggest connecting any that aren't already linked at the point they're needed (via `mcp__mcp-registry__suggest_connectors`).
+
+- **Adobe for Creativity** (`22854937-9510-4b57-9230-62c820102d8f`) — optional for build packet covers, species-card visuals, installation guides.
+- **Wolfram** (`de1d1dc7-ec10-459d-b511-797982834b43`) — optional for welfare-gate math (cavity volume, internal temperature gradients, entrance-hole sizing).
+- **Blender** (local stdio MCP — no registry UUID, requires the Blender MCP add-on) — optional for concept renders of habitats in their installed environment. Skip `suggest_connectors`; direct the user to install the add-on.
+
 ## Trigger phrases
 
 - "design a chickadee birdhouse" / "bluebird box plans" / "bat house build"
