@@ -1,0 +1,43 @@
+{
+  "name": "coding",
+  "version": "1.0.0",
+  "description": "Engineering operations: tmux sprint orchestration, PR review, sprint supervision, GitHub Queue sync, swarm dispatch, CI triage, scaffold hygiene, disk cleanup, and skill drift auditing.",
+  "author": {
+    "name": "Tony Koop",
+    "email": "tonykoop@gmail.com",
+    "url": "https://github.com/tonykoop"
+  },
+  "homepage": "https://github.com/tonykoop/claude-skills",
+  "repository": "https://github.com/tonykoop/claude-skills",
+  "license": "MIT",
+  "keywords": [
+    "sprint",
+    "tmux",
+    "ci",
+    "git",
+    "wrfcoin",
+    "internal-ops",
+    "audit",
+    "skills-meta"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Coding",
+    "shortDescription": "Engineering operations, sprint management, CI triage, and review skills.",
+    "longDescription": "A bundled coding operations toolkit for tmux sprint orchestration, sprint supervision, sprint updates, merge review, audit swarms, CI triage, scaffold hygiene, disk cleanup, and skill metadata drift checks.",
+    "developerName": "Tony Koop",
+    "category": "Engineering",
+    "capabilities": [
+      "Skills",
+      "Review",
+      "Automation"
+    ],
+    "websiteURL": "https://github.com/tonykoop/claude-skills",
+    "defaultPrompt": [
+      "Review and merge open PRs.",
+      "Check CI health across repos.",
+      "Supervise the sprint panes."
+    ],
+    "brandColor": "#2563EB"
+  }
+}

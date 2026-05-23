@@ -1,0 +1,32 @@
+{
+  "name": "tony-koop",
+  "interface": {
+    "displayName": "Tony Koop Skills"
+  },
+  "plugins": [
+    {
+      "name": "maker",
+      "source": {
+        "source": "local",
+        "path": "./plugins/maker"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Making"
+    },
+    {
+      "name": "coding",
+      "source": {
+        "source": "local",
+        "path": "./plugins/coding"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Engineering"
+    }
+  ]
+}

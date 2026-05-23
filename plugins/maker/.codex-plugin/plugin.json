@@ -1,0 +1,45 @@
+{
+  "name": "maker",
+  "version": "1.0.0",
+  "description": "Tony Koop's maker portfolio: instrument design, fabrication, shop-floor planning, habitat making, reverse engineering, sheet music, yoga sequencing, playlist building, and idea capture.",
+  "author": {
+    "name": "Tony Koop",
+    "email": "tonykoop@gmail.com",
+    "url": "https://github.com/tonykoop"
+  },
+  "homepage": "https://github.com/tonykoop/claude-skills",
+  "repository": "https://github.com/tonykoop/claude-skills",
+  "license": "MIT",
+  "keywords": [
+    "instrument-design",
+    "maker",
+    "cnc",
+    "laser",
+    "sheet-metal",
+    "acoustic",
+    "habitat",
+    "yoga",
+    "music",
+    "heifer-zephyr"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Maker",
+    "shortDescription": "Physical-world design, fabrication, music, habitat, and practice skills.",
+    "longDescription": "A bundled maker toolkit for instrument design, fabrication planning, CNC and laser workflows, sheet metal, habitat projects, reverse engineering, sheet music, yoga sequencing, playlists, and idea capture.",
+    "developerName": "Tony Koop",
+    "category": "Making",
+    "capabilities": [
+      "Skills",
+      "Design",
+      "Fabrication"
+    ],
+    "websiteURL": "https://github.com/tonykoop/claude-skills",
+    "defaultPrompt": [
+      "Design an instrument build packet.",
+      "Plan a shop fabrication workflow.",
+      "Create a yoga class sequence."
+    ],
+    "brandColor": "#2F7D5C"
+  }
+}
