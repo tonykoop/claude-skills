@@ -31,6 +31,16 @@ logs/
 tmp/
 *.tmp
 
+# Skill-creator iteration workspaces — deliberately untracked working files
+# (eval outputs, grading.json, timing.json, generated review.html, etc.).
+# Without this rule, hygiene tools that run `git stash --include-untracked`
+# can sweep these into stashes and a follow-up `git clean` wipes them off
+# disk. The houseplant May-18 incident was caused exactly by that pattern.
+# Per-skill workspaces follow the convention `<skill-name>-workspace/` as a
+# sibling to the skill directory.
+plugins/*/skills/*-workspace/
+skills/*-workspace/
+
 # Claude / Codex / Gemini local artifacts (never commit)
 **/auth.json
 **/oauth_creds.json
