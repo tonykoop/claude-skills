@@ -25,6 +25,22 @@ Then install whichever plugins you want:
 /plugin install coding@tony-koop
 ```
 
+## Install (Codex app)
+
+Use **Add marketplace** with:
+
+```text
+Source: https://github.com/tonykoop/claude-skills.git
+Git ref: main
+Sparse paths:
+.codex-plugin
+plugins/coding
+plugins/maker
+```
+
+The `.codex-plugin` path is required. Without it, Codex stages only the plugin
+folders and the marketplace root is missing `.codex-plugin/marketplace.json`.
+
 ## Auto-update
 
 Open the `/plugin` panel, find `tony-koop`, toggle **Auto-update** on. From
@@ -63,15 +79,19 @@ renames, removed skills, restructured plugin contents.
 claude-skills/
 |-- .claude-plugin/
 |   `-- marketplace.json
+|-- .codex-plugin/
+|   `-- marketplace.json
 |-- plugins/
 |   |-- maker/
 |   |   |-- .claude-plugin/plugin.json
+|   |   |-- .codex-plugin/plugin.json
 |   |   `-- skills/
 |   |       |-- instrument-maker/
 |   |       |-- sheet-metal/
 |   |       `-- ... (11 skills)
 |   `-- coding/
 |       |-- .claude-plugin/plugin.json
+|       |-- .codex-plugin/plugin.json
 |       `-- skills/
 |           |-- tmux-sprint/
 |           |-- skills-meta/
