@@ -11,6 +11,5 @@
   "homepage": "https://github.com/tonykoop/claude-skills",
   "repository": "https://github.com/tonykoop/claude-skills",
   "license": "MIT",
-  "keywords": ["sprint","tmux","ci","git","wrfcoin","internal-ops","audit","skills-meta"],
-  "skills": ["skills"]
+  "keywords": ["sprint","tmux","ci","git","wrfcoin","internal-ops","audit","skills-meta"]
 }
