@@ -1,7 +1,7 @@
 {
   "name": "coding",
   "version": "1.0.0",
-  "description": "Engineering operations: tmux sprint orchestration, PR review, sprint supervision, GitHub Queue sync, swarm dispatch, CI triage, scaffold hygiene, disk cleanup, and skill drift auditing.",
+  "description": "Engineering operations: tmux multi-pane sprint orchestration, PR review, sprint supervision, GitHub-Queue sync, swarm dispatch, CI triage, scaffold hygiene, disk cleanup, and the skills-meta drift auditor.",
   "author": {
     "name": "Tony Koop",
     "email": "tonykoop@gmail.com",
@@ -24,13 +24,14 @@
   "interface": {
     "displayName": "Coding",
     "shortDescription": "Engineering operations, sprint management, CI triage, and review skills.",
-    "longDescription": "A bundled coding operations toolkit for tmux sprint orchestration, sprint supervision, sprint updates, merge review, audit swarms, CI triage, scaffold hygiene, disk cleanup, and skill metadata drift checks.",
+    "longDescription": "A bundled coding operations toolkit for tmux sprint orchestration, sprint supervision, sprint updates, merge review, audit swarms, CI triage, scaffold hygiene, disk cleanup, and skill metadata drift checks. In Codex Desktop it can also use app tools for GitHub, Gmail, Google Calendar, Google Drive, browser automation, and parallel sub-agents when those tools are available.",
     "developerName": "Tony Koop",
     "category": "Engineering",
     "capabilities": [
       "Skills",
       "Review",
-      "Automation"
+      "Automation",
+      "Connector-aware"
     ],
     "websiteURL": "https://github.com/tonykoop/claude-skills",
     "defaultPrompt": [

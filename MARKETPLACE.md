@@ -44,6 +44,9 @@ The `.claude-plugin` path is required by the marketplace loader. The
 too. Without these root manifest directories, Codex stages only the plugin
 folders and the marketplace root is missing a supported manifest.
 
+Codex-specific app/tool mappings are documented in
+[`docs/codex-integrations.md`](docs/codex-integrations.md).
+
 ## Auto-update
 
 Open the `/plugin` panel, find `tony-koop`, toggle **Auto-update** on. From

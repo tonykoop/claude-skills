@@ -26,6 +26,22 @@ calling them automatically once they're available.
 |---|---|---|
 | **Blender** | `instrument-maker`, `habitat-maker`, `makerspace` (CAD-adjacent modeling, exhibition renders) | Install [Blender's MCP add-on](https://github.com/ahujasid/blender-mcp), launch Blender with the add-on enabled, then point Claude at it. Tools land as `mcp__Blender__*` — `execute_blender_code`, `get_object_detail_summary`, `render_viewport_to_path`, full Python API search. |
 
+## Codex Desktop integrations
+
+Codex Desktop does not currently expose the same plugin-scoped connector
+install panel as Claude Desktop. When these app tools are installed in Codex,
+the maker skills should use them directly and fall back to local files when
+they are absent.
+
+| Codex app/tool | Pairs with | What it adds |
+|---|---|---|
+| **Google Drive / Docs / Sheets / Slides** | `instrument-maker`, `sheet-metal`, `makerspace`, `sheet-music`, `habitat-maker` | Import local DOCX/XLSX/PPTX deliverables as native Google Docs, Sheets, or Slides; read comments and tables; update shared shop packets and capstone decks. |
+| **GitHub** | `idea-incubator`, `instrument-maker`, `habitat-maker` | Create and inspect build issues, PRs, repo metadata, and design-book handoffs from inside Codex. |
+| **Gmail** | `makerspace`, `instrument-maker`, `sheet-metal` | Draft vendor, mentor, fabricator, or shop-request emails with generated packets attached. Prefer drafts unless the user explicitly asks to send. |
+| **Google Calendar** | `makerspace`, `instrument-maker`, `yoga-sequencer` | Schedule shop time, prototype reviews, build sessions, or classes after checking availability. |
+| **Browser / Chrome** | `laser-art`, `habitat-maker`, `instrument-maker`, `reverse-engineer` | Verify local HTML viewers, inspect generated build-log sites, and capture screenshots for visual QA. |
+| **Node REPL** | `laser-art`, `sheet-music`, `instrument-maker` | Run quick JS transforms, render checks, and lightweight asset-processing scripts without adding repo dependencies. |
+
 ## Wishlist / not yet available
 
 - **Autodesk Fusion 360 (live model control)** — no first-party MCP yet. Watch the registry; community implementations are likely soon. For now, `Autodesk Product Help` covers docs lookup.
