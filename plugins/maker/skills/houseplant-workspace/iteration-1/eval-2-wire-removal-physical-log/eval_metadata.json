@@ -1,0 +1,13 @@
+{
+  "eval_id": 2,
+  "eval_name": "wire-removal-physical-log",
+  "prompt": "Quick log: I just removed the copper wire from branch R02 on ficus-benjamina-01. I applied it about 7 weeks ago to bring that branch down ~30°. The bend held — no rebound. There's a slight wire mark on the bark on the underside but no bite-in. The plant's been on the balcony in full morning sun, daytime temps around 27°C. Update the record and tell me what to check on next, and whether the wire impression will scar permanently or fade.",
+  "assertions": [
+    {"text": "Does NOT initiate a sprawling Blender digital-twin session for what is a simple record update"},
+    {"text": "Appends a wire_removed event to the plant record with date, evidence, and aftercare"},
+    {"text": "Directly answers whether the wire impression will scar — fades on healthy bark without bite-in, with caveats"},
+    {"text": "Recommends inspection cadence for the bend setting and bark recovery"},
+    {"text": "Produces a calendar-ready reminder using the skill's reminder format"},
+    {"text": "Stays scoped to what was asked (record + bark question + next checks); no generic care lecture"}
+  ]
+}

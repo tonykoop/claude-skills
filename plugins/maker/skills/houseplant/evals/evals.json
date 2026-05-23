@@ -1,0 +1,26 @@
+{
+  "skill_name": "houseplant",
+  "evals": [
+    {
+      "id": 1,
+      "name": "ficus-scan-to-prune-plan",
+      "prompt": "I have a Ficus benjamina I've been training into a bonsai for several years. Today I'm doing a structural prune. I captured it on a lazy susan: a phone tripod sat fixed while I rotated the plant 360° slowly, then I raised the tripod for an upper-canopy orbit and lowered it for the nebari/root flare orbit. I ran the video through Polycam and exported a .glb of the trunk and primary branches (the foliage came out as a melted blob, as expected). I also took one photo with a metric ruler taped to the pot — the 0 cm mark is at one corner of the pot rim and the 10 cm mark is at a known point on the trunk base. Help me get this into Blender as an editable digital twin (I have Blender MCP installed), then plan a structural prune that drops the apex by roughly 20%, opens the inner canopy for back-budding, and previews wire-coil training on the front-right primary branch to bring it down ~25°. The plan needs to be reversible — I want to simulate before I cut anything.",
+      "expected_output": "A walkthrough that: (1) routes through capture-pipeline.md for the lazy-susan/glb intake; (2) uses scene_scaffold.py to set up Plant_ficus-benjamina-01 collections; (3) calibrates scale via scale_from_ruler.py with the 10 cm ruler segment; (4) builds skeleton curves for trunk + primary branches; (5) places cut markers in a sim_prune_apex_<date> collection (not on the current-state twin); (6) generates a wire-coil curve via wire_coil.py around the front-right primary branch; (7) produces a pruning plan in the bonsai-module table format with risk levels and follow-up dates; (8) leaves a digital-twin sync log. Should use blue for wire markers, red for cut markers, and acknowledge Ficus-specific fast cambium / short wire window.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "name": "wire-removal-physical-log",
+      "prompt": "Quick log: I just removed the copper wire from branch R02 on ficus-benjamina-01. I applied it about 7 weeks ago to bring that branch down ~30°. The bend held — no rebound. There's a slight wire mark on the bark on the underside but no bite-in. The plant's been on the balcony in full morning sun, daytime temps around 27°C. Update the record and tell me what to check on next, and whether the wire impression will scar permanently or fade.",
+      "expected_output": "A care-records update that: (1) appends a `wire_removed` event to the plant record with date, evidence (no bite-in, slight surface mark), and aftercare; (2) recommends inspection cadence for the bend setting and bark recovery; (3) addresses the scarring question honestly (surface impressions on healthy ficus typically fade as bark thickens but can leave a long-lived mark if the wire bit in); (4) does NOT redirect into a full Blender session for what is fundamentally a record-keeping task — the skill explicitly warns against turning every request into a full digital-twin project; (5) produces a calendar-ready reminder for the next inspection.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "name": "sim-before-cutting",
+      "prompt": "My ficus twin is already built in Blender — collection is Plant_ficus-benjamina-01, the trunk is `ficus-benjamina-01_trunk_curve`, and I've got primary branches `ficus-benjamina-01_branch_L01` through `_L03` on the left and `_R01` through `_R02` on the right. Before I take the shears to the live plant, I want to see what removing branch L03 (the secondary leader competing with the main apex) and bringing R02 down with wire would actually look like. Build me the simulation, take a viewport screenshot when you're done, and tell me the silhouette change. Do not touch the current-state collections.",
+      "expected_output": "A Blender MCP session that: (1) calls get_objects_summary first to verify the named objects exist; (2) creates a new sim_<scenario>_<date> collection under Plant_ficus-benjamina-01/05_simulations/ using sim_collection.py; (3) hides or ghosts L03 in the sim (not in the current-state twin); (4) generates a wire coil around R02 via wire_coil.py and bends the simulated R02 curve; (5) calls get_screenshot_of_window_as_image or render_thumbnail_to_path; (6) reports the silhouette change concretely; (7) leaves a sync log noting what was simulated vs. what was preserved.",
+      "files": []
+    }
+  ]
+}

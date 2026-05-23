@@ -1,0 +1,65 @@
+{
+  "summary": {
+    "pass_rate": 1.0,
+    "passed": 11,
+    "failed": 0,
+    "total": 11
+  },
+  "expectations": [
+    {
+      "text": "Routes capture intake through the lazy-susan / ruler workflow (mentions capture-pipeline.md OR explicitly handles Mode D lazy-susan capture)",
+      "passed": true,
+      "evidence": ""
+    },
+    {
+      "text": "Names the Plant_<plant_id>/ scene contract and the 00_source_scan/...05_simulations/ child collections",
+      "passed": true,
+      "evidence": ""
+    },
+    {
+      "text": "Uses or references scene_scaffold.py for building the collection hierarchy",
+      "passed": true,
+      "evidence": "ute_blender_code` call running `scripts/scene_scaffold.py` with:  ```python PLANT_ID = \"ficus-benjamina-01\" SCIENTIFIC_N"
+    },
+    {
+      "text": "Calibrates scene scale from the 10 cm ruler segment (mentions scale_from_ruler.py OR shows equivalent scale-factor math with the two ruler endpoints)",
+      "passed": true,
+      "evidence": "a `.glb` is unreliable. 3. Run `scripts/scale_from_ruler.py`:  ```python POINT_A = (<empty _ruler_0cm coords>) POINT_B ="
+    },
+    {
+      "text": "Generates a wire coil via wire_coil.py OR shows an equivalent helical curve construction around the target branch",
+      "passed": true,
+      "evidence": "ire\"`.  Generate the coil with `scripts/wire_coil.py`:  ```python BRANCH_OBJ_NAME = \"ficus-benjamina-01_branch_R01\" PLAN"
+    },
+    {
+      "text": "Places cut and wire markers in a sim_<scenario>_<date> sub-collection rather than mutating the current-state twin (uses sim_collection.py OR explicit sim collection creation)",
+      "passed": true,
+      "evidence": "versibility step)  One call to `scripts/sim_collection.py`:  ```python PLANT_ID = \"ficus-benjamina-01\" SCENARIO = \"struc"
+    },
+    {
+      "text": "Calls get_objects_summary or get_blendfile_summary_* BEFORE execute_blender_code (orient before write)",
+      "passed": true,
+      "evidence": ""
+    },
+    {
+      "text": "Produces a pruning plan table with at minimum Id, Action, Why, Risk, Verify, Aftercare, Follow-up columns",
+      "passed": true,
+      "evidence": ""
+    },
+    {
+      "text": "Uses correct color semantics (red for cut, blue for wire)",
+      "passed": true,
+      "evidence": ""
+    },
+    {
+      "text": "Includes Ficus-specific note about fast cambium / short wire-removal window (e.g. inspect every 1-2 weeks during active growth)",
+      "passed": true,
+      "evidence": ""
+    },
+    {
+      "text": "Ends with a Digital twin sync log entry in the markdown template format",
+      "passed": true,
+      "evidence": ""
+    }
+  ]
+}
