@@ -1,4 +1,0 @@
-interface:
-  display_name: "Sheet Metal"
-  short_description: "Sheet metal CAD, DFM, and shop-floor build planning"
-  default_prompt: "Use $sheet-metal to turn this sheet metal idea into a SolidWorks-ready, flat-pattern-aware fabrication plan."

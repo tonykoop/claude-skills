@@ -1,7 +1,0 @@
-part_id,description,material,thickness_in,qty,source,notes
-P01,Deck panel,5052-H32 aluminum,0.102,1,fabricated,Provisional; primary load surface
-P02,Side rail left (optional separate part),5052-H32 aluminum,0.102,1,fabricated,Only if deck cannot one-piece form due to crossbar curve
-P03,Side rail right (optional separate part),5052-H32 aluminum,0.102,1,fabricated,Mirror of P02
-P04,Cross-member stub (optional),aluminum T-slot 1.5 in,n/a,2,purchased,Only if extra spanwise stiffness is needed
-P05,Crossbar clamp,commercial rated,n/a,4,purchased,User selects Rhino-Rack / Yakima / Front Runner equivalent
-P06,Test coupon strip,5052-H32 aluminum,0.102,1,fabricated,3 in x 8 in for bend and hole test

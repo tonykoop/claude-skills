@@ -1,2 +1,0 @@
-run_id,date_time,prototype_maturity,configuration_id,variable_changes,excitation_method,mic_distance_cm,mic_angle_deg,input_gain_db,contact_mic_mounting,environment,measured_frequency_hz,decay_time_s,peak_level_db,subjective_descriptors,raw_audio_path,photo_video_path,operator,notes
-R001,YYYY-MM-DDTHH:MM:SS,bench_rig,CFG-001,"baseline setup","pluck with marked plectrum",30,0,TBD,"none or location/material","room; temp F/C; RH%; background noise",TBD,TBD,TBD,"attack; bloom; buzz; rattle; pitch stability; sustain",data/audio/R001.wav,data/photos/R001.jpg,TBD,TBD

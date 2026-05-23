@@ -1,8 +1,0 @@
-claim_id,topic,claim_text,posture,evidence_path_or_url,confidence,next_action
-SRC-001,identity,"Yayli tambur is a bowed long-neck tambur-family instrument",sourced,TBD_reference_set,medium,"Select canonical source frame before final packet wording"
-SRC-002,scale_length,"Full target scale length is approximately 1050 mm",prototype_assumption,round9_side_a_seed,low,"Measure selected reference instrument"
-SRC-003,body_construction,"Circular segmented-ring head resonator is appropriate",TBD,round9_side_a_seed,low,"Use if selected source is circular or cumbus-like"
-SRC-004,body_construction,"Faceted stave or rib bowl is appropriate",TBD,round9_side_b_seed,low,"Use if selected source is oval or lute-like"
-SRC-005,top_or_head_mode,"Membrane or synthetic head is appropriate",TBD,TBD_reference_set,low,"Confirm before rim/head CAD"
-SRC-006,top_or_head_mode,"Wood soundboard is easier for a geometry mule",prototype_assumption,round9_partner_validation_logic,medium,"Use only for prototype learning unless source-backed"
-SRC-007,string_staging,"Sympathetic strings should remain CAD placeholders until active setup is stable",prototype_assumption,round9_partner_convergence,high,"Add only after active bowed setup passes validation"

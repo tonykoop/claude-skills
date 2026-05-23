@@ -1,4 +1,0 @@
-part_id,part_name,material,qty,length,width,thickness,units,dimension_status,notes
-P001,Primary blank,TBD,1,TBD,TBD,TBD,in,measurement-required,Do not cut until design dimensions are confirmed.
-P002,Test coupon,TBD,1,TBD,TBD,TBD,in,TBD,Use coupon to validate material behavior or acoustic model.
-P003,Service/access feature,TBD,TBD,TBD,TBD,TBD,in,TBD,Define only after assembly/service path is known.

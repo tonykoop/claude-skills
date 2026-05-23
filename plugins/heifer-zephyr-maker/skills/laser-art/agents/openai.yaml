@@ -1,4 +1,0 @@
-interface:
-  display_name: "Laser Art"
-  short_description: "Design layered laser and stencil art"
-  default_prompt: "Use $laser-art to turn this image or story into layered laser-ready art files."

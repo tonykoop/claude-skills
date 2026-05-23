@@ -1,7 +1,0 @@
-bend_id,part_id,angle_deg,direction,inside_radius_in,k_factor,thickness_in,bend_allowance_in,notes
-B1,P01,90,down,0.125,0.44,0.102,0.267,Left long-side return flange; bend first
-B2,P01,90,down,0.125,0.44,0.102,0.267,Right long-side return flange; bend second
-B3,P01,90,down,0.125,0.44,0.102,0.267,Optional front end flange; bend after long sides to avoid trap
-B4,P01,90,down,0.125,0.44,0.102,0.267,Optional rear end flange; bend last
-B5,P02,90,down,0.125,0.44,0.102,0.267,Side rail mating tab (if separate part); 0.75 in flange under deck
-B6,P03,90,down,0.125,0.44,0.102,0.267,Mirror of B5

@@ -1,6 +1,0 @@
-item_id,item_name,qty,unit,vendor,sku,unit_cost_usd,line_cost_usd,lead_time_days,notes
-b001,"Baltic birch plywood, 1/4"" 60x60 sheet",1,sheet,MacBeath,BB14-6060,35.00,35.00,0,"stock for sign + cleats + spacers"
-b002,Titebond III wood glue,1,8oz bottle,Amazon,B000A11LSA,9.50,9.50,2,"exterior-rated"
-b003,Polyurethane satin spray (exterior),1,can,Home Depot,100133012,8.00,8.00,0,
-b004,"#8 x 1-1/4"" exterior wood screws (100ct)",1,box,Home Depot,204321712,12.00,12.00,0,"for mounting cleats"
-b005,Sandpaper assortment 150-220 grit,1,pack,Home Depot,1000759312,10.00,10.00,0,

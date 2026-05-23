@@ -1,6 +1,0 @@
-part,blank_length_in,blank_width_in,qty,material,thickness_in,stock_size_in,nesting_margin_in,kerf_in,authority,notes
-lower-tub,11.70,8.60,2,5052-H32 aluminum,0.063,24 x 24,0.50,0.070,planning,Estimated unfold; confirm in SolidWorks before ordering
-wedge-front,7.20,3.40,2,5052-H32 aluminum,0.063,12 x 24,0.50,0.070,planning,Includes side-ear returns
-top-deck,7.40,6.20,1,5052-H32 aluminum,0.063,24 x 24,0.50,0.070,planning,Cut from same sheet as lower-tub
-wheel-guard,3.50,2.50,4,5052-H32 aluminum,0.063,12 x 12 scrap,0.50,0.070,planning,Two main + two spares
-test-coupon,1.00,3.00,2,5052-H32 aluminum,0.063,scrap,0.50,0.070,planning,Cut and bent BEFORE the real parts

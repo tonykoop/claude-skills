@@ -1,5 +1,0 @@
-string_id,variant_id,role,target_pitch,target_hz,scale_length_mm,material_family,gauge_or_diameter,estimated_tension_lbf,retuning_factor,percent_breaking,risk_flags,status,notes
-S1,TBD,active_bowed,TBD,,TBD,TBD,TBD,,,,"unknown_gauge",TBD,"Fill before purchasing strings or locking bridge height"
-S2,TBD,active_bowed,TBD,,TBD,TBD,TBD,,,,"unknown_gauge",TBD,""
-S3,TBD,drone_or_active,TBD,,TBD,TBD,TBD,,,,"TBD_role",TBD,""
-S4,TBD,cad_placeholder,TBD,,TBD,TBD,TBD,,,,"cad_only",TBD,"Use for future sympathetic or fourth-string layout"

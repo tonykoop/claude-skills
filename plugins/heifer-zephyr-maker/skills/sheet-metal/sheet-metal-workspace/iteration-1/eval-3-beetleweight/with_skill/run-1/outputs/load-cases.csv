@@ -1,9 +1,0 @@
-load_case,source,direction,magnitude,units,frequency,safety_factor,mitigation,authority,notes
-Drop from match transport,handling,vertical,3,g,occasional,2.0,Hemmed top edges deburred; nylock nuts hold hardware,planning,Assumed; verify with arena rules
-Pusher head-on impact,opponent wedge,longitudinal,8,g peak,every match,2.0,Sloped wedge face deflects; closed corners on tub,planning,Assumed; depends on opponent class
-Pusher side impact,opponent,lateral,6,g peak,every match,2.0,Return flanges on top deck stiffen the box,planning,Assumed
-Spinner glancing hit,opponent weapon,impact,unknown,,if class allows,n/a,Out of scope: 5052 alone NOT rated for direct spinner hits,stop-work,Re-route to red-team if active weapons allowed
-Floor scrape on wedge tip,arena floor,longitudinal,low,,every match,1.5,Wedge tip chamfered; tip is consumable,planning,Assumed
-Vibration during driving,drive motors,broadband,low,,continuous,n/a,Nylock nuts; check torque between matches,planning,Assumed
-Battery strap preload,build,vertical,2,lb,assembled,1.5,12mm nylon strap across battery,planning,Assumed
-Operator handling between matches,hands,manual,low,,every match,n/a,All accessible edges deburred and hemmed/flanged,planning,Kid-facing rule

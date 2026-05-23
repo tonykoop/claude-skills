@@ -1,3 +1,0 @@
-member_id,target_hz,target_note,acoustic_law,end_condition,dimension_provenance,predicted_L_geom_mm,wood_species,notes
-KHN-Q-001-A4,440.00,A4,closed_open,one_end_closed_reed,physics_derived,190.8,Cherry,Quarter-wave POC sister; reed at windchest end (melodica architecture)
-KHN-Q-001-E5,659.25,E5,closed_open,one_end_closed_reed,physics_derived,126.0,Cherry,

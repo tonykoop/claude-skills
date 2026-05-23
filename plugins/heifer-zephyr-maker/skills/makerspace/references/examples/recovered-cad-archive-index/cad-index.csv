@@ -1,5 +1,0 @@
-path,file_type,role,authority_status,revision_status,units_scale_status,stale_risk,next_review_action,notes
-cad/main-assembly.SLDASM,SolidWorks assembly,assembly context,unknown,TBD,TBD,possible,Open with design owner and identify current revision,Do not export CAM from this file until reviewed.
-cad/current-panel.SLDDRW,SolidWorks drawing,dimensioned drawing,current,reviewed,checked inches with 10.000 in reference,none,Use as drawing-brief source after material review,Authority still depends on matching CAD revision.
-cad/layout-v1.ai,Illustrator layout,visual layout,visual_only,conflict,TBD,high,Compare against reviewed drawing and mark stale or support-only,No laser authority without units scale layer meaning and kerf.
-cad/part-export.stl,STL export,print review,requires_export,TBD,TBD,possible,Trace export back to source CAD before first article,Use only for fit visualization until provenance is known.

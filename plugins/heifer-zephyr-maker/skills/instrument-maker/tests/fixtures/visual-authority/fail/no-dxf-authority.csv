@@ -1,3 +1,0 @@
-artifact_id,path,artifact_kind,role,authority,derived_from,dimension_claim,fabrication_required,notes
-SVG-001,drawings/layout.svg,svg_preview,derived_preview,derived_preview,,derived_from_authority,false,Preview exists without a named source
-IMG-001,images/concepts/body-shape.png,image_gen_2_output,concept,concept_only,,none,false,Concept image only

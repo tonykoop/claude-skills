@@ -1,7 +1,0 @@
-part_number,blank_length_in,blank_width_in,material,thickness_in,qty_per_4box_kit,estimated_weight_lb_each,notes
-10_SWTB_Tub,28.50,18.50,Mild Steel,0.060,4,~10.2,Blank size = (Box_Length + 2*Tub_Height + bend_allowances) x (Box_Depth + 2*Tub_Height + bend_allowances); planning estimate - regenerate exact size from SolidWorks flat pattern
-11_SWTB_Lid,23.50,13.50,Mild Steel,0.060,4,~3.6,Blank size = (Box_Length + 2*Lid_Drop + 2*Stack_Rim_Height + bend_allowances) x (Box_Depth + ...); planning estimate
-12_SWTB_Tray_Stepped_Hanger,21.50,7.50,Mild Steel,0.060,0,~1.8,Optional; recompute when used
-30_SWTB_Dolly_Deck,26.50,16.50,Mild Steel,0.105,1,~7.9,Blank size = (Dolly_Deck_Length + 2*Dolly_Skirt_Height + 2*Stack_Rim_Height + bend_allowances) x (Dolly_Deck_Depth + ...); planning estimate
-31_SWTB_Dolly_Caster_Doubler,4.00,4.00,Mild Steel,0.105,4,~0.5,Square plate with caster bolt pattern
-32_SWTB_Dolly_Handle_Bracket,4.00,3.00,Mild Steel,0.105,2,~0.4,Two bends; pattern for handle tube fit

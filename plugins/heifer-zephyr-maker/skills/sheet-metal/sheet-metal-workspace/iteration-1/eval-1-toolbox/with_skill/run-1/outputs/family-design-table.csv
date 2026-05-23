@@ -1,5 +1,0 @@
-Configuration,Box_Length,Box_Depth,Box_Height,Material,Material_T_Box,Inside_Bend_R_Box,K_Factor_Box,Lid_Drop,Stack_Rim_Height,Hardware_Pitch,Notes
-BOX-20x10x8-SEED,20.000,10.000,8.000,Mild_Steel_16ga,0.060,0.060,0.44,1.500,0.500,2.000,Seed configuration
-BOX-16x8x6-COMPACT,16.000,8.000,6.000,Mild_Steel_16ga,0.060,0.060,0.44,1.250,0.500,2.000,Compact hand-carry; verify hardware pitch still fits short faces
-BOX-24x12x10-LARGE,24.000,12.000,10.000,Mild_Steel_16ga,0.060,0.060,0.44,1.750,0.500,2.000,Large; verify stiffness - may need return flanges or upgrade to 14 ga
-BOX-20x10x8-AL-ALT,20.000,10.000,8.000,Aluminum_5052_14ga,0.063,0.063,0.46,1.500,0.500,2.000,Material variant; re-export flat pattern - bend allowance differs
