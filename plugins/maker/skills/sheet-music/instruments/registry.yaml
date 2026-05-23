@@ -1,0 +1,552 @@
+# sheet-music instrument registry
+#
+# Canonical list of instruments this skill knows how to write music for.
+# Each entry pairs with a build repo under https://github.com/tonykoop/.
+# Add a row when you add an instrument; the skill picks it up automatically.
+#
+# Field reference:
+#   id              snake-case identifier used everywhere in the skill
+#   display_name    pretty name for headers and songsheet titles
+#   family          flute | strings | reeds-and-pipes | percussion | hybrid
+#   subfamily       finer-grained classification used for fingering rules
+#   build_repo      sibling repo under github.com/tonykoop/ that builds it
+#   range_low       lowest *concert-pitch* note the instrument can play (Sci. pitch)
+#   range_high      highest concert-pitch note
+#   transposition   "concert" | "+P5" | "-M3" etc. (offset to written pitch)
+#   key_default     home key of the instrument (drives default tune key)
+#   scale           "major" | "minor-pentatonic" | "minor-mode-1" | "mixolydian-A" ...
+#   fingering       reference to a fingering scheme (see assets/fingering-icons/)
+#   ornaments       list of conventional ornaments expected for this tradition
+#   soundfont_preset General MIDI program number (1-128) for rendered audio
+#                   See https://en.wikipedia.org/wiki/General_MIDI for the list
+#   notes           free-form notes to inform arrangements
+
+flute:
+  - id: naf-6hole
+    display_name: Native American Flute (6-hole)
+    family: flute
+    subfamily: ducted
+    build_repo: tonykoop/flutes
+    range_low: A4        # for an A-tuned NAF; varies by build (D, F#, A, G common)
+    range_high: D6
+    transposition: concert
+    key_default: A
+    scale: minor-pentatonic
+    fingering: naf-6hole
+    ornaments:
+      - simple-grace
+      - finger-vibrato
+      - throat-glide
+    soundfont_preset: 76    # 76 = Pan Flute (closest GM)
+    notes: |
+      Range and key vary widely by build. Read the specific instrument's
+      design table. The 6-hole NAF naturally plays a minor pentatonic
+      from the fundamental; the "5th-mode" cross-fingering gives the
+      major mode but is harder for beginners.
+
+  - id: pvc-flute
+    display_name: PVC Flute (transverse, beginner)
+    family: flute
+    subfamily: transverse
+    build_repo: tonykoop/flutes
+    range_low: C5
+    range_high: C7
+    transposition: concert
+    key_default: C
+    scale: major
+    fingering: simple-system-6hole
+    ornaments:
+      - simple-grace
+      - tongue-articulation
+    soundfont_preset: 74    # 74 = Flute
+    notes: |
+      Tony's PVC flutes use a simple-system 6-hole transverse layout.
+      Two-octave range with overblowing.
+
+  - id: drone-flute
+    display_name: Drone Flute (paired ducts)
+    family: flute
+    subfamily: ducted-drone
+    build_repo: tonykoop/drone-flutes
+    range_low: C5
+    range_high: C6
+    transposition: concert
+    key_default: C
+    scale: major
+    fingering: drone-flute-pair
+    ornaments:
+      - drone-against-melody
+      - finger-vibrato
+    soundfont_preset: 76
+    notes: |
+      One duct plays a continuous drone (typically the tonic), the other
+      plays the melody. Range is one octave on the melody side.
+      Arrangements are conjunct (small intervals) so the melody hand can
+      stay relaxed.
+
+  - id: andean-duct-flute
+    display_name: Andean Duct Flute (generic)
+    family: flute
+    subfamily: ducted-andean
+    build_repo: tonykoop/andean-duct-flutes
+    range_low: D5
+    range_high: G6
+    transposition: concert
+    key_default: G
+    scale: major-pentatonic
+    fingering: andean-6hole
+    ornaments:
+      - quena-flutter
+      - downward-glide
+    soundfont_preset: 76
+    notes: |
+      Rough generic; specific andean flute IDs (kena, moseno, fujara)
+      below have their own rows with measured ranges.
+
+  - id: kena
+    display_name: Kena (Andean notched flute)
+    family: flute
+    subfamily: notched
+    build_repo: tonykoop/kena
+    range_low: G4
+    range_high: A6
+    transposition: concert
+    key_default: G
+    scale: minor-pentatonic
+    fingering: kena-6hole
+    ornaments:
+      - quena-flutter
+      - half-hole-bend
+    soundfont_preset: 75    # 75 = Recorder (closest GM for kena character)
+    notes: |
+      Notched (no duct), six holes plus a thumbhole. Strong overblowing
+      for the upper octave.
+
+  - id: moseno
+    display_name: Moseno (long Andean duct flute)
+    family: flute
+    subfamily: ducted-andean
+    build_repo: tonykoop/moseno
+    range_low: G3
+    range_high: G5
+    transposition: concert
+    key_default: G
+    scale: minor-pentatonic
+    fingering: moseno-6hole
+    ornaments:
+      - extended-glide
+    soundfont_preset: 76
+    notes: |
+      Larger, lower flute — feels like a tenor relative to the kena's
+      soprano. Longer breath spans needed.
+
+  - id: fujara
+    display_name: Fujara (Slovak overtone flute)
+    family: flute
+    subfamily: overtone
+    build_repo: tonykoop/fujara
+    range_low: C3
+    range_high: C6
+    transposition: concert
+    key_default: G
+    scale: overtone-series
+    fingering: fujara-3hole
+    ornaments:
+      - overtone-leap
+      - rozfuk
+    soundfont_preset: 76
+    notes: |
+      Large overtone flute, only three fingerholes. Most pitches come
+      from the natural overtone series, not fingering. Arrangements
+      should use overtone-series-friendly melodies (Slovak shepherd
+      tradition is the canonical reference).
+
+strings:
+  - id: acoustic-violin
+    display_name: Acoustic Violin
+    family: strings
+    subfamily: bowed
+    build_repo: tonykoop/acoustic-violin
+    range_low: G3
+    range_high: E7
+    transposition: concert
+    key_default: D
+    scale: major
+    fingering: violin-positions
+    ornaments:
+      - slur
+      - vibrato
+      - double-stop
+    soundfont_preset: 41    # 41 = Violin
+    notes: |
+      Standard 4-string GDAE tuning. First-position arrangements only
+      for v0.1 beginner songbooks.
+
+  - id: electric-violin
+    display_name: Electric Violin
+    family: strings
+    subfamily: bowed
+    build_repo: tonykoop/electric-violin
+    range_low: G3
+    range_high: E7
+    transposition: concert
+    key_default: D
+    scale: major
+    fingering: violin-positions
+    ornaments:
+      - slur
+      - vibrato
+    soundfont_preset: 41
+    notes: |
+      Same notation as acoustic violin. Effects/processing handled in
+      the Ableton handoff, not in the notation.
+
+  - id: ceramic-electric-violin
+    display_name: Ceramic Electric Violin
+    family: strings
+    subfamily: bowed
+    build_repo: tonykoop/ceramic-electric-violin
+    range_low: G3
+    range_high: E7
+    transposition: concert
+    key_default: D
+    scale: major
+    fingering: violin-positions
+    ornaments:
+      - slur
+      - vibrato
+    soundfont_preset: 41
+    notes: |
+      Tony's slip-cast ceramic body experiment; same notation as
+      electric violin.
+
+  - id: floor-harp
+    display_name: Floor Harp
+    family: strings
+    subfamily: plucked
+    build_repo: tonykoop/floor-harp
+    range_low: C2
+    range_high: G6
+    transposition: concert
+    key_default: C
+    scale: major
+    fingering: harp-fingerings
+    ornaments:
+      - lever-change
+      - rolled-chord
+      - glissando
+    soundfont_preset: 47    # 47 = Orchestral Harp
+    notes: |
+      Lever harp (not pedal). Lever changes are notated as +/− at the
+      pitch where the change occurs. Range varies by string count;
+      check the specific build's design table.
+
+  - id: electric-guitar
+    display_name: Electric Guitar
+    family: strings
+    subfamily: fretted
+    build_repo: tonykoop/electric-guitar-bodies
+    range_low: E2
+    range_high: E5
+    transposition: -P8       # written one octave higher than sounding
+    key_default: E
+    scale: major
+    fingering: guitar-tab
+    ornaments:
+      - hammer-on
+      - pull-off
+      - slide
+      - bend
+    soundfont_preset: 28    # 28 = Electric Guitar (clean)
+    notes: |
+      Standard EADGBE tuning. Notation includes both staff and TAB.
+
+  - id: cnc-guitar
+    display_name: CNC Guitar (Tony's CNC-routed bodies)
+    family: strings
+    subfamily: fretted
+    build_repo: tonykoop/cnc-guitar-bodies
+    range_low: E2
+    range_high: E5
+    transposition: -P8
+    key_default: E
+    scale: major
+    fingering: guitar-tab
+    ornaments:
+      - hammer-on
+      - pull-off
+      - slide
+      - bend
+    soundfont_preset: 25    # 25 = Acoustic Guitar (steel) — varies by build
+    notes: |
+      Same notation as electric guitar. Tony's CNC bodies span both
+      acoustic and electric variants; check the specific build's
+      pickup config.
+
+reeds-and-pipes:
+  - id: chalumeau
+    display_name: Chalumeau (single-reed predecessor to clarinet)
+    family: reeds-and-pipes
+    subfamily: single-reed
+    build_repo: tonykoop/chalumeau
+    range_low: F3
+    range_high: A4
+    transposition: concert
+    key_default: F
+    scale: major
+    fingering: chalumeau-fingerings
+    ornaments:
+      - slur
+      - tongue-articulation
+    soundfont_preset: 72    # 72 = Clarinet (closest GM)
+    notes: |
+      Pre-clarinet single-reed. Limited range (~one octave) compared
+      to clarinet. v0.1 skeleton — full ornament rules in v0.2.
+
+  - id: clarinet
+    display_name: Clarinet (B-flat)
+    family: reeds-and-pipes
+    subfamily: single-reed
+    build_repo: tonykoop/clarinet
+    range_low: D3
+    range_high: G6
+    transposition: -M2       # B-flat clarinet sounds a major 2nd lower
+    key_default: Bb
+    scale: major
+    fingering: clarinet-fingerings
+    ornaments:
+      - slur
+      - tongue-articulation
+      - register-key-leap
+    soundfont_preset: 72
+    notes: |
+      Standard B-flat clarinet. v0.1 skeleton.
+
+  - id: duduk
+    display_name: Duduk (Armenian double-reed)
+    family: reeds-and-pipes
+    subfamily: double-reed
+    build_repo: tonykoop/duduk
+    range_low: A3
+    range_high: D5
+    transposition: concert
+    key_default: A
+    scale: minor
+    fingering: duduk-fingerings
+    ornaments:
+      - duduk-glide
+      - microtonal-bend
+      - dam-drone
+    soundfont_preset: 110   # 110 = Bagpipe (closest GM, imperfect)
+    notes: |
+      Two-octave range typical, requires controlled pressure for upper
+      octave. Tradition expects glides between most adjacent notes.
+      v0.1 skeleton — full ornament rules in v0.2.
+
+  - id: great-highland-pipe
+    display_name: Great Highland Pipe (chanter)
+    family: reeds-and-pipes
+    subfamily: bagpipe
+    build_repo: tonykoop/great-highland-pipe   # placeholder; no build repo yet
+    range_low: G4
+    range_high: A5
+    transposition: concert  # see notes — pipe "low A" sounds ~B-flat, but
+                            # standard pipe notation writes it as A
+    key_default: A
+    scale: mixolydian-A
+    fingering: ghp-chanter-9note
+    ornaments:
+      - doubling
+      - throw-on-d
+      - grip
+      - birl
+      - taorluath
+    soundfont_preset: 110   # 110 = Bagpipe (GM)
+    notes: |
+      Nine-note A-mixolydian chanter: low G, low A, B, C#, D, E, F#,
+      high G, high A. Bagpipe music has NO RESTS — the bag stores air
+      so the chanter never stops sounding. Phrasing is articulated
+      entirely through grace-note clusters (doublings, throws, grips,
+      birls), never silences. Beginner pipe-band arrangements still
+      require correct embellishment; the embellishments ARE the
+      rhythm.
+
+      Concert-pitch caveat: pipe "low A" sounds closer to B-flat 4
+      (~466 Hz) on most modern pipes — pipes are not concert-pitched
+      instruments — but standard pipe notation writes it as A4 for
+      readability and that's the convention used here. Soundfont
+      playback through GM preset 110 will sound a written-pitch A.
+
+      v0.1 skeleton-plus: this row was added when the GHP starter
+      songbook was built as a v0.2 stress test; treat as provisional
+      until v0.2 lands the full bagpipe ornament rendering.
+
+percussion:
+  - id: conga
+    display_name: Conga
+    family: percussion
+    subfamily: hand-drum
+    build_repo: tonykoop/conga
+    range_low: ~
+    range_high: ~
+    transposition: concert
+    key_default: ~
+    scale: rhythmic
+    fingering: conga-strokes        # B/T/S/M/H notation
+    ornaments:
+      - tone-vs-slap
+      - heel-toe
+    soundfont_preset: ~              # uses GM percussion channel 10
+    notes: |
+      Stroke notation: B (bass), O (open tone), S (slap), M (mute),
+      H (heel), T (toe). Pattern loops at a declared tempo.
+      v0.1 skeleton.
+
+  - id: djembe
+    display_name: Djembe
+    family: percussion
+    subfamily: hand-drum
+    build_repo: tonykoop/djembe
+    range_low: ~
+    range_high: ~
+    transposition: concert
+    key_default: ~
+    scale: rhythmic
+    fingering: djembe-strokes        # B/T/S notation
+    ornaments:
+      - flam
+      - drag
+    soundfont_preset: ~
+    notes: |
+      Three primary strokes: bass (B), tone (T), slap (S). Patterns
+      loop typically over 4-12 beats. v0.1 skeleton.
+
+  - id: cajon
+    display_name: Cajón
+    family: percussion
+    subfamily: box-drum
+    build_repo: tonykoop/cajon
+    range_low: ~
+    range_high: ~
+    transposition: concert
+    key_default: ~
+    scale: rhythmic
+    fingering: cajon-strokes
+    ornaments:
+      - ghost-note
+      - rim-shot
+    soundfont_preset: ~
+    notes: |
+      Bass (low front), tone (high front), tap (top), snare-side
+      strokes. v0.1 skeleton.
+
+  - id: dundun
+    display_name: Dundun
+    family: percussion
+    subfamily: stick-drum
+    build_repo: tonykoop/dundun
+    range_low: ~
+    range_high: ~
+    transposition: concert
+    key_default: ~
+    scale: rhythmic
+    fingering: dundun-strokes        # stick + bell notation
+    ornaments:
+      - bell-pattern
+    soundfont_preset: ~
+    notes: |
+      Bass drum struck with a stick, with optional bell played
+      simultaneously. v0.1 skeleton.
+
+  - id: ashiko
+    display_name: Ashiko
+    family: percussion
+    subfamily: hand-drum
+    build_repo: tonykoop/ashiko-drum-workshop
+    range_low: ~
+    range_high: ~
+    transposition: concert
+    key_default: ~
+    scale: rhythmic
+    fingering: ashiko-strokes
+    ornaments:
+      - tone-vs-slap
+    soundfont_preset: ~
+    notes: |
+      Tapered hand drum. Similar stroke vocabulary to djembe.
+      v0.1 skeleton.
+
+  - id: frame-drum
+    display_name: Frame Drum
+    family: percussion
+    subfamily: frame-drum
+    build_repo: tonykoop/frame-drum
+    range_low: ~
+    range_high: ~
+    transposition: concert
+    key_default: ~
+    scale: rhythmic
+    fingering: frame-drum-strokes
+    ornaments:
+      - finger-rolls
+    soundfont_preset: ~
+    notes: |
+      Single-skin frame drum, finger-driven rolls common.
+      v0.1 skeleton.
+
+  - id: tongue-drum
+    display_name: Tongue Drum (wood)
+    family: percussion
+    subfamily: idiophone-pitched
+    build_repo: tonykoop/ceramic-tongue-drum   # ceramic variant; wood version under flutes? confirm
+    range_low: C4
+    range_high: C5
+    transposition: concert
+    key_default: C
+    scale: major-pentatonic
+    fingering: tongue-drum-layout
+    ornaments:
+      - mallet-roll
+    soundfont_preset: 13    # 13 = Marimba (closest GM)
+    notes: |
+      Pitched percussion — IS a melodic instrument. Layout is fixed
+      by the tongue cuts; arrangements are constrained to the
+      pentatonic scale of the build. v0.1 skeleton.
+
+  - id: ceramic-tongue-drum
+    display_name: Ceramic Tongue Drum (slip-cast)
+    family: percussion
+    subfamily: idiophone-pitched
+    build_repo: tonykoop/ceramic-tongue-drum
+    range_low: G3
+    range_high: G4
+    transposition: concert
+    key_default: G
+    scale: minor-pentatonic
+    fingering: tongue-drum-layout
+    ornaments:
+      - mallet-roll
+    soundfont_preset: 116   # 116 = Steel Drums (mellower than marimba)
+    notes: |
+      Slip-cast ceramic body, deeper and more sustained than the wood
+      version. v0.1 skeleton.
+
+hybrid:
+  - id: ceramic-hang
+    display_name: Ceramic Hang Drum
+    family: hybrid
+    subfamily: handpan
+    build_repo: tonykoop/ceramic-hang
+    range_low: D4
+    range_high: D5
+    transposition: concert
+    key_default: D
+    scale: minor
+    fingering: hang-layout
+    ornaments:
+      - palm-mute
+      - finger-roll
+    soundfont_preset: 116
+    notes: |
+      Slip-cast ceramic handpan in D minor (typical Tony tuning).
+      Pitched idiophone with a clear melodic role. v0.1 skeleton.

@@ -1,0 +1,16 @@
+{
+  "$schema": "https://claude.com/schemas/plugin.json",
+  "name": "coding",
+  "version": "1.0.0",
+  "description": "Engineering operations: tmux multi-pane sprint orchestration, PR review, sprint supervision, GitHub-Queue sync, swarm dispatch, CI triage, scaffold hygiene, disk cleanup, and the skills-meta drift auditor.",
+  "author": {
+    "name": "Tony Koop",
+    "email": "tonykoop@gmail.com",
+    "url": "https://github.com/tonykoop"
+  },
+  "homepage": "https://github.com/tonykoop/claude-skills",
+  "repository": "https://github.com/tonykoop/claude-skills",
+  "license": "MIT",
+  "keywords": ["sprint","tmux","ci","git","wrfcoin","internal-ops","audit","skills-meta"],
+  "skills": ["skills"]
+}

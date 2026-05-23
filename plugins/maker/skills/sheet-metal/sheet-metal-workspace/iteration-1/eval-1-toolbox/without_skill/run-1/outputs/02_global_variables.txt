@@ -1,0 +1,110 @@
+; ============================================================
+; SolidWorks Global Variables / Equations
+; Project: Stackable Modular Toolbox System
+; File: Master Layout Part (or top-level Assembly)
+; Units: inches (use mm equivalents as needed)
+; ============================================================
+;
+; HOW TO USE:
+;   1. In SolidWorks, open the master layout part (or top assy).
+;   2. Tools > Equations > Global Variables tab.
+;   3. Paste each line below (without the leading semicolon comments)
+;      into a new global variable row.
+;   4. Reference these by name (e.g. "BoxWidth") in all sketches,
+;      features, and component placements throughout the project.
+;
+; NAMING CONVENTION:
+;   - CamelCase, no spaces.
+;   - Prefix dependents with parent ("Box*", "Lid*", "Dolly*").
+;   - Suffix "_mm" only on metric duplicates.
+;
+; ============================================================
+; PRIMARY DRIVERS  (the only ones the user should change)
+; ============================================================
+"BoxWidth"          = 20.000                 ; exterior W, in
+"BoxHeight"         = 8.000                  ; exterior H, in (use 4 / 8 / 12 for family)
+"BoxDepth"          = 10.000                 ; exterior D, in
+"SheetThk"          = 0.048                  ; 18 ga CRS nominal
+"BoxesOnDolly"      = 4                      ; integer 3 or 4
+
+; ============================================================
+; SHEET METAL CONSTANTS
+; ============================================================
+"BendRadius"        = "SheetThk" * 1.0       ; 1T inner radius (typical for 18 ga)
+"KFactor"           = 0.44                   ; mild steel air bend, 1T radius
+"MinFlangeLen"      = "SheetThk" * 4         ; ~0.19 in floor for short flanges
+"BendReliefW"       = "SheetThk" * 1.5       ; relief slot width
+"BendReliefL"       = "SheetThk" * 2         ; relief slot depth past bend tangent
+
+; ============================================================
+; DERIVED BOX DIMENSIONS (do not edit directly)
+; ============================================================
+"BoxIntW"           = "BoxWidth"  - 2 * "SheetThk"   ; interior width
+"BoxIntH"           = "BoxHeight" - 2 * "SheetThk"   ; interior height (body only)
+"BoxIntD"           = "BoxDepth"  - 2 * "SheetThk"   ; interior depth
+
+; ============================================================
+; LID / BODY SPLIT
+;   Body height = BoxHeight - LidHeight.  Lid sits on top with
+;   a tongue-in-groove style lap so the lid doesn't add to OAH.
+; ============================================================
+"LidHeight"         = 1.250                  ; lid skirt depth
+"BodyHeight"        = "BoxHeight" - "LidHeight" + "LidLapDepth"
+"LidLapDepth"       = 0.500                  ; lid skirt overlaps body wall by this
+
+; ============================================================
+; STACKING INTERLOCK
+;   - Male bosses protrude UP from the lid corners.
+;   - Female pockets recess INTO the bottom corners of the body.
+;   - 4 corner features + optional center alignment rib.
+; ============================================================
+"InterlockSize"     = 1.000                  ; footprint square (in)
+"InterlockHt"       = 0.250                  ; engagement height
+"InterlockClear"    = 0.015                  ; clearance per side (fit)
+"InterlockInset"    = 0.625                  ; inset from outside walls
+
+; ============================================================
+; HANDLE / LATCH
+; ============================================================
+"HandleWidth"       = 6.000                  ; recessed top handle pocket
+"HandleDepth"       = 0.750                  ; pocket depth
+"LatchQty"          = 2                      ; draw latches per box (front face)
+"LatchSpacing"      = "BoxWidth" * 0.55      ; CL-to-CL distance
+
+; ============================================================
+; HOLE / CUTOUT RULES
+;   Per Smith&assoc / industry rule: edge-of-hole-to-bend >= 2.5T
+; ============================================================
+"MinHole2Bend"      = 2.5 * "SheetThk"
+"MinHole2Edge"      = 2.0 * "SheetThk"
+
+; ============================================================
+; DOLLY PARAMETERS
+; ============================================================
+"DollyClearance"    = 0.250                  ; per side, box-to-dolly walls
+"DollyWidth"        = "BoxWidth"  + 2 * "DollyClearance"
+"DollyDepth"        = "BoxDepth"  + 2 * "DollyClearance"
+"DollyDeckHt"       = 1.500                  ; top of dolly deck above floor (excl. caster)
+"DollyWallHt"       = 1.500                  ; upturned lip that locks bottom box
+"CasterPlateSz"     = 3.000                  ; square caster top plate
+"CasterBoltCircle"  = 2.500                  ; bolt-hole pattern (center-to-center)
+"CasterBoltDia"     = 0.281                  ; 9/32 clearance for 1/4-20
+"CasterWheelDia"    = 3.000
+"CasterHt"          = 4.000                  ; OAH of caster incl. swivel + wheel
+"DollyHandleHt"     = 36.000                 ; tube-style push handle (optional)
+"DollyHandleOD"     = 1.000
+
+; ============================================================
+; STACK GEOMETRY (for visualization assembly)
+; ============================================================
+"StackQty"          = "BoxesOnDolly"
+"StackTotalHt"      = "DollyDeckHt" + "CasterHt" + "StackQty" * "BoxHeight" + "DollyHandleHt"
+
+; ============================================================
+; FAMILY-OF-SIZES PRESETS  (driven via Design Table; leave commented)
+; ============================================================
+; Small  : BoxWidth=14, BoxDepth=8,  BoxHeight=6
+; Medium : BoxWidth=20, BoxDepth=10, BoxHeight=8     <-- DEFAULT
+; Large  : BoxWidth=24, BoxDepth=12, BoxHeight=10
+; HalfH  : BoxHeight=4   (organizer tray)
+; FullH  : BoxHeight=12  (deep box for power tools)

@@ -1,0 +1,12 @@
+part_number,part_name,qty,material,thickness_in,est_mass_g,notes,authority
+SM-001,lower-tub,1,5052-H32 aluminum,0.063,170,Floor + 2 sides + rear wall folded from one blank,planning
+SM-002,wedge-front,1,5052-H32 aluminum,0.063,80,Wedge face with side ear returns,planning
+SM-003,top-deck,1,5052-H32 aluminum,0.063,90,Removable service panel,planning
+SM-004,wheel-guard-left,1,5052-H32 aluminum,0.063,18,Folded U-channel,planning
+SM-005,wheel-guard-right,1,5052-H32 aluminum,0.063,18,Folded U-channel mirror of SM-004,planning
+SM-101,lower-tub-spare,1,5052-H32 aluminum,0.063,170,Cut on same sheet as SM-001,planning
+SM-102,wedge-front-spare,1,5052-H32 aluminum,0.063,80,Cut on same sheet as SM-002,planning
+SM-104,wheel-guard-spare-set,2,5052-H32 aluminum,0.063,18,Two extra guards from scrap,planning
+HW-001,M3 socket-head cap screw 10mm,12,A2 stainless,,1,Confirm length against actual stackup,planning
+HW-002,M3 nylock nut,12,A2 stainless,,0.4,Vibration resistant,planning
+HW-003,M3 washer,12,A2 stainless,,0.1,Spread load on hemmed top edge,planning

@@ -1,0 +1,27 @@
+X:1
+T:Loch Lomond
+T:The Bonnie Banks o' Loch Lomond
+C:Trad. Scottish (lyrics first published in Vocal Melodies of
+C:Scotland, 1841; melody older, traditional)
+S:Public domain (US) — both melody and 1841 lyrics are pre-1929.
+N:Slow air for the 9-note Great Highland chanter, transposed and
+N:adapted to A mixolydian. The original is a soprano-voice tune
+N:in G major with a low D below the chanter range; the contour is
+N:preserved here by raising those low notes into the chanter's
+N:low octave.  NO RESTS — phrase ends are held tones, not silences.
+M:4/4
+L:1/8
+Q:1/4=68
+K:Amix
+H:Range: low A (A4) to high A (A5). All nine chanter notes used.
+H:Arrangement: Heifer Zephyr / Tony Koop, 2026 (MIT, sheet-music repo).
+H:Slow-air phrasing: long held notes at phrase ends, with doublings
+H:carrying the rhythmic weight that lyrics would otherwise carry.
+H:Beginners can drop the doublings until the principal melody is
+H:steady, then layer ornaments back in one phrase at a time.
+% --- 16-bar slow air; AB form, each repeated ---
+{GdG}A2 |\
+|: {GdG}A2 A2 A2 c2 | {GdG}c2 d2 e2 c2 | {GeG}d2 c2 {GdG}A2 G2 | {GdG}A2 c2 {GeG}d4 |
+   {gf}f2 e2 c2 {GdG}A2 | {GdG}A2 c2 {GeG}d2 e2 | f2 e2 c2 {GdG}A2 | {GBG}A6 e2 :|
+|: {gf}f2 e2 c2 {GdG}A2 | {GdG}A2 c2 {GeG}d2 e2 | {gag}a2 g2 f2 e2 | {gf}f2 e2 c4 |
+   {gf}f2 e2 c2 {GdG}A2 | {GdG}A2 c2 {GeG}d2 e2 | f2 e2 c2 {GdG}A2 | {GBG}A8 :|

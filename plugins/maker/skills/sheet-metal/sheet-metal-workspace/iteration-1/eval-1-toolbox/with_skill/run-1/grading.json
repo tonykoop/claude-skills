@@ -1,0 +1,86 @@
+{
+  "eval_name": "eval-1-toolbox",
+  "variant": "with_skill",
+  "files_produced": [
+    "agent-record.md",
+    "bend-table.csv",
+    "bom.csv",
+    "cut-list.csv",
+    "design-brief.md",
+    "fabrication-plan.md",
+    "family-design-table.csv",
+    "flat-pattern-checklist.md",
+    "parameters.csv",
+    "solidworks-plan.md",
+    "validation-checklist.md"
+  ],
+  "passed_count": 10,
+  "total_count": 10,
+  "pass_rate": 1.0,
+  "expectations": [
+    {
+      "text": "Produces a design-brief.md",
+      "passed": true,
+      "evidence": "design-brief file present"
+    },
+    {
+      "text": "Produces a parameters.csv with thickness, bend radius, K-factor",
+      "passed": true,
+      "evidence": "parameters CSV with required variables"
+    },
+    {
+      "text": "Produces SolidWorks equations with quoted variable names",
+      "passed": true,
+      "evidence": "quoted vars like \"Box_Length\" present"
+    },
+    {
+      "text": "Produces a design-table CSV with seed and other configurations",
+      "passed": true,
+      "evidence": "design table + multiple configs"
+    },
+    {
+      "text": "Produces a SolidWorks plan with master layout part",
+      "passed": true,
+      "evidence": "SW plan + master layout"
+    },
+    {
+      "text": "Includes stacking interface (rim/cleat/interlock)",
+      "passed": true,
+      "evidence": "stacking interface mentioned"
+    },
+    {
+      "text": "Includes dolly with thicker stock",
+      "passed": true,
+      "evidence": "12ga or 1/8in dolly mentioned"
+    },
+    {
+      "text": "Produces bend-table, BOM, and cut-list",
+      "passed": true,
+      "evidence": "bend-table=True, bom=True, cut-list=True"
+    },
+    {
+      "text": "Marks authority as design/planning, not fabrication-ready",
+      "passed": true,
+      "evidence": "explicit design-only/not-fab-ready statement"
+    },
+    {
+      "text": "Lists open measurements before fabrication release",
+      "passed": true,
+      "evidence": "open items called out"
+    }
+  ],
+  "summary": {
+    "pass_rate": 1.0,
+    "passed": 10,
+    "failed": 0,
+    "total": 10
+  },
+  "timing": {
+    "total_duration_seconds": 430.6,
+    "total_tokens": 80497
+  },
+  "execution_metrics": {
+    "total_tool_calls": 29,
+    "errors_encountered": 0
+  }
+}

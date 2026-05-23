@@ -1,0 +1,4 @@
+interface:
+  display_name: "Makerspace"
+  short_description: "Jigs, fixtures, and machine-aware shop planning"
+  default_prompt: "Use $makerspace to plan a repeatable shop packet for this jig and decide whether I should make, order, buy, or borrow it."

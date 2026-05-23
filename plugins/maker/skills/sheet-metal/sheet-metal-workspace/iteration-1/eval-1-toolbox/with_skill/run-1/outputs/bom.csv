@@ -1,0 +1,16 @@
+part_number,description,qty_per_box,qty_per_dolly,qty_per_4box_kit,material,thickness_in,source,notes
+10_SWTB_Tub,Tub body U-fold with end-cap closure,1,0,4,Mild Steel,0.060,Plasma cut + brake form,16 ga; planning
+11_SWTB_Lid,Lid clamshell with stack rim,1,0,4,Mild Steel,0.060,Plasma cut + brake form,16 ga; planning
+12_SWTB_Tray_Stepped_Hanger,Drop-in tray (optional),0,0,0,Mild Steel,0.060,Plasma cut + brake form,Optional add-on; quantity per box at user option
+30_SWTB_Dolly_Deck,Dolly deck with downward skirts and upward rim,0,1,1,Mild Steel,0.105,Plasma cut + brake form,12 ga; planning - uprate for heavy loads
+31_SWTB_Dolly_Caster_Doubler,Reinforcement plate under each caster bolt pattern,0,4,4,Mild Steel,0.105,Plasma cut,12 ga
+32_SWTB_Dolly_Handle_Bracket,Receiver bracket for handle spine,0,2,2,Mild Steel,0.105,Plasma cut + brake form,12 ga
+HW_PianoHinge,Continuous piano hinge for tub-to-lid,1,0,4,Steel or stainless,n/a,Purchased,Selection pending; length matches Box_Length
+HW_DrawLatch,Over-center draw latch (tub-to-lid),2,0,8,Steel or stainless,n/a,Purchased,Two per box on long face
+HW_StackLatch,Over-center draw latch (box-to-box stack coupling),0,0,6,Steel or stainless,n/a,Purchased,Two per box-to-box interface; 3 interfaces in a 4-high stack
+HW_FootPad,Rubber foot pad,4,0,16,Rubber,n/a,Purchased,Recessed inside stack shoulder
+HW_Caster_Swivel,Swivel caster with brake (front of dolly),0,2,2,Steel + rubber tread,n/a,Purchased,3 in diameter planning; 200 lb rating planning
+HW_Caster_Rigid,Rigid caster (rear of dolly),0,2,2,Steel + rubber tread,n/a,Purchased,Or four swivels if preferred
+HW_HandleTube,Square tube handle spine,0,1,1,Steel,n/a,Purchased,1 in square tube planning; length per user preference
+HW_Fasteners_Box,Box hardware fasteners (rivets or screws),~24,0,~96,Steel or stainless,n/a,Purchased,Quantity per box approximate
+HW_Fasteners_Dolly,Dolly hardware fasteners,0,~24,~24,Steel or stainless,n/a,Purchased,Casters + handle bracket

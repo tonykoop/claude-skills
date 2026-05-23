@@ -1,0 +1,29 @@
+X:1
+T:Loch Lomond — denser ornamentation
+T:Intermediate setting (Heifer Zephyr)
+C:Trad. Scottish (lyrics first published 1841; melody older, trad.)
+S:Public domain (US) — both melody and lyrics pre-1929.
+N:Intermediate-level pipe-band setting of the same melody as
+N:01-easy/loch-lomond. The principal-note contour is identical;
+N:every long note now carries an ornament cluster, every D after
+N:a lower pitch is a throw, and the cadence carries a grip. NO
+N:RESTS — held tones replace what would be silences.
+M:4/4
+L:1/8
+Q:1/4=68
+K:Amix
+H:Range: low A (A4) to high A (A5). All nine chanter notes used.
+H:Arrangement: Heifer Zephyr / Tony Koop, 2026 (MIT, sheet-music repo).
+H:Compared to the easy version, this setting:
+H:  - adds doublings to every quarter-length principal note
+H:  - swaps simple grace clusters for throws on every D-after-lower
+H:  - inserts grips between repeated principals
+H:  - holds the cadence under a {GBG}A8 grip-doubling
+H:  - keeps the melody contour identical, so a player can build up
+H:    from the easy setting bar by bar
+% --- 16-bar slow air; AB form, each repeated. Anacrusis low A. ---
+{GdG}A2 |\
+|: {GdG}A2 {GAG}A2 {GdG}A2 {GdG}c2 | {GdG}c2 {GeG}d2 {ge}e2 {GdG}c2 | {GeG}d2 {GdG}c2 {GdG}A2 {GAG}G2 | {GdG}A2 {GdG}c2 {GeG}d4 |
+   {gf}f2 {ge}e2 {GdG}c2 {GdG}A2 | {GdG}A2 {GdG}c2 {GeG}d2 {ge}e2 | {gf}f2 {ge}e2 {GdG}c2 {GdG}A2 | {GBG}A6 {ge}e2 :|
+|: {gf}f2 {ge}e2 {GdG}c2 {GdG}A2 | {GdG}A2 {GdG}c2 {GeG}d2 {ge}e2 | {gag}a2 {gag}g2 {gf}f2 {ge}e2 | {gf}f2 {ge}e2 {GdG}c4 |
+   {gf}f2 {ge}e2 {GdG}c2 {GdG}A2 | {GdG}A2 {GdG}c2 {GeG}d2 {ge}e2 | {gf}f2 {ge}e2 {GdG}c2 {GdG}A2 | {GBG}A8 :|
