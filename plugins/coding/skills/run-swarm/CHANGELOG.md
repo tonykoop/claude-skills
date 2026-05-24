@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- Document cached issue-scout schema fields, freshness expectations,
+  missing-body caveats, and manager refresh checks for queue outputs.
+  Refs #178.
+
 ## 1.2.1 - 2026-05-11
 
 - Add a machine-readable queue output contract for JSON/CSV issue landscape

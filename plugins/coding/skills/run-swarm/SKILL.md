@@ -111,6 +111,14 @@ Include both classification lenses when they matter:
 Also include skill-owner counts and queue counts so a sprint manager can size
 lanes without re-parsing prose.
 
+When the manager is working from cached issue-scout artifacts, record the
+cache paths and freshness metadata in the JSON `source.cache` block. Typical
+inputs are `open-issues.json`, `closed-issues.json`, and `repo-inventory.txt`.
+Treat those files as snapshots for queue shaping only: note whether issue
+bodies are present, call out partial or missing body coverage, and refresh live
+GitHub state before filing, commenting, deduplicating, or dispatching work from
+the queue.
+
 ## Issue Filing Mode
 
 Issue filing is a manager action after the read-only audit pass, not something

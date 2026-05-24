@@ -28,10 +28,24 @@ Top-level fields:
 | --- | --- | --- |
 | `schema_version` | string | Start at `run-swarm.issue-landscape.v1`. |
 | `generated_at` | string | ISO-8601 timestamp if available, otherwise the audit date. |
-| `source` | object | Include workspace root, query/source command, and mode. |
+| `source` | object | Include workspace root, query/source command, mode, and cache metadata when cached issue-scout artifacts were used. |
 | `counts` | object | Include `issues_total`, `pull_requests_total` when known, `queues`, `strict_dispatch_buckets`, and `owner_skills`. |
 | `issues` | array | One object per issue or draft issue candidate. |
 | `notes` | array | Optional manager caveats. |
+
+Recommended `source.cache` fields for cached issue-scout runs:
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `open_issues_path` | string or null | Path to the open-issue cache, such as `open-issues.json`. |
+| `closed_issues_path` | string or null | Path to the closed-issue cache when duplicate checks include closed issues. |
+| `repo_inventory_path` | string or null | Path to repo inventory input when repo coverage came from a cache. |
+| `generated_at` | string or null | Timestamp embedded in the cache, or null if only file mtime is known. |
+| `file_mtime` | string or null | File modified time used as a fallback freshness signal. |
+| `source_command` | string or null | Command or manager note that produced the cache. |
+| `body_coverage` | string | `complete`, `partial`, `missing`, or `unknown`. |
+| `freshness` | string | `same-run`, `current-round`, `stale-refresh-required`, or `unknown-refresh-required`. |
+| `refresh_required_before` | array | Manager actions that need live `gh` refresh first. |
 
 Each `issues[]` object should include:
 
@@ -53,6 +67,40 @@ Each `issues[]` object should include:
 | `evidence` | array | no | Paths, PRs, artifacts, issue links, or command evidence. |
 | `risk_flags` | array | no | For example `ip-privacy`, `welfare`, `safety`, `needs-clarification`, or `batch-needs-review`. |
 | `duplicate_of` | string or null | no | Existing issue reference for exact duplicates. |
+| `body_status` | string | no | `present`, `missing`, `truncated`, or `unknown` when issue bodies came from cache. |
+
+## Cached Issue-Scout Freshness Contract
+
+Cached issue-scout files are evidence snapshots, not live authority. Use them
+to size lanes, cluster findings, and draft queue artifacts. Refresh with live
+GitHub reads before any action that mutates or commits to current repo state:
+filing an issue, posting a comment, marking a candidate as an exact duplicate,
+closing or reopening work, dispatching an implementation lane, or reporting a
+ready-to-merge/ready-to-close decision.
+
+Minimum cache rules:
+
+1. Record every cache input path used by the manager.
+2. Record either embedded `generated_at` metadata or file mtime. If neither is
+   available, set `freshness` to `unknown-refresh-required`.
+3. If issue bodies are absent, set `body_coverage` to `missing` and do not make
+   duplicate or acceptance-test decisions from titles alone.
+4. If only open issues were cached, say so. Closed-issue duplicate checks
+   require a live refresh or a closed-issue cache from the same run.
+5. Treat caches from the same manager run as acceptable for queue shaping.
+   Treat older or provenance-unknown caches as stale before dispatch or GitHub
+   mutation.
+
+Manager refresh checklist:
+
+- Re-run `gh search issues` or `gh issue list` when queue counts affect sprint
+  sizing.
+- Run `gh issue view` on each candidate before filing, commenting, or declaring
+  an exact duplicate.
+- Refresh the target repo labels before suggesting label creation or reuse.
+- Recheck the issue state before dispatching an implementation lane.
+- Leave cached-only caveats in `notes` when a live refresh is intentionally
+  deferred.
 
 Minimal example:
 
@@ -63,7 +111,18 @@ Minimal example:
   "source": {
     "mode": "personal-github",
     "workspace_root": "/path/to/workspace",
-    "query": "gh search issues --owner tonykoop --state open"
+    "query": "gh search issues --owner tonykoop --state open",
+    "cache": {
+      "open_issues_path": "/tmp/tonykoop-run-swarm-issue-scout-results/open-issues.json",
+      "closed_issues_path": "/tmp/tonykoop-run-swarm-issue-scout-results/closed-issues.json",
+      "repo_inventory_path": "/tmp/tonykoop-run-swarm-issue-scout-results/repo-inventory.txt",
+      "generated_at": "2026-05-11T18:00:00Z",
+      "file_mtime": null,
+      "source_command": "issue scout manager cache",
+      "body_coverage": "partial",
+      "freshness": "same-run",
+      "refresh_required_before": ["issue-comment", "issue-create", "dispatch"]
+    }
   },
   "counts": {
     "issues_total": 2,
@@ -99,7 +158,8 @@ Minimal example:
       "safe_default": null,
       "evidence": ["skills/run-swarm/SKILL.md"],
       "risk_flags": [],
-      "duplicate_of": null
+      "duplicate_of": null,
+      "body_status": "present"
     },
     {
       "repo": "tonykoop/private-media-example",
@@ -117,7 +177,8 @@ Minimal example:
       "safe_default": "keep private and do not dispatch implementation",
       "evidence": [],
       "risk_flags": ["ip-privacy"],
-      "duplicate_of": null
+      "duplicate_of": null,
+      "body_status": "missing"
     }
   ],
   "notes": ["Counts are a manager snapshot, not a sprint-doc mutation."]
@@ -163,5 +224,7 @@ Before using the artifacts for dispatch:
    manager explicitly approves the route.
 4. Compare `strict_dispatch_bucket` with `owner_skill_bucket` when sizing skill
    lanes; they answer different questions.
-5. Treat the JSON/CSV files as evidence snapshots. Let `sprint-update` or the
+5. Check `source.cache.freshness` and `source.cache.body_coverage` before using
+   cached items for duplicate, acceptance, or dispatch decisions.
+6. Treat the JSON/CSV files as evidence snapshots. Let `sprint-update` or the
    sprint manager decide whether to edit the sprint document.
