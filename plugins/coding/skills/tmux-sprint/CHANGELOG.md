@@ -1,5 +1,12 @@
 # Changelog - tmux-sprint
 
+## Unreleased
+
+- Refs #166: Added `scripts/provider_failover.py`, a non-invasive helper for
+  parsing provider-failover config, detecting saved pane captures that should
+  be reported as `FAILOVER_CANDIDATE`, and serializing provider state into
+  round-state JSON without sending live tmux keystrokes.
+
 ## v2.3.1 - 2026-05-17
 
 - Added `references/provider-failover.md`, a manager-owned contract for

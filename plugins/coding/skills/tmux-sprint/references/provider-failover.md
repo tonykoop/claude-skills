@@ -73,6 +73,7 @@ Suggested `failure_reason` values:
 
 - `rate_limit_prompt`
 - `weekly_budget_exhausted`
+- `provider_quota_exhausted`
 - `provider_cli_missing`
 - `provider_auth_blocked`
 - `probe_timeout`
@@ -147,7 +148,8 @@ attempted and give the exact blocker for each.
 
 ## Low-Risk First PR Boundary
 
-The first implementation PR should avoid broad tmux rewrites. A safe slice is:
+The first implementation PR should avoid broad tmux rewrites. Refs #166:
+`scripts/provider_failover.py` now covers this saved-capture/state slice:
 
 - add config parsing for `provider_failover.order`
 - add provider table serialization to round-state JSON

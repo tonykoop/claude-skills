@@ -278,6 +278,11 @@ and `restart` boundaries. Provider migration is a manager-owned recovery
 operation; sprint-supervisor should only approve safe prompts by prompt shape
 and escalate anything outside its rubric.
 
+Refs #166: `scripts/provider_failover.py` implements the first non-invasive
+slice. It can parse fallback config, scan saved pane captures for exhaustion
+signals, and write `FAILOVER_CANDIDATE` provider-state records into
+round-state JSON. It does not send tmux keystrokes or perform live CLI swaps.
+
 ## TwinGrid mode - blind A/B plus Partner Peek
 
 Use TwinGrid mode when the manager wants paired Claude/Codex lanes to solve
@@ -507,7 +512,8 @@ The supporting `scripts/preflight.sh`, `scripts/dispatch.sh`, `scripts/restart.s
 `assets/assignment-preamble.txt`, and `assets/personas.default.json` files
 referenced above live in the working wrfcoin workspace and are not yet
 included in this v0.1 publish. The SKILL.md (this file) is the contract;
-the implementation is shipped incrementally. The provider failover contract in
-`references/provider-failover.md` is likewise a design packet until those
-reference scripts are present in this public package. Open an issue in this
-repo if you want to request the reference script implementations.
+the implementation is shipped incrementally. The provider failover helper in
+`scripts/provider_failover.py` covers saved-capture detection and state
+serialization only; live same-pane provider swaps remain future work until the
+reference pane-control scripts are present in this public package. Open an
+issue in this repo if you want to request the reference script implementations.
