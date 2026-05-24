@@ -171,5 +171,6 @@ already absent, it is not counted as "manifest missing locally" drift.
 ## References
 
 - [Manifest schema](references/manifest-schema.md)
+- [Operational judgment benchmarks](references/operational-judgment-benchmarks.md)
 - [Output examples](references/output-examples.md)
 - [Runtime roots](references/runtime-roots.md)

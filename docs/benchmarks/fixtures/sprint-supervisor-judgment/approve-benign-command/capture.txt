@@ -1,0 +1,11 @@
+pane 7 frank codex-gpt-5.5 WORKING 5h=38% weekly=27%
+
+Would you like to run the following command?
+
+  gh pr view 214 --repo tonykoop/claude-skills --json title,state,headRefName
+
+1. Yes
+2. Yes, and don't ask again for this command
+3. No
+
+Select an option:

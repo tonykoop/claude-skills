@@ -1,0 +1,9 @@
+scope frontend idle
+started 2026-05-22T22:10:00-07:00
+summary_delivered_at null
+handled_approvals 17
+handled_rate_limit_prompts 2
+merged_prs tonykoop/claude-skills#214
+closed_issues none
+notable_events pane 8 weekly budget exhausted; pane 12 recovered from shell prompt
+scope_touches_n5 false

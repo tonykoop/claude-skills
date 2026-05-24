@@ -58,6 +58,27 @@ under `docs/benchmarks/run-logs/` when the result supports a PR.
 See [run-log-schema.md](benchmarks/run-log-schema.md) for the current output
 format.
 
+## Operational Judgment Benchmarks
+
+Operational skills such as `sprint-supervisor` need a narrower benchmark shape
+than artifact-producing skills. The first pass should check archived decision
+fixtures: synthesized `tmux capture-pane` tails, expected approval/refusal or
+summary decisions, and watch-points that map back to the skill's rubric. Treat
+these as regression signals for judgment shape, not proof that a live
+supervisor will make every correct call.
+
+Run the static sprint-supervisor sample with:
+
+```bash
+python3 scripts/skill_benchmark.py docs/benchmarks/sprint-supervisor-judgment-suite.json \
+  --run-id local-sprint-supervisor-judgment \
+  --created-at 2026-05-23T00:00:00Z
+```
+
+The methodology lives in the `skills-meta` package reference
+`references/operational-judgment-benchmarks.md` so future operational skills can
+reuse the same fixture and scoring pattern.
+
 ## Known Gaps
 
 - **No model-in-the-loop evaluation**: the harness checks static file/text

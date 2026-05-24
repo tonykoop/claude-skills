@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Added an operational judgment benchmarking reference for skills where
+  decision quality is the benchmark surface.
 - Added manifest `requires` dependency audit and sync expansion support.
 - Added `--version` to the skills-meta helper so sprint panes have a
   deterministic fallback when no `skills-meta` PATH shim is installed.
