@@ -1,8 +1,8 @@
 {
   "$schema": "https://claude.com/schemas/plugin.json",
   "name": "maker",
-  "version": "1.1.0",
-  "description": "Tony Koop's maker portfolio: instrument design, fabrication (CNC, laser, sheet-metal), shop-floor planning, wildlife habitat, reverse engineering, sheet music, plus personal-practice skills for yoga sequencing, playlist building, and idea capture.",
+  "version": "1.1.1",
+  "description": "Tony Koop's maker portfolio: instrument design, fabrication (CNC, laser, sheet-metal), shop-floor planning, wildlife habitat, reverse engineering, sheet music, private invention packet prep, plus personal-practice skills for yoga sequencing, playlist building, and idea capture.",
   "author": {
     "name": "Tony Koop",
     "email": "tonykoop@gmail.com",
@@ -13,6 +13,6 @@
   "license": "MIT",
   "keywords": [
     "instrument-design","maker","cnc","laser","sheet-metal","acoustic",
-    "habitat","yoga","music","heifer-zephyr"
+    "habitat","patents","yoga","music","heifer-zephyr"
 ]
 }
