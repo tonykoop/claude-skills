@@ -11,9 +11,9 @@
     {
       "name": "maker",
       "source": "./plugins/maker",
-      "description": "Physical-world design and personal practice: instrument-maker, sheet-metal, maker-engineering, makerspace, laser-art, habitat-maker, reverse-engineer, sheet-music, yoga-sequencer, playlist-builder, idea-incubator.",
+      "description": "Physical-world design and personal practice: instrument-maker, sheet-metal, maker-engineering, makerspace, laser-art, habitat-maker, reverse-engineer, sheet-music, yoga-sequencer, playlist-builder, idea-incubator, file-a-patent.",
       "category": "making",
-      "tags": ["instrument-design", "fabrication", "maker", "yoga", "music", "heifer-zephyr"]
+      "tags": ["instrument-design", "fabrication", "maker", "patents", "yoga", "music", "heifer-zephyr"]
     },
     {
       "name": "coding",

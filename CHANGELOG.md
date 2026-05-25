@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-05-25
+
+- Added `file-a-patent` (v0.1.0) to the Maker plugin at
+  `plugins/maker/skills/file-a-patent/`. The import keeps the attorney-review
+  packet workflow, USPTO/source-reference guardrails, packet templates, and
+  scaffold script while excluding the standalone repo internals and generated
+  zip artifact.
+- Bumped the Maker plugin metadata to `1.1.1` and registered
+  `file-a-patent` in the marketplace listing and canonical skill manifest.
+
 ## 2026-05-22
 
 - Added `source-citations` skill (v0.1.0) at `skills/source-citations/`.

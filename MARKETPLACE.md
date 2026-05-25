@@ -4,7 +4,7 @@ A Claude Code plugin marketplace backed by this repo. Two plugins:
 
 | Plugin | What it does | Skills |
 |---|---|---|
-| `maker` | Physical-world design and personal practice | instrument-maker, sheet-metal, maker-engineering, makerspace, laser-art, habitat-maker, reverse-engineer, sheet-music, yoga-sequencer, playlist-builder, idea-incubator |
+| `maker` | Physical-world design and personal practice | instrument-maker, sheet-metal, maker-engineering, makerspace, laser-art, habitat-maker, reverse-engineer, sheet-music, yoga-sequencer, playlist-builder, idea-incubator, file-a-patent |
 | `coding` | Engineering operations and developer tooling | tmux-sprint, sprint-supervisor, sprint-update, merge-review, run-swarm, ci-triage, scaffold-hygiene, disk-cleanup, skills-meta |
 
 ## Install (Claude Code CLI)
@@ -94,7 +94,7 @@ claude-skills/
 |   |   `-- skills/
 |   |       |-- instrument-maker/
 |   |       |-- sheet-metal/
-|   |       `-- ... (11 skills)
+|   |       `-- ... (12 skills)
 |   `-- coding/
 |       |-- .claude-plugin/plugin.json
 |       |-- .codex-plugin/plugin.json
