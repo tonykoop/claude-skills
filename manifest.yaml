@@ -3,7 +3,7 @@
 # Update this file whenever a skill version is bumped, packaged, or deprecated.
 
 schema_version: 1
-last_updated: 2026-05-22
+last_updated: 2026-05-25
 
 install_roots:
   windows:
@@ -106,6 +106,17 @@ skills:
     last_updated: 2026-05-18
     status: active
     notes: Promote-batch mode; readiness matrix, evidence-ledger, LFS prompts for recovery/import; offline-first promote-batch readiness helper (promote_batch_readiness.py) with existing-anchor checks and GitHub query fallbacks; private media/family archive promotion template; yearbook/design-book rollout workflow with pilot edition, consent/proof gates, image-gen derivative boundaries, EXIF/GPS handling, provenance-ledger defaults, photo-album/private-media pilot source-photo rules, compact private-media owner decision stub, and instrument design-book/yearbook/portfolio chapter promotion pattern.
+
+  file-a-patent:
+    canonical_version: 0.1.0
+    runtime: shared
+    repo_path: plugins/maker/skills/file-a-patent
+    last_updated: 2026-05-25
+    status: active
+    notes: >-
+      Private, attorney-ready invention packet and provisional-patent
+      preparation skill. Does not provide legal advice, file with any office,
+      publish, change licenses, or conclude patentability.
 
   maker-engineering:
     canonical_version: 1.1.0
@@ -210,6 +221,21 @@ skills:
     last_updated: 2026-05-10
     status: active
     notes: "Initial snapshot with catalog/auth-state preflight (issue 72) for honest sparse-catalog output."
+
+  sprint-supervisor:
+    canonical_version: 1.1.0
+    runtime: claude
+    repo_path: plugins/coding/skills/sprint-supervisor
+    last_updated: 2026-05-18
+    status: active
+    deps:
+      - sprint-manager  # cold-start handoff: supervisor bootstraps manager when no manager is running; do not reimplement manager topology here
+    notes: >-
+      Overnight sprint babysitter for multi-pane tmux grids. Pairs with
+      sprint-watchdog.sh (mechanical ~70% of approvals); this skill handles
+      judgment ~30% — commands, rate-limit prompts, escalation, morning
+      summary. Scales by named scope across twingrid/triplegrid/quadgrid via
+      /tmp lockfile.
 
   run-swarm:
     canonical_version: 1.2.1

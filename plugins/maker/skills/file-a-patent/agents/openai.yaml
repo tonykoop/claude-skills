@@ -1,0 +1,6 @@
+interface:
+  display_name: "File a Patent"
+  short_description: "Prepare private invention packets"
+  default_prompt: "Use $file-a-patent to build an attorney-ready invention packet from a private local repo."
+policy:
+  allow_implicit_invocation: true
