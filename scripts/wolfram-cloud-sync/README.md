@@ -266,3 +266,23 @@ the nested layout instead of the old flat `<repo>/` assumption:
 
 Run order to refresh after adding/renaming instruments:
 `inventory → (optional rename + per-repo fix_starter_refs) → sync → publish → emit`.
+
+---
+
+## 2026-05-31 — interactive embeds + explorer generation
+
+Raw `CloudPut` of a `.wl` renders as **source code**, not an interactive widget. For a
+live embed you must **CloudDeploy the Manipulate**:
+
+- **`deploy_interactive.sh <GitHub-root>`** — for each `wolfram/<repo>-wolfram-model.wl`,
+  `Get`s the model and `CloudDeploy`s its `Manipulate` (bare, or the Manipulate-valued
+  entry of a returned Association) to `Musical_Instruments/<cat>/<repo>/<repo>-interactive`
+  (Public). Records URLs in `manifest/wolfram_interactive_urls.json`. Models must carry
+  `SaveDefinitions -> True` on the Manipulate so helper functions travel to the cloud.
+- **`generate_explorer.py <repo_dir> --embed-urls manifest/wolfram_interactive_urls.json`**
+  — clean reconstruction of the lost explorer generator. Emits a self-contained
+  `explorer.html` (title + design summary + packet file list + a **direct iframe to the
+  interactive Wolfram URL**). Falls back to a 'pending' note when no URL is found.
+
+Pipeline for interactive explorers: inventory → sync → **deploy_interactive.sh** →
+**generate_explorer.py** (per repo). (publish/emit remain for the source-URL/capstone path.)

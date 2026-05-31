@@ -143,22 +143,27 @@ publishOne[file_Association, idx_, total_] := Module[
   ];
 
   co = CloudObject[cloudPath];
-  If[Head[Quiet @ CloudObjectInformation[co]] =!= Association,
+  (* Wolfram 14.x: CloudObjectInformation returns CloudObjectInformationData,
+     not a plain Association — accept both for the existence check. *)
+  If[!MemberQ[{Association, CloudObjectInformationData},
+        Head[Quiet @ CloudObjectInformation[co]]],
     Print["   SKIP: cloud object not found (run wolfram_sync.wls first?)"];
     record["permission"] = "missing";
     Return[record]
   ];
 
+  (* 14.x SetPermissions returns a List (of permission rules) on success,
+     a Failure/$Failed on error. *)
   permResult = Quiet @ SetPermissions[co, PERMISSION];
-  If[Head[permResult] === CloudObject,
+  If[!FailureQ[permResult] && permResult =!= $Failed,
     record["permission"] = "Public-Execute";
     Print["   permissions: ", PERMISSION, " OK"],
     Print["   permissions: FAILED ", permResult];
     record["permission"] = "failed"
   ];
 
-  urlValue = Quiet @ Lookup[CloudObjectInformation[co], "URL", Null];
-  If[urlValue === Null, urlValue = First[co, Null]];
+  urlValue = Quiet @ CloudObjectInformation[co, "URL"];
+  If[!StringQ[urlValue], urlValue = First[co, Null]];
   If[StringQ[urlValue],
     record["cloud_url"] = urlValue;
     Print["   url: ", urlValue],
