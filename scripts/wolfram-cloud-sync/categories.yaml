@@ -1,0 +1,105 @@
+# Musical-instrument categorization
+# Source-of-truth for cloud-folder layout under Musical_Instruments/{category}/{instrument}/
+# Consumed by wolfram_inventory.py to produce category-aware cloud_name() outputs.
+# Edit freely — this is the canonical mapping.
+#
+# Hornbostel-Sachs background (informational, not enforced):
+#   strings     ≈ chordophones
+#   woodwinds   ≈ aerophones (flutes, reeds, free-reed, bagpipes)
+#   percussion  ≈ membranophones (drums with skin/head)
+#   idiophones  ≈ struck/plucked/shaken vibrating bodies (mallet, tongue, shakers)
+
+strings:
+  - ceramic-electric-violin
+  - electric-guitar-bodies
+  - kora
+  - lyre
+  - ngoni
+  - pipa
+  - sambuca
+
+woodwinds:
+  - andean-duct-flutes
+  - chalumeau
+  - drone-flutes
+  - duduk
+  - duntong
+  - flutes
+  - gemshorn
+  - great-highland-bagpipe
+  - hulusi
+  - irish-flute
+  - kaval-alghosazi-flutes
+  - kena
+  - moseno
+  - ocarina
+  - pistalka
+  - shakuhachi
+  - sheng
+  - siku-zampona
+  - tin-whistle
+  - transverse-flute
+  - vessel-flutes
+  - xiao
+
+percussion:
+  - ashiko-drum-workshop
+  - cajon
+  - conga
+  - frame-drum
+  - resonant-box
+  - udu
+  - wood-shell-tongue-drum
+
+idiophones:
+  - ceramic-hang
+  - ceramic-tongue-drum
+  - glockenspiel
+  - handpan
+  - marimba
+  - rainstick
+  - steel-pan
+  - steel-tongue-drum
+  - tongue-drum
+  - tubular-bells
+  - wooden-hang
+  - xylophone
+
+# Repos to exclude from upload entirely (tooling/skill-source, not instruments).
+# wolfram_inventory.py drops any file whose repo is listed here.
+skip:
+  - claude-skills
+  - wolfram-cloud-sync
+
+# File-path overrides — route specific files in multi-domain repos
+# (chiefly instrument-maker, which holds research notebooks for many families)
+# to the correct category, with a chosen cloud-folder name.
+#
+# Format: "<substring-of-rel-path>  ->  <category>/<cloud-folder-name>"
+# First match wins, so order more-specific patterns first.
+file_overrides:
+  # instrument-maker build-packets (sibling demos of the per-instrument repos)
+  - "docs/build-packets/gemshorn-slip-cast-family/  ->  woodwinds/gemshorn-family"
+  - "docs/build-packets/ocarina/  ->  woodwinds/ocarina-family"
+  - "docs/build-packets/slip-cast-transverse-flute-family/  ->  woodwinds/transverse-flute-family"
+  - "docs/build-packets/udu-drum-family/  ->  percussion/udu-family"
+  - "docs/build-packets/vessel-flute-lab/  ->  woodwinds/vessel-flute-lab"
+  # Cross-validation studies — categorize by instrument family
+  - "docs/wolfram-notebooks/cross-validation/djembe-  ->  percussion/djembe-research"
+  - "docs/wolfram-notebooks/cross-validation/flutes-  ->  woodwinds/flutes-research"
+  - "docs/wolfram-notebooks/cross-validation/tongue-drum-  ->  idiophones/tongue-drum-research"
+  # Topical research notebooks
+  - "docs/wolfram-notebooks/parametric-fujara-  ->  woodwinds/fujara-research"
+  - "docs/wolfram-notebooks/helmholtz-cavity-explorer  ->  woodwinds/vessel-flute-research"
+  - "docs/wolfram-notebooks/tongue-drum-  ->  idiophones/tongue-drum-research"
+  - "docs/wolfram-notebooks/tongue-length-  ->  idiophones/tongue-drum-research"
+  - "docs/wolfram-notebook-starters/f4-naf-vs-concert-flute  ->  woodwinds/flutes-research"
+
+# Edge cases worth your call:
+#   - resonant-box: experimental resonator — idiophone? own category? (currently 'unsorted')
+#   - lyre / electric-guitar-bodies / flutes: not yet categorized → currently 'unsorted'
+#   - instrument-maker: not an instrument itself, but holds research notebooks under
+#     docs/wolfram-notebooks/ that get uploaded to Musical_Instruments/unsorted/instrument-maker/
+#   - handpan: technically a tuned-steel idiophone; could argue for percussion
+#   - bagpipes: aerophone but with reeds + drones, lives with woodwinds for now
+#   - WSS-2019: not an instrument — kept under its own top-level WSS-2019/ folder
