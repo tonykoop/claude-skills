@@ -1,5 +1,27 @@
 # Changelog - tmux-sprint
 
+## v2.4.0 - 2026-06-09
+
+- Shipped the core driver implementation, resolving #193 (the SKILL.md
+  documented `preflight`/`dispatch`/`restart` plus a launch step, but the
+  scripts and assets were missing from the publish).
+- Added `scripts/launch-grid.sh` — builds the two-session persona grid from
+  `personas.json` and starts each runtime (`--with-manager`, `--no-start`,
+  `--kill`).
+- Added `scripts/preflight.sh` — structured pane probe with `--pane`,
+  `--panes`, and `--json`; classifies IDLE/WORKING/DEAD and codex
+  exited/update states with ctx and usage meters.
+- Added `scripts/dispatch.sh` — transactional, assignment-file-only fan-out:
+  preflight gate, `docs/plans/` path + preamble validation, runtime-aware
+  rate limiting, three-tier submission verify, and per-round state JSON.
+- Added `scripts/restart.sh` — codex-aware revival state machine.
+- Added `scripts/lib/common.sh` shared helpers, `assets/assignment-preamble.txt`,
+  and `assets/personas.default.json` (the persona seed).
+- Added `tests/test_preflight.sh` and `tests/test_dispatch.sh`, which run
+  without a live tmux via a fake `tmux` on `PATH`.
+- Fixed a stale `scripts/dispatch.py` reference in SKILL.md (the validator is
+  `dispatch.sh`) and pointed the launch step at the shipped `launch-grid.sh`.
+
 ## v2.3.1 - 2026-05-17
 
 - Added `references/provider-failover.md`, a manager-owned contract for

@@ -1,0 +1,58 @@
+{
+  "session": "sprint",
+  "window": "sprint",
+  "rate_limit_seconds": {
+    "claude": 2,
+    "codex": 10
+  },
+  "personas": [
+    {
+      "pane": 0,
+      "name": "alice",
+      "runtime": "claude",
+      "model": "claude-opus-4-6",
+      "launch": "claude",
+      "worktrees": ["core4-alice"]
+    },
+    {
+      "pane": 1,
+      "name": "bob",
+      "runtime": "claude",
+      "model": "claude-haiku-4-5",
+      "launch": "claude --model haiku",
+      "worktrees": ["backend-bob"]
+    },
+    {
+      "pane": 2,
+      "name": "cindy",
+      "runtime": "claude",
+      "model": "claude-sonnet-4-6",
+      "launch": "claude --model sonnet",
+      "worktrees": ["frontend-cindy"]
+    },
+    {
+      "pane": 3,
+      "name": "dan",
+      "runtime": "codex",
+      "model": "codex-gpt-5.4",
+      "launch": "codex",
+      "worktrees": ["dan-codex"]
+    },
+    {
+      "pane": 4,
+      "name": "elsa",
+      "runtime": "codex",
+      "model": "codex-gpt-5.4-mini",
+      "launch": "codex",
+      "worktrees": ["elsa-codex"]
+    },
+    {
+      "pane": 5,
+      "name": "frank",
+      "runtime": "codex",
+      "model": "codex-gpt-5.4",
+      "launch": "codex",
+      "worktrees": ["frank-codex"]
+    }
+  ]
+}
