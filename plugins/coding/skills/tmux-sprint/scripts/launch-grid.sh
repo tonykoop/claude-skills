@@ -58,7 +58,10 @@ if tmux has-session -t "$SESSION" 2>/dev/null; then
 fi
 
 # Pane indices in config order; count drives the split layout.
-mapfile -t PANES < <(ts_jq -r '.personas | sort_by(.pane) | .[].pane' "$(ts_personas_path)")
+# Stock macOS ships bash 3.2, which has no `mapfile`/`readarray`; read portably.
+PANES=()
+while IFS= read -r _pane; do PANES+=("$_pane"); done \
+  < <(ts_jq -r '.personas | sort_by(.pane) | .[].pane' "$(ts_personas_path)")
 n="${#PANES[@]}"
 [[ "$n" -gt 0 ]] || { echo "Error: no personas in $(ts_personas_path)" >&2; exit 1; }
 
