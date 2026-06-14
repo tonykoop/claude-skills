@@ -1,5 +1,11 @@
 # Changelog — yoga-sequencer
 
+## v1.2.2 — 2026-06-13
+
+- `references/playlist-builder-handoff.md`: added worked 45-minute and 30-minute vinyasa phase-map YAML examples with contiguous timing, preserved warm-up/build/peak/cooldown/savasana phases, and required `energy` plus `cue_density` fields.
+- SKILL.md: bumped version for the shorter-class playlist handoff examples.
+- Source: Round 2 Henry implementation for issue #27.
+
 ## v1.2.1 — 2026-06-13
 
 - `references/sequencing-principles.md`: mirrored the staple-pose safety boundary into mixed-level room defaults so reference-only loading still routes pigeon, lizard, deep twists, deep backbends, arm balances, inversions, and other constraint-sensitive shapes through `poses.yaml`.

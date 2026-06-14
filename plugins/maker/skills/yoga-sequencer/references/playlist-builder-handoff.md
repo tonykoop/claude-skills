@@ -77,6 +77,124 @@ playlist_handoff:
 - Keep `start_min` and `end_min` contiguous so the total plan covers the class cleanly.
 - If the sequence uses breath counts instead of exact minutes, convert them into approximate phase timing before handoff.
 
+## Example: vinyasa class, 45 minutes
+
+Use this shape when a user asks for a shorter-but-complete public vinyasa class. Compress the build and peak windows before compressing cooldown or savasana.
+
+```yaml
+class_plan:
+  style: vinyasa
+  length_min: 45
+  level: mixed-level
+  theme: steady legs and clear balance
+  peak_pose: standing figure four
+  overall_energy: arrive -> build heat -> focus -> settle
+playlist_handoff:
+  total_length_min: 45
+  phases:
+    - id: arrival
+      label: Arrival and breath
+      start_min: 0
+      end_min: 4
+      energy: low
+      cue_density: sparse
+      notes: land, set theme, steady breath
+    - id: warmup
+      label: Floor warm-up and mobility
+      start_min: 4
+      end_min: 12
+      energy: low-medium
+      cue_density: moderate
+      notes: spinal mobility, hip wake-up, low lunge prep
+    - id: build
+      label: Standing flow and balance prep
+      start_min: 12
+      end_min: 29
+      energy: medium-high
+      cue_density: rhythmic
+      notes: sun flow, chair, warrior II, side-to-side symmetry
+    - id: peak
+      label: Peak-pose work
+      start_min: 29
+      end_min: 35
+      energy: high
+      cue_density: focused
+      notes: standing figure four, wall or toe-down option
+    - id: cooldown
+      label: Counterpose and floor release
+      start_min: 35
+      end_min: 42
+      energy: low
+      cue_density: sparse
+      notes: reclined figure four, supine twist, hamstring release
+    - id: savasana
+      label: Savasana
+      start_min: 42
+      end_min: 45
+      energy: very-low
+      cue_density: minimal
+      notes: short quiet landing
+```
+
+## Example: vinyasa class, 30 minutes
+
+Use this shape for lunch-break, conference, or between-meetings classes. Keep one clear focal action and avoid adding a second peak.
+
+```yaml
+class_plan:
+  style: vinyasa
+  length_min: 30
+  level: mixed-level
+  theme: shoulder reset and simple flow
+  peak_pose: humble warrior prep
+  overall_energy: arrive -> mobilize -> flow -> downshift
+playlist_handoff:
+  total_length_min: 30
+  phases:
+    - id: arrival
+      label: Arrival and breath
+      start_min: 0
+      end_min: 3
+      energy: low
+      cue_density: sparse
+      notes: settle, shoulder awareness, breath pacing
+    - id: warmup
+      label: Shoulder and spine warm-up
+      start_min: 3
+      end_min: 8
+      energy: low-medium
+      cue_density: moderate
+      notes: cat-cow, thread the needle, low lunge reach
+    - id: build
+      label: Simple standing flow
+      start_min: 8
+      end_min: 20
+      energy: medium-high
+      cue_density: rhythmic
+      notes: crescent, warrior II, side angle, repeat both sides
+    - id: peak
+      label: Focal shoulder work
+      start_min: 20
+      end_min: 24
+      energy: medium
+      cue_density: focused
+      notes: humble warrior prep, hands to low back or strap option
+    - id: cooldown
+      label: Counterpose and release
+      start_min: 24
+      end_min: 28
+      energy: low
+      cue_density: sparse
+      notes: child's pose, seated twist, neck and shoulder release
+    - id: savasana
+      label: Savasana
+      start_min: 28
+      end_min: 30
+      energy: very-low
+      cue_density: minimal
+      notes: brief rest
+```
+
 ## Example: yin class, 60 minutes
 
 ```yaml

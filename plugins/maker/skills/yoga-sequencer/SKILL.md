@@ -1,6 +1,6 @@
 ---
 name: yoga-sequencer
-version: 1.2.1
+version: 1.2.2
 last-updated: 2026-06-13
 description: Design vinyasa-first yoga class sequences, peak-pose progressions, anatomical prep, counter-poses, heated-room safety adjustments, and full class plans with phase timing plus playlist-builder handoff data. Use when planning a yoga class, sequencing for hips, shoulders, twists, or backbends, choosing prep for a peak pose, adapting a hot-room class, or turning a class arc into music-ready phases.
 ---
