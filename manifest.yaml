@@ -9,7 +9,11 @@
 # external_plugins.
 
 schema_version: 1
+<<<<<<< HEAD
 last_updated: 2026-06-13
+=======
+last_updated: 2026-05-25
+>>>>>>> origin/main
 
 install_roots:
   # Repo-relative source roots (resolve when skills-meta is run from this repo
@@ -160,6 +164,17 @@ skills:
       re-snapshot into the plugin. The v4 label is release lineage, not the
       public skill name.
 
+  file-a-patent:
+    canonical_version: 0.1.0
+    runtime: shared
+    repo_path: plugins/maker/skills/file-a-patent
+    last_updated: 2026-05-25
+    status: active
+    notes: >-
+      Private, attorney-ready invention packet and provisional-patent
+      preparation skill. Does not provide legal advice, file with any office,
+      publish, change licenses, or conclude patentability.
+
   maker-engineering:
     canonical_version: 1.1.0
     runtime: shared
@@ -257,6 +272,14 @@ skills:
       Vinyasa-first class sequencing with playlist-builder handoff; heated-room
       safety checklist and hot-room cue-volume guidance.
 
+  houseplant:
+    canonical_version: 0.2.0
+    runtime: shared
+    repo_path: plugins/maker/skills/houseplant
+    last_updated: 2026-05-17
+    status: active
+    notes: 'Houseplant and bonsai digital twins plus care workflows, with first-class Blender MCP support. Recovered 2026-05-23 from stash@(0)^3 after a 2026-05-18 hygiene-bot stash. Now at plugins/maker/skills/houseplant. v0.2.0 adds capture-pipeline routing for four phone modes (multi-angle photos with ruler, photogrammetry mesh, orbit video, lazy-susan stabilized video), ruler-based scale calibration, bundled bpy patterns (scene_scaffold, scale_from_ruler, wire_coil, cut_marker, sim_collection), Ficus benjamina starter profile, and a smoke-test suite. Six deferred modules filed as issues 172-177.'
+
   playlist-builder:
     canonical_version: 0.1.0
     runtime: shared
@@ -266,8 +289,28 @@ skills:
     status: active
     notes: Catalog/auth-state preflight (issue 72) for honest sparse-catalog output.
 
+<<<<<<< HEAD
   idea-incubator:
     canonical_version: 1.4.4
+=======
+  sprint-supervisor:
+    canonical_version: 1.1.0
+    runtime: claude
+    repo_path: plugins/coding/skills/sprint-supervisor
+    last_updated: 2026-05-18
+    status: active
+    deps:
+      - sprint-manager  # cold-start handoff: supervisor bootstraps manager when no manager is running; do not reimplement manager topology here
+    notes: >-
+      Overnight sprint babysitter for multi-pane tmux grids. Pairs with
+      sprint-watchdog.sh (mechanical ~70% of approvals); this skill handles
+      judgment ~30% — commands, rate-limit prompts, escalation, morning
+      summary. Scales by named scope across twingrid/triplegrid/quadgrid via
+      /tmp lockfile.
+
+  run-swarm:
+    canonical_version: 1.2.1
+>>>>>>> origin/main
     runtime: shared
     plugin: maker
     repo_path: plugins/maker/skills/idea-incubator

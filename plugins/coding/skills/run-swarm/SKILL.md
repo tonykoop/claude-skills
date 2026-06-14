@@ -162,6 +162,28 @@ For each ready item, name the owner skill and implementation boundary, such as
 audit issue only`. For each Tony-decision item, phrase the decision as a direct
 question and name the safe default if no decision is made.
 
+<<<<<<< HEAD
+=======
+## Cache Contract
+
+Between audit runs, `run-swarm` writes a persistent issue-scout cache to
+`/tmp/tonykoop-run-swarm-issue-scout-results/`. Agents read from this cache
+instead of calling `gh issue list` for every sub-task.
+
+Before dispatching agents, the manager checks cache freshness using the rules
+in `references/freshness-contract.md`. Fresh = within 24 hours and same mode.
+Stale or absent = refresh all four cache files before the swarm starts.
+
+The cache files and their schemas are documented in
+`references/issue-scout-schema.md`.
+
+Key rules:
+- Never commit cache files to any repo. They live in `/tmp/` and are ephemeral.
+- Agents receive cache paths in their prompt preamble; they do not call
+  `gh issue list` directly unless the cache is marked stale.
+- `closed-issues.json` (7-day window) is used only for duplicate detection.
+
+>>>>>>> origin/main
 ## Guardrails
 
 - Do not file duplicate issues; search first.
