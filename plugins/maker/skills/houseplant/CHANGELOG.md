@@ -1,5 +1,15 @@
 # Changelog — houseplant
 
+## v0.3.0 — 2026-06-13 (Chrono-horticultural calendar engine)
+
+Lays the v2 houseplant foundation by adding the chrono-horticultural calendar engine. This shifts care routines from fixed timers to dynamic, observation-driven checks and auto-schedules wire-removal windows.
+
+### Added
+
+- `references/chrono-engine.md` — Core workflow for dynamic care windows and the V2 data-model schema extensions.
+- `scripts/wire_window.py` — Computes recommended wire-inspection cadence based on species growth rate and date applied.
+- Updated `SKILL.md` to route watering/fertilizing/wire-removal-schedule questions to the chrono-engine reference.
+
 ## v0.2.0 — 2026-05-17 (Blender MCP integration + bundled scripts)
 
 First skill-creator iteration on top of Codex's initial draft. Focus: pruning + wire-coil-training workflow with real Blender MCP integration. Tested against three eval prompts grounded in the maintainer's Ficus benjamina specimen (lazy-susan capture, structural prune planning, sim-before-cutting).
