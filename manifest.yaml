@@ -150,7 +150,7 @@ skills:
     plugin: maker
     repo_path: plugins/maker/skills/instrument-maker
     canonical_source: instruments/_meta/instrument-maker
-    plugin_snapshot_version: 4.4.6
+    plugin_snapshot_version: 4.5.0
     last_updated: 2026-05-17
     status: active
     notes: >-
