@@ -1,0 +1,211 @@
+# Instrument Maker — Skill Manifest (v4.5.0)
+# Tier 4 #15 from the v4 brainstorm: structured discoverability so an agent
+# can read this manifest first, decide what to load, and skip the prose.
+# SKILL.md is still the human-readable orchestrator; this is its index.
+
+name: instrument-maker
+version: 4.5.0
+display_name: Instrument Maker
+audience:
+  - Tony (primary)
+  - Other makers / students / recruiters following along
+
+# Triggers that should reliably invoke this skill. Keep aligned with the
+# SKILL.md frontmatter description.
+triggers:
+  primary:
+    - "design a new musical instrument"
+    - "create a build packet for [instrument]"
+    - "make me a capstone deck for [instrument]"
+    - "produce a printable shop packet for [instrument]"
+    - "calculate tongue/bar/string/bore dimensions for [target]"
+    - "extend Flutes-AI.xlsx with a [instrument] sheet"
+    - "extend Musical Instruments V2 with a new [family] sheet"
+    - "what's the bore length for an A4 NAF"
+    - "size the marimba bar in Padauk"
+    - "tune this tongue drum to D minor pentatonic"
+  family_only:
+    - "design a vessel flute family"
+    - "size a stave drum"
+    - "tune a marimba bar"
+    - "scale a tongue drum"
+  sub_task:
+    - "draw the title block"
+    - "size the bore"
+    - "what miter angle for a 16-segment ashiko"
+    - "what bits do I need for [operation]"
+    - "publish a build-log page"
+    - "record a measurement"
+    - "audit this design"
+    - "run guided design intake"
+    - "generate a CNC operation plan"
+    - "generate a Wolfram packet"
+    - "generate DXF fabrication drawings"
+    - "validate visual outputs"
+
+# Specialist sub-agents — each is a focused reference loaded on dispatch.
+specialists:
+  - id: acoustician
+    path: agents/specialists/acoustician.md
+    when: "Acoustic physics, scale tables, end corrections, frequency formulas"
+  - id: manufacturing-planner
+    path: agents/specialists/manufacturing-planner.md
+    when: "CAD/CNC/laser/lathe plans, sourcing, cut lists, drawings"
+  - id: documentarian
+    path: agents/specialists/documentarian.md
+    when: "Capstone deck, print packet, visual BOM, README, build-log site"
+  - id: verifier
+    path: agents/specialists/verifier.md
+    when: "Quality-gate enforcement, packet completeness, iterate-fix loop"
+  - id: red-team
+    path: agents/specialists/red-team.md
+    when: "Failure modes, structural minimums, ergonomic checks, risks.md"
+
+# References — load only the ones that match the current task.
+references:
+  - path: references/guided-design-intake.md
+    purpose: "Guided intake for fuzzy prompts; emits design-intake.json and design-input-row.csv"
+    load_when: "User has an idea but no Master Catalog row, design sheet, or packet target"
+  - path: references/acoustic-models.md
+    purpose: "Governing models, empirical corrections, scale offset tables"
+    load_when: "Sizing, tuning, predicting frequency"
+  - path: references/new-instruments-v4.md
+    purpose: "12+ instruments not covered in v3 SKILL but present in workbook"
+    load_when: "Handpan, Steel Pan, Tubular Bells, Cajón, Glockenspiel, Rainstick, Steel Tongue Drum, Wood Shell Tongue Drum, Ceramic Tongue Drum, Ceramic Electric Violin, Great Highland Bagpipe, Duntong"
+  - path: references/workbook-integration.md
+    purpose: "Schemas of Musical Instruments V2 (54 sheets) and Workshop Master v3 (16 sheets)"
+    load_when: "Reading or extending either workbook"
+  - path: references/catalog-database.md
+    purpose: "SQLite schema and query patterns for the promoted catalog"
+    load_when: "Cross-instrument queries, db build, db read"
+  - path: references/family-aware-design.md
+    purpose: "Family scaling laws, family-spec.csv emission"
+    load_when: "Designing or scaling a family of instruments"
+  - path: references/empirical-learning-loop.md
+    purpose: "record_measurement.py flow, per-family corrections database"
+    load_when: "Ingesting measured data, updating predictions"
+  - path: references/doe-integration.md
+    purpose: "DoE Studies sheet ↔ github repo protocol/data wiring"
+    load_when: "DoE protocols, study results, statistical analysis"
+  - path: references/build-log-site.md
+    purpose: "Static-site spec, page structure, generate_site.py flow"
+    load_when: "Publishing a build log, recruiter-facing site"
+  - path: references/repo-relationships.yaml
+    purpose: "Sister-repo registry: instrument → family → pipeline → repo"
+    load_when: "Looking up the done-bar reference repo for an instrument"
+  - path: references/drawing-and-visualization.md
+    purpose: "DXF-first visual contract, drawing standards, BOM with images, ergonomic renderings"
+    load_when: "Drawings, DXF, visual BOM, image-gen-2 prompts, generate_drawings.py"
+  - path: references/manufacturing-and-cnc.md
+    purpose: "CNC, laser, lathe, segmented construction, steam bending, v4.2 operation-plan contract"
+    load_when: "Manufacturing planning, tool selection, fixtures, CNC setup sheets"
+  - path: references/queued-instruments.md
+    purpose: "Roadmap instruments: Kora, Ngoni, Stave Lute/Oud"
+    load_when: "Designing a queued instrument from roadmap"
+  - path: references/presentation-and-print-packets.md
+    purpose: "Capstone deck and print packet structure"
+    load_when: "Generating deck or print packet"
+  - path: references/sourcing-and-production.md
+    purpose: "Procurement, RFQs, cut lists, validation, assembly manuals"
+    load_when: "Sourcing, BOMs, build-method docs"
+  - path: references/wolfram-workflow.md
+    purpose: "Wolfram notebook patterns and v4.2 generated model package"
+    load_when: "Generating .wl/.nb notebooks or validation/model explorers"
+
+# Scripts — each declares input and output for a manifest-aware orchestrator.
+scripts:
+  - path: scripts/design_input.py
+    purpose: "Guided design intake; infer workbook sheet and emit a canonical one-row handoff"
+    inputs: ["instrument metadata", "optional design workbook", "optional --infer-sheet"]
+    outputs: ["design-intake.json", "design-input-row.csv"]
+    dry_run: true
+    new_in_v4_2: true
+  - path: scripts/inspect_instrument_workbook.py
+    purpose: "Audit any .xlsx workbook for sheet structure, formulas, blue cells"
+    inputs: ["workbook_path"]
+    outputs: ["stdout audit"]
+    dry_run: false
+  - path: scripts/inspect_pdf_geometry.py
+    purpose: "Extract page geometry from a PDF blueprint"
+    inputs: ["pdf_path"]
+    outputs: ["stdout geometry"]
+    dry_run: false
+  - path: scripts/build_catalog_db.py
+    purpose: "Promote Master Catalog xlsx to SQLite"
+    inputs: ["workbook_path", "output_path"]
+    outputs: ["catalog.sqlite"]
+    dry_run: true
+    new_in_v4: true
+  - path: scripts/generate_build_packet.py
+    purpose: "Create a build-packet folder from a Master Catalog row"
+    inputs: ["master-workbook", "instrument-id", "design-workbook", "design-sheet", "output-root"]
+    outputs: ["build-packets/<slug>/{design.md,bom.csv,sourcing.csv,cut-list.csv,validation.csv,assembly-manual.md,supplier-rfq.md,visual-bom-brief.md,drawing-brief.md,wolfram-starter.wl,risks.md,photo-shotlist.md,README.md}"]
+    dry_run: true
+  - path: scripts/generate_drawings.py
+    purpose: "Emit DXF-first fabrication geometry plus derived SVG previews and optional image-gen-2 prompt scaffolds"
+    inputs: ["packet_dir", "optional --visual-output-targets"]
+    outputs: ["drawings/*.dxf", "drawings/*.svg", "visual-output-contract.json", "images/image-gen-2-prompts.md"]
+    dry_run: true
+    new_in_v4: true
+    updated_in_issue_148: true
+  - path: scripts/generate_cnc_plan.py
+    purpose: "Emit pre-CAM operation graph, setup sheet, tooling, datums, workholding, and release checks"
+    inputs: ["packet_dir", "optional --family"]
+    outputs: ["cnc/cnc-plan.json", "cnc/operations.csv", "cnc/setup-sheet.md"]
+    dry_run: true
+    new_in_v4_2: true
+  - path: scripts/generate_capstone_docs.py
+    purpose: "Generate capstone deck (.pptx) and print packet (.pdf)"
+    inputs: ["packet_dir", "title", "optional --drawings-dir", "optional --images-dir"]
+    outputs: ["capstone-deck.pptx", "print-packet.pdf", "print-packet.html", "print-packet.md", "capstone-manifest.json"]
+    dry_run: true
+  - path: scripts/generate_site.py
+    purpose: "Generate a static-site build log from a packet"
+    inputs: ["packet_dir", "output"]
+    outputs: ["site/index.html", "site/assets/*"]
+    dry_run: true
+    new_in_v4: true
+  - path: scripts/generate_openscad_starter.py
+    purpose: "Emit a parametric OpenSCAD master starter from family-spec.csv"
+    inputs: ["packet_dir", "optional --governing-model", "optional --force-model"]
+    outputs: ["cad/<slug>_master.scad"]
+    dry_run: true
+  - path: scripts/generate_wolfram_packet.py
+    purpose: "Emit Wolfram Language source with formulas, Manipulate controls, audio preview, validation plot, and notebook entry point"
+    inputs: ["packet_dir", "optional --output", "optional --execute"]
+    outputs: ["wolfram/instrument-model.wl"]
+    dry_run: true
+    new_in_v4_2: true
+  - path: scripts/validate_packet.py
+    purpose: "Iterating verifier — validate, fix what it can, escalate the rest"
+    inputs: ["packet_dir", "--fix", "--strict"]
+    outputs: ["stdout findings", "fixed files in place"]
+    dry_run: true
+  - path: scripts/validate_visual_outputs.py
+    purpose: "Validate DXF-first visual-output contract, units, layers, derived previews, and non-dimensional image prompts"
+    inputs: ["packet_dir", "--strict"]
+    outputs: ["stdout findings"]
+    dry_run: true
+    new_in_issue_148: true
+  - path: scripts/record_measurement.py
+    purpose: "Ingest a measurement, update validation.csv, propagate to family"
+    inputs: ["packet", "note-id", "measured-hz", "tuner", "environment"]
+    outputs: ["validation.csv updated", "per-family corrections appended"]
+    dry_run: true
+    new_in_v4: true
+  - path: scripts/migrate_packet.py
+    purpose: "Upgrade a v3 packet to v4 format (idempotent)"
+    inputs: ["packet_dir"]
+    outputs: ["risks.md", "drawings/*.dxf", "drawings/*.svg", "site/index.html"]
+    dry_run: true
+    new_in_v4: true
+
+# Reference repos — the *done bar* for each instrument family.
+done_bar_repos:
+  vessel_flute_singleton: { repo: "tonykoop/ocarina", family: "vessel-flute" }
+  vessel_flute_family: { repo: "tonykoop/gemshorn", family: "vessel-flute" }
+  vessel_drum: { repo: "tonykoop/udu", family: "drum" }
+  segmented_drum: { repo: "tonykoop/djembe", family: "drum" }
+  duct_flute: { repo: "tonykoop/flutes", family: "duct-flute" }
+  free_free_beam_idiophone: { repo: "tonykoop/tongue-drum", family: "idiophone" }
+  transverse_flute_family: { repo: "tonykoop/transverse-flute", family: "transverse-flute" }

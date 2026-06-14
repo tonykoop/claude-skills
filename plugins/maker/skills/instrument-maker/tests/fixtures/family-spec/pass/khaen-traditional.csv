@@ -1,0 +1,5 @@
+member_id,target_hz,target_note,acoustic_law,end_condition,dimension_provenance,predicted_L_geom_mm,wood_species,notes
+KHN-007-G3,196.00,G3,side_branch_reed,both_ends_open,physics_derived,866.9,Hard Maple,Traditional Lao khaen architecture; reed in pipe side wall at central tao
+KHN-007-A3,220.00,A3,side_branch_reed,both_ends_open,physics_derived,771.4,Hard Maple,
+KHN-007-A4,440.00,A4,side_branch_reed,both_ends_open,physics_derived,381.6,Hard Maple,A440 anchor pipe
+KHN-007-A5,880.00,A5,side_branch_reed,both_ends_open,physics_derived,186.7,Hard Maple,Highest pipe

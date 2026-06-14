@@ -1,0 +1,6 @@
+variable_id,subsystem,variable,baseline,levels,unit,control_or_independent,response_metrics,safety_bound,measurement_method,notes
+V001,string,string tension,TBD,"low; nominal; high",N,independent,"fundamental_hz; decay_time_s; subjective_pitch_stability",do_not_exceed_rated_string_or_anchor_load,"tuner plus scale/tension estimate",change only one tension variable per first sweep
+V002,spring,spring extension,TBD,"short; nominal; long",mm,independent,"coupled_peak_hz; decay_time_s; rattle_presence",stay_below_50_percent_of_rated_extension,"caliper or ruler before excitation",add secondary restraint for every run
+V003,membrane,membrane tension,TBD,"loose; nominal; tight",qualitative,independent,"membrane_mode_hz; attack; bloom",stop_if_membrane_or_frame_slips,"tap test plus audio capture",record tuning method and number of turns
+V004,bridge,bridge mass,TBD,"light; nominal; heavy",g,independent,"energy_transfer; sustain; buzz",secure_bridge_before_excitation,"scale plus photo",do not combine with tension sweep until baseline is stable
+V005,capture,microphone distance,30,"30; 60; 100",cm,control,"level_db; spectral_balance",keep_stand_out_of_release_path,"tape measure from sound source",hold fixed during variable sweeps unless testing capture only

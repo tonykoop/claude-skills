@@ -1,0 +1,4 @@
+artifact_id,path,artifact_kind,role,authority,derived_from,dimension_claim,fabrication_required,notes
+DT-001,design-table.csv,design_table,design_table,fabrication,,derived_from_authority,true,Design table or workbook controls dimensions after review
+IMG-001,images/concept-hulusi.png,image_gen_2_output,concept,concept_only,,none,false,Concept image only; not fabrication authority
+SVG-001,drawings/overview.svg,svg_preview,derived_preview,derived_preview,DT-001,derived_from_authority,false,Preview only when generated from reviewed design table

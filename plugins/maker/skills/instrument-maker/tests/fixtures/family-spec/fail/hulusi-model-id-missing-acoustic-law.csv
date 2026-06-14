@@ -1,0 +1,3 @@
+model_id,key,key_midi,tonic_hz,mel_total_L_in,dr1_total_L_in,dr2_total_L_in,reed_L_mel_in,reed_L_dr1_in,reed_L_dr2_in,mel_bore_ID_in,gourd_belly_OD_in,gourd_height_in,reed_thickness_in,best_for,build_priority,prototype_stage
+HUL-F,F,65,349.23,10.05,6.82,5.20,0.798,0.652,0.564,0.500,4.50,6.50,0.008,STANDARD,1,HUL-P2 active
+HUL-G,G,67,392.00,8.99,6.12,4.67,0.753,0.616,0.532,0.500,4.50,6.50,0.008,bright/festive,5,deferred
