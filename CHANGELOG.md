@@ -6,6 +6,11 @@
   (`makerspace` v1.1.3, `maker-engineering` v1.1.0, `disk-cleanup` v1.0.0,
   `gh-fix-ci` v1.0.0, `habitat-maker` v0.4.0). Clears the `missing-changelog`
   drift flag for all five. Refs #6.
+- Added docs-only Round 2 hygiene artifacts for issue #192 stale sprint branch
+  inventory, issue #7 tmux-v3 ecosystem alignment, and issue #188 decision
+  queue triage.
+- Kept the active `tmux-sprint` skill at v2.4.1; this change does not rename,
+  deprecate, package, or bump any shipped skill version.
 
 ## 2026-05-25
 
