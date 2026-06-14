@@ -6,7 +6,7 @@
     "email": "tonykoop@gmail.com",
     "url": "https://github.com/tonykoop"
   },
-  "description": "Tony Koop's skill marketplace. Two plugins: 'maker' for physical-world design and personal practice; 'coding' for software/engineering operations. Auto-updates from the claude-skills git repo.",
+  "description": "Tony Koop's skill marketplace. Three plugins: 'maker' for physical-world design and personal practice; 'coding' for software/engineering operations; 'studiopipeline' for agentic maker-video production. Auto-updates from the claude-skills git repo.",
   "plugins": [
     {
       "name": "maker",
@@ -21,6 +21,13 @@
       "description": "Engineering operations and developer tooling: tmux-sprint, sprint-supervisor, sprint-update, merge-review, run-swarm, ci-triage, scaffold-hygiene, disk-cleanup, skills-meta.",
       "category": "engineering",
       "tags": ["sprint", "ci", "git", "wrfcoin", "internal-ops", "audit"]
+    },
+    {
+      "name": "studiopipeline",
+      "source": { "source": "github", "repo": "tonykoop/StudioPipeline" },
+      "description": "Agentic episodic-video production for makers: interactive brainstorming, asset mapping, multi-scene scripts, and render-ready payloads for HeyGen / Veo / Runway. Ships its own MCP server.",
+      "category": "making",
+      "tags": ["video", "content-pipeline", "makers", "automation", "heygen", "veo", "runway"]
     }
   ]
 }

@@ -1,11 +1,24 @@
 ---
 # Canonical version manifest for agentic skills.
 # Update this file whenever a skill version is bumped, packaged, or deprecated.
+#
+# Skills now ship inside the `maker` and `coding` plugins under
+# plugins/<plugin>/skills/. The `plugin:` field records which plugin owns each
+# skill; `repo_path` points at the canonical source that ships.
+# StudioPipeline is a separate plugin/repo (its own MCP server) — see
+# external_plugins.
 
 schema_version: 1
-last_updated: 2026-05-25
+last_updated: 2026-06-13
 
 install_roots:
+  # Repo-relative source roots (resolve when skills-meta is run from this repo
+  # root). Lets the auditor see skills now housed inside the plugins.
+  repo:
+    - plugins/coding/skills
+    - plugins/maker/skills
+    - skills
+    - codex/skills
   windows:
     - /mnt/c/Users/Tony/.claude
     - /mnt/c/Users/Tony/.codex
@@ -22,214 +35,261 @@ install_roots:
     - /home/tony/wrfcoin/core4/.gemini
 
 skills:
+  # ----- coding plugin (plugins/coding/skills/) -----
   skills-meta:
     canonical_version: 1.0.0
     runtime: portable
-    repo_path: skills/skills-meta
+    plugin: coding
+    repo_path: plugins/coding/skills/skills-meta
     last_updated: 2026-05-08
     status: active
     notes: >-
       Portable drift-audit skill for Claude, Codex, Gemini, and desktop
       installs.
 
-  tmux-v2:
-    canonical_version: 2.0.0
-    runtime: codex
-    repo_path: codex/skills/tmux-v2
-    last_updated: 2026-05-08
-    status: active
-    notes: >-
-      Current Codex tmux sprint driver. v3 evolution is tracked by issues.
-
   tmux-sprint:
     canonical_version: 2.3.1
     runtime: claude
-    repo_path: claude/skills/tmux-sprint
+    plugin: coding
+    repo_path: plugins/coding/skills/tmux-sprint
     last_updated: 2026-05-17
     status: active
     notes: >-
-      Claude-side tmux sprint counterpart with TwinGrid blind A/B, Partner
-      Peek templates, label-aware sprint batching/model-picker routing, and a
-      provider-failover contract for budget-exhausted pane recovery.
+      Claude tmux sprint driver: TwinGrid blind A/B, Partner Peek, label-aware
+      sprint batching / model-picker routing, and provider-failover pane
+      recovery. Supersedes the retired Codex tmux-v2.
 
   merge-review:
-    canonical_version: 1.0.0
+    canonical_version: 0.1.0
     runtime: claude
-    repo_path: claude/skills/merge-review
+    plugin: coding
+    repo_path: plugins/coding/skills/merge-review
     last_updated: 2026-05-08
     status: active
+    notes: Supersedes the retired Codex merge-manager.
 
   sprint-update:
     canonical_version: 1.1.1
     runtime: claude
-    repo_path: claude/skills/sprint-update
+    plugin: coding
+    repo_path: plugins/coding/skills/sprint-update
     last_updated: 2026-05-11
     status: active
     notes: >-
-      Adds personal GitHub sprint Queue columns for label, model, and batch
-      metadata while preserving themed dispatch grouping, plus stale issue
-      refresh, read-only refresh reporting, PR pressure clustering, and archive
-      follow-up checks before regenerating sprint dispatch prompts.
+      Personal GitHub sprint Queue columns (label/model/batch metadata), stale
+      issue refresh, read-only refresh reporting, and PR-pressure clustering.
+
+  sprint-supervisor:
+    canonical_version: 1.1.0
+    runtime: claude
+    plugin: coding
+    repo_path: plugins/coding/skills/sprint-supervisor
+    last_updated: 2026-05-18
+    status: active
+    notes: >-
+      Babysits a running multi-pane tmux sprint (auto-approve routine prompts,
+      escalate destructive ones, morning summary). Part of the replacement for
+      the retired Codex wrfcoin-sprint-dispatch.
+
+  ci-triage:
+    canonical_version: 0.1.0
+    runtime: claude
+    plugin: coding
+    repo_path: plugins/coding/skills/ci-triage
+    last_updated: 2026-05-20
+    status: active
+    notes: >-
+      Read-only CI + Dependabot health snapshot across the WRFCoin repos. Does
+      NOT remediate failing checks — see gh-fix-ci for that.
+
+  scaffold-hygiene:
+    canonical_version: 0.1.0
+    runtime: claude
+    plugin: coding
+    repo_path: plugins/coding/skills/scaffold-hygiene
+    last_updated: 2026-05-20
+    status: active
+    notes: Cross-repo scaffolding/drift sweep that files issues for real drift.
+
+  run-swarm:
+    canonical_version: 1.2.1
+    runtime: shared
+    plugin: coding
+    repo_path: plugins/coding/skills/run-swarm
+    last_updated: 2026-05-11
+    status: active
+    notes: >-
+      Duplicate-aware issue filing, gated label creation, manager/Tony-decision
+      queues, and machine-readable JSON/CSV queue artifacts.
 
   disk-cleanup:
     canonical_version: 1.0.0
     runtime: claude
-    repo_path: claude/skills/disk-cleanup
+    plugin: coding
+    repo_path: plugins/coding/skills/disk-cleanup
     last_updated: 2026-05-08
     status: active
 
-  codex-merge-manager:
-    canonical_version: 1.0.0
-    runtime: codex
-    repo_path: codex/skills/merge-manager
-    last_updated: 2026-05-08
-    status: active
-
-  codex-gh-fix-ci:
+  gh-fix-ci:
     canonical_version: 1.0.0
     runtime: codex
     repo_path: codex/skills/gh-fix-ci
     last_updated: 2026-05-08
     status: active
+    notes: >-
+      Codex skill: debug and FIX a PR's failing GitHub Actions checks. NOT
+      covered by ci-triage (which is read-only). Not yet homed in the coding
+      plugin — candidate to migrate into plugins/coding once a Claude-side
+      equivalent exists. (Retained: tmux-v2, merge-manager, and
+      wrfcoin-sprint-dispatch were retired in their place; gh-fix-ci was not.)
 
-  wrfcoin-sprint-dispatch:
-    canonical_version: 1.0.0
-    runtime: codex
-    repo_path: codex/skills/wrfcoin-sprint-dispatch
-    last_updated: 2026-05-08
-    status: active
-
-  idea-incubator:
-    canonical_version: 1.4.4
+  # ----- maker plugin (plugins/maker/skills/) -----
+  instrument-maker:
+    canonical_version: 4.5.0
     runtime: shared
-    repo_path: skills/idea-incubator
-    last_updated: 2026-05-18
-    status: active
-    notes: Promote-batch mode; readiness matrix, evidence-ledger, LFS prompts for recovery/import; offline-first promote-batch readiness helper (promote_batch_readiness.py) with existing-anchor checks and GitHub query fallbacks; private media/family archive promotion template; yearbook/design-book rollout workflow with pilot edition, consent/proof gates, image-gen derivative boundaries, EXIF/GPS handling, provenance-ledger defaults, photo-album/private-media pilot source-photo rules, compact private-media owner decision stub, and instrument design-book/yearbook/portfolio chapter promotion pattern.
-
-  file-a-patent:
-    canonical_version: 0.1.0
-    runtime: shared
-    repo_path: plugins/maker/skills/file-a-patent
-    last_updated: 2026-05-25
+    plugin: maker
+    repo_path: plugins/maker/skills/instrument-maker
+    canonical_source: instruments/_meta/instrument-maker
+    plugin_snapshot_version: 4.4.6
+    last_updated: 2026-05-17
     status: active
     notes: >-
-      Private, attorney-ready invention packet and provisional-patent
-      preparation skill. Does not provide legal advice, file with any office,
-      publish, change licenses, or conclude patentability.
+      Packaged skill snapshot shipped in the maker plugin. Canonical
+      development source is the standalone tonykoop/instrument-maker repo
+      (cloned at instruments/_meta/instrument-maker); make changes there, then
+      re-snapshot into the plugin. The v4 label is release lineage, not the
+      public skill name.
 
   maker-engineering:
     canonical_version: 1.1.0
     runtime: shared
-    repo_path: skills/maker-engineering
+    plugin: maker
+    repo_path: plugins/maker/skills/maker-engineering
     last_updated: 2026-05-10
     status: active
-    notes: Umbrella routing skill for physical making projects and specialist handoffs. v1.1 adds the human-carrying / floatable-object safety gate.
-
-  instrument-maker:
-    canonical_version: 4.5.0
-    runtime: shared
-    repo_path: skills/instrument-maker
-    last_updated: 2026-05-17
-    status: active
-    notes: |
-      Official public invocation and repo path are now instrument-maker. The
-      v4 label remains release lineage and implementation history, not the
-      public skill name.
-
-      Skill entry hosting the v4.4 acoustic-law / reed
-      boundary-condition enhancement (issue #73), v4.4.1 free-reed/khaen
-      exploration template (issue #109), and v4.4.2 sheng/hulusi/chalumeau
-      validation guardrail, plus the v4.4.3 prototype validation-loop upgrade
-      template, v4.4.4 repo-first bare-bones packet readiness template,
-      v4.4.5 DXF/image-gen-2 visual authority guard, v4.4.6 early
-      visual-register trigger for concept/pre-CAD visuals, the v4.4.7
-      instrument design-book chapter contract (issue #104), and the v4.5
-      experimental acoustic rig templates (issue #107). This entry contains the
-      additive references, validators, tests, fixtures, and examples that
-      v4.4/v4.4.1/v4.4.2/v4.4.3/v4.4.4/v4.4.5/v4.4.6/v4.4.7/v4.5 introduce.
-      See skills/instrument-maker/SKILL.md for the skill contract.
-
-  yoga-sequencer:
-    canonical_version: 1.2.0
-    runtime: shared
-    repo_path: skills/yoga-sequencer
-    last_updated: 2026-05-10
-    status: active
-    notes: Vinyasa-first shared class-sequencing skill with playlist-builder handoff output. v1.2.0 adds heated-room safety checklist and hot-room cue-volume guidance.
+    notes: >-
+      Umbrella routing skill for physical-making projects and specialist
+      handoffs; includes the human-carrying / floatable-object safety gate.
 
   makerspace:
-    canonical_version: 1.1.2
+    canonical_version: 1.1.3
     runtime: shared
-    repo_path: skills/makerspace
+    plugin: maker
+    repo_path: plugins/maker/skills/makerspace
     last_updated: 2026-05-11
     status: active
-    notes: Portable snapshot from the standalone makerspace repo. v1.1.1 adds a generator-backed DXF/CNC fabrication handoff checklist on top of the structured-shop-artifacts validator; v1.1.2 adds repo-to-shop-packet routing for woodworking/mechanism fabrication handoffs.
+    notes: >-
+      Shop-floor fabrication/jig/fixture planning with a generator-backed
+      DXF/CNC handoff checklist and repo-to-shop-packet routing.
 
   sheet-metal:
     canonical_version: 1.0.0
     runtime: shared
-    repo_path: skills/sheet-metal
+    plugin: maker
+    repo_path: plugins/maker/skills/sheet-metal
     last_updated: 2026-05-18
     status: active
     notes: >-
-      Sheet metal CAD, SolidWorks Sheet Metal, flat-pattern, DXF/plasma,
-      brake, slip-roll, welding, Maker Nexus-style fabrication, horns/lofted
-      bends, enclosures, toolboxes, kinetic objects, and mixed-material shop
-      packet skill.
+      Sheet-metal CAD, SolidWorks Sheet Metal, flat-pattern, DXF/plasma, brake,
+      slip-roll, welding, and mixed-material shop-packet skill.
+
+  sheet-music:
+    canonical_version: 0.1.0
+    runtime: shared
+    plugin: maker
+    repo_path: plugins/maker/skills/sheet-music
+    last_updated: 2026-05-20
+    status: active
+    notes: >-
+      Sheet music, fingering charts, MIDI, audio renderings, and printable
+      songsheets for instrument-maker builds. Newly registered in the manifest.
 
   laser-art:
     canonical_version: 0.1.0
     runtime: shared
-    repo_path: skills/laser-art
+    plugin: maker
+    repo_path: plugins/maker/skills/laser-art
     last_updated: 2026-05-11
     status: active
     notes: >-
-      Laser-cut, laser-engraved, and laser-scored decorative art routing skill
-      with explicit generated-image versus fabrication-authority boundaries.
-      v0.1.0 has no shell command shim; use skills-meta for version reporting
-      until a real `laser-art --version` command exists.
+      Laser-cut/engraved/scored decorative-art routing with explicit
+      generated-image vs fabrication-authority boundaries.
 
   reverse-engineer:
     canonical_version: 1.1.0
     runtime: shared
-    repo_path: skills/reverse-engineer
+    plugin: maker
+    repo_path: plugins/maker/skills/reverse-engineer
     last_updated: 2026-05-10
     status: active
-    notes: Portable snapshot from reverse-engineering/skills/v1/reverse-engineer for cross-platform review. v1.1.0 adds image-access preflight and degraded-mode banner (#70).
+    notes: Adds image-access preflight and degraded-mode banner (#70).
 
   habitat-maker:
-    canonical_version: 0.4.1
+    canonical_version: 0.4.0
     runtime: shared
-    repo_path: skills/habitat-maker
+    plugin: maker
+    repo_path: plugins/maker/skills/habitat-maker
     last_updated: 2026-05-11
     status: active
-    notes: Bat/bee/observation-hive welfare gates and camera/electronics caveats, plus bird-bath/balcony support, first canonical chickadee laser packet, and a concept-only observation-hive preflight template.
+    notes: >-
+      Bat/bee/observation-hive welfare gates, camera/electronics caveats,
+      bird-bath/balcony support, and a canonical chickadee laser packet.
 
   houseplant:
     canonical_version: 0.2.0
     runtime: shared
+    plugin: maker
     repo_path: plugins/maker/skills/houseplant
     last_updated: 2026-05-17
     status: active
-    notes: 'Houseplant and bonsai digital twins plus care workflows, with first-class Blender MCP support. Recovered 2026-05-23 from stash@(0)^3 after a 2026-05-18 hygiene-bot stash. Now at plugins/maker/skills/houseplant. v0.2.0 adds capture-pipeline routing for four phone modes (multi-angle photos with ruler, photogrammetry mesh, orbit video, lazy-susan stabilized video), ruler-based scale calibration, bundled bpy patterns (scene_scaffold, scale_from_ruler, wire_coil, cut_marker, sim_collection), Ficus benjamina starter profile, and a smoke-test suite. Six deferred modules filed as issues 172-177.'
+    notes: >-
+      Houseplant/bonsai digital twins and care workflows with first-class
+      Blender MCP support. Six deferred modules tracked as issues 172-177.
+
+  yoga-sequencer:
+    canonical_version: 1.2.0
+    runtime: shared
+    plugin: maker
+    repo_path: plugins/maker/skills/yoga-sequencer
+    last_updated: 2026-05-10
+    status: active
+    notes: >-
+      Vinyasa-first class sequencing with playlist-builder handoff; heated-room
+      safety checklist and hot-room cue-volume guidance.
 
   playlist-builder:
     canonical_version: 0.1.0
     runtime: shared
-    repo_path: skills/playlist-builder
+    plugin: maker
+    repo_path: plugins/maker/skills/playlist-builder
     last_updated: 2026-05-10
     status: active
-    notes: "Initial snapshot with catalog/auth-state preflight (issue 72) for honest sparse-catalog output."
+    notes: Catalog/auth-state preflight (issue 72) for honest sparse-catalog output.
 
-  run-swarm:
-    canonical_version: 1.2.1
+  idea-incubator:
+    canonical_version: 1.4.4
     runtime: shared
-    repo_path: skills/run-swarm
-    last_updated: 2026-05-11
+    plugin: maker
+    repo_path: plugins/maker/skills/idea-incubator
+    last_updated: 2026-05-18
     status: active
-    notes: Adds duplicate-aware issue filing, related-issue handling, gated label creation, manager summary queues, Tony-decision queues, skill-owner routing, and machine-readable JSON/CSV queue artifacts while preserving personal GitHub and WRFCoin swarm behavior.
+    notes: >-
+      Promote-batch readiness, evidence-ledger, private media/family archive
+      promotion, and instrument design-book/yearbook chapter promotion.
 
+  file-a-patent:
+    canonical_version: 0.1.0
+    runtime: shared
+    plugin: maker
+    repo_path: plugins/maker/skills/file-a-patent
+    last_updated: 2026-05-25
+    status: active
+    notes: >-
+      Private, attorney-ready invention packet and provisional-patent prep.
+      Does not provide legal advice, file with any office, or conclude
+      patentability.
+
+  # ----- standalone (not yet plugin-homed) -----
   source-citations:
     canonical_version: 0.1.0
     runtime: shared
@@ -237,14 +297,42 @@ skills:
     last_updated: 2026-05-22
     status: active
     notes: >-
-      Bibliography + techniques catalog for instrument repos. Builds a keyed
-      registry from the Drive source library (201 entries) and a companion
-      maker-demonstrations catalog with confirmed-vs-unconfirmed status that
-      hard-gates citation. Per-repo SOURCES.md / TECHNIQUES.md are generated;
-      never hand-edited. Pilot rollout (3-5 done-bar instrument repos) and
-      promotion of unconfirmed technique seeds run on the desktop where the
-      individual instrument repos live; this entry only ships the skill.
+      Bibliography + techniques catalog for instrument repos. Still standalone;
+      candidate for a future plugin home. Per-repo SOURCES.md / TECHNIQUES.md
+      are generated, never hand-edited.
+
+# Skills that lived as standalone Codex copies and have been retired because a
+# more capable Claude/plugin skill now covers them. Removed from codex/skills/.
+retired_skills:
+  tmux-v2:
+    retired: 2026-06-13
+    superseded_by: tmux-sprint
+  merge-manager:
+    retired: 2026-06-13
+    superseded_by: merge-review
+  wrfcoin-sprint-dispatch:
+    retired: 2026-06-13
+    superseded_by: [sprint-supervisor, sprint-update, tmux-sprint]
+
+# Separate plugins distributed from their own repos but listed in the
+# tony-koop marketplace.
+external_plugins:
+  studiopipeline:
+    repo: https://github.com/tonykoop/StudioPipeline
+    version: 0.1.0
+    status: active
+    notes: >-
+      Agentic episodic-video pipeline for makers; ships its own MCP server
+      (.mcp.json), so it stays a separate plugin rather than being vendored
+      into the maker plugin. Listed in the tony-koop marketplace alongside
+      maker and coding.
 
 planned_skills:
   energy-management:
     status: issue-handoff
+  run-benchmark:
+    status: pr-pending
+    notes: >-
+      MakerBench contributor skill (run -> scrutinize -> issue -> PR -> submit)
+      expected from a makerbench-hwe PR. Add a full entry once the SKILL.md
+      lands and the PR merges.
