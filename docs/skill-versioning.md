@@ -17,10 +17,9 @@ description: ...
 `last-updated` make drift detectable across desktop, mobile, Claude, Codex, and
 other runtimes.
 
-Compatibility note: the current bundled `skill-creator` validator accepts only
-`name` and `description` in `SKILL.md` frontmatter. Until that validator is
-updated, portable reviewed skills may keep only validator-compatible frontmatter
-and store canonical `version` / `last_updated` in `manifest.yaml`.
+Do not place release metadata under a nested `metadata:` block. Top-level
+`version` and `last-updated` are the install-scan contract; `manifest.yaml`
+remains the canonical registry used to compare installed copies.
 
 Portable skills under `skills/` may use `runtime: portable` in
 `manifest.yaml` so one canonical entry can cover Claude, Codex, Gemini, and
@@ -29,9 +28,9 @@ desktop installs.
 ## Release Workflow
 
 1. Edit the skill.
-2. Bump `version` in `SKILL.md` or `manifest.yaml`, depending on the active
-   validator convention.
-3. Update `last-updated` / `last_updated`.
+2. Bump top-level `version` in `SKILL.md` and `canonical_version` in
+   `manifest.yaml`.
+3. Update top-level `last-updated` and manifest `last_updated`.
 4. Add a per-skill changelog entry.
 5. Update `manifest.yaml`.
 6. Commit.
@@ -56,11 +55,14 @@ The `skills-meta` helper compares installed skill frontmatter against
 - local skill not present in the manifest;
 - stale `last-updated` dates;
 - missing per-skill changelog coverage.
+- nested version metadata that should be promoted to top-level frontmatter
+  when run in `--mode controls`.
 
 Use strict mode when a sprint manager or CI job should fail on drift:
 
 ```bash
 python3 skills/skills-meta/scripts/skills-meta.py --mode drift --strict
+python3 skills/skills-meta/scripts/skills-meta.py --mode controls --strict
 ```
 
 See [Manifest Drift Checks](manifest-drift-checks.md) for fixture smoke tests

@@ -1,6 +1,6 @@
 interface:
   display_name: "Skills Meta"
   short_description: "Audit installed skills and report drift"
-  default_prompt: "Use $skills-meta to inventory installed skills, check a single skill version, or suggest frontmatter fixes from manifest.yaml."
+  default_prompt: "Use $skills-meta to inventory installed skills, check a single skill version, run release controls, or suggest frontmatter fixes from manifest.yaml."
 policy:
   allow_implicit_invocation: true

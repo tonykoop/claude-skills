@@ -48,17 +48,24 @@ def _load_module():
 sm = _load_module()
 
 
-def write_skill(path: Path, name: str, version: str | None, last_updated: str | None) -> None:
+def write_skill(
+    path: Path,
+    name: str,
+    version: str | None,
+    last_updated: str | None,
+    description: str = "fixture",
+    body: str = "body",
+) -> None:
     path.mkdir(parents=True, exist_ok=True)
     fm_lines = ["---", f"name: {name}"]
     if version is not None:
         fm_lines.append(f"version: {version}")
     if last_updated is not None:
         fm_lines.append(f"last-updated: {last_updated}")
-    fm_lines.append("description: fixture")
+    fm_lines.append(f"description: {description}")
     fm_lines.append("---")
-    body = "\n".join(fm_lines) + "\n\nbody\n"
-    (path / "SKILL.md").write_text(body, encoding="utf-8")
+    text = "\n".join(fm_lines) + f"\n\n{body}\n"
+    (path / "SKILL.md").write_text(text, encoding="utf-8")
 
 
 def write_changelog(path: Path, version: str) -> None:
@@ -101,7 +108,7 @@ class VersionFlagTests(unittest.TestCase):
     def test_version_works_without_manifest_or_cwd_assumptions(self) -> None:
         rc, out = self._run_version()
         self.assertEqual(rc, 0, msg=out)
-        self.assertEqual(out, "skills-meta 1.0.0")
+        self.assertEqual(out, "skills-meta 1.1.0")
 
     def test_version_prefers_manifest_canonical_version_when_available(self) -> None:
         manifest = self.tmp / "manifest.yaml"
@@ -119,7 +126,7 @@ class VersionFlagTests(unittest.TestCase):
         )
         rc, out = self._run_version("--manifest", str(manifest))
         self.assertEqual(rc, 0, msg=out)
-        self.assertEqual(out, "skills-meta 9.8.7 (installed 1.0.0)")
+        self.assertEqual(out, "skills-meta 9.8.7 (installed 1.1.0)")
 
 
 class SingleModeDeterminismTests(unittest.TestCase):
@@ -568,6 +575,78 @@ class DuplicateWarningTests(unittest.TestCase):
         self.assertEqual(rc, 0, msg=out)
         self.assertIn("kept because manifest repo_path", out, msg=out)
         self.assertIn("duplicate skill copies can shadow", out, msg=out)
+
+
+class ControlsModeTests(unittest.TestCase):
+    """Release controls should catch deprecation and public-readiness issues
+    that ordinary version drift does not describe clearly."""
+
+    def setUp(self) -> None:
+        self.tmp = Path(tempfile.mkdtemp(prefix="skills-meta-controls-"))
+        self.addCleanup(shutil.rmtree, self.tmp, ignore_errors=True)
+        self.repo = self.tmp / "repo"
+        (self.repo / "skills").mkdir(parents=True)
+
+    def _run_controls(self, *extra: str) -> tuple[int, str]:
+        os.chdir(self.repo)
+        argv = ["skills-meta.py", "--mode", "controls", "--root", "skills", *extra]
+        old_argv, sys.argv = sys.argv, argv
+        buf = io.StringIO()
+        try:
+            with redirect_stdout(buf):
+                rc = sm.main()
+        finally:
+            sys.argv = old_argv
+        return rc, buf.getvalue()
+
+    def test_deprecated_skill_requires_migration_metadata_and_trigger_warning(self) -> None:
+        write_manifest(
+            self.repo,
+            {
+                "old-skill": {
+                    "canonical_version": "1.0.0",
+                    "runtime": "shared",
+                    "repo_path": "skills/old-skill",
+                    "last_updated": "2026-05-01",
+                    "status": "deprecated",
+                }
+            },
+        )
+        write_skill(self.repo / "skills" / "old-skill", "old-skill", "1.0.0", "2026-05-01")
+
+        rc, out = self._run_controls("--strict")
+
+        self.assertEqual(rc, 1, msg=out)
+        self.assertIn("deprecated-missing-superseded-by", out, msg=out)
+        self.assertIn("deprecated-missing-deprecated-on", out, msg=out)
+        self.assertIn("deprecated-missing-remove-after", out, msg=out)
+        self.assertIn("deprecated-description-missing-prefer", out, msg=out)
+
+    def test_public_controls_flag_personal_paths_in_skill_body(self) -> None:
+        write_manifest(
+            self.repo,
+            {
+                "path-leak": {
+                    "canonical_version": "1.0.0",
+                    "runtime": "shared",
+                    "repo_path": "skills/path-leak",
+                    "last_updated": "2026-05-01",
+                    "status": "active",
+                }
+            },
+        )
+        write_skill(
+            self.repo / "skills" / "path-leak",
+            "path-leak",
+            "1.0.0",
+            "2026-05-01",
+            body="Example config hard-codes /home/tony/.codex/skills.",
+        )
+
+        rc, out = self._run_controls("--strict")
+
+        self.assertEqual(rc, 1, msg=out)
+        self.assertIn("private-path:/home", out, msg=out)
 
 
 class RootDedupeTests(unittest.TestCase):

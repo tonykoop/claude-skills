@@ -37,11 +37,11 @@ install_roots:
 skills:
   # ----- coding plugin (plugins/coding/skills/) -----
   skills-meta:
-    canonical_version: 1.0.0
+    canonical_version: 1.1.0
     runtime: portable
     plugin: coding
     repo_path: plugins/coding/skills/skills-meta
-    last_updated: 2026-05-08
+    last_updated: 2026-06-13
     status: active
     notes: >-
       Portable drift-audit skill for Claude, Codex, Gemini, and desktop

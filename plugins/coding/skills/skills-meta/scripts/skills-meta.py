@@ -21,6 +21,11 @@ DEFAULT_ROOTS = ("skills", "claude/skills", "codex/skills", "gemini/skills")
 DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 SEMVER_RE = re.compile(r"^(\d+)\.(\d+)\.(\d+)$")
 OBSOLETE_STATUSES = {"deprecated", "obsolete", "retired"}
+PRIVATE_PATH_PATTERNS = (
+    ("private-path:/home", re.compile(r"/home/[A-Za-z0-9._-]+")),
+    ("private-path:/mnt/c/Users", re.compile(r"/mnt/c/Users/[A-Za-z0-9._ -]+")),
+    ("private-path:windows-users", re.compile(r"[A-Za-z]:\\\\Users\\\\[^\\s`)]+")),
+)
 
 
 @dataclass
@@ -49,6 +54,8 @@ class SkillRecord:
     version: str | None
     last_updated: str | None
     description: str | None
+    frontmatter: dict[str, Any] = field(default_factory=dict)
+    text: str = ""
     changelog_path: Path | None = None
     manifest: dict[str, Any] | None = None
     planned: dict[str, Any] | None = None
@@ -79,7 +86,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--mode",
-        choices=("inventory", "single", "drift", "fix", "fix-duplicates", "sync"),
+        choices=("inventory", "single", "drift", "fix", "fix-duplicates", "sync", "controls"),
         default="inventory",
     )
     parser.add_argument(
@@ -466,6 +473,7 @@ def scan_roots(repo_root: Path, resolved: list[tuple[Path, RootSpec]]) -> list[S
         if not skill_md.exists():
             continue
         try:
+            text = skill_md.read_text(encoding="utf-8")
             frontmatter = read_frontmatter(skill_md)
         except (PermissionError, OSError):
             continue
@@ -483,6 +491,8 @@ def scan_roots(repo_root: Path, resolved: list[tuple[Path, RootSpec]]) -> list[S
                 version=str(version) if version is not None else None,
                 last_updated=str(last_updated) if last_updated is not None else None,
                 description=str(description) if description is not None else None,
+                frontmatter=frontmatter,
+                text=text,
                 changelog_path=changelog_path,
             )
         )
@@ -738,6 +748,63 @@ def render_duplicate_warnings(repo_root: Path, duplicates: dict[str, list[SkillR
     if len(duplicates) > 8:
         lines.append(f"- ... {len(duplicates) - 8} more")
     return lines
+
+
+def control_issues_for(record: SkillRecord) -> list[str]:
+    """Release-control checks that sit above version drift.
+
+    These are intentionally conservative string/schema checks. They do not try
+    to infer every possible trigger collision; they make the public release
+    blockers that are easy to prove visible in the same helper reviewers run
+    for drift.
+    """
+    issues: list[str] = []
+    metadata = record.frontmatter.get("metadata")
+    if isinstance(metadata, dict) and (
+        "version" in metadata or "last-updated" in metadata or "last_updated" in metadata
+    ):
+        issues.append("nested-version-metadata")
+
+    entry = record.manifest or {}
+    status = str(entry.get("status") or "").strip().lower()
+    if status == "deprecated":
+        for field_name in ("deprecated_on", "superseded_by", "remove_after"):
+            if not entry.get(field_name):
+                issues.append(f"deprecated-missing-{field_name.replace('_', '-')}")
+        description = (record.description or "").lower()
+        if "deprecated: prefer" not in description:
+            issues.append("deprecated-description-missing-prefer")
+    elif status in {"obsolete", "retired"} and not entry.get("superseded_by"):
+        issues.append(f"{status}-missing-superseded-by")
+
+    for issue, pattern in PRIVATE_PATH_PATTERNS:
+        if pattern.search(record.text):
+            issues.append(issue)
+
+    return issues
+
+
+def render_controls_output(
+    repo_root: Path,
+    records: list[SkillRecord],
+    unreadable: list[UnreadableRoot],
+    duplicates: dict[str, list[SkillRecord]],
+) -> str:
+    rows = [(record, control_issues_for(record)) for record in records]
+    rows = [(record, issues) for record, issues in rows if issues]
+    lines = ["skills-meta controls", f"skills scanned: {len(records)}"]
+    lines.append(f"control issues: {sum(len(issues) for _, issues in rows)}")
+    lines.append("")
+    if not rows:
+        lines.append("ok: checked skills satisfy release controls covered by this helper")
+    else:
+        for record, issues in rows[:16]:
+            lines.append(f"control  {record.name:<18} {record.path}  issues: {', '.join(issues)}")
+        if len(rows) > 16:
+            lines.append(f"... {len(rows) - 16} more")
+    lines.extend(render_unreadable(unreadable))
+    lines.extend(render_duplicate_warnings(repo_root, duplicates))
+    return "\n".join(lines)
 
 
 def text_output(
@@ -1336,6 +1403,27 @@ def main() -> int:
             apply_fix_duplicates(duplicates)
         else:
             print(render_fix_duplicates_plan(repo_root, duplicates))
+        return 0
+
+    if args.mode == "controls":
+        if args.json:
+            payload = {
+                "mode": "controls",
+                "records": [
+                    {
+                        "name": record.name,
+                        "path": str(record.path),
+                        "runtime": record.runtime,
+                        "issues": control_issues_for(record),
+                    }
+                    for record in records
+                ],
+            }
+            print(json.dumps(payload, indent=2, sort_keys=True))
+        else:
+            print(render_controls_output(repo_root, records, unreadable, duplicates))
+        if args.strict and any(control_issues_for(record) for record in records):
+            return 1
         return 0
 
     if args.json:
