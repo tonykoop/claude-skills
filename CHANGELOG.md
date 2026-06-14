@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-06-13
+
+- Added `CHANGELOG.md` to five canonical skills that were missing one
+  (`makerspace` v1.1.3, `maker-engineering` v1.1.0, `disk-cleanup` v1.0.0,
+  `gh-fix-ci` v1.0.0, `habitat-maker` v0.4.0). Clears the `missing-changelog`
+  drift flag for all five. Refs #6.
+
 ## 2026-05-25
 
 - Added `file-a-patent` (v0.1.0) to the Maker plugin at
