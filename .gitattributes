@@ -1,12 +1,38 @@
-# Normalize line endings to LF in the repo to stop CRLF churn from WSL/Windows
-# editing files on the /mnt/c filesystem.
+# Keep repository text files stable across Windows, WSL, and CI.
+# Normalize all text to LF in the repo; nothing should depend on platform CRLF.
 * text=auto eol=lf
 
-# Scripts and Wolfram language files must stay LF.
-*.sh   text eol=lf
-*.wls  text eol=lf
-*.py   text eol=lf
-*.md   text eol=lf
-*.json text eol=lf
-*.yaml text eol=lf
-*.yml  text eol=lf
+# Explicit LF for code / docs / config
+*.sh    text eol=lf
+*.bash  text eol=lf
+*.wls   text eol=lf
+*.py    text eol=lf
+*.md    text eol=lf
+*.txt   text eol=lf
+*.json  text eol=lf
+*.yaml  text eol=lf
+*.yml   text eol=lf
+*.toml  text eol=lf
+*.cfg   text eol=lf
+*.ini   text eol=lf
+
+# Binary / never-normalize artifacts — protects images and 3D/model files
+# from LF normalization corruption.
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.webp  binary
+*.gif   binary
+*.pdf   binary
+*.svg   binary
+*.zip   binary
+*.step  binary
+*.stp   binary
+*.stl   binary
+*.3mf   binary
+*.glb   binary
+*.gltf  binary
+*.obj   binary
+*.dxf   binary
+*.f3d   binary
+*.fcstd binary
