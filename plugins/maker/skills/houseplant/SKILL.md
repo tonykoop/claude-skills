@@ -1,7 +1,7 @@
 ---
 name: houseplant
-version: 0.2.0
-last-updated: 2026-05-17
+version: 0.3.0
+last-updated: 2026-06-13
 description: Manage houseplant and bonsai collection digital twins plus care workflows, with first-class Blender MCP support. Use this skill whenever the user mentions a houseplant or bonsai specimen, pruning plans, wire-coil bending or training, mobile phone scans (photogrammetry, LiDAR, orbit video, lazy-susan video), multi-angle plant photos, bonsai aerial roots or nebari, bud/bloom tracking, plant care checklists, watering or fertilizing schedules, propagation logs, ruler-based scale calibration of a 3D scan, or any task that updates an Obsidian/Markdown/spreadsheet plant database. Use this skill even when the user only mentions "my plant" plus an action (prune, wire, train, repot, scan, model) — it owns that workflow.
 ---
 
@@ -21,6 +21,7 @@ The killer app this skill enables is **simulate before you cut**: build a parame
    - **Blender or MCP digital twin work** (scene contract, MCP tool order, bpy patterns, pruning/wiring sims): [`references/blender-digital-twin.md`](references/blender-digital-twin.md).
    - **Bonsai pruning, wiring, aerial roots, branch styling, ficus-specific guidance**: [`references/bonsai-module.md`](references/bonsai-module.md).
    - **Obsidian/spreadsheet records, care checklists, reminder drafts**: [`references/collection-records-and-care.md`](references/collection-records-and-care.md).
+   - **Dynamic care scheduling, watering/fertilizing windows, wire-removal checks**: [`references/chrono-engine.md`](references/chrono-engine.md).
 5. **Recommend decisively.** Include risk level, evidence, assumptions, and a quick pre-action verification step for irreversible physical actions. Be explicit about what was simulated vs. what was observed.
 6. **Sync results back.** Blender scene changes, annotated images, plant record updates, calendar-ready reminders, care checklists.
 
