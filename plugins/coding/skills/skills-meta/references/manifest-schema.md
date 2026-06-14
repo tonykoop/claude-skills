@@ -21,6 +21,9 @@ Active skill entries use:
 - `last_updated`
 - `status`
 - `requires` (optional list of manifest skill names that must be installed with this skill)
+- `deprecated_on` (required when `status: deprecated`)
+- `superseded_by` (required when a deprecated, obsolete, or retired skill has a successor)
+- `remove_after` (required when `status: deprecated`)
 - `notes`
 
 `planned_skills` is supporting context, not canonical inventory. Treat it as a
@@ -41,6 +44,9 @@ hint, not as an up-to-date install record.
   skill is absent, unknown to `manifest.skills`, or present but itself drifted.
 - Sync mode expands a focused `--skill` request to include transitive
   `requires` entries, so dependency sets travel together.
+- Controls mode reports nested version metadata, incomplete deprecation
+  metadata, missing `Deprecated: prefer <successor>` description clauses, and
+  obvious personal path leaks in skill bodies.
 
 ## Frontmatter fix output
 

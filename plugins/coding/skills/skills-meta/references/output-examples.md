@@ -37,6 +37,16 @@ drift check
 - reverse-engineer: local install not in manifest.skills
 ```
 
+## Controls
+
+```text
+skills-meta controls
+skills scanned: 9
+control issues: 2
+
+control  old-skill          skills/old-skill/SKILL.md  issues: deprecated-missing-superseded-by, deprecated-description-missing-prefer
+```
+
 ## Frontmatter fix
 
 ```text

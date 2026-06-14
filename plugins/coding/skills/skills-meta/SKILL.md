@@ -1,7 +1,7 @@
 ---
 name: skills-meta
-version: 1.0.0
-last-updated: 2026-05-09
+version: 1.1.0
+last-updated: 2026-06-13
 description: >-
   Audit installed skills across Claude, Codex, Gemini, and desktop installs.
   Compare frontmatter to manifest.yaml and report version drift, missing
@@ -77,6 +77,9 @@ Desktop installs are user-configured. Accept roots via `SKILLS_META_ROOTS` or
 - Single-skill check: focus on one named skill and show installed vs
   canonical version.
 - Drift check: surface only mismatches, missing skills, and stale dates.
+- Controls audit: surface release-control issues such as nested version
+  metadata, incomplete deprecation metadata, missing deprecated trigger
+  warnings, and obvious personal path leaks in skill bodies.
 - Frontmatter-fix: print a suggested frontmatter block, never apply it.
 - Fix-duplicates: when a skill name appears at multiple roots, print a
   keep/remove plan with the reason one copy was chosen as canonical. Default
@@ -155,6 +158,10 @@ Manifest entries with `status: deprecated`, `status: obsolete`, or
 `status: retired` are cleanup candidates. If an installed copy still exists,
 the helper reports it with a `cleanup-candidate:<status>` issue. If it is
 already absent, it is not counted as "manifest missing locally" drift.
+
+`--mode controls --strict` also checks that deprecated skills carry
+`deprecated_on`, `superseded_by`, `remove_after`, and a `Deprecated: prefer
+<successor>` phrase in their description so activation can route around them.
 
 ## Output rules
 

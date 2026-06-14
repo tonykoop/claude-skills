@@ -1,7 +1,11 @@
 # Changelog — skills-meta
 
-## Unreleased
+## v1.1.0 — 2026-06-13
 
+- Added `--mode controls` to report release-control issues, including nested
+  version metadata, incomplete deprecation metadata, deprecated trigger
+  descriptions missing `Deprecated: prefer ...`, and obvious personal path
+  leaks in skill bodies.
 - Added manifest `requires` dependency audit and sync expansion support.
 - Added `--version` to the skills-meta helper so sprint panes have a
   deterministic fallback when no `skills-meta` PATH shim is installed.
