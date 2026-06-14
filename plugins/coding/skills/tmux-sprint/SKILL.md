@@ -1,7 +1,7 @@
 ---
 name: tmux-sprint
-version: 2.4.0
-last-updated: 2026-06-09
+version: 2.4.1
+last-updated: 2026-06-13
 description: >-
   Transactional sprint-round dispatch, liveness probing, and codex-session
   revival for persona agents running in a tmux grid. Use whenever the user

@@ -1,5 +1,18 @@
 # Changelog - tmux-sprint
 
+## v2.4.1 - 2026-06-13
+
+- `preflight`/`ts_classify` now recognize **Antigravity (`agy`)** panes
+  (resolves #191): idle is detected from the `? for shortcuts` footer and
+  working from the `esc to cancel` / `Generating...` spinner. Previously agy
+  panes were misclassified `DEAD`, which blocked `dispatch` from sending to
+  them.
+- Fixed codex idle detection for newer codex (e.g. `gpt-5.5`), which shows a
+  `model · cwd` footer without a `5h NN%` meter at idle (relates to #163/#7).
+  The codex idle rule now also accepts the middot footer.
+- Added `tests/test_preflight.sh` cases for agy idle/working and the codex
+  middot-footer idle.
+
 ## v2.4.0 - 2026-06-09
 
 - Shipped the core driver implementation, resolving #193 (the SKILL.md

@@ -48,7 +48,7 @@ skills:
       installs.
 
   tmux-sprint:
-    canonical_version: 2.4.0
+    canonical_version: 2.4.1
     runtime: claude
     plugin: coding
     repo_path: plugins/coding/skills/tmux-sprint

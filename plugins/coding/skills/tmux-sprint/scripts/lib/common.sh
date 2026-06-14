@@ -119,17 +119,24 @@ ts_classify() {
   if printf '%s' "$text" | grep -qiE '(•|◦) (Working|Booting)|Spawned .*\[worker\]'; then
     echo WORKING; return
   fi
-  # claude working sentinels
-  if printf '%s' "$text" | grep -qiE 'Cooked|Leavening|Galloping|thinking…|Processing|esc to interrupt'; then
+  # claude + agy working sentinels (agy/Antigravity shows "esc to cancel" and a
+  # "Generating..." spinner, mirroring claude's "esc to interrupt").
+  if printf '%s' "$text" | grep -qiE 'Cooked|Leavening|Galloping|thinking…|Processing|esc to interrupt|esc to cancel|Generating\.\.\.'; then
     echo WORKING; return
   fi
   # claude live (idle): context meter, model bracket, or prompt glyph
   if printf '%s' "$text" | grep -qiE 'Ctx:[[:space:]]*[0-9]+%|\[(Opus|Haiku|Sonnet) [0-9]|❯'; then
     echo IDLE; return
   fi
-  # codex live (idle): model line + usage meters
+  # agy (Antigravity) live (idle): the shortcuts footer under the prompt box.
+  if printf '%s' "$text" | grep -qiE '\? for shortcuts'; then
+    echo IDLE; return
+  fi
+  # codex live (idle): model line + usage meters, OR the "model · path" footer.
+  # Newer codex (e.g. gpt-5.5) shows the "gpt-5.5 · <cwd>" footer at idle without
+  # a 5h meter until quota is consumed, so accept the middot footer too.
   if printf '%s' "$text" | grep -qiE 'gpt-5(\.[0-9]+)?' \
-     && printf '%s' "$text" | grep -qiE '5h[[:space:]]+[0-9]+%'; then
+     && printf '%s' "$text" | grep -qE '5h[[:space:]]+[0-9]+%|·'; then
     echo IDLE; return
   fi
   # truly empty tail -> compacted claude pane
