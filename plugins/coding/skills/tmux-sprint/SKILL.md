@@ -1,12 +1,7 @@
 ---
 name: tmux-sprint
-<<<<<<< HEAD
-version: 2.3.1
-last-updated: 2026-05-17
-=======
 version: 2.4.0
 last-updated: 2026-06-09
->>>>>>> origin/main
 description: >-
   Transactional sprint-round dispatch, liveness probing, and codex-session
   revival for persona agents running in a tmux grid. Use whenever the user
@@ -25,11 +20,7 @@ description: >-
 # tmux-sprint — Sprint Driver
 
 This skill drives an active tmux persona grid. A separate launch step
-<<<<<<< HEAD
-(typically a `launch-personas.sh` script) creates the grid; this skill
-=======
 (`scripts/launch-grid.sh`, shipped here) creates the grid; this skill
->>>>>>> origin/main
 **dispatches work to it, probes pane state, and revives dead codex panes**.
 Use these primitives instead of raw `tmux send-keys` whenever dispatching
 persona work, especially when codex panes are involved or a previous
@@ -243,11 +234,7 @@ Every `.md` file passed to `--assignment` must contain this block verbatim:
 > STOP; do not silently redefine the task.
 ```
 
-<<<<<<< HEAD
-`scripts/dispatch.py` validates this with a literal substring match. The
-=======
 `scripts/dispatch.sh` validates this with a literal substring match. The
->>>>>>> origin/main
 block is in `assets/assignment-preamble.txt` — copy from there when writing
 new assignment files.
 
@@ -469,13 +456,10 @@ The skill's scripts are meant to be called via Bash from within a Claude
 Code session:
 
 ```bash
-<<<<<<< HEAD
-=======
 # 0. one-time: build the persona grid (see the two-session topology above).
 #    Seeds personas.json from assets/personas.default.json on first run.
 bash <workspace>/.claude/skills/tmux-sprint/scripts/launch-grid.sh --with-manager
 
->>>>>>> origin/main
 bash <workspace>/.claude/skills/tmux-sprint/scripts/preflight.sh
 bash <workspace>/.claude/skills/tmux-sprint/scripts/dispatch.sh \
   --round 53 --manager claude-opus-4-6 \
@@ -507,11 +491,7 @@ Invoke this skill when the user says any of:
 - **`sprint-update`** *(forthcoming)* — updates the sprint doc after dispatches.
   The round state JSON this skill writes feeds that update.
 
-<<<<<<< HEAD
-## Known limitations (as of v0.1)
-=======
 ## Known limitations (current)
->>>>>>> origin/main
 
 - Worktree fence is NOT enforced yet — `preflight` reports the allowlist
   but `dispatch` does not reject mismatched worktrees. Future work.
@@ -527,16 +507,6 @@ Invoke this skill when the user says any of:
 
 ## Implementation note (for this public repo)
 
-<<<<<<< HEAD
-The supporting `scripts/preflight.sh`, `scripts/dispatch.sh`, `scripts/restart.sh`,
-`assets/assignment-preamble.txt`, and `assets/personas.default.json` files
-referenced above live in the working wrfcoin workspace and are not yet
-included in this v0.1 publish. The SKILL.md (this file) is the contract;
-the implementation is shipped incrementally. The provider failover contract in
-`references/provider-failover.md` is likewise a design packet until those
-reference scripts are present in this public package. Open an issue in this
-repo if you want to request the reference script implementations.
-=======
 As of v2.4.0 the core driver ships in this package (resolves issue #193):
 
 - `scripts/launch-grid.sh` — builds the two-session persona grid and starts
@@ -559,4 +529,3 @@ tmux server via a fake `tmux` on `PATH`.
 The provider failover contract in `references/provider-failover.md` remains a
 design packet — its reference scripts are not yet ported. Open an issue if you
 want those implemented next.
->>>>>>> origin/main

@@ -6,24 +6,14 @@
     "email": "tonykoop@gmail.com",
     "url": "https://github.com/tonykoop"
   },
-<<<<<<< HEAD
   "description": "Tony Koop's skill marketplace. Three plugins: 'maker' for physical-world design and personal practice; 'coding' for software/engineering operations; 'studiopipeline' for agentic maker-video production. Auto-updates from the claude-skills git repo.",
-=======
-  "description": "Tony Koop's skill marketplace. Two plugins: 'maker' for physical-world design and personal practice; 'coding' for software/engineering operations. Auto-updates from the claude-skills git repo.",
->>>>>>> origin/main
   "plugins": [
     {
       "name": "maker",
       "source": "./plugins/maker",
-<<<<<<< HEAD
       "description": "Physical-world design and personal practice: instrument-maker, sheet-metal, maker-engineering, makerspace, laser-art, habitat-maker, reverse-engineer, sheet-music, yoga-sequencer, playlist-builder, idea-incubator, file-a-patent.",
       "category": "making",
       "tags": ["instrument-design", "fabrication", "maker", "patents", "yoga", "music", "heifer-zephyr"]
-=======
-      "description": "Physical-world design and personal practice: instrument-maker, sheet-metal, maker-engineering, makerspace, laser-art, habitat-maker, reverse-engineer, sheet-music, yoga-sequencer, playlist-builder, idea-incubator, file-a-patent.",
-      "category": "making",
-      "tags": ["instrument-design", "fabrication", "maker", "patents", "yoga", "music", "heifer-zephyr"]
->>>>>>> origin/main
     },
     {
       "name": "coding",
@@ -31,7 +21,6 @@
       "description": "Engineering operations and developer tooling: tmux-sprint, sprint-supervisor, sprint-update, merge-review, run-swarm, ci-triage, scaffold-hygiene, disk-cleanup, skills-meta.",
       "category": "engineering",
       "tags": ["sprint", "ci", "git", "wrfcoin", "internal-ops", "audit"]
-<<<<<<< HEAD
     },
     {
       "name": "studiopipeline",
@@ -42,8 +31,3 @@
     }
   ]
 }
-=======
-    }
-  ]
-}
->>>>>>> origin/main

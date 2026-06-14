@@ -1,0 +1,12 @@
+# Normalize line endings to LF in the repo to stop CRLF churn from WSL/Windows
+# editing files on the /mnt/c filesystem.
+* text=auto eol=lf
+
+# Scripts and Wolfram language files must stay LF.
+*.sh   text eol=lf
+*.wls  text eol=lf
+*.py   text eol=lf
+*.md   text eol=lf
+*.json text eol=lf
+*.yaml text eol=lf
+*.yml  text eol=lf

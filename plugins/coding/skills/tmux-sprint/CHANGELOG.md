@@ -1,7 +1,5 @@
 # Changelog - tmux-sprint
 
-<<<<<<< HEAD
-=======
 ## v2.4.0 - 2026-06-09
 
 - Shipped the core driver implementation, resolving #193 (the SKILL.md
@@ -24,7 +22,6 @@
 - Fixed a stale `scripts/dispatch.py` reference in SKILL.md (the validator is
   `dispatch.sh`) and pointed the launch step at the shipped `launch-grid.sh`.
 
->>>>>>> origin/main
 ## v2.3.1 - 2026-05-17
 
 - Added `references/provider-failover.md`, a manager-owned contract for

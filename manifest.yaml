@@ -9,11 +9,7 @@
 # external_plugins.
 
 schema_version: 1
-<<<<<<< HEAD
 last_updated: 2026-06-13
-=======
-last_updated: 2026-05-25
->>>>>>> origin/main
 
 install_roots:
   # Repo-relative source roots (resolve when skills-meta is run from this repo
@@ -52,7 +48,7 @@ skills:
       installs.
 
   tmux-sprint:
-    canonical_version: 2.3.1
+    canonical_version: 2.4.0
     runtime: claude
     plugin: coding
     repo_path: plugins/coding/skills/tmux-sprint
@@ -289,28 +285,8 @@ skills:
     status: active
     notes: Catalog/auth-state preflight (issue 72) for honest sparse-catalog output.
 
-<<<<<<< HEAD
   idea-incubator:
     canonical_version: 1.4.4
-=======
-  sprint-supervisor:
-    canonical_version: 1.1.0
-    runtime: claude
-    repo_path: plugins/coding/skills/sprint-supervisor
-    last_updated: 2026-05-18
-    status: active
-    deps:
-      - sprint-manager  # cold-start handoff: supervisor bootstraps manager when no manager is running; do not reimplement manager topology here
-    notes: >-
-      Overnight sprint babysitter for multi-pane tmux grids. Pairs with
-      sprint-watchdog.sh (mechanical ~70% of approvals); this skill handles
-      judgment ~30% — commands, rate-limit prompts, escalation, morning
-      summary. Scales by named scope across twingrid/triplegrid/quadgrid via
-      /tmp lockfile.
-
-  run-swarm:
-    canonical_version: 1.2.1
->>>>>>> origin/main
     runtime: shared
     plugin: maker
     repo_path: plugins/maker/skills/idea-incubator

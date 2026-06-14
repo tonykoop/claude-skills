@@ -162,8 +162,6 @@ For each ready item, name the owner skill and implementation boundary, such as
 audit issue only`. For each Tony-decision item, phrase the decision as a direct
 question and name the safe default if no decision is made.
 
-<<<<<<< HEAD
-=======
 ## Cache Contract
 
 Between audit runs, `run-swarm` writes a persistent issue-scout cache to
@@ -183,7 +181,6 @@ Key rules:
   `gh issue list` directly unless the cache is marked stale.
 - `closed-issues.json` (7-day window) is used only for duplicate detection.
 
->>>>>>> origin/main
 ## Guardrails
 
 - Do not file duplicate issues; search first.
