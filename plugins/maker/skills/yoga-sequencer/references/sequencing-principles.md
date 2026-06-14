@@ -239,6 +239,8 @@ Good heat-room arc for a 60-minute power class:
 - Keep at least one steady-breath option available during peak work.
 - Use props or wall support when it meaningfully widens access.
 - If a pose is advanced, name who might skip it and what they should do instead.
+- Treat common-but-strong staples as constraint-sensitive when they stress knees, low back, wrists, neck, SI joint, deep hip rotation, deep twisting, deep backbending, pregnancy, or balance. For poses such as pigeon, lizard, malasana, camel, bridge, crow, revolved triangle, revolved crescent, or any inverted peak, open `poses.yaml` before using them in a mixed-level class so modifications and contraindications come from the bundled pose library rather than memory.
+- If a routine class stays within the safer low-risk staple set, keep the plan lean and skip the pose library unless the user names a constraint, asks for counterposes, or makes a constraint-sensitive pose the peak.
 
 ## Breath-count heuristics
 

@@ -258,11 +258,11 @@ skills:
       Blender MCP support. Six deferred modules tracked as issues 172-177.
 
   yoga-sequencer:
-    canonical_version: 1.2.0
+    canonical_version: 1.2.1
     runtime: shared
     plugin: maker
     repo_path: plugins/maker/skills/yoga-sequencer
-    last_updated: 2026-05-10
+    last_updated: 2026-06-13
     status: active
     notes: >-
       Vinyasa-first class sequencing with playlist-builder handoff; heated-room
