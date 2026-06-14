@@ -1,5 +1,22 @@
 # Changelog - tmux-sprint
 
+## v2.5.0 - 2026-06-13
+
+- Added Codex `/goal` integration (resolves #117): `dispatch.sh` accepts an
+  optional `--goal <text>` flag that injects `/goal <text>` before the
+  assignment one-liner for each Codex pane; Claude and agy panes are
+  unaffected. Goal text is recorded in the round JSON under `goal` at both
+  the top level and per-codex dispatch entry (null for non-codex).
+- Added `references/codex-goal-contract.md`: full design contract covering
+  when to use `/goal`, startup sequence, goal shape guidelines, WRFCoin dev
+  and personal-project sprint profile templates, Plan-first gate interaction,
+  and manager inspection/pause/resume/clear patterns.
+- Added `tests/test_goal_dispatch.sh`: four fake-tmux test cases verifying
+  goal injection for codex panes, no injection for claude panes, mixed
+  dispatch behavior, and no-goal baseline.
+- Updated `SKILL.md` with a "Codex /goal lanes" section documenting the
+  startup sequence, `--goal` flag usage, and pane inspection/recovery commands.
+
 ## v2.4.1 - 2026-06-13
 
 - `preflight`/`ts_classify` now recognize **Antigravity (`agy`)** panes
