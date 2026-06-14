@@ -15,6 +15,9 @@
 # Exit status: 0 always (a clean grid still exits 0).
 #
 # Used by the /sprint-supervisor skill on every wakeup cycle.
+#
+# Compatibility: bash 3.2+ (macOS system shell), tmux >= 2.0.
+# Uses while-read instead of mapfile to avoid bash 4+ dependency.
 
 set -u
 
@@ -23,6 +26,11 @@ if [ "$#" -lt 1 ]; then
   exit 2
 fi
 
+# Confirmation prompt patterns for all supported CLIs (codex, claude, gemini).
+# agy (Antigravity) confirmation prompt pattern is TBD — not yet observed in
+# a live sprint. When first seen, add its pattern here and to the rubric table
+# in SKILL.md. agy's idle/working indicators ("? for shortcuts", "esc to cancel",
+# "Generating...") are intentionally excluded — they are NOT confirmation prompts.
 PROMPT_REGEX='Press enter to confirm|Yes, proceed|Approaching rate limits|Would you like to (make|run)'
 
 for target in "$@"; do
@@ -31,7 +39,11 @@ for target in "$@"; do
   if echo "$target" | grep -qE '^[^:]+:[0-9]+(\.[0-9]+)?$'; then
     panes=("$target")
   else
-    mapfile -t panes < <(tmux list-panes -t "$target" -F '#{pane_id}' 2>/dev/null)
+    # bash 3.2-compatible array fill (mapfile requires bash 4+).
+    panes=()
+    while IFS= read -r line; do
+      [ -n "$line" ] && panes+=("$line")
+    done < <(tmux list-panes -t "$target" -F '#{pane_id}' 2>/dev/null)
   fi
 
   for id in "${panes[@]:-}"; do
