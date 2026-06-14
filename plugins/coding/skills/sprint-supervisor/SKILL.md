@@ -1,7 +1,7 @@
 ---
 name: sprint-supervisor
-version: 1.1.0
-last-updated: 2026-05-18
+version: 1.2.0
+last-updated: 2026-06-13
 description: Babysit a running multi-pane WRFCoin tmux sprint while the user is AFK or asleep. Polls the manager pane and grid persona panes every ~4 min via ScheduleWakeup, auto-approves routine codex permission prompts using a fixed rubric, escalates destructive prompts, and produces a morning summary. Use this skill whenever the user says "watch the sprint", "supervise overnight", "I'm going to bed keep the sprint going", "babysit the panes", "keep an eye on twingrid", or invokes "/sprint-supervisor" — even without the word "supervisor". Scales by named scope — one instance handles a twingrid (18 panes), multiple instances divide-and-conquer a triplegrid or quadgrid by scoping each supervisor to a slice of grids (e.g. consensus, infra-backend, frontend) coordinated via /tmp lockfile so peers don't double-approve. Pairs with sprint-watchdog.sh which absorbs the mechanical ~70% of approvals; this skill handles the judgment ~30% — commands, rate-limit prompts, escalation.
 ---
 
@@ -380,6 +380,46 @@ When the user returns and dismisses the supervisor:
    ```
 3. Stop the watchdog if you started it (check via `pgrep -f sprint-watchdog.sh`).
 4. Don't reschedule another wakeup.
+
+## Platform compatibility
+
+### Verified platforms
+
+| Platform | OS | tmux | bash | Status |
+|---|---|---|---|---|
+| Tony's primary (WSL2) | Ubuntu 22.04 (kernel 6.6.x) | 3.2a (apt) | 5.1 | **Verified** — all scripts run cleanly |
+| macOS (Homebrew) | macOS 14+ | 3.4+ (Homebrew) | 3.2 (system) / 5.x (Homebrew) | **Verified with caveats** (see below) |
+
+### tmux minimum version
+
+Any tmux ≥ 2.0. All flags used (`list-panes -F '#{pane_id}'`, `capture-pane -p`, `capture-pane -S`) are stable since tmux 1.7. Verified against tmux 3.2a (WSL2/Ubuntu) and tmux 3.4 (Homebrew macOS). Check: `tmux -V`.
+
+### macOS caveats
+
+1. **Bash version.** macOS ships bash 3.2 (GPLv2) as the system shell. `grid-scan.sh` previously used `mapfile` (bash 4+ only). As of v1.2.0 this is fixed — the script uses a `while read` loop compatible with bash 3.2. Homebrew bash 5.x also works.
+
+2. **`date -Iseconds`.** The lockfile setup snippet in Prerequisites uses `$(date -Iseconds)`, which is GNU `date` syntax. macOS ships BSD `date` that rejects `-I`. Use the portable form:
+   ```bash
+   # portable (works on macOS, Linux, WSL2)
+   $(date -u +%Y-%m-%dT%H:%M:%SZ)
+   # or via python3:
+   $(python3 -c "import datetime; print(datetime.datetime.now().astimezone().isoformat())")
+   ```
+   The iteration-loop heartbeat refresh already uses Python (see "Each iteration" step 1), so this only affects the initial one-time lockfile creation.
+
+3. **`/tmp` persistence.** macOS wipes `/tmp` on reboot. If you close the lid and the supervisor's `.lock` file is gone when `ScheduleWakeup` fires next, the skill re-initializes as a cold start — correct graceful behavior.
+
+### WSL2 notes
+
+WSL2 runs its own Linux kernel. `/tmp/sprint-supervisor/` lives inside WSL2 and is not accessible from the Windows host side by design. Always run the supervisor inside WSL2 (where tmux lives). If you open Claude from both WSL2 and a native Windows terminal in the same sprint, only the WSL2 session can reach the panes.
+
+### Provider-prompt compatibility
+
+The approval rubric is provider-agnostic by design — it matches prompt *shapes* (edit confirmation, command confirmation, rate-limit) not provider-specific strings. The 2026-06-13 tmux-sprint v2.4.1 release (`#191`, `#163`) confirmed two provider-classification gaps relevant to the supervisor's `grid-scan.sh`:
+
+- **Antigravity (`agy`) panes.** Agy at idle shows `? for shortcuts`; working shows `esc to cancel` / `Generating...`. These are health indicators, not confirmation prompts, and are correctly excluded from `grid-scan.sh`'s `PROMPT_REGEX`. **Agy's approval prompt phrasing (when it asks to confirm an edit or command) is not yet documented** — it has not been observed in a live sprint with agy as a grid persona. When first seen, extend `PROMPT_REGEX` in `grid-scan.sh` and add a row to the rubric table.
+
+- **gpt-5.5 (`codex`) panes.** Newer codex versions idle on a `model · cwd` footer without the `5h NN%` usage meter. This is a classification-only difference handled in `tmux-sprint` — the supervisor's `PROMPT_REGEX` is unaffected because gpt-5.5's confirmation prompts still use the standard `Would you like to` phrasing.
 
 ## Tuning notes from the 2026-05-18 session
 
