@@ -1,5 +1,19 @@
 # Changelog — sprint-supervisor
 
+## v1.2.0 — 2026-06-14
+
+Hardening from the AI-HWE sprint (~14 rounds, 60+ PRs merged across 5 repos). Dispatch/parallelism was strong; every painful failure was at the merge/integration boundary or in permission ergonomics.
+
+### Added
+
+- **Pre-merge checklist** section in `SKILL.md` — `mergeStateStatus == CLEAN` is necessary-not-sufficient. Covers: verify a CI-adding PR's new job is actually green; run tests locally for no-CI repos; new-task-family → completeness-validator cascade; duplicate/superseded detection for self-extending agents; foundation-first + rebase-the-rest dependency order; the coincidental-shared-context merge trap (mis-joined function bodies from naive marker-stripping).
+- **Manager-acting-on-an-agent's-behalf safety** section — committed-vs-staged check before a manager-push; don't race a live agent on a shared `.git` (scratch worktree + lock-retry); open codex PRs from host with `Refs`.
+- **Pre-dispatch verification** section (combined manager+supervisor role) — assert each worktree's `git remote get-url origin` matches the intended repo; launch agents in true `auto` mode (claude `--permission-mode auto`, codex `-a on-failure`) not `acceptEdits`; clear the first-run trust-folder prompt.
+
+### Why
+
+`acceptEdits` stalled an Opus grid on every bash command (~30min lost hand-clearing). Merged a red CI-adding foundation PR → poisoned main. Manager-pushed a staged-but-uncommitted fix → CI stayed red. A worktree pointed at the wrong clone routed an agent's work to the wrong repo. Each is now a checklist item.
+
 ## v1.0.0 — 2026-05-12
 
 Initial release. Captures the supervisor pattern that emerged from the 2026-05-12 overnight WRFCoin sprint (8.1h, 47 approvals, 0 escalations).
