@@ -1,10 +1,10 @@
-# Houseplant — Skill Manifest (v0.2.0)
+# Houseplant — Skill Manifest (v0.3.0)
 # Structured discoverability so an agent can read this manifest first,
 # decide what to load, and skip the prose. SKILL.md is the orchestrator;
 # this is its index.
 
 name: houseplant
-version: 0.2.0
+version: 0.3.0
 display_name: Houseplant
 audience:
   - Tony (primary)
@@ -48,6 +48,24 @@ references:
   - path: references/collection-records-and-care.md
     purpose: "Plant-record schema, event log types, care scheduling principles, calendar-ready reminder format"
     load_when: "Updating a plant record, logging a physical action, drafting a care checklist or reminder"
+  - path: references/chrono-engine.md
+    purpose: "Chrono-horticultural engine: dynamic observation-driven watering/fertilizing checks and species-scaled wire-removal inspection windows"
+    load_when: "User asks about watering, fertilizing, or wire-removal scheduling/timing"
+  - path: references/bud-bloom-tracker.md
+    purpose: "Bud/bloom/flush tracking, bloom-window forecasting with explicit confidence, bud-drop logging, pink-marker workflow (skip Ficus syconium)"
+    load_when: "User reports a flower bud, new flush, or fruit set, or wants a bloom forecast"
+  - path: references/aerial-roots-nebari.md
+    purpose: "Aerial-root and nebari development: tip_promising→guided→reached_soil→thickening→fused lifecycle, sphagnum/tube/humidity-tent interventions, health gate, teal trace"
+    load_when: "User asks about aerial roots, nebari, root flare, or braided ficus roots"
+  - path: references/health-diagnostics.md
+    purpose: "CV health screening (check-engine light): chlorosis/leaf-drop/pest flags from existing photos, cross-referenced to care events, inspection-first, escalates structural-work risk"
+    load_when: "User uploads photos or reports yellowing, leaf drop, spots, webbing, or pests"
+  - path: references/grafting-sandbox.md
+    purpose: "Simulation-only Blender boolean-union graft preview with seam smoothing and pre/post silhouette renders; stays in 05_simulations/"
+    load_when: "User wants to preview an approach/trunk graft or multi-tree fusion before cutting"
+  - path: references/propagation.md
+    purpose: "Propagation tracker: tip/stem cuttings vs. air-layering, rooting timelines, started→rooted→potted_up→independent (or failed) lifecycle, parent/child lineage"
+    load_when: "User wants to take cuttings, air-layer, or track propagation and lineage"
 
 # Scripts — bundled bpy patterns. Each declares input and output. Scripts
 # are designed to be pasted into mcp__Blender__execute_blender_code with the
@@ -77,6 +95,21 @@ scripts:
     purpose: "Clone current-state twin into a dated simulation collection without mutating the canonical twin"
     inputs: ["PLANT_ID", "SCENARIO", "SOURCE_COLLECTIONS", "optional DATE_OVERRIDE"]
     outputs: ["new collection Plant_<plant_id>/05_simulations/sim_<scenario>_<date>/ with linked source objects"]
+    requires_blender: true
+  - path: scripts/wire_window.py
+    purpose: "Compute wire-removal inspection window (first-inspection date + recheck cadence + ladder) from wired date, species growth class, and active-growth state"
+    inputs: ["WIRED_DATE", "GROWTH_CLASS (fast|moderate|slow)", "ACTIVE_GROWTH"]
+    outputs: ["dict with first_inspection date, recheck_cadence_days, inspection_ladder, and calendar-ready guidance string"]
+    requires_blender: false
+  - path: scripts/aerial_root_trace.py
+    purpose: "Trace a teal, gently-drooping guided aerial-root path from tip to substrate landing point with lifecycle state stamped"
+    inputs: ["PLANT_ID", "ROOT_ID", "START", "END", "STATE", "optional DROOP/SAMPLES"]
+    outputs: ["teal poly-curve <plant_id>_aerial_root_trace_<root_id> in 04_markers with state metadata"]
+    requires_blender: true
+  - path: scripts/grafting_sim.py
+    purpose: "Simulation-only boolean-union graft preview: duplicate scion+stock into dated sim_graft collection, union, corrective-smooth the seam; canonical twin untouched"
+    inputs: ["PLANT_ID", "SCION_OBJ", "STOCK_OBJ", "GRAFT_LABEL", "optional BLEND_RADIUS/DATE_OVERRIDE"]
+    outputs: ["fused mesh in Plant_<plant_id>/05_simulations/sim_graft_<label>_<date>/ with graft metadata"]
     requires_blender: true
 
 # Assets — non-code material the skill ships.
@@ -122,20 +155,26 @@ benchmark:
       against: codex-draft-snapshot
       result_summary: "Pass rate parity (97% old vs 94% new) within single-run noise; qualitative review flagged v0.2.0 as significantly improved on eval-3 (sim-before-cutting), parity on the others."
 
-# Deferred features tracked in the repo's GitHub issues.
-deferred:
+# v2 feature set (epic #209) — implemented in v0.3.0.
+v2_features:
   - issue: 172
     feature: chrono-horticultural calendar engine
+    delivered: [references/chrono-engine.md, scripts/wire_window.py]
   - issue: 173
     feature: bud and bloom chrono-tracker
+    delivered: [references/bud-bloom-tracker.md]  # reuses scripts/cut_marker.py (bud/pink)
   - issue: 174
     feature: aerial-root and nebari guidance tracker
+    delivered: [references/aerial-roots-nebari.md, scripts/aerial_root_trace.py]
   - issue: 175
     feature: computer-vision plant health diagnostics
+    delivered: [references/health-diagnostics.md]
   - issue: 176
     feature: virtual grafting sandbox in Blender
+    delivered: [references/grafting-sandbox.md, scripts/grafting_sim.py]
   - issue: 177
     feature: propagation tracker
+    delivered: [references/propagation.md]
 
 # Sibling skills the houseplant skill may hand off to.
 hand_offs:

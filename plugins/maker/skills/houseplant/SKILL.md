@@ -1,7 +1,7 @@
 ---
 name: houseplant
-version: 0.2.0
-last-updated: 2026-05-17
+version: 0.3.0
+last-updated: 2026-06-15
 description: Manage houseplant and bonsai collection digital twins plus care workflows, with first-class Blender MCP support. Use this skill whenever the user mentions a houseplant or bonsai specimen, pruning plans, wire-coil bending or training, mobile phone scans (photogrammetry, LiDAR, orbit video, lazy-susan video), multi-angle plant photos, bonsai aerial roots or nebari, bud/bloom tracking, plant care checklists, watering or fertilizing schedules, propagation logs, ruler-based scale calibration of a 3D scan, or any task that updates an Obsidian/Markdown/spreadsheet plant database. Use this skill even when the user only mentions "my plant" plus an action (prune, wire, train, repot, scan, model) — it owns that workflow.
 ---
 
@@ -21,6 +21,12 @@ The killer app this skill enables is **simulate before you cut**: build a parame
    - **Blender or MCP digital twin work** (scene contract, MCP tool order, bpy patterns, pruning/wiring sims): [`references/blender-digital-twin.md`](references/blender-digital-twin.md).
    - **Bonsai pruning, wiring, aerial roots, branch styling, ficus-specific guidance**: [`references/bonsai-module.md`](references/bonsai-module.md).
    - **Obsidian/spreadsheet records, care checklists, reminder drafts**: [`references/collection-records-and-care.md`](references/collection-records-and-care.md).
+   - **Watering / fertilizing / wire-removal scheduling** (dynamic, observation-driven checks; wire bite-in inspection windows): [`references/chrono-engine.md`](references/chrono-engine.md).
+   - **Bud / bloom / new-flush tracking and forecasting** (pink markers, bloom-window prediction, bud-drop logging): [`references/bud-bloom-tracker.md`](references/bud-bloom-tracker.md).
+   - **Aerial-root and nebari development** (teal markers, guided-root tracing, `tip_promising → fused` lifecycle): [`references/aerial-roots-nebari.md`](references/aerial-roots-nebari.md).
+   - **Plant-health screening from photos** ("check-engine light": chlorosis/leaf-drop/pest flags cross-referenced to care events): [`references/health-diagnostics.md`](references/health-diagnostics.md).
+   - **Virtual grafting preview** (Blender boolean-union fusion silhouette, simulation-only): [`references/grafting-sandbox.md`](references/grafting-sandbox.md).
+   - **Propagation** (cuttings, air-layering, rooting timelines, parent/child lineage): [`references/propagation.md`](references/propagation.md).
 5. **Recommend decisively.** Include risk level, evidence, assumptions, and a quick pre-action verification step for irreversible physical actions. Be explicit about what was simulated vs. what was observed.
 6. **Sync results back.** Blender scene changes, annotated images, plant record updates, calendar-ready reminders, care checklists.
 
@@ -44,8 +50,11 @@ Inspect first, then write. Idempotency matters: check for existing collections a
 - `scripts/scene_scaffold.py` — builds the `Plant_<plant_id>/` collection hierarchy and stamps custom properties.
 - `scripts/scale_from_ruler.py` — calibrates scene units from a measured ruler segment in the scan.
 - `scripts/wire_coil.py` — generates a helical copper-colored curve around a branch curve for wire-bending preview.
-- `scripts/cut_marker.py` — places a colored empty/sphere marker at a coordinate with the skill's color semantics.
+- `scripts/cut_marker.py` — places a colored empty/sphere marker at a coordinate with the skill's color semantics (also serves bud `pink` and aerial-root `teal` events).
 - `scripts/sim_collection.py` — clones the current-state twin into a dated `05_simulations/sim_<scenario>` collection for non-destructive what-if.
+- `scripts/wire_window.py` — pure-Python chrono helper; returns the wire-removal inspection window (first-inspection date + recheck cadence) from species growth class, the wired date, and active-growth state.
+- `scripts/aerial_root_trace.py` — draws a teal, gently-drooping guided-root path from a branch tip to a substrate landing point and stamps its lifecycle state.
+- `scripts/grafting_sim.py` — simulation-only boolean-union graft preview: duplicates scion + stock into a dated `05_simulations/sim_graft_*` collection and smooths the seam; never touches the canonical twin.
 
 `assets/` holds starter profiles for specific specimens (e.g. `assets/ficus-benjamina-starter.md`). Use them as a baseline plant record when the user hasn't created their own.
 

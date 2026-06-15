@@ -37,6 +37,9 @@ EXPECTED_SCRIPTS = {
     "wire_coil.py",
     "cut_marker.py",
     "sim_collection.py",
+    "wire_window.py",
+    "aerial_root_trace.py",
+    "grafting_sim.py",
 }
 
 
@@ -144,6 +147,67 @@ class WireCoilHelix(unittest.TestCase):
             backbone, turns_per_meter=8, coil_radius=0.005
         )
         self.assertGreater(len(helix), 0)
+
+
+class WireWindow(unittest.TestCase):
+    """v2 chrono-engine: wire-removal inspection window math (no bpy)."""
+
+    def setUp(self):
+        import wire_window as mod
+        self.mod = mod
+
+    def test_fast_active_first_inspection_is_one_week(self):
+        plan = self.mod.wire_inspection_window("2026-06-15", "fast", active_growth=True)
+        self.assertEqual(plan["first_inspection"], "2026-06-22")
+        self.assertEqual(plan["recheck_cadence_days"], 7)
+
+    def test_slower_class_has_longer_window(self):
+        fast = self.mod.wire_inspection_window("2026-06-15", "fast", True)
+        slow = self.mod.wire_inspection_window("2026-06-15", "slow", True)
+        self.assertGreater(slow["first_inspection_days"], fast["first_inspection_days"])
+
+    def test_dormant_stretches_the_window(self):
+        active = self.mod.wire_inspection_window("2026-06-15", "moderate", True)
+        dormant = self.mod.wire_inspection_window("2026-06-15", "moderate", False)
+        self.assertGreater(dormant["first_inspection_days"], active["first_inspection_days"])
+
+    def test_ladder_has_four_increasing_dates(self):
+        plan = self.mod.wire_inspection_window("2026-06-15", "moderate", True)
+        ladder = plan["inspection_ladder"]
+        self.assertEqual(len(ladder), 4)
+        self.assertEqual(ladder, sorted(ladder))
+
+    def test_unknown_growth_class_raises(self):
+        with self.assertRaises(ValueError):
+            self.mod.wire_inspection_window("2026-06-15", "turbo", True)
+
+
+class AerialRootTrace(unittest.TestCase):
+    """v2 aerial-root: drooping guided-path geometry (no bpy)."""
+
+    def setUp(self):
+        import aerial_root_trace as mod
+        self.mod = mod
+
+    def test_endpoints_are_exact(self):
+        start, end = (0.0, 0.0, 0.30), (0.10, 0.05, 0.0)
+        pts = self.mod.droop_path_points(start, end, samples=20)
+        self.assertEqual(len(pts), 20)
+        for a, b in zip(pts[0], start):
+            self.assertAlmostEqual(a, b, places=6)
+        for a, b in zip(pts[-1], end):
+            self.assertAlmostEqual(a, b, places=6)
+
+    def test_midpoint_droops_below_linear(self):
+        start, end = (0.0, 0.0, 0.30), (0.20, 0.0, 0.0)
+        pts = self.mod.droop_path_points(start, end, droop=0.05, samples=21)
+        mid = pts[10]
+        linear_mid_z = (start[2] + end[2]) / 2
+        self.assertLess(mid[2], linear_mid_z, "Path should sag below the straight line at midpoint")
+
+    def test_too_few_samples_raises(self):
+        with self.assertRaises(ValueError):
+            self.mod.droop_path_points((0, 0, 0), (1, 0, 0), samples=1)
 
 
 # ---------------------------------------------------------------------------
