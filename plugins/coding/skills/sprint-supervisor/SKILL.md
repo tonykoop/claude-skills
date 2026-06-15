@@ -1,7 +1,7 @@
 ---
 name: sprint-supervisor
-version: 1.1.0
-last-updated: 2026-05-18
+version: 1.2.0
+last-updated: 2026-06-14
 description: Babysit a running multi-pane WRFCoin tmux sprint while the user is AFK or asleep. Polls the manager pane and grid persona panes every ~4 min via ScheduleWakeup, auto-approves routine codex permission prompts using a fixed rubric, escalates destructive prompts, and produces a morning summary. Use this skill whenever the user says "watch the sprint", "supervise overnight", "I'm going to bed keep the sprint going", "babysit the panes", "keep an eye on twingrid", or invokes "/sprint-supervisor" — even without the word "supervisor". Scales by named scope — one instance handles a twingrid (18 panes), multiple instances divide-and-conquer a triplegrid or quadgrid by scoping each supervisor to a slice of grids (e.g. consensus, infra-backend, frontend) coordinated via /tmp lockfile so peers don't double-approve. Pairs with sprint-watchdog.sh which absorbs the mechanical ~70% of approvals; this skill handles the judgment ~30% — commands, rate-limit prompts, escalation.
 ---
 
@@ -263,6 +263,33 @@ If a prompt requests any of these, **do not approve and do not dismiss**. Captur
 - Any command modifying `~/.ssh/`, system services, or sudo state
 
 The reason these are hard-stop is that the cost of approving one wrong is catastrophic (data loss, leaked secrets, broken production) while the cost of waking the user is merely annoying. The asymmetry argues for caution.
+
+## Pre-merge checklist (run before every PR merge)
+
+`mergeStateStatus == CLEAN` is necessary but **not sufficient**. Before squash-merging any agent PR, walk this list — each item is a real failure that bit a real sprint (2026-06-14):
+
+1. **A PR that ADDS or changes CI must have its NEW job green.** If the repo had no pre-existing *required* checks, `CLEAN`/`UNSTABLE` can hide a red brand-new job (e.g. an added `ci.yml` whose `validate` step fails). Explicitly read `gh pr checks <n>` and confirm the conclusion of the job the PR introduced — don't trust the rollup. Merging a red foundation poisons `main` for every downstream PR.
+2. **No-CI / light-CI repos: run the tests locally first.** For repos without enforced CI (fresh repos, some plugin repos), `git -C <worktree> pull` then `python3 -m pytest -q` (+ `ruff check` on touched files) before merging. CLEAN there just means "no required checks", not "tests pass".
+3. **New task family / catalog entry → completeness-validator cascade.** If the PR adds a task family (or anything a "every X is registered/mapped" validator enumerates), confirm it also updated the map (e.g. `REASONING_BUCKETS.md`, `registry.json`). After it merges, re-check sibling PRs — they may flip `BLOCKED` because the validator now sees the new entry as unmapped in *their* branch.
+4. **Duplicate / superseded detection.** When agents self-extend into adjacent issues they create overlapping branches. Before merging, list the PR's files and check whether main already has that deliverable (a prior round/rework merged it). Close duplicates as superseded rather than merging a second copy.
+5. **Dependency order for a new foundation repo.** Merge the schema/CI story first, then rebase each dependent branch onto the new `main` (they carry stale shared files — `pyproject.toml`, `__init__.py` — resolve those to main's version). Re-check mergeability after each merge; expect rebase cascades on shared trees.
+6. **Conflict resolution on overlapping inserts — beware the coincidental-context trap.** When two branches both insert new code at the same location and share trailing lines (`}`, `</section>`, dict/registry boilerplate), do NOT just strip the 3 conflict markers — that mis-joins one block's header to another's body. Reconstruct from main + the branch's *named* additions, or duplicate the shared closing per side. Validate (`python -c "import ast; ast.parse(...)"` / balanced-tag count) and run tests before continuing the rebase.
+
+## Manager-acting-on-an-agent's-behalf safety
+
+The supervisor sometimes finishes an agent's work for it (push a stalled-but-done agent's commit, fix a trivial lint, open a codex PR). Guardrails:
+
+- **Committed vs staged before a manager-push.** If you push an idle agent's HEAD to unblock it, first confirm the intended change is *committed*, not merely staged/working-tree. Check `git show HEAD:<file> | grep <fix>` or `git diff --cached --quiet`. Pushing a pre-fix HEAD looks like progress but leaves CI red and wastes a cycle.
+- **Don't race a live agent on a shared `.git`.** Worktrees share one `.git`; operating in/near a worktree whose agent is still active causes `index.lock` collisions. Use a dedicated scratch worktree for manager rebases and wrap git in a short lock-retry loop (sleep 8s, retry ~5×).
+- **Open codex PRs from the host** (codex panes can't reach `api.github.com`); use `Refs #N`, never `Closes`.
+
+## Pre-dispatch verification (when the supervisor also dispatches)
+
+If this supervisor instance also stands up worktrees and launches panes (warm hand-off, or a combined manager+supervisor role), verify before sending any task:
+
+1. **Worktree↔repo match.** For each worktree, assert `git -C <worktree> remote get-url origin` is the *intended* repo. A copy-paste slip (running `git worktree add` from the wrong clone dir after a `cd`) silently routes an agent's work to the wrong repo — caught too late, at PR time, in the wrong place. One cheap loop after setup prevents it.
+2. **Launch agents in true auto mode, not acceptEdits.** claude: `--permission-mode auto` (footer must read `⏵⏵ auto mode on`, not `accept edits on`). codex: `-a on-failure`. `acceptEdits` still prompts on every bash command and turns the supervisor into a full-time prompt-clearer.
+3. **Clear the one-time "trust this folder" prompt** that fresh worktrees trigger on first agent launch (`1 Enter` for claude; codex usually auto-trusts).
 
 ## AFK notifications
 
