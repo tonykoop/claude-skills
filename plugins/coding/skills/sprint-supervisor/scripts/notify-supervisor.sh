@@ -16,14 +16,22 @@ if [ -z "$PAYLOAD" ] && [ ! -t 0 ]; then
 fi
 [ -z "$PAYLOAD" ] && PAYLOAD='{}'
 
-TS="$(date -u +%Y%m%dT%H%M%S.%3N)"
+# GNU `date` supports %3N (ms); BSD/macOS does not. Probe once and fall back to
+# epoch seconds, which is unique enough alongside the PID for a fast event file.
+TS="$(date -u +%Y%m%dT%H%M%S.%3N 2>/dev/null)"
+case "$TS" in
+  *%3N|"") TS="$(date -u +%Y%m%dT%H%M%S)-$(date +%s)" ;;
+esac
 PID="$$"
 OUT="$EVENT_DIR/${TS}-${PID}.json"
+
+# Portable ISO-8601-ish UTC timestamp: GNU has `date -Iseconds`, BSD does not.
+RECEIVED_AT="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 
 # Wrap codex's payload with our own envelope so the supervisor has stable
 # metadata even if codex's schema changes.
 {
-  printf '{"received_at":"%s","codex_payload":' "$(date -Iseconds)"
+  printf '{"received_at":"%s","codex_payload":' "$RECEIVED_AT"
   printf '%s' "$PAYLOAD"
   printf '}\n'
 } > "$OUT" 2>/dev/null || true

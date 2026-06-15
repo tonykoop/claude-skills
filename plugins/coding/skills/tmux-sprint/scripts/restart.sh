@@ -45,6 +45,7 @@ ts_require jq
 
 name="$(ts_persona_field "$PANE" name)"; name="${name:-pane$PANE}"
 launch="$(ts_persona_field "$PANE" launch)"; launch="${launch:-codex}"
+runtime="$(ts_persona_field "$PANE" runtime)"; runtime="${runtime:-codex}"
 target="$(ts_target "$PANE")"
 
 probe() { ts_classify "$(ts_capture "$PANE")"; }
@@ -86,12 +87,19 @@ case "$state" in
     echo "Unhandled state: $state" >&2; exit 1 ;;
 esac
 
-# Wait up to 15s for the codex banner (or any live signature) to come up.
+# Wait up to 15s for the launch banner (or any live signature) to come up.
+# Each runtime prints a different banner; codex shows the OpenAI Codex banner,
+# agy/Antigravity comes up to its "? for shortcuts" prompt-box footer, claude
+# to its statusline. The generic IDLE/WORKING check below catches all three;
+# the explicit banner greps just short-circuit faster.
 deadline=$(( $(date +%s 2>/dev/null || echo 0) + 15 ))
 while :; do
   cap="$(ts_capture "$PANE")"
   if printf '%s' "$cap" | grep -qiE 'OpenAI Codex \(v[0-9]'; then
     echo "✓ $name: codex banner up."; break
+  fi
+  if [[ "$runtime" == "agy" ]] && printf '%s' "$cap" | grep -qiE '\? for shortcuts'; then
+    echo "✓ $name: agy/Antigravity prompt up."; break
   fi
   new_state="$(ts_classify "$cap")"
   if [[ "$new_state" == "IDLE" || "$new_state" == "WORKING" ]]; then

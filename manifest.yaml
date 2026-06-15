@@ -42,15 +42,18 @@ skills:
       Current Codex tmux sprint driver. v3 evolution is tracked by issues.
 
   tmux-sprint:
-    canonical_version: 2.3.1
+    canonical_version: 2.5.0
     runtime: claude
-    repo_path: claude/skills/tmux-sprint
-    last_updated: 2026-05-17
+    repo_path: plugins/coding/skills/tmux-sprint
+    last_updated: 2026-06-15
     status: active
     notes: >-
       Claude-side tmux sprint counterpart with TwinGrid blind A/B, Partner
       Peek templates, label-aware sprint batching/model-picker routing, and a
-      provider-failover contract for budget-exhausted pane recovery.
+      provider-failover contract for budget-exhausted pane recovery. v2.5.0
+      adds agy/Antigravity (Gemini) as a first-class pane type (liveness,
+      submission, ~/.gemini permission routing, agy -p vs interactive, quota
+      warning) and a tmux 3.2+/bash-3.2/BSD-date Compatibility section.
 
   merge-review:
     canonical_version: 1.0.0
@@ -238,10 +241,10 @@ skills:
     notes: "Initial snapshot with catalog/auth-state preflight (issue 72) for honest sparse-catalog output."
 
   sprint-supervisor:
-    canonical_version: 1.1.0
+    canonical_version: 1.3.0
     runtime: claude
     repo_path: plugins/coding/skills/sprint-supervisor
-    last_updated: 2026-05-18
+    last_updated: 2026-06-15
     status: active
     deps:
       - sprint-manager  # cold-start handoff: supervisor bootstraps manager when no manager is running; do not reimplement manager topology here

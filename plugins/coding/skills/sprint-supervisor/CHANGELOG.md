@@ -1,5 +1,22 @@
 # Changelog — sprint-supervisor
 
+## v1.3.0 — 2026-06-15
+
+Sprint-infra hardening (repo issues #163, #160, #166, #191).
+
+### Added
+
+- **Compatibility section** (#163) — tmux 3.2+ matrix for Linux/WSL2/macOS, plus the bash-3.2 / BSD-`date` portability rules and a note that `sprint-watchdog.sh` (install-only) needs the same fixes when packaged.
+- **agy / Antigravity permission caveat** in the approval rubric (#191) — agy is Gemini-backed with a `~/.gemini/policies/auto-saved.toml` allowlist; broadening that policy (auto-allow `run_shell_command`, `--dangerously-skip-permissions`, `skipPermissions`) is now an explicit refusal-list item. Headless `agy -p` raises no prompts.
+- **Mobile cold-start chosen path** (#160) — `references/dispatch-patterns.md` §2 now commits to the magic-file / dispatch-watcher mechanism (over always-on Cowork or SSH relay), with the dispatch-file shape, a prerequisites list (persistent PC-side watcher, a phone-writable / PC-readable transport, atomic claim), and a clear "live phone→PC test still pending Tony's transport confirmation" status.
+
+### Changed / fixed (portability — #163)
+
+- `scripts/grid-scan.sh` — `mapfile` → portable `while read` loop; `capture-pane | tail -12` → `capture-pane -p -S -40` so prompts above trailing blank rows aren't missed; `PROMPT_REGEX` widened with a generic confirmation catch-all and agy/gemini phrasings.
+- `scripts/notify-supervisor.sh` — GNU-only `date -Iseconds` and `%3N` now fall back to portable `date -u +%Y-%m-%dT%H:%M:%SZ` / epoch seconds on BSD/macOS.
+- Lockfile snippet in Prerequisites uses portable `date -u +%Y-%m-%dT%H:%M:%SZ`.
+- Provider-agnostic rubric note now names `agy` and points at `tmux-sprint/references/provider-failover.md` (#166).
+
 ## v1.2.0 — 2026-06-14
 
 Hardening from the AI-HWE sprint (~14 rounds, 60+ PRs merged across 5 repos). Dispatch/parallelism was strong; every painful failure was at the merge/integration boundary or in permission ergonomics.

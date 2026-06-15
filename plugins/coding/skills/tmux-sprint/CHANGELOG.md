@@ -1,5 +1,26 @@
 # Changelog - tmux-sprint
 
+## v2.5.0 - 2026-06-15
+
+- **agy / Antigravity (Gemini) as a first-class pane type (#191).**
+  `ts_classify` now recognizes agy panes — IDLE on the `? for shortcuts`
+  prompt footer, WORKING on the `Generating…` / `esc to cancel` spinner —
+  instead of mis-classifying them as DEAD and blocking `dispatch`. Also added
+  the newer-codex (`gpt-5.5+`) middot-footer idle branch.
+- `restart.sh` is runtime-aware: an agy pane is revived once its prompt-box
+  footer appears (not the codex banner).
+- `launch-grid.sh` staggers agy cold-starts by the `agy` rate limit (8s
+  default) and warns via `ts_agy_grid_warn` when more than `TMUX_SPRINT_AGY_MAX`
+  (default 3) interactive agy panes are launched — Gemini quota drains fast on
+  the individual plan; prefer headless `agy -p` for fan-out.
+- SKILL.md: new "agy (Antigravity / Gemini) panes" section (submission,
+  `~/.gemini/policies/auto-saved.toml` permission routing, `agy -p` print vs
+  interactive, quota awareness) and a new **Compatibility** section covering
+  tmux 3.2+ on Linux/WSL2/macOS + bash 3.2 / BSD `date` portability rules
+  (#163).
+- `tests/test_preflight.sh` covers the agy idle/working and codex-5.5 idle
+  branches.
+
 ## v2.4.0 - 2026-06-09
 
 - Shipped the core driver implementation, resolving #193 (the SKILL.md

@@ -32,6 +32,17 @@ eq "$(ts_classify 'some output here  Ctx: 63%')"  IDLE "claude ctx meter"
 eq "$(ts_classify 'model gpt-5.4
 5h  21%   weekly  20%')" IDLE "codex idle"
 
+# newer codex (gpt-5.5+) middot-footer idle without a 5h meter (#163)
+eq "$(ts_classify 'gpt-5.5
+  · send   · newline   · transcript')" IDLE "codex 5.5 middot idle"
+
+# agy / Antigravity (Gemini) panes (#191)
+eq "$(ts_classify 'Generating…
+esc to cancel')"           WORKING "agy working (generating)"
+eq "$(ts_classify 'esc to cancel')"        WORKING "agy working (cancel hint)"
+eq "$(ts_classify '> type a prompt
+? for shortcuts')"        IDLE "agy idle (shortcuts footer)"
+
 eq "$(ts_classify '')"          BLANK "blank pane"
 eq "$(ts_classify '
   ')"  BLANK "whitespace-only pane"
