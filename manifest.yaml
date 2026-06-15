@@ -3,7 +3,7 @@
 # Update this file whenever a skill version is bumped, packaged, or deprecated.
 
 schema_version: 1
-last_updated: 2026-05-25
+last_updated: 2026-06-15
 
 install_roots:
   windows:
@@ -87,6 +87,20 @@ skills:
     repo_path: codex/skills/merge-manager
     last_updated: 2026-05-08
     status: active
+
+  gh-fix-ci:
+    canonical_version: 0.1.0
+    runtime: claude
+    repo_path: plugins/coding/skills/gh-fix-ci
+    last_updated: 2026-06-15
+    status: active
+    notes: >-
+      Claude-usable port of the Codex-only gh-fix-ci into the coding plugin
+      (consolidation). Inspects failing GitHub Actions PR checks, pulls run
+      logs, extracts a failure snippet, scopes out external CI providers, and
+      drafts a fix plan before implementing. Ships scripts/inspect_pr_checks.py
+      (the script the original codex SKILL referenced but never shipped). The
+      codex variant remains at codex/skills/gh-fix-ci (codex-gh-fix-ci entry).
 
   codex-gh-fix-ci:
     canonical_version: 1.0.0
@@ -266,8 +280,8 @@ skills:
   source-citations:
     canonical_version: 0.1.0
     runtime: shared
-    repo_path: skills/source-citations
-    last_updated: 2026-05-22
+    repo_path: plugins/coding/skills/source-citations
+    last_updated: 2026-06-15
     status: active
     notes: >-
       Bibliography + techniques catalog for instrument repos. Builds a keyed
@@ -281,3 +295,24 @@ skills:
 planned_skills:
   energy-management:
     status: issue-handoff
+
+# Plugins whose canonical source lives in a separate repository. These are
+# first-class marketplace plugins (registered in .claude-plugin/marketplace.json
+# and .codex-plugin/marketplace.json), but their skills are authored and
+# versioned in the referenced standalone repo — not in this checkout. This
+# mirrors how the instrument-maker / makerspace skills snapshot from their
+# standalone repos.
+plugins:
+  studiopipeline:
+    status: active
+    first_class: true
+    canonical_repo: https://github.com/tonykoop/StudioPipeline
+    runtime: shared
+    last_updated: 2026-06-15
+    notes: >-
+      StudioPipeline hardware-engineering / dogfood workflow (MakerBench, hwe).
+      Promoted to the third first-class plugin alongside coding and maker. Its
+      skills are authored in the standalone tonykoop/StudioPipeline repo and
+      installed from there via the marketplace entry; this manifest only records
+      its existence and canonical source. Do not author StudioPipeline skills in
+      this repo.
