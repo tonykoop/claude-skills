@@ -1,7 +1,7 @@
 ---
 name: habitat-maker
-version: 0.4.0
-last-updated: 2026-05-11
+version: 0.4.1
+last-updated: 2026-06-15
 description: >-
   Design wildlife habitat and garden infrastructure — birdhouses, bat houses,
   bee houses, bird baths, bird feeders, planters, pollinator habitat, garden
@@ -21,7 +21,9 @@ infrastructure. Companion skill to `instrument-maker` (instruments) and
 
 Status: **v0.4** — adds bat, native bee, observation-hive preflight, and
 camera/electronics welfare gates on top of the first working canonical example
-(chickadee laser birdhouse). Some habitat types are still scaffolded; see
+(chickadee laser birdhouse). v0.4.1 folds in the Tillandsia-on-bark sculpture
+micro-line (issue #45) as a planters/plant-supports build-packet reference plus
+a minimal hand-mounted example. Some habitat types are still scaffolded; see
 "Open work" below.
 
 ## Connectors
@@ -43,6 +45,7 @@ This skill works best with these MCP connectors. Claude will suggest connecting 
 - "observation hive design preflight" / "camera in a habitat"
 - "build packet for a [species] birdhouse / bee house / bird feeder"
 - "laser-cut [habitat] for [species]" / "CNC [habitat]"
+- "Tillandsia on bark" / "air plant mount" / "mount air plants on cork"
 - "parametric birdhouse design" / "regenerate the SVG for the birdhouse"
 - "what wall thickness does a chickadee box need?"
 - "habitat design for [species]"
@@ -57,13 +60,17 @@ This skill works best with these MCP connectors. Claude will suggest connecting 
 - Instrument acoustics — route to `instrument-maker`.
 - Reverse-engineering an existing habitat object from photos — start with
   `reverse-engineer`, then route here for the parametric packet.
+- Tillandsia / air-plant *care*, watering/soak schedules, or living-specimen
+  tracking — route to `houseplant`. habitat-maker owns only the bark/cork
+  *mount* fabrication (see the Tillandsia-on-bark reference).
 
 ## Owns
 
 - Species/method/material design across these repos:
   - `birdhouses`, `bat-houses`, `bee-houses`
   - `bird-baths`, `bird-feeders`
-  - `planters`, `plant-supports`
+  - `planters`, `plant-supports` (incl. the Tillandsia-on-bark sculpture
+    micro-line — air-plant mounts on cork/bark substrate)
   - `pollinator-habitat`
   - `garden-signage`
   - `found-cavities` (minimal-intervention repurposing of paused instrument
@@ -230,6 +237,12 @@ artifacts are required only where the geometry actually drives a machine.
 - [`references/welfare-gate-schema.md`](references/welfare-gate-schema.md)
   — shared pass/fail welfare-gate schema for packet-local records and the
   future `habitat-reference` import workflow.
+- [`references/tillandsia-on-bark.md`](references/tillandsia-on-bark.md)
+  — normative reference for the Tillandsia-on-bark sculpture micro-line
+  (issue #45): substrate options, copper-free / removable-for-soak welfare
+  gates, mounting methods, and the form decision (folded here, not a standalone
+  skill; care routes to `houseplant`). Backed by the minimal example
+  [`examples/tillandsia-on-cork-mount/`](examples/tillandsia-on-cork-mount/).
 
 ## Open work (v0.4 → v1.0)
 
