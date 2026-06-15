@@ -1,7 +1,7 @@
 ---
 name: makerspace
-version: 1.1.3
-last-updated: 2026-05-11
+version: 1.1.4
+last-updated: 2026-06-15
 description: >-
   Plan shop-floor fabrication for jigs, fixtures, workholding, molds, machine
   setups, and make/order/buy/borrow decisions. Use when the user asks to
@@ -216,6 +216,9 @@ needs a temporary profile instead of a canonical `spaces/<slug>/` entry.
 - `references/doe-integration.md`
   Read when the user is tuning feeds, speeds, cure times, or other process
   variables experimentally.
+- `references/fabrication-specialist-charter.md`
+  Read when asked to confirm scope/coverage of the fabrication specialist
+  (issue #15) — maps the requested modes/resources to existing deliverables.
 
 ## Dispatch to specialists deliberately
 

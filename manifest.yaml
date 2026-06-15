@@ -159,12 +159,12 @@ skills:
     notes: Vinyasa-first shared class-sequencing skill with playlist-builder handoff output. v1.2.0 adds heated-room safety checklist and hot-room cue-volume guidance.
 
   makerspace:
-    canonical_version: 1.1.2
+    canonical_version: 1.1.4
     runtime: shared
-    repo_path: skills/makerspace
-    last_updated: 2026-05-11
+    repo_path: plugins/maker/skills/makerspace
+    last_updated: 2026-06-15
     status: active
-    notes: Portable snapshot from the standalone makerspace repo. v1.1.1 adds a generator-backed DXF/CNC fabrication handoff checklist on top of the structured-shop-artifacts validator; v1.1.2 adds repo-to-shop-packet routing for woodworking/mechanism fabrication handoffs.
+    notes: Portable snapshot from the standalone makerspace repo. v1.1.1 adds a generator-backed DXF/CNC fabrication handoff checklist on top of the structured-shop-artifacts validator; v1.1.2 adds repo-to-shop-packet routing for woodworking/mechanism fabrication handoffs; v1.1.4 records that issue #15 (fabrication specialist, epic #211) is satisfied by this existing skill and adds a fabrication-specialist-charter reference plus the first CHANGELOG.
 
   sheet-metal:
     canonical_version: 1.0.0
@@ -201,10 +201,10 @@ skills:
   habitat-maker:
     canonical_version: 0.4.1
     runtime: shared
-    repo_path: skills/habitat-maker
-    last_updated: 2026-05-11
+    repo_path: plugins/maker/skills/habitat-maker
+    last_updated: 2026-06-15
     status: active
-    notes: Bat/bee/observation-hive welfare gates and camera/electronics caveats, plus bird-bath/balcony support, first canonical chickadee laser packet, and a concept-only observation-hive preflight template.
+    notes: Bat/bee/observation-hive welfare gates and camera/electronics caveats, plus bird-bath/balcony support, first canonical chickadee laser packet, and a concept-only observation-hive preflight template. v0.4.1 folds the Tillandsia-on-bark sculpture micro-line (issue #45, epic #211) into planters/plant-supports as a reference + minimal example (care routes to houseplant) and adds the first CHANGELOG.
 
   houseplant:
     canonical_version: 0.2.0
@@ -213,6 +213,21 @@ skills:
     last_updated: 2026-05-17
     status: active
     notes: 'Houseplant and bonsai digital twins plus care workflows, with first-class Blender MCP support. Recovered 2026-05-23 from stash@(0)^3 after a 2026-05-18 hygiene-bot stash. Now at plugins/maker/skills/houseplant. v0.2.0 adds capture-pipeline routing for four phone modes (multi-angle photos with ruler, photogrammetry mesh, orbit video, lazy-susan stabilized video), ruler-based scale calibration, bundled bpy patterns (scene_scaffold, scale_from_ruler, wire_coil, cut_marker, sim_collection), Ficus benjamina starter profile, and a smoke-test suite. Six deferred modules filed as issues 172-177.'
+
+  energy-management:
+    canonical_version: 0.1.0
+    runtime: shared
+    repo_path: plugins/maker/skills/energy-management
+    last_updated: 2026-06-15
+    status: active
+    notes: >-
+      Data-light capacity-to-task matching for making/teaching/sprint work
+      (issue #16, epic #211). Resolved the skill-vs-template question as a thin
+      skill. Two-input capacity model (time window + energy state), five modes
+      (intake, task-to-energy matching, weekly load review, recovery-aware
+      planning, handoff). Reuses idea-incubator labels (ready-now + domain)
+      instead of inventing a parallel taxonomy. Hard boundaries: no medical or
+      mental-health advice, no invented metrics, no persistent personal store.
 
   playlist-builder:
     canonical_version: 0.1.0
