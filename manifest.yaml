@@ -207,12 +207,12 @@ skills:
     notes: Bat/bee/observation-hive welfare gates and camera/electronics caveats, plus bird-bath/balcony support, first canonical chickadee laser packet, and a concept-only observation-hive preflight template. v0.4.1 folds the Tillandsia-on-bark sculpture micro-line (issue #45, epic #211) into planters/plant-supports as a reference + minimal example (care routes to houseplant) and adds the first CHANGELOG.
 
   houseplant:
-    canonical_version: 0.2.0
+    canonical_version: 0.3.0
     runtime: shared
     repo_path: plugins/maker/skills/houseplant
-    last_updated: 2026-05-17
+    last_updated: 2026-06-15
     status: active
-    notes: 'Houseplant and bonsai digital twins plus care workflows, with first-class Blender MCP support. Recovered 2026-05-23 from stash@(0)^3 after a 2026-05-18 hygiene-bot stash. Now at plugins/maker/skills/houseplant. v0.2.0 adds capture-pipeline routing for four phone modes (multi-angle photos with ruler, photogrammetry mesh, orbit video, lazy-susan stabilized video), ruler-based scale calibration, bundled bpy patterns (scene_scaffold, scale_from_ruler, wire_coil, cut_marker, sim_collection), Ficus benjamina starter profile, and a smoke-test suite. Six deferred modules filed as issues 172-177.'
+    notes: 'Houseplant and bonsai digital twins plus care workflows, with first-class Blender MCP support. At plugins/maker/skills/houseplant. v0.3.0 (epic #209) implements the v2 feature set: chrono-horticultural engine with species-scaled wire-removal inspection windows (#172, references/chrono-engine.md + scripts/wire_window.py), bud/bloom chrono-tracker with confidence-explicit forecasting (#173, references/bud-bloom-tracker.md), aerial-root/nebari lifecycle tracker with a teal guided-root trace (#174, references/aerial-roots-nebari.md + scripts/aerial_root_trace.py), CV plant-health check-engine-light screening (#175, references/health-diagnostics.md), simulation-only Blender boolean-union grafting sandbox (#176, references/grafting-sandbox.md + scripts/grafting_sim.py), and a propagation tracker with parent/child lineage (#177, references/propagation.md). v0.2.0 added capture-pipeline routing for four phone modes, ruler-based scale calibration, bundled bpy patterns, the Ficus benjamina starter profile, and a smoke-test suite (now 24 tests).'
 
   energy-management:
     canonical_version: 0.1.0

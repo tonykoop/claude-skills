@@ -2,7 +2,7 @@
 
 A Claude skill for managing houseplant and bonsai collection digital twins plus care workflows. First-class Blender MCP support: simulate prunes and wire-coil bends in a parametric twin before you take shears to the live plant. Built by Tony Koop on a multi-year *Ficus benjamina* bonsai-in-training and a brainstorm with two collaborator agents.
 
-This is **v0.2.0** — the first skill-creator iteration on top of an initial Codex-authored draft. The scope of v0.2.0 is the killer-app workflow: phone capture → Blender twin → structural prune + wire-coil training simulation. Six additional modules (chrono-horticultural calendar, bud/bloom tracker, aerial-root tracker, health diagnostics, grafting sandbox, propagation tracker) are filed as GitHub issues for later iterations.
+This is **v0.3.0** — the v2 feature set (epic #209). v0.2.0 delivered the killer-app workflow: phone capture → Blender twin → structural prune + wire-coil training simulation. v0.3.0 adds the six modules that were deferred from v1: a chrono-horticultural calendar engine with species-scaled wire-removal inspection windows (#172), a bud/bloom chrono-tracker (#173), an aerial-root and nebari lifecycle tracker (#174), CV plant-health "check-engine light" diagnostics (#175), a simulation-only Blender boolean-fusion grafting sandbox (#176), and a propagation tracker with parent/child lineage (#177).
 
 ## What this skill does
 
@@ -31,13 +31,22 @@ houseplant/
 │   ├── capture-pipeline.md               # phone capture modes + ruler scale calibration
 │   ├── blender-digital-twin.md           # MCP tool order, bpy patterns, hybrid recipe
 │   ├── bonsai-module.md                  # pruning, wiring, aerial roots, ficus notes
-│   └── collection-records-and-care.md    # plant record schema, event log types
+│   ├── collection-records-and-care.md    # plant record schema, event log types
+│   ├── chrono-engine.md                  # dynamic watering/fertilizing + wire-removal windows (#172)
+│   ├── bud-bloom-tracker.md              # bud/bloom forecasting, pink markers (#173)
+│   ├── aerial-roots-nebari.md            # aerial-root lifecycle + nebari guidance (#174)
+│   ├── health-diagnostics.md             # CV "check-engine light" health screening (#175)
+│   ├── grafting-sandbox.md               # simulation-only boolean-fusion graft preview (#176)
+│   └── propagation.md                    # cuttings/air-layering + lineage tracking (#177)
 ├── scripts/                              # bundled bpy patterns
 │   ├── scene_scaffold.py                 # Plant_<plant_id>/ collection hierarchy
 │   ├── scale_from_ruler.py               # ruler-based scale calibration
 │   ├── wire_coil.py                      # helical wire-coil generator
 │   ├── cut_marker.py                     # colored marker placement
-│   └── sim_collection.py                 # non-destructive simulation collections
+│   ├── sim_collection.py                 # non-destructive simulation collections
+│   ├── wire_window.py                    # wire-removal inspection-window math (#172, no bpy)
+│   ├── aerial_root_trace.py              # teal guided-root trace (#174)
+│   └── grafting_sim.py                   # boolean-union graft preview (#176)
 ├── assets/
 │   └── ficus-benjamina-starter.md        # starter plant profile
 ├── evals/
@@ -83,10 +92,8 @@ python3 skills/skills-meta/scripts/skills-meta.py --skill houseplant
 
 Tracked in [GitHub issues](https://github.com/tonykoop/claude-skills/issues?q=is%3Aissue+label%3Ahouseplant):
 
-- **v0.3** target: aerial-root and nebari guidance tracker (#174). This module pairs with the maintainer's Ficus benjamina specimen, which is actively training aerial roots.
-- **v0.4** target: chrono-horticultural calendar engine (#172) with wire-removal inspection-window scheduling.
-- **v0.5** target: bud/bloom chrono-tracker (#173) for non-Ficus specimens that have visible blooms.
-- Other deferred: health diagnostics (#175), virtual grafting sandbox (#176), propagation tracker (#177).
+- **v0.3.0** (epic #209) — delivered the full v2 feature set: chrono-horticultural engine (#172), bud/bloom tracker (#173), aerial-root/nebari tracker (#174), CV health diagnostics (#175), grafting sandbox (#176), and propagation tracker (#177).
+- Next: a v0.3 benchmark iteration in `houseplant-workspace/` exercising the new modules against the maintainer's *Ficus benjamina* specimen (aerial-root training, wire-removal scheduling, propagation lineage).
 
 ## License
 

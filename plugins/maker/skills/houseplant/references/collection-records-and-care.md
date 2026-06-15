@@ -76,10 +76,19 @@ Use consistent event names:
 - `bloom_observed`
 - `propagation_started`
 - `cutting_rooted`
+- `cutting_potted_up`
+- `cutting_failed`
+- `aerial_root_observed`
+- `aerial_root_guided`
+- `aerial_root_reached_soil`
+- `aerial_root_thickening`
+- `aerial_root_fused`
 - `health_flag_added`
 - `health_flag_resolved`
 
 Each event should include date, evidence, action, result, and follow-up.
+
+The aerial-root events track a single lifecycle (`tip_promising → guided → reached_soil → thickening → fused`); see [`aerial-roots-nebari.md`](aerial-roots-nebari.md). The propagation events extend the cutting lifecycle (`started → rooted → potted_up → independent`, or `failed`) and should carry a `parent_plant_id` for lineage; see [`propagation.md`](propagation.md).
 
 ## Care Scheduling Principles
 
