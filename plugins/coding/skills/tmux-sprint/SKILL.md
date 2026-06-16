@@ -1,6 +1,6 @@
 ---
 name: tmux-sprint
-version: 2.5.0
+version: 2.6.0
 last-updated: 2026-06-15
 description: >-
   Transactional sprint-round dispatch, liveness probing, and codex-session
@@ -312,6 +312,75 @@ The failover path deliberately reuses the existing `preflight`, `dispatch`,
 and `restart` boundaries. Provider migration is a manager-owned recovery
 operation; sprint-supervisor should only approve safe prompts by prompt shape
 and escalate anything outside its rubric.
+
+## Codex /goal lanes
+
+`/goal` is an experimental Codex CLI feature that sets a durable objective
+persisting across turns. Use it for Codex lanes that need to run autonomously
+toward a verifiable stopping condition — especially when the manager will be
+AFK or asleep. It is **Codex-only**; Claude and agy panes ignore it.
+
+Enable per-session with `/experimental`, or globally in `~/.codex/config.toml`:
+
+```toml
+[features]
+goals = true
+```
+
+### When to use /goal vs not
+
+Use `/goal` when the lane has one well-scoped objective with a verifiable
+stopping condition and will span multiple turns. Do NOT use it for single-turn
+tasks, for Claude/agy panes, or for loose unrelated backlogs.
+See `references/codex-goal-contract.md` for full shape guidelines and both
+sprint-profile templates (WRFCoin dev vs personal GitHub project).
+
+### Startup sequence for a Codex goal lane
+
+```
+1. /rename r<N>-<persona>-<slug>    (manual, pre-dispatch)
+2. /goal Complete <objective> without stopping until <stopping condition>.
+3. Round <N>: read <path> and execute. This file is a contract — do not edit it.
+```
+
+Steps 2 and 3 are automated by `dispatch.sh --goal <text>`. Pass the flag and
+it injects `/goal <text>` before the assignment one-liner for each Codex pane;
+Claude and agy panes receive only the assignment.
+
+```bash
+dispatch.sh --round 12 \
+  --goal "Complete the WRF-20 burn mechanic without stopping until tests pass and a draft PR is open" \
+  --to dan  --assignment ws/docs/plans/r12-dan.md \
+  --to elsa --assignment ws/docs/plans/r12-elsa.md \
+  --to alice --assignment ws/docs/plans/r12-alice.md   # claude — no goal injected
+```
+
+The goal text is recorded in the round JSON under `goal` (top level) and in
+each codex dispatch entry. Claude entries carry `null`.
+
+The assignment file must still include a **Plan-first gate** so the goal does
+not bypass manager review before implementation begins. The usual sequence:
+Codex reads the file → produces a plan → manager approves → Codex proceeds
+toward the durable goal → pauses at the gate defined in the goal text.
+
+### Inspection and recovery
+
+```bash
+# Check goal status in a codex pane (pane 3 = dan by default)
+tmux send-keys -t sprint:sprint.3 -l "/goal" ; tmux send-keys -t sprint:sprint.3 C-m
+
+# Pause if heading in the wrong direction
+tmux send-keys -t sprint:sprint.3 -l "/goal pause" ; tmux send-keys -t sprint:sprint.3 C-m
+
+# Resume after corrective notes
+tmux send-keys -t sprint:sprint.3 -l "/goal resume" ; tmux send-keys -t sprint:sprint.3 C-m
+
+# Clear before reassignment
+tmux send-keys -t sprint:sprint.3 -l "/goal clear" ; tmux send-keys -t sprint:sprint.3 C-m
+```
+
+sprint-supervisor can detect goal status from the pane capture (the `/goal`
+output line) and should include it in morning summaries for goal-enabled panes.
 
 ## TwinGrid mode - blind A/B plus Partner Peek
 

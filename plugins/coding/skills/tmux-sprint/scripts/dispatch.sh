@@ -5,15 +5,24 @@
 #     --to alice --assignment <ws>/docs/plans/2026-04-11-alice-round53.md \
 #     --to bob   --assignment <ws>/docs/plans/2026-04-11-bob-round53.md
 #
+#   dispatch.sh --round 53 --goal "Complete X without stopping until Y" \
+#     --to dan  --assignment <ws>/docs/plans/2026-04-11-dan-round53.md \
+#     --to elsa --assignment <ws>/docs/plans/2026-04-11-elsa-round53.md
+#
 # Every target needs its own --assignment <md-path>. There is no inline --items
 # option — the markdown file IS the contract. Each file must live under a
 # docs/plans/ directory and contain the read-only preamble block from
 # assets/assignment-preamble.txt verbatim.
 #
+# --goal <text> (optional): for Codex panes only, sends "/goal <text>" before
+# the assignment one-liner to set a durable objective. Silently skipped for
+# claude/agy panes. See references/codex-goal-contract.md for shape guidance.
+#
 # Flow per round:
 #   1. preflight every target; abort on BUSY/DEAD unless --force
 #   2. validate each assignment file (path + preamble)
 #   3. cancel copy-mode, send text, send C-m (never the literal "Enter")
+#      for codex panes with --goal: send "/goal <text>" first, then assignment
 #   4. rate-limit by runtime (claude parallel-ish @2s, codex sequential @10s)
 #   5. verify submission with a three-tier retry; mark SILENT_FAIL if all fail
 #   6. persist the round record under ~/.claude/projects/<slug>/tmux-v2/rounds/
@@ -27,6 +36,7 @@ source "$HERE/lib/common.sh"
 ROUND=""
 MANAGER="unknown"
 FORCE=0
+GOAL=""
 declare -a TO=() ASSIGN=()
 
 usage() {
@@ -37,6 +47,7 @@ while [[ $# -gt 0 ]]; do
   case "$1" in
     --round)      ROUND="$2"; shift 2 ;;
     --manager)    MANAGER="$2"; shift 2 ;;
+    --goal)       GOAL="$2"; shift 2 ;;
     --to)         TO+=("$2"); shift 2 ;;
     --assignment) ASSIGN+=("$2"); shift 2 ;;
     --project)    export TMUX_SPRINT_PROJECT="$2"; shift 2 ;;
@@ -131,6 +142,14 @@ for i in "${!TO[@]}"; do
 
   status="SILENT_FAIL"; tier=0
 
+  # for codex panes with --goal: inject "/goal <text>" before the assignment
+  if [[ -n "$GOAL" && "$rt" == "codex" ]]; then
+    ts_cancel_copy_mode "$pane"
+    tmux send-keys -t "$(ts_target "$pane")" -l "/goal $GOAL"
+    tmux send-keys -t "$(ts_target "$pane")" C-m
+    sleep 2
+  fi
+
   # tier 1: send + verify
   ts_send_one "$pane" "$oneliner"; tier=1
   sleep 3
@@ -159,7 +178,10 @@ for i in "${!TO[@]}"; do
   records="$(jq -c \
     --arg who "$who" --argjson pane "$pane" --arg rt "$rt" --arg file "$file" \
     --arg status "$status" --argjson tier "$tier" --arg at "$(ts_dt)" \
-    '. += [{persona:$who,pane:$pane,runtime:$rt,assignment:$file,status:$status,tier:$tier,sent_at:$at}]' \
+    --arg goal "$GOAL" \
+    '. += [{persona:$who,pane:$pane,runtime:$rt,assignment:$file,
+            goal:(if ($goal != "" and $rt == "codex") then $goal else null end),
+            status:$status,tier:$tier,sent_at:$at}]' \
     <<<"$records")"
 
   # rate-limit before the next target, by THIS pane's runtime
@@ -179,7 +201,10 @@ txn_file="$state_dir/dispatches/${ts_epoch}.json"
 round_json="$(jq -n \
   --argjson round "$(printf '%s' "$ROUND" | jq -R 'tonumber? // .')" \
   --arg manager "$MANAGER" --arg at "$(ts_dt)" --argjson disp "$records" \
-  '{round:$round, manager:$manager, dispatched_at:$at, dispatches:$disp}')"
+  --arg goal "$GOAL" \
+  '{round:$round, manager:$manager, dispatched_at:$at,
+    goal:(if $goal != "" then $goal else null end),
+    dispatches:$disp}')"
 
 printf '%s\n' "$round_json" | jq . > "$round_file"
 printf '%s\n' "$round_json" | jq . > "$txn_file"

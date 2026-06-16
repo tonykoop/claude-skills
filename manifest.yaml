@@ -45,7 +45,7 @@ skills:
       backups under ~/.skill-cleanup-backups/.
 
   tmux-sprint:
-    canonical_version: 2.5.0
+    canonical_version: 2.6.0
     runtime: claude
     repo_path: plugins/coding/skills/tmux-sprint
     last_updated: 2026-06-15
@@ -56,7 +56,9 @@ skills:
       provider-failover contract for budget-exhausted pane recovery. v2.5.0
       adds agy/Antigravity (Gemini) as a first-class pane type (liveness,
       submission, ~/.gemini permission routing, agy -p vs interactive, quota
-      warning) and a tmux 3.2+/bash-3.2/BSD-date Compatibility section.
+      warning) and a tmux 3.2+/bash-3.2/BSD-date Compatibility section. v2.6.0
+      adds Codex /goal lane integration (dispatch.sh --goal, codex-goal-contract
+      reference, goal test) resolving issue #117.
 
   merge-review:
     canonical_version: 1.0.0
