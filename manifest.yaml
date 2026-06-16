@@ -23,10 +23,10 @@ install_roots:
 
 skills:
   skills-meta:
-    canonical_version: 1.0.0
+    canonical_version: 1.0.1
     runtime: portable
     repo_path: skills/skills-meta
-    last_updated: 2026-05-08
+    last_updated: 2026-06-15
     status: active
     notes: >-
       Portable drift-audit skill for Claude, Codex, Gemini, and desktop
