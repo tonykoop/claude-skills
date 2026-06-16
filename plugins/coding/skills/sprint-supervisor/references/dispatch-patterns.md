@@ -141,6 +141,8 @@ This is a forward reference — don't try to *use* routines syntax that doesn't 
 
 Until then, the scheduled-tasks pattern in section 3 is the closest equivalent.
 
+The fleshed-out `nightly-sprint` design (all four steps, the escalation→pause→page→await-ack conditional, illustrative-only pseudo-syntax, and the scheduled-task→routine migration/cutover/rollback path that loses no nights of supervision) lives in `references/routines-integration.md` — **blocked on routines GA**, design-only.
+
 ## 5. Manual mid-sprint addition of a peer supervisor
 
 User is asleep. The sprint has grown to 4 grids. The default supervisor is keeping up but barely. Tony's phone vibrates with an escalation: ">8 panes stuck simultaneously, suspect manager fell behind."

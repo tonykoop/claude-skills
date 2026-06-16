@@ -1,5 +1,19 @@
 # Changelog — sprint-supervisor
 
+## v1.3.1 — 2026-06-15
+
+Forward-looking routines design (repo issue #161 — **still blocked on Anthropic routines GA**; no runtime added).
+
+### Added
+
+- **`references/routines-integration.md`** (#161) — design-only doc, prominently banner-marked BLOCKED on routines GA. Fleshes out the `nightly-sprint` routine sketch (Step 1 cold-start dispatch sprint-manager at 22:50; Step 2 dispatch sprint-supervisor loop-until-07:00 at 22:55; Step 3 morning summary + exit both at 07:00; Step 4 conditional escalation→pause→page→await-ack). Documents the scheduled-task→routine **migration path** (overlap dry-run on a throwaway/attended night, cutover only after one clean unattended night, disable-not-delete the old scheduled task, rollback to the bridge, and the "exactly one live nightly trigger per scope — never zero, never two" invariant). All routine syntax is clearly labeled illustrative-only pending the real (unknown) API. Cross-references `dispatch-patterns.md` §2/§3/§4 and SKILL.md behaviors rather than duplicating them.
+- **Pointer in `references/dispatch-patterns.md` §4** to the new routines-integration doc (append-only, minimal).
+- **SKILL.md** cold-start references sentence now mentions `references/routines-integration.md`.
+
+### Note
+
+This is honest forward-looking work — issue #161 stays **open**, blocked on routines GA. Nothing here is implemented as runtime; the live nightly mechanism remains the scheduled-tasks MCP bridge (`dispatch-patterns.md` §3).
+
 ## v1.3.0 — 2026-06-15
 
 Sprint-infra hardening (repo issues #163, #160, #166, #191).
