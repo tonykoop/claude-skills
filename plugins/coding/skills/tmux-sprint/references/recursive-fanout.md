@@ -1,0 +1,149 @@
+# Recursive fan-out — sub-manager contract
+
+How a persona pane (alice/bob/cindy/dan/elsa/frank), itself an Opus agent on auto
+mode, runs as a **sub-manager**: it decomposes its lane, spawns its own background
+subagents (one per story), reviews their PRs, and merges or hands back. This
+multiplies a 6-pane grid into an effective 6×N fleet without adding panes for the
+human to watch.
+
+It is **opt-in per assignment** and quota-hungry. Default to OFF; enable only when
+the lane has several independent stories and the usage budget allows it.
+
+## Cost model — Opus managers, Sonnet subagents
+
+| Tier | Who | Model | Work |
+|---|---|---|---|
+| Top | sprint manager (you) | Opus | grid orchestration, cross-lane merge order |
+| Mid | persona pane | **Opus** | lane decomposition, PR review, conflict resolution |
+| Leaf | persona's subagent | **Sonnet** (default) | one well-scoped story → PR |
+
+Subagents are spawned with `model: sonnet` unless the persona judges a specific
+story genuinely hard (then `model: opus` for that one). A 6×3 Sonnet leaf fleet is
+roughly affordable; a 6×3 Opus leaf fleet is not. Cap concurrency hard.
+
+## Enabling it (assignment fields)
+
+A fan-out assignment is an ordinary dispatch contract (preamble + tasks) plus:
+
+```
+Fan-out: enabled
+Subagent budget: 3          # max CONCURRENT subagents — a hard ceiling
+Subagent model: sonnet      # default; override per-story only when justified
+Merge mode: hand-back       # or: manager-merges
+```
+
+`Fan-out:` absent or `disabled` → the persona executes the lane itself, no nesting.
+
+## The sub-manager loop (what the persona does)
+
+1. **Decompose** the lane into N independent stories (read the linked issues first).
+2. **Per story, create an isolated worktree** so concurrent subagents never share a
+   working tree:
+   `git -C <repo> worktree add <dir>/<persona>-<story> -b <branch>/<story> origin/main`
+3. **Spawn a background subagent** (Agent tool: `run_in_background: true`,
+   `model: sonnet`) scoped ONLY to that worktree, carrying:
+   - the story scope + acceptance criteria,
+   - the **no-loose-skills** invariant (skills live only in coding/maker/
+     studiopipeline plugin dirs; SKILL.md frontmatter + CHANGELOG + manifest
+     registration; no 4th plugin),
+   - "commit (with the Co-Authored-By trailer), push, open a PR whose body **Refs**
+     (not Closes) the issue, then report."
+4. **Respect the concurrency cap.** Queue stories beyond `Subagent budget`.
+5. **On each subagent completion**, review its PR against the issue; small fixes
+   inline, request changes on large gaps.
+6. **Merge or hand back** per `Merge mode` (below).
+7. **Append-only on shared files.** Subagents touching the same `manifest.yaml` /
+   `plugin.json` / `README` must make minimal, append-only edits; the persona
+   resolves the inevitable rebase cascade (`--force-with-lease`) at merge time.
+
+## Merge hand-back (the hard-won rule)
+
+A sub-manager reliably **builds + opens PRs** but tends to **terminate while
+blocking on a CI monitor before completing its own merges** (it spends its
+budget spawning + watching children). Design for this:
+
+- **`Merge mode: hand-back`** (default when CI is slow): the persona opens every
+  PR, posts a one-line merge plan — PR numbers in dependency order — and **stops**.
+  The top manager / sprint-supervisor sweeps the final merges. An unmerged *green*
+  PR is cheap to land later; a half-rebased branch is expensive to recover. The
+  watchdog/supervisor already sweep ordinary prompts; extend that to "a dead
+  sub-manager's open PRs."
+- **`Merge mode: manager-merges`** (when CI is fast or absent, e.g. the
+  claude-skills repo has no required checks): the persona squash-merges its own
+  green PRs and rebases conflicts itself.
+
+When unsure, hand back.
+
+## Liveness — the `MANAGING` signature
+
+`preflight` must not mistake a busy sub-manager for an idle pane. Treat a persona
+as `MANAGING` (a busy sub-state, never `IDLE`, never redispatch/restart) when its
+tail shows any of:
+
+- "Async agent launched" / "running in the background" / agent-id lines,
+- a `<task-notification>` block (a child reporting completion),
+- "spawning" / "subagent" / "fan-out" / "dispatching subagent" narration,
+- the manager's own review/merge activity (`gh pr merge`, `git rebase`).
+
+A `MANAGING` pane is alive and waiting on its children. Only escalate if it shows
+a genuine permission prompt or has been silent past the normal watchdog window.
+
+## Fallback when nesting is unavailable
+
+If the runtime cannot spawn background subagents, the persona does the lane's
+stories **sequentially in per-story worktrees** and still delivers merged (or
+handed-back) PRs. The contract degrades gracefully; fan-out only changes
+throughput, never correctness.
+
+## Copy-paste fan-out assignment template
+
+```markdown
+# <persona> — Round <N> — <model: claude-opus>
+
+> EXECUTE the assignment. Do NOT edit this file — it is a read-only contract
+> from the sprint manager. Report results in your tmux output and PR
+> descriptions. If the assignment looks wrong, post a comment in this pane and
+> STOP; do not silently redefine the task.
+
+Fan-out: enabled
+Subagent budget: 3
+Subagent model: sonnet
+Merge mode: hand-back
+
+## Role
+You are a SUB-MANAGER. Decompose this lane into stories, spawn one background
+Sonnet subagent per story in its own git worktree, review each PR, and hand back
+the merge plan when done (see references/recursive-fanout.md).
+
+## Repo / worktree base
+Repo: <owner>/<repo>  (path: <abs-path>)
+Per-story worktree: git -C <abs-path> worktree add /home/<user>/fanout-wt/<persona>-<story> -b <persona>/<story> origin/main
+
+## Stories
+- <story 1> — issue #<n> — <scope + acceptance>
+- <story 2> — issue #<n> — <scope + acceptance>
+- <story 3> — issue #<n> — <scope + acceptance>
+Dependencies: <e.g. story 2 depends on story 1>
+
+## Invariants (pass through to every subagent)
+- New/changed skills live ONLY in coding/maker/studiopipeline plugin dirs;
+  SKILL.md frontmatter (name/version/last_updated) + CHANGELOG + manifest
+  registration; no 4th plugin; nothing loose.
+- PR body Refs (NOT Closes) the issue. Commit trailer:
+  Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>
+- Append-only on shared files (manifest.yaml / plugin.json / README); rebase
+  --force-with-lease on conflict.
+
+## Report
+Per-story PR URLs + state, the dependency-ordered merge plan, anything blocked.
+```
+
+## Relationship to other modes
+
+- Orthogonal to **TwinGrid** (blind A/B is about two panes on the *same* task;
+  fan-out is about one pane spawning *many* subagents on *different* stories).
+- Composes with **provider-failover** and **Codex /goal**: a sub-manager lane can
+  itself be a `/goal` codex lane, though recursive fan-out assumes a Claude/Opus
+  persona (the Agent tool drives the subagents).
+- Pairs with **sprint-supervisor**, which owns the merge-sweep for handed-back or
+  dead sub-managers.
