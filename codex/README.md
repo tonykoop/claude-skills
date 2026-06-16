@@ -13,11 +13,14 @@ For multi-vendor context, see the [top-level README](../README.md). For the Clau
 ```
 codex/
 └── skills/
-    ├── tmux-v2/                  Codex-side persona-grid driver (parity with claude/skills/tmux-sprint).
-    ├── merge-manager/            PR review + merge in dependency order + sprint-doc maintenance + handoff generation.
-    ├── wrfcoin-sprint-dispatch/  "Resume sprint" workflow — reconcile sprint doc with live GitHub state, rewrite handoffs, launch tmux.
     └── gh-fix-ci/                Plan + fix failing GitHub Actions PR checks (vendor-portable; no wrfcoin assumptions).
 ```
+
+> Retired 2026-06-15 (no-loose-skills consolidation): `tmux-v2`, `merge-manager`,
+> and `wrfcoin-sprint-dispatch` were removed — they are superseded by the
+> `coding` plugin's `tmux-sprint`, `merge-review`, and
+> `sprint-supervisor`/`sprint-update`/`tmux-sprint`, which the coding plugin's
+> `.codex-plugin` already serves to the Codex runtime.
 
 ---
 
@@ -25,9 +28,6 @@ codex/
 
 | Skill | Role |
 |---|---|
-| [`tmux-v2`](skills/tmux-v2/SKILL.md) | Codex-side counterpart to `claude/skills/tmux-sprint`. Launch the 2x3 persona grid, probe pane state, dispatch assignment files, revive dead panes. The Codex implementation reads its persona config from `~/.codex/memories/tmux-v2/personas.json`; the Claude side reads from `~/.claude/projects/<project-slug>/tmux-v2/personas.json`. |
-| [`merge-manager`](skills/merge-manager/SKILL.md) | PR review against the linked GitHub issue (not just the diff), merge in dependency order across repos, keep the sprint doc current, generate next-task handoff prompts. Vendor-portable — works on any multi-repo project, not wrfcoin-specific. |
-| [`wrfcoin-sprint-dispatch`](skills/wrfcoin-sprint-dispatch/SKILL.md) | "Resume sprint" workflow that ties everything together: read the sprint doc, reconcile with live GitHub state, rewrite per-persona handoffs to match reality, refresh the launch manifest, launch the tmux sprint window, send kickoff nudges. Lives in `~/wrfcoin/.codex/skills/` (project-level) since it knows the wrfcoin repo set. |
 | [`gh-fix-ci`](skills/gh-fix-ci/SKILL.md) | Inspect failing PR checks via `gh`, fetch GitHub Actions logs, summarize failures, propose a fix plan, and implement after approval. Vendor-portable. |
 
 ---
