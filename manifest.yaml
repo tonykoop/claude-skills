@@ -36,10 +36,13 @@ skills:
     canonical_version: 2.0.0
     runtime: codex
     repo_path: codex/skills/tmux-v2
-    last_updated: 2026-05-08
-    status: active
+    last_updated: 2026-06-15
+    status: retired
     notes: >-
-      Current Codex tmux sprint driver. v3 evolution is tracked by issues.
+      Retired 2026-06-15. Superseded by tmux-sprint, which the coding plugin's
+      .codex-plugin serves to the Codex runtime from the same ./skills/ dir.
+      Repo copy and live-install copies removed (no-loose-skills consolidation);
+      backups under ~/.skill-cleanup-backups/.
 
   tmux-sprint:
     canonical_version: 2.5.0
@@ -85,8 +88,12 @@ skills:
     canonical_version: 1.0.0
     runtime: codex
     repo_path: codex/skills/merge-manager
-    last_updated: 2026-05-08
-    status: active
+    last_updated: 2026-06-15
+    status: retired
+    notes: >-
+      Retired 2026-06-15. Superseded by merge-review (served to Codex via the
+      coding plugin). Repo + live-install copies removed; backups under
+      ~/.skill-cleanup-backups/.
 
   gh-fix-ci:
     canonical_version: 0.1.0
@@ -113,8 +120,12 @@ skills:
     canonical_version: 1.0.0
     runtime: codex
     repo_path: codex/skills/wrfcoin-sprint-dispatch
-    last_updated: 2026-05-08
-    status: active
+    last_updated: 2026-06-15
+    status: retired
+    notes: >-
+      Retired 2026-06-15. Folded into sprint-supervisor + sprint-update +
+      tmux-sprint (coding plugin). Repo + live-install copies removed; backups
+      under ~/.skill-cleanup-backups/.
 
   idea-incubator:
     canonical_version: 1.4.4
