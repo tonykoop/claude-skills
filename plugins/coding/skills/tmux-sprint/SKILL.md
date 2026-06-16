@@ -1,7 +1,7 @@
 ---
 name: tmux-sprint
-version: 2.4.0
-last-updated: 2026-06-09
+version: 2.5.0
+last-updated: 2026-06-15
 description: >-
   Transactional sprint-round dispatch, liveness probing, and codex-session
   revival for persona agents running in a tmux grid. Use whenever the user
@@ -9,7 +9,7 @@ description: >-
   restart a dead codex pane, frank pane is stuck at codex resume, dispatch a
   sprint round, TwinGrid blind A/B, Partner Peek reveal, send an assignment to
   alice/bob/cindy/dan/elsa/frank, or wants to reliably hand out per-persona
-  assignment markdown files across a mixed claude+codex tmux sprint session.
+  assignment markdown files across a mixed claude+codex+agy tmux sprint session.
   Includes label-aware sprint batching and smart model-picker routing for
   GitHub issue queues.
   Replaces fragile `tmux send-keys` patterns with structured primitives that
@@ -164,10 +164,14 @@ Detection logic recognizes:
   `[Sonnet 4.6]`), `❯` prompt, `✻`/`✢`/`●`/`·` tool indicators
 - **Claude working**: `Cooked`/`Leavening`/`Galloping`/`thinking`/`Processing`
   sentinels plus elapsed time
-- **Codex live**: `gpt-5.4` model line, `5h NN%`, `weekly NN%`
+- **Codex live**: `gpt-5.4` model line, `5h NN%`, `weekly NN%`; newer codex
+  (`gpt-5.5+`) idles to a middot status footer (`· send · newline · transcript`)
+  once the per-window `5h` meter drops off — both classify IDLE
 - **Codex working**: `• Working` / `◦ Booting` / `Spawned <name> [worker]`
 - **Codex exited**: `To continue this session, run codex resume`
 - **Codex update prompt**: `Update now (runs 'npm install -g @openai/codex')`
+- **agy (Antigravity / Gemini) live**: the prompt-box `? for shortcuts` footer
+- **agy working**: `Generating…` spinner / `esc to cancel` hint
 - **Dead bash**: no model line, just `<user>@<host>:~$` prompt
 - **Blank**: compacted claude pane (empty tail with worktree footer still present)
 
@@ -259,6 +263,37 @@ Walks the state machine:
 4. **Report** the new state
 
 No user interaction needed unless the codex binary itself prompts for auth.
+`restart` is runtime-aware: an `agy` pane is considered revived once its
+`? for shortcuts` prompt-box footer appears rather than the codex banner.
+
+### agy (Antigravity / Gemini) panes
+
+`agy` is a first-class pane type alongside `claude` and `codex`. Set
+`"runtime": "agy"` on a persona (with `"launch": "agy"` for interactive panes)
+and the driver handles it everywhere:
+
+- **Liveness:** IDLE on the `? for shortcuts` prompt footer; WORKING on the
+  `Generating…` spinner / `esc to cancel` hint. (Before this, agy panes fell
+  through to DEAD and `dispatch` refused them.)
+- **Submission:** `send-keys -l <text>` then a separate `C-m` submits reliably
+  — same as claude, no codex-style lone-Enter follow-up needed. The standard
+  three-tier dispatch verify still applies.
+- **Permissions:** agy uses a codex-style allowlist at
+  `~/.gemini/policies/auto-saved.toml`. The supervisor auto-mode classifier
+  **blocks** `--dangerously-skip-permissions`, `skipPermissions`, and
+  auto-allowing `run_shell_command` — so do **not** pre-authorize shell access
+  for agy panes. Let the supervisor approve agy prompts by *shape* (edit /
+  command / rate-limit), the same way it does codex and claude, and escalate
+  anything that asks to broaden `run_shell_command` policy.
+- **Print vs interactive:** `agy -p "<prompt>"` is non-interactive (print mode)
+  and needs no skip-permissions flag — prefer it for headless fan-out slices
+  (e.g. image-gen renders). Use interactive `agy` only when a lane needs a
+  persistent steerable session. The proven headless recipe is in memory
+  `reference_image_gen_pipeline_agy`.
+- **Quota awareness:** on the individual plan a *wide* concurrent interactive
+  agy grid drains Gemini quota for little output. `launch-grid.sh` warns when
+  more than `TMUX_SPRINT_AGY_MAX` (default 3) interactive agy panes are
+  launched; prefer headless `agy -p` for fan-out, or lower the count.
 
 ### Provider failover - budget-exhausted pane recovery
 
@@ -490,6 +525,35 @@ Invoke this skill when the user says any of:
   the handoff template.
 - **`sprint-update`** *(forthcoming)* — updates the sprint doc after dispatches.
   The round state JSON this skill writes feeds that update.
+
+## Compatibility (tmux versions / platforms)
+
+The driver scripts target tmux 3.2+ and POSIX-ish shells across Linux, WSL2,
+and macOS. The same matrix applies to `sprint-supervisor` (shared by #163).
+
+| Platform / shell | Status | Notes |
+|---|---|---|
+| WSL2 Ubuntu 24.04 + tmux 3.4 | Verified | `list-sessions`, `list-panes -F '#{pane_id}'`, `capture-pane -p`, and `capture-pane -p -S -N` all work. Lockfiles under `/tmp/sprint-supervisor/` are local to the WSL filesystem and work cleanly. |
+| WSL2 Ubuntu 22.04 + tmux 3.2/3.3 | Expected OK | Same flags; not separately re-verified this round. |
+| macOS Homebrew tmux 3.4+ | Expected OK with caveats below | `capture-pane`, `list-panes -F`, `has-session` flags used here are stable since tmux 2.x. |
+| macOS default `/bin/bash` 3.2 | Gated | These scripts avoid bash-4 features. `launch-grid.sh` reads panes with a portable `while read` loop (not `mapfile`/`readarray`), matching the bash-3.2 fix in `launch-grid` (commit a05b60c). |
+
+Portability rules followed (so the scripts don't fail loud on BSD/macOS):
+
+- **No `mapfile`/`readarray`** — bash 3.2 lacks them. Use
+  `while IFS= read -r x; do arr+=("$x"); done < <(...)`.
+- **No GNU-only `date -Iseconds`** — BSD `date` lacks `-I`. Use the portable
+  `date -u +"%Y-%m-%dT%H:%M:%SZ"`. Where these scripts read epoch seconds they
+  use `date +%s`, which is portable.
+- **`capture-pane` tail windows** — when scanning for prompt text, capture with
+  an explicit scrollback window (`-S -40`) rather than piping a raw capture
+  through `tail -N`; trailing blank pane rows otherwise push the visible prompt
+  out of a short `tail` window (observed on tmux 3.4). This is why `dispatch`
+  recaptures with a scrollback bound during verification.
+
+If a flag is incompatible on a given platform, gate it behind a `tmux -V`
+version check rather than letting the script abort — do not assume a single
+tmux build.
 
 ## Known limitations (current)
 

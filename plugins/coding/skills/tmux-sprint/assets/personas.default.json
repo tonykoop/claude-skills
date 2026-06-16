@@ -3,7 +3,8 @@
   "window": "sprint",
   "rate_limit_seconds": {
     "claude": 2,
-    "codex": 10
+    "codex": 10,
+    "agy": 8
   },
   "personas": [
     {

@@ -1,11 +1,18 @@
 # tony-koop marketplace
 
-A Claude Code plugin marketplace backed by this repo. Two plugins:
+A Claude Code plugin marketplace backed by this repo. Three first-class plugins:
 
 | Plugin | What it does | Skills |
 |---|---|---|
 | `maker` | Physical-world design and personal practice | instrument-maker, sheet-metal, maker-engineering, makerspace, laser-art, habitat-maker, reverse-engineer, sheet-music, yoga-sequencer, playlist-builder, idea-incubator, file-a-patent |
-| `coding` | Engineering operations and developer tooling | tmux-sprint, sprint-supervisor, sprint-update, merge-review, run-swarm, ci-triage, scaffold-hygiene, disk-cleanup, skills-meta |
+| `coding` | Engineering operations and developer tooling | tmux-sprint, sprint-supervisor, sprint-update, merge-review, run-swarm, ci-triage, gh-fix-ci, source-citations, scaffold-hygiene, disk-cleanup, skills-meta |
+| `studiopipeline` | StudioPipeline hardware-engineering / dogfood workflow (MakerBench, hwe) | authored in the standalone [`tonykoop/StudioPipeline`](https://github.com/tonykoop/StudioPipeline) repo — this marketplace references it as the canonical source |
+
+> **Note on `studiopipeline`.** Its skills live in the separate
+> `tonykoop/StudioPipeline` repo and are installed from there via the
+> marketplace entry, the same way the maker plugin draws on the standalone
+> instrument-maker / makerspace repos. Do not author StudioPipeline skills in
+> this repo.
 
 ## Install (Claude Code CLI)
 
@@ -23,6 +30,7 @@ Then install whichever plugins you want:
 ```text
 /plugin install maker@tony-koop
 /plugin install coding@tony-koop
+/plugin install studiopipeline@tony-koop
 ```
 
 ## Install (Codex app)

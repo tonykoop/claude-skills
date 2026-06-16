@@ -1,7 +1,7 @@
 ---
 name: sprint-supervisor
-version: 1.2.0
-last-updated: 2026-06-14
+version: 1.3.0
+last-updated: 2026-06-15
 description: Babysit a running multi-pane WRFCoin tmux sprint while the user is AFK or asleep. Polls the manager pane and grid persona panes every ~4 min via ScheduleWakeup, auto-approves routine codex permission prompts using a fixed rubric, escalates destructive prompts, and produces a morning summary. Use this skill whenever the user says "watch the sprint", "supervise overnight", "I'm going to bed keep the sprint going", "babysit the panes", "keep an eye on twingrid", or invokes "/sprint-supervisor" — even without the word "supervisor". Scales by named scope — one instance handles a twingrid (18 panes), multiple instances divide-and-conquer a triplegrid or quadgrid by scoping each supervisor to a slice of grids (e.g. consensus, infra-backend, frontend) coordinated via /tmp lockfile so peers don't double-approve. Pairs with sprint-watchdog.sh which absorbs the mechanical ~70% of approvals; this skill handles the judgment ~30% — commands, rate-limit prompts, escalation.
 ---
 
@@ -77,8 +77,8 @@ See `references/dispatch-patterns.md` for worked patterns including the mobile c
      "scope": "<scope>",
      "manager_pane": "0:0",
      "targets": ["twingrid-a", "twingrid-b"],
-     "started": "$(date -Iseconds)",
-     "heartbeat": "$(date -Iseconds)",
+     "started": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+     "heartbeat": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
      "iter": 0,
      "current_phase": "cold-start",
      "last_goal_achieved_seen_at": null,
@@ -234,7 +234,9 @@ Always re-schedule unless the user has returned or an escalation triggered. If e
 
 ## Approval rubric
 
-**Provider-agnostic note.** Grid panes may be running `codex` (gpt-X), `claude`, or `gemini` CLIs. The sprint-manager may also actively *migrate* a budget-exhausted pane from one provider to another (e.g. exit the codex CLI, launch `claude` in the same pane, brief availability test, resume dispatching that lane). Each CLI has its own prompt phrasing — codex says "Would you like to make the following edits?", claude says it differently, gemini differently again — but the *shapes* are the same: edit confirmation, command confirmation, rate-limit alert. Match the shape, judge the action, ignore which CLI is asking. If you see a prompt shape the rubric doesn't cover (a new CLI's UI, an unusual phrasing), fall through to the "anything else" row and lean conservative.
+**Provider-agnostic note.** Grid panes may be running `codex` (gpt-X), `claude`, `gemini`, or `agy` (Antigravity, Gemini-backed) CLIs. The sprint-manager may also actively *migrate* a budget-exhausted pane from one provider to another (e.g. exit the codex CLI, launch `claude` in the same pane, brief availability test, resume dispatching that lane — see `tmux-sprint/references/provider-failover.md`, repo issue #166). Each CLI has its own prompt phrasing — codex says "Would you like to make the following edits?", claude says it differently, gemini/agy differently again — but the *shapes* are the same: edit confirmation, command confirmation, rate-limit alert. Match the shape, judge the action, ignore which CLI is asking. If you see a prompt shape the rubric doesn't cover (a new CLI's UI, an unusual phrasing), fall through to the "anything else" row and lean conservative.
+
+**agy / Antigravity permission caveat (#191).** agy uses a codex-style allowlist at `~/.gemini/policies/auto-saved.toml`. Treat any prompt asking to broaden that policy — auto-allow `run_shell_command`, add `--dangerously-skip-permissions` / `skipPermissions`, or persistently allow shell — as a **refusal-list** item (escalate, do not approve). One-shot agy edit/command prompts follow the normal shape rows below. Headless `agy -p` panes are non-interactive and raise no permission prompts.
 
 | Prompt pattern | Action |
 |---|---|
@@ -261,6 +263,7 @@ If a prompt requests any of these, **do not approve and do not dismiss**. Captur
 - `git branch -D` against more than 2 branches in one command
 - Live service restart on the N5 testnet that isn't authorized by the active handoff contract
 - Any command modifying `~/.ssh/`, system services, or sudo state
+- Broadening an agent's permission policy: `--dangerously-skip-permissions`, `skipPermissions`, persistently auto-allowing `run_shell_command`, or editing `~/.gemini/policies/auto-saved.toml` to add shell access (agy / Antigravity — #191)
 
 The reason these are hard-stop is that the cost of approving one wrong is catastrophic (data loss, leaked secrets, broken production) while the cost of waking the user is merely annoying. The asymmetry argues for caution.
 
@@ -379,6 +382,41 @@ Cite PR numbers as `wrfcoin/<repo>#NNNN` so the user can click. See `references/
 3. Render it as your next user-facing response.
 
 Don't re-deliver the same summary on every subsequent idle cycle — track `summary_delivered_at` in the lockfile.
+
+## Compatibility (tmux versions / platforms)
+
+Audited for #163. The supervisor's bundled scripts target tmux 3.2+ and run on
+Linux, WSL2, and macOS, but the default shell and `date` differ across them.
+
+| Platform / shell | Status | Notes |
+|---|---|---|
+| WSL2 Ubuntu 24.04 + tmux 3.4 | Verified | `list-panes -F '#{pane_id}'`, `capture-pane -p`, `capture-pane -p -S -N`, `has-session` all work. `/tmp/sprint-supervisor/` lockfiles live on the WSL filesystem and need no special handling across the WSL boundary. |
+| WSL2 Ubuntu 22.04 + tmux 3.2/3.3 | Expected OK | Same flags. |
+| macOS Homebrew tmux 3.4+ | Expected OK once the portability fixes below are in | The tmux flags used are stable since 2.x; the gotchas are shell/`date`, not tmux. |
+| macOS default `/bin/bash` 3.2 | Gated | `grid-scan.sh` reads panes with a portable `while read` loop, not `mapfile` (bash 4+ only). |
+
+Portability fixes applied this round (#163):
+
+- **`grid-scan.sh`** — replaced `mapfile -t` with a `while IFS= read -r` loop
+  (bash 3.2 safe), and switched from `capture-pane | tail -12` to
+  `capture-pane -p -S -40` so a prompt sitting above trailing blank pane rows
+  isn't pushed out of a short tail window (observed on tmux 3.4). Widened
+  `PROMPT_REGEX` with a generic confirmation catch-all so a new CLI's phrasing
+  surfaces to the supervisor instead of being silently missed.
+- **`notify-supervisor.sh`** — `date -Iseconds` (GNU-only) and `%3N`
+  millisecond format (GNU-only) now fall back to portable
+  `date -u +%Y-%m-%dT%H:%M:%SZ` and epoch seconds on BSD/macOS.
+- **Lockfile snippet** in Prerequisites uses portable
+  `date -u +%Y-%m-%dT%H:%M:%SZ` instead of `date -Iseconds`.
+
+If a flag turns out to be incompatible on a platform, gate it behind a
+`tmux -V` version check rather than letting the script fail loud — never assume
+a single tmux build.
+
+> **Note:** `sprint-watchdog.sh` is an install-time companion (it ships into the
+> live `~/.claude` install, not this repo package). The same two portability
+> rules apply to it — `date -u +%Y-%m-%dT%H:%M:%SZ` over `date -Iseconds`, and
+> a portable pane-read loop. Apply them when that script is next packaged.
 
 ## What this skill does NOT do
 

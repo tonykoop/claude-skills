@@ -59,9 +59,29 @@ ts_session() { ts_jq -r '.session // "sprint"' "$(ts_personas_path)"; }
 ts_window()  { ts_jq -r '.window  // "sprint"' "$(ts_personas_path)"; }
 
 ts_rate_limit() { # ts_rate_limit <runtime>
+  # Per-runtime cold-start / dispatch spacing in seconds. codex shares a
+  # backend (10s observed stable). agy/Antigravity is Gemini-backed and on an
+  # individual plan a wide concurrent grid drains quota fast (#191), so it is
+  # also staggered. claude panes are independent processes (2s).
   local rt="$1"
-  ts_jq -r --arg rt "$rt" '.rate_limit_seconds[$rt] // (if $rt=="codex" then 10 else 2 end)' \
+  ts_jq -r --arg rt "$rt" \
+    '.rate_limit_seconds[$rt] // (if $rt=="codex" then 10 elif $rt=="agy" then 8 else 2 end)' \
     "$(ts_personas_path)"
+}
+
+# ts_agy_grid_warn <count> -> prints a quota warning to stderr when a grid
+# fans out more than the safe number of interactive agy panes. On the
+# individual plan a wide concurrent agy grid drains quota for little output
+# (memory: reference_image_gen_pipeline_agy). Override the ceiling with
+# $TMUX_SPRINT_AGY_MAX (default 3). Returns 0 always; advisory only.
+ts_agy_grid_warn() {
+  local count="$1" max="${TMUX_SPRINT_AGY_MAX:-3}"
+  if [[ "$count" -gt "$max" ]]; then
+    echo "⚠️  $count interactive agy/Antigravity panes exceeds the safe ceiling ($max)." >&2
+    echo "    Gemini quota drains fast on the individual plan; prefer headless 'agy -p'" >&2
+    echo "    for fan-out slices or lower the count. Set TMUX_SPRINT_AGY_MAX to override." >&2
+  fi
+  return 0
 }
 
 # All pane indices, space separated, in config order.
@@ -130,6 +150,23 @@ ts_classify() {
   # codex live (idle): model line + usage meters
   if printf '%s' "$text" | grep -qiE 'gpt-5(\.[0-9]+)?' \
      && printf '%s' "$text" | grep -qiE '5h[[:space:]]+[0-9]+%'; then
+    echo IDLE; return
+  fi
+  # newer codex (gpt-5.5+) idle: middot status footer without the 5h meter.
+  # The middot-footer prompt box appears once the per-window 5h budget meter
+  # drops off; without this branch such panes mis-classify as DEAD (#163).
+  if printf '%s' "$text" | grep -qiE 'gpt-5\.[5-9]' \
+     && printf '%s' "$text" | grep -qiE '·.*(send|newline|transcript|interrupt)'; then
+    echo IDLE; return
+  fi
+  # agy / Antigravity (Gemini) working: cancel hint + generation spinner
+  if printf '%s' "$text" | grep -qiE 'esc to cancel|Generating(…|\.\.\.)?'; then
+    echo WORKING; return
+  fi
+  # agy / Antigravity (Gemini) live (idle): the prompt-box shortcuts footer.
+  # Without this branch agy panes fall through to DEAD and dispatch refuses
+  # them (#191).
+  if printf '%s' "$text" | grep -qiE '\? for shortcuts'; then
     echo IDLE; return
   fi
   # truly empty tail -> compacted claude pane

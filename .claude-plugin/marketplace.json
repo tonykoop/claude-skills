@@ -6,7 +6,7 @@
     "email": "tonykoop@gmail.com",
     "url": "https://github.com/tonykoop"
   },
-  "description": "Tony Koop's skill marketplace. Two plugins: 'maker' for physical-world design and personal practice; 'coding' for software/engineering operations. Auto-updates from the claude-skills git repo.",
+  "description": "Tony Koop's skill marketplace. Three first-class plugins: 'maker' for physical-world design and personal practice; 'coding' for software/engineering operations; 'studiopipeline' for the StudioPipeline hardware-engineering / dogfood workflow (canonical source in the standalone tonykoop/StudioPipeline repo). Auto-updates from the claude-skills git repo.",
   "plugins": [
     {
       "name": "maker",
@@ -18,9 +18,16 @@
     {
       "name": "coding",
       "source": "./plugins/coding",
-      "description": "Engineering operations and developer tooling: tmux-sprint, sprint-supervisor, sprint-update, merge-review, run-swarm, ci-triage, scaffold-hygiene, disk-cleanup, skills-meta.",
+      "description": "Engineering operations and developer tooling: tmux-sprint, sprint-supervisor, sprint-update, merge-review, run-swarm, ci-triage, gh-fix-ci, source-citations, scaffold-hygiene, disk-cleanup, skills-meta.",
       "category": "engineering",
       "tags": ["sprint", "ci", "git", "wrfcoin", "internal-ops", "audit"]
+    },
+    {
+      "name": "studiopipeline",
+      "source": "https://github.com/tonykoop/StudioPipeline.git",
+      "description": "StudioPipeline hardware-engineering / dogfood workflow (MakerBench, hwe). Canonical source lives in the standalone tonykoop/StudioPipeline repo; this marketplace references it, mirroring how the maker plugin treats the standalone instrument-maker and makerspace repos. Skills are authored in that repo, not here.",
+      "category": "engineering",
+      "tags": ["studiopipeline", "hardware-engineering", "makerbench", "hwe", "dogfood"]
     }
   ]
 }

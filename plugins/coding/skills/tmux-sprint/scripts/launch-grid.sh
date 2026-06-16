@@ -65,6 +65,14 @@ while IFS= read -r _pane; do PANES+=("$_pane"); done \
 n="${#PANES[@]}"
 [[ "$n" -gt 0 ]] || { echo "Error: no personas in $(ts_personas_path)" >&2; exit 1; }
 
+# Warn early if the grid fans out a lot of interactive agy/Antigravity panes —
+# Gemini quota drains fast on the individual plan (#191).
+agy_n=0
+for p in "${PANES[@]}"; do
+  [[ "$(ts_persona_field "$p" runtime)" == "agy" ]] && agy_n=$((agy_n + 1))
+done
+ts_agy_grid_warn "$agy_n"
+
 # --- optional manager session ------------------------------------------------
 
 if [[ "$WITH_MANAGER" -eq 1 ]]; then
@@ -106,8 +114,13 @@ for pane in "${PANES[@]}"; do
   if [[ "$START" -eq 1 ]]; then
     tmux send-keys -t "$target" -l "$launch"; tmux send-keys -t "$target" C-m
     echo "  pane $pane $name -> $launch"
-    # codex panes share a backend; stagger their cold starts.
-    [[ "$runtime" == "codex" ]] && sleep "$(ts_rate_limit codex)" || sleep 1
+    # codex panes share a backend and agy/Antigravity shares Gemini quota;
+    # stagger their cold starts by the per-runtime rate limit. claude panes
+    # are independent processes, so a flat 1s is enough.
+    case "$runtime" in
+      codex|agy) sleep "$(ts_rate_limit "$runtime")" ;;
+      *)         sleep 1 ;;
+    esac
   else
     echo "  pane $pane $name (not started; --no-start)"
   fi

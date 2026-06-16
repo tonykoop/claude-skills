@@ -33,13 +33,75 @@ Skill → [invokes sprint-manager skill with the queue context]
          I'll resume in 240s. Sleep well."
 ```
 
-**Wiring caveat — this depends on Tony's specific PC/mobile setup.** The mechanism for "mobile Claude reaches the PC's tmux" is one of:
+**Wiring — chosen path (#160).** The mechanism for "mobile Claude reaches the
+PC's tmux" was three candidates; the **scheduled-task / magic-file watcher** is
+the path this skill commits to, because it is the only one that is verifiable
+from the repo, survives the phone app closing, and needs no always-attended
+session. The candidates and why:
 
-- **Cowork session is left running on the PC**, mobile app talks to the same Claude account, the cowork session receives the prompt and uses its own computer-use access to operate the local tmux. (Most likely path today.)
-- **Scheduled task on the PC** that polls for a "dispatch" signal (e.g. a magic file at `/tmp/sprint-supervisor.dispatch`) and runs locally when it sees one. Mobile writes that file via a connected file-write tool.
-- **SSH from a relay machine** that has access to the home network.
+1. **Cowork session left running on the PC** — mobile talks to the same Claude
+   account; the cowork session has computer-use access and drives local tmux.
+   *Rejected as the primary path:* it requires an always-open, always-attended
+   Cowork session on the PC, and Cowork's bundled-skill folder is session-scoped
+   (see MARKETPLACE.md "Cowork mode note") — fragile for an unattended overnight
+   bootstrap. Keep it as a manual fallback when a Cowork session happens to be up.
+2. **Scheduled task / magic-file watcher (CHOSEN).** A small always-loaded
+   watcher on the PC polls for a dispatch signal and runs the bootstrap locally.
+   Mobile only has to drop the signal; it never needs a live channel to the PC.
+3. **SSH from a relay machine** — most flexible but needs a relay host with home
+   network access and key management. Heaviest to stand up; documented as the
+   power-user option only.
 
-If the wiring isn't obvious from context, ask the user before assuming a path. Don't invent a remote-execution mechanism that isn't actually in place.
+### Chosen wiring — magic-file watcher
+
+```
+Phone (Claude mobile)                    PC (always-on)
+─────────────────────                    ──────────────────────────────
+/sprint-supervisor cold-start            sprint-dispatch-watcher.sh (loop):
+  └─ writes a dispatch JSON to             every ~30s:
+     a shared/synced location               if dispatch file present & unclaimed:
+     the PC watcher reads        ─────►        claim it (atomic mv)
+     (e.g. a synced folder, or                 launch tmux: sprint manager + grid
+      a tiny inbound webhook→file)             run /sprint-supervisor scope=default
+                                               write back a status file
+  └─ polls the status file for
+     "manager up at <time>"      ◄─────
+```
+
+Dispatch file shape (write this; the watcher consumes it):
+
+```json
+{
+  "action": "cold-start",
+  "scope": "default",
+  "queue": "wrfcoin",
+  "requested_at": "2026-06-15T22:14:00Z",
+  "hard_stop": "2026-06-15T07:00:00-07:00"
+}
+```
+
+The watcher is the one piece that must be **installed and running before the
+phone can dispatch** — see Prerequisites below. Mobile cold-start cannot work
+with zero PC-side setup; something on the PC has to be listening.
+
+### Prerequisites for mobile cold-start (install on the PC)
+
+- A persistent watcher process (`sprint-dispatch-watcher.sh`, an analog of the
+  bundled `notify-supervisor.sh` event-drop pattern) under a process manager so
+  it survives reboots (systemd user unit, a login `tmux` session, or Task
+  Scheduler under WSL).
+- A path the phone can write to and the PC can read: either a cloud-synced
+  folder both ends see, or a tiny inbound endpoint that lands the JSON on disk.
+- The watcher must claim the dispatch atomically (`mv` into a `claimed/` dir)
+  so a double-fire doesn't launch two managers.
+
+> **Status (#160):** path *chosen and documented*; a full live phone→PC test
+> still needs Tony to confirm the synced-folder/endpoint piece and run it once
+> end-to-end. The watcher script itself is a small follow-up — it mirrors
+> `scripts/notify-supervisor.sh`. Until the watcher is installed, fall back to
+> warm-start (§1) or a Cowork session that is already up. Don't invent a
+> remote-execution mechanism that isn't actually in place — confirm with Tony
+> which signal transport he wants before standing up the watcher.
 
 ## 3. Scheduled / recurring nightly supervision
 
