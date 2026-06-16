@@ -1,7 +1,7 @@
 ---
 name: skills-meta
-version: 1.0.0
-last-updated: 2026-05-09
+version: 1.0.1
+last-updated: 2026-06-15
 description: >-
   Audit installed skills across Claude, Codex, Gemini, and desktop installs.
   Compare frontmatter to manifest.yaml and report version drift, missing

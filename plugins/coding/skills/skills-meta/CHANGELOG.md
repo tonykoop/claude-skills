@@ -1,5 +1,12 @@
 # Changelog — skills-meta
 
+## 1.0.1 - 2026-06-15
+
+- Added `references/resync-note-2026-06-15.md`: a dated, read-only drift
+  reconciliation note (Agent-infra round 2). Documents the three-way
+  install-vs-manifest-vs-repo drift on tmux-sprint and sprint-supervisor and
+  the deliberate `--mode sync` re-sync plan, without touching live installs.
+
 ## Unreleased
 
 - Added manifest `requires` dependency audit and sync expansion support.
