@@ -1,6 +1,6 @@
 ---
 name: sprint-supervisor
-version: 1.3.0
+version: 1.3.1
 last-updated: 2026-06-15
 description: Babysit a running multi-pane WRFCoin tmux sprint while the user is AFK or asleep. Polls the manager pane and grid persona panes every ~4 min via ScheduleWakeup, auto-approves routine codex permission prompts using a fixed rubric, escalates destructive prompts, and produces a morning summary. Use this skill whenever the user says "watch the sprint", "supervise overnight", "I'm going to bed keep the sprint going", "babysit the panes", "keep an eye on twingrid", or invokes "/sprint-supervisor" — even without the word "supervisor". Scales by named scope — one instance handles a twingrid (18 panes), multiple instances divide-and-conquer a triplegrid or quadgrid by scoping each supervisor to a slice of grids (e.g. consensus, infra-backend, frontend) coordinated via /tmp lockfile so peers don't double-approve. Pairs with sprint-watchdog.sh which absorbs the mechanical ~70% of approvals; this skill handles the judgment ~30% — commands, rate-limit prompts, escalation.
 ---
@@ -52,7 +52,7 @@ manager_alive=$(tmux capture-pane -t 0:0 -p 2>/dev/null | grep -cE 'codex|claude
 targets_exist=$(tmux has-session -t twingrid-a 2>/dev/null && echo 1 || echo 0)
 ```
 
-See `references/dispatch-patterns.md` for worked patterns including the mobile cold-start handshake, the scheduled-task pattern for nightly recurring supervision, and the routines integration once that capability is generally available.
+See `references/dispatch-patterns.md` for worked patterns including the mobile cold-start handshake, the scheduled-task pattern for nightly recurring supervision, and the routines integration once that capability is generally available. The forward-looking `nightly-sprint` routine design and the scheduled-task→routine migration path live in `references/routines-integration.md` (blocked on Anthropic routines GA — design-only, issue #161).
 
 ## Prerequisites (verify before starting)
 
