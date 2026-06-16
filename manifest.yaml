@@ -187,12 +187,12 @@ skills:
     notes: Vinyasa-first shared class-sequencing skill with playlist-builder handoff output. v1.2.0 adds heated-room safety checklist and hot-room cue-volume guidance.
 
   makerspace:
-    canonical_version: 1.1.4
+    canonical_version: 1.2.0
     runtime: shared
     repo_path: plugins/maker/skills/makerspace
     last_updated: 2026-06-15
     status: active
-    notes: Portable snapshot from the standalone makerspace repo. v1.1.1 adds a generator-backed DXF/CNC fabrication handoff checklist on top of the structured-shop-artifacts validator; v1.1.2 adds repo-to-shop-packet routing for woodworking/mechanism fabrication handoffs; v1.1.4 records that issue #15 (fabrication specialist, epic #211) is satisfied by this existing skill and adds a fabrication-specialist-charter reference plus the first CHANGELOG.
+    notes: Portable snapshot from the standalone makerspace repo. v1.1.1 adds a generator-backed DXF/CNC fabrication handoff checklist on top of the structured-shop-artifacts validator; v1.1.2 adds repo-to-shop-packet routing for woodworking/mechanism fabrication handoffs; v1.1.4 records that issue #15 (fabrication specialist, epic #211) is satisfied by this existing skill and adds a fabrication-specialist-charter reference plus the first CHANGELOG; v1.2.0 promotes the Alpha tool-matrix schema into makerspace (S8 decision, issue #219) as the source of truth for the Evolution Pipeline Alpha Workspace Compiler.
 
   sheet-metal:
     canonical_version: 1.0.0

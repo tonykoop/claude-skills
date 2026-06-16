@@ -1,6 +1,6 @@
 ---
 name: makerspace
-version: 1.1.4
+version: 1.2.0
 last-updated: 2026-06-15
 description: >-
   Plan shop-floor fabrication for jigs, fixtures, workholding, molds, machine
@@ -213,6 +213,14 @@ needs a temporary profile instead of a canonical `spaces/<slug>/` entry.
   Read only when the user asks for procurement guidance or vendor options.
 - `references/space-profile-schema.md`
   Read when creating or editing a canonical shop profile.
+- `references/tool-matrix-schema.md`
+  Read when a tool-matrix capability view is needed — e.g. the Evolution
+  Pipeline Alpha Workspace Compiler downgrading a master design to the
+  user's local tools (issues #206/#219). This is the promoted source of
+  truth for the Alpha tool-matrix schema.
+- `references/tool-matrix-promotion-decision.md`
+  Read for the S8 rationale (issue #219) behind owning the tool-matrix
+  schema here rather than in evolution-pipeline.
 - `references/doe-integration.md`
   Read when the user is tuning feeds, speeds, cure times, or other process
   variables experimentally.
