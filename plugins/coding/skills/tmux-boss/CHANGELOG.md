@@ -11,6 +11,8 @@
   (`references/approval-rubric.example.md`, ships an empty refusal list), and a
   fixture set (`fixtures/cases.md`) covering trigger, non-trigger, ambiguous
   scope, adjacent-skill conflict, safe approval, and escalation/refusal.
-- Registered in `manifest.yaml`; shipped in the `coding` plugin (v1.1.0).
+- Shipped in the `coding` plugin (v1.1.0), auto-discovered from `skills/`.
+  `manifest.yaml` drift entry is a pending follow-up (see PR for the prepared
+  block).
 - Project-specific WRFCoin/topology behavior stays in the private
   `sprint-supervisor` adapter, which supplies this core a config profile.

@@ -27,11 +27,12 @@ unblocks.
 
 > This is the public extraction of the portable supervision pattern described
 > in `docs/release-readiness/sprint-supervisor-decision.md` (staged-extraction
-> decision for #164). It ships in the `coding` plugin and is registered in
-> `manifest.yaml`. Project-specific behavior (named grids, pane IDs, refusal
-> classes, watchdog paths) is **not** baked in here — it lives in a separate
-> private adapter/profile (e.g. `sprint-supervisor`) that supplies a config
-> profile to this generic core.
+> decision for #164). It ships in the `coding` plugin (auto-discovered from
+> `skills/`). A `manifest.yaml` drift entry is a pending follow-up (see PR).
+> Project-specific behavior (named grids, pane IDs, refusal classes, watchdog
+> paths) is **not** baked in here — it lives in a separate private
+> adapter/profile (e.g. `sprint-supervisor`) that supplies a config profile to
+> this generic core.
 
 ## What it does
 
