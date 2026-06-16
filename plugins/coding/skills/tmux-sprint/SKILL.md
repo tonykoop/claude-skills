@@ -1,6 +1,6 @@
 ---
 name: tmux-sprint
-version: 2.6.0
+version: 2.7.0
 last-updated: 2026-06-15
 description: >-
   Transactional sprint-round dispatch, liveness probing, and codex-session
@@ -381,6 +381,73 @@ tmux send-keys -t sprint:sprint.3 -l "/goal clear" ; tmux send-keys -t sprint:sp
 
 sprint-supervisor can detect goal status from the pane capture (the `/goal`
 output line) and should include it in morning summaries for goal-enabled panes.
+
+## Recursive fan-out — persona panes as sub-managers
+
+A persona pane is itself an Opus agent on auto mode. So it can do exactly what
+the top sprint manager does: decompose its lane into stories, spawn its own
+background subagents (one per story), review their PRs, and merge in dependency
+order. Six panes each running ~3 subagents multiplies throughput while the human
+still watches only six panes.
+
+This mode is **opt-in per assignment** — recursive fan-out burns quota fast, so
+it is never the default. Gate it behind an explicit `Fan-out: enabled` line in
+the assignment (see `references/recursive-fanout.md`).
+
+### The model: Opus managers, Sonnet subagents
+
+- **Persona panes = Opus** (the sub-managers). Judgment-heavy work: decomposition,
+  PR review, conflict resolution, merge sequencing.
+- **Their subagents = Sonnet** by default (`model: sonnet` on the Agent call).
+  Story-level execution is well-scoped and cheaper on Sonnet; reserve Opus
+  subagents only for a story the manager judges genuinely hard. This keeps a
+  6×N fleet affordable.
+
+### What the assignment must carry
+
+A fan-out assignment is a normal contract (preamble + tasks) plus:
+
+- `Fan-out: enabled` and a `Subagent budget:` cap (max concurrent subagents,
+  default 3) — a hard ceiling, not advisory.
+- A worktree convention so subagents never share a working tree:
+  `git -C <repo> worktree add <dir> -b <branch> origin/main`, one per story.
+- The no-loose-skills / Refs-not-Closes invariants, passed through to subagents.
+- A **merge hand-back clause** (see below).
+
+### Merge hand-back (the hard-won rule)
+
+Observed repeatedly: a sub-manager reliably builds its stories and opens PRs, then
+**terminates while blocking on a CI monitor before completing its own merges**
+(budget/time ceiling). So the contract must not assume the manager finishes the
+merges. Two supported shapes:
+
+1. **Manager-merges** (preferred when CI is fast/absent): the persona merges its
+   own green PRs and rebases conflicts, exactly like the top manager.
+2. **Hand-back** (default when CI is slow): the persona builds + opens all PRs,
+   posts a one-line merge plan (PR numbers in dependency order), and **stops**.
+   The top manager / sprint-supervisor sweeps the final merges. `sprint-watchdog`
+   and the supervisor rubric already do this for ordinary prompts; here they also
+   sweep a dead sub-manager's open PRs.
+
+Either way the assignment states which shape applies. When unsure, hand back —
+an unmerged green PR is cheap to land; a half-rebased branch is not.
+
+### Liveness: the `MANAGING` signature
+
+A pane that is itself driving subagents looks different from one editing files.
+`preflight` treats a persona as `MANAGING` (a busy sub-state, never `IDLE`) when
+its tail shows subagent-spawn / "running in the background" / task-notification
+activity. Do not redispatch or restart a `MANAGING` pane — it is alive and
+waiting on its own children. Full signature list in `references/recursive-fanout.md`.
+
+### Fallback when nesting is unavailable
+
+If a runtime cannot spawn background subagents, the persona does its lane's
+stories **sequentially in per-story worktrees** and still delivers merged (or
+handed-back) PRs. The assignment always works; fan-out only changes throughput.
+
+See `references/recursive-fanout.md` for the full sub-manager contract and a
+copy-paste fan-out assignment template.
 
 ## TwinGrid mode - blind A/B plus Partner Peek
 

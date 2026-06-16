@@ -1,5 +1,25 @@
 # Changelog - tmux-sprint
 
+## v2.7.0 - 2026-06-15
+
+- Added recursive fan-out mode (resolves #223): a persona pane can act as a
+  SUB-MANAGER — decompose its lane into stories, spawn its own background
+  subagents (one per story, in isolated per-story worktrees), review their PRs,
+  and merge or hand back. Multiplies a 6-pane grid into an effective 6×N fleet
+  without adding panes for the human to watch.
+- Opt-in per assignment via `Fan-out: enabled` with a hard `Subagent budget:`
+  concurrency cap. Cost model: **Opus managers, Sonnet subagents** by default
+  (override per-story only when justified) to keep the fleet affordable.
+- Documented the **merge hand-back** rule: sub-managers reliably build + open
+  PRs but tend to terminate on a CI-monitor wait before merging, so the default
+  `Merge mode: hand-back` has the persona post a dependency-ordered merge plan
+  and stop; the top manager / sprint-supervisor sweeps the merges.
+- Added a `MANAGING` liveness sub-state so `preflight` never mistakes a pane
+  driving subagents for an idle pane (no redispatch/restart while managing).
+- Added `references/recursive-fanout.md`: full sub-manager contract, cost model,
+  liveness signature, nesting fallback, and a copy-paste fan-out assignment
+  template.
+
 ## v2.6.0 - 2026-06-15
 
 - Added Codex `/goal` integration (resolves #117): `dispatch.sh` accepts an
