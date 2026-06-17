@@ -5,7 +5,7 @@ A Claude Code plugin marketplace backed by this repo. Three first-class plugins:
 | Plugin | What it does | Skills |
 |---|---|---|
 | `maker` | Physical-world design and personal practice | instrument-maker, sheet-metal, maker-engineering, makerspace, laser-art, habitat-maker, reverse-engineer, sheet-music, yoga-sequencer, playlist-builder, idea-incubator, file-a-patent |
-| `coding` | Engineering operations and developer tooling | tmux-sprint, sprint-supervisor, sprint-update, merge-review, run-swarm, ci-triage, gh-fix-ci, source-citations, scaffold-hygiene, disk-cleanup, skills-meta |
+| `coding` | Engineering operations and developer tooling | tmux-sprint, sprint-supervisor, sprint-update, merge-review, run-swarm, run-benchmark, ci-triage, gh-fix-ci, source-citations, scaffold-hygiene, disk-cleanup, skills-meta |
 | `studiopipeline` | StudioPipeline hardware-engineering / dogfood workflow (MakerBench, hwe) | authored in the standalone [`tonykoop/StudioPipeline`](https://github.com/tonykoop/StudioPipeline) repo — this marketplace references it as the canonical source |
 
 > **Note on `studiopipeline`.** Its skills live in the separate
@@ -109,7 +109,7 @@ claude-skills/
 |       `-- skills/
 |           |-- tmux-sprint/
 |           |-- skills-meta/
-|           `-- ... (9 skills)
+|           `-- ... (13 skills)
 |-- claude/               # Claude-specific commands/hooks (not in any plugin yet)
 |-- codex/                # Codex CLI skills (consumed directly by Codex)
 |-- docs/
