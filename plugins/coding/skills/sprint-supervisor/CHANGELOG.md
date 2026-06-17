@@ -1,5 +1,53 @@
 # Changelog — sprint-supervisor
 
+## v1.4.0 — 2026-06-16
+
+Public release readiness — genericization + configurable rubric (epic #164).
+
+Decision: **abstract-and-release via a split** — a project-agnostic
+`tmux-agent-supervisor` core plus a configurable extension, rather than keeping
+the skill private. See `references/release-decision.md` for the full ADR.
+
+### Added
+
+- **`references/supervisor-config.example.yaml`** — externalizes the refusal
+  list, approval-rubric extensions, and project labels (repo groups, PR citation
+  format, protected branches, trusted hosts) into a config file. Ships
+  conservative generic defaults plus a commented, illustrative wrfcoin-flavored
+  example block. Config lookup order:
+  `$SPRINT_SUPERVISOR_CONFIG` → `~/.claude/sprint-supervisor-config.yaml` →
+  bundled example.
+- **`README.md`** — public-facing README: what the skill does, the
+  watchdog-vs-skill split, lockfile coordination, the ~240s cadence reasoning
+  (sub-300s keeps the prompt cache warm), how to configure, and a
+  cold-start → supervise → morning-summary quickstart.
+- **`references/release-decision.md`** — ADR recording the keep-private vs
+  abstract vs split options, the chosen split, consequences, the migration
+  checklist, and remaining optional work (demo recording, final public-name
+  decision, reference-doc genericization, watchdog packaging).
+- **`## Configuration`** section in `SKILL.md` — documents the config lookup
+  order, what the config controls, and the safe-defaults fallback.
+
+### Changed
+
+- **Version bump 1.3.1 → 1.4.0.**
+- **`SKILL.md` genericized (surgical edits only):** description frontmatter and
+  prose no longer say "WRFCoin"; triggers preserved verbatim so invocation is
+  unchanged. Hardcoded project paths/hosts/labels replaced with placeholders
+  (`<repo>`, `~/work/<project>`, `<host>`) and config references. The refusal
+  list and approval rubric keep a built-in conservative baseline and now read
+  project-specific extensions from config. Morning-summary repo groups and PR
+  citation format are config-driven. Scope examples use neutral names
+  (`group-a/b/c`).
+
+### Known remaining work (not blocking release; tracked on the PR / epic #164)
+
+- Demo recording (cold-start → supervise → morning summary) — epic #164 stays open.
+- Final public-name decision (`sprint-supervisor` vs `tmux-agent-supervisor`).
+- Genericize prose in `references/*.md` worked examples (still
+  project-flavored; illustrative only).
+- Package `sprint-watchdog.sh` and source its sessions/paths from the same config.
+
 ## v1.3.1 — 2026-06-15
 
 Forward-looking routines design (repo issue #161 — **still blocked on Anthropic routines GA**; no runtime added).
