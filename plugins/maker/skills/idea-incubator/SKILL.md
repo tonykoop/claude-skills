@@ -1,6 +1,6 @@
 ---
 name: idea-incubator
-version: 1.6.0
+version: 1.7.0
 last-updated: 2026-06-17
 description: >-
   Capture, classify, connect, review, and promote speculative ideas into a
@@ -49,6 +49,9 @@ This skill works best with these MCP connectors. Claude will suggest connecting 
 - `promote the cluster`
 - `batch promote`
 - `review the cluster`
+- `cross-pollinate`
+- `tag this idea`
+- `what reuses this`
 - `yearbook rollout`
 - `design book rollout`
 - `private media pilot`
@@ -75,7 +78,10 @@ Gemini CLI) hit them as reliably as Claude does.
 ## Modes
 
 1. **Capture** - turn one idea into one issue draft. If the input is a note,
-   URL, or voice-to-text fragment, keep the draft short and actionable.
+   URL, or voice-to-text fragment, keep the draft short and actionable. At
+   capture time, also apply the **functional-tagging schema** in
+   [`references/functional-tagging-schema.md`](references/functional-tagging-schema.md)
+   so the idea joins the cross-pollination web from the start.
 2. **Intake** - split a pasted Telegram dump into candidate ideas. Keep
    uncertain splits visible instead of guessing. For brainstorms exported from
    Gemini, use the
@@ -88,9 +94,15 @@ Gemini CLI) hit them as reliably as Claude does.
    before generating epics, and apply domain auto-routing per
    [`references/domain-label-routing.md`](references/domain-label-routing.md).
 3. **Connect** - search for related ideas, prerequisites, duplicates, and
-   cross-pollination candidates. Link them; do not auto-close.
+   cross-pollination candidates. Link them; do not auto-close. Use the
+   functional tags (#243) and the **Cross-Pollination Librarian** agent in
+   [`agents/cross-pollination-librarian.md`](agents/cross-pollination-librarian.md)
+   to surface when a mechanism solved in one idea fits another idea's need.
 4. **Review** - surface stale ideas, best-fit-for-now ideas, and clusters
    worth revisiting. Summarize; do not score emotional resonance numerically.
+   The Obsidian **Shared Subassemblies MOC** in
+   [`references/obsidian/shared-subassemblies-MOC.md`](references/obsidian/shared-subassemblies-MOC.md)
+   is the human-facing dashboard for recurring subassemblies.
 5. **Promote** - draft the handoff text for the downstream repo or specialist
    skill. Include `closes #N` only when the user wants the tracked issue closed
    by the downstream work. Route to `maker-engineering` for physical builds,
@@ -118,11 +130,24 @@ Gemini CLI) hit them as reliably as Claude does.
    decision stub in
    [`references/private-media-decision-stub.md`](references/private-media-decision-stub.md)
    before any downstream repo scaffold, imagegen/layout work, or media import.
+   For design-generation handoffs, prepend the **constraint-injection prompt**
+   in [`references/prompts/constraint-injection.md`](references/prompts/constraint-injection.md)
+   so generated designs default to the Universal Interface standards.
 6. **Promote-batch** - cluster-aware promotion. Use when multiple capture
    issues share a recovery, archive, intake-dump, or thematic root and should
    be triaged as a unit instead of one-by-one. See the dedicated section
    below; the worked example is in
    [`references/promote-batch-example.md`](references/promote-batch-example.md).
+7. **Cross-pollinate** - semantic-web mode. Use the functional tags (#243) to
+   notice when a mechanism solved for one gadget is the exact fit another
+   gadget needs. Reads the **circuits inventory** of solved functional
+   primitives in [`references/circuits-inventory.md`](references/circuits-inventory.md)
+   (built by [`scripts/build_circuits_inventory.py`](scripts/build_circuits_inventory.py)),
+   surfaces shared subassemblies via the Obsidian MOC (#244), and posts
+   suggestions via the Cross-Pollination Librarian agent (#247). Standardize
+   mating boundaries against the **Universal Interface guide** in
+   [`references/universal-interface-guide.md`](references/universal-interface-guide.md)
+   so primitives stay swappable (the "Lego rule").
 
 ## Agent roles
 
@@ -198,6 +223,30 @@ Promote mode's readiness matrix.
 
 When in doubt for a recovery/import cluster, default to `Refs`.
 
+## Cross-pollination engine
+
+The cross-pollination engine (epic #236) turns the incubator from a linear
+conveyor belt into a semantic web. Its pieces compose:
+
+1. **Tag at intake** - apply the functional-tagging schema
+   ([`references/functional-tagging-schema.md`](references/functional-tagging-schema.md))
+   so every idea carries `functions:` / `interfaces:` / `materials:` facets.
+2. **See the overlaps** - the Obsidian Shared Subassemblies MOC
+   ([`references/obsidian/shared-subassemblies-MOC.md`](references/obsidian/shared-subassemblies-MOC.md))
+   groups ideas by shared tags using Dataview.
+3. **Standardize the boundary** - the Universal Interface guide
+   ([`references/universal-interface-guide.md`](references/universal-interface-guide.md))
+   keeps subassemblies swappable; the constraint-injection prompt
+   ([`references/prompts/constraint-injection.md`](references/prompts/constraint-injection.md))
+   enforces it on generated designs.
+4. **Automate the match** - the Cross-Pollination Librarian agent
+   ([`agents/cross-pollination-librarian.md`](agents/cross-pollination-librarian.md))
+   scans inbox + vault and posts cross-pollination suggestion comments.
+5. **Catalog the primitives** - the circuits inventory
+   ([`references/circuits-inventory.md`](references/circuits-inventory.md),
+   built by [`scripts/build_circuits_inventory.py`](scripts/build_circuits_inventory.py))
+   indexes solved functional primitives for reuse.
+
 ## Operating rules
 
 - Default to mobile-friendly, copy-pasteable Markdown.
@@ -208,6 +257,9 @@ When in doubt for a recovery/import cluster, default to `Refs`.
 - Do not hard-code repository ownership or visibility when the target repo is
   unknown. Use a placeholder or ask the user first.
 - Do not auto-close ideas, and do not invent ideas that the user did not capture.
+- Do not guess functional tags. If you cannot name a function honestly, add
+  `needs-clarification` and ask — a wrong tag produces false cross-pollination
+  matches.
 
 ## Bundled references
 
@@ -232,6 +284,21 @@ When in doubt for a recovery/import cluster, default to `Refs`.
 - [`references/institutional-knowledge.md`](references/institutional-knowledge.md)
   - Lessons-learned store format plus the pre-read step that feeds prior
     lessons into the next brainstorm parse. Written by the retrospective agent.
+- [`references/functional-tagging-schema.md`](references/functional-tagging-schema.md)
+  - Controlled vocabulary + YAML frontmatter spec (`functions:` /
+    `interfaces:` / `materials:`) applied to every idea at intake (epic #236).
+- [`references/obsidian/shared-subassemblies-MOC.md`](references/obsidian/shared-subassemblies-MOC.md)
+  - Obsidian Map-of-Content with Dataview queries that group ideas by shared
+    functional tags to surface recurring subassemblies (epic #236).
+- [`references/universal-interface-guide.md`](references/universal-interface-guide.md)
+  - Standardized mechanical/electrical interfaces (the "Lego rule") so
+    subassemblies stay swappable across projects (epic #236).
+- [`references/prompts/constraint-injection.md`](references/prompts/constraint-injection.md)
+  - Reusable prompt fragment that injects Universal Interface constraints into
+    design-generation requests (epic #236).
+- [`references/circuits-inventory.md`](references/circuits-inventory.md)
+  - Portfolio-wide index of reusable functional primitives ("circuits") with
+    schema and currency rules (epic #236).
 - [`references/private-media-family-archive.md`](references/private-media-family-archive.md)
   - Privacy-first promotion template for family archives, photo albums,
     scanned documents, and personal video.
@@ -257,13 +324,17 @@ When in doubt for a recovery/import cluster, default to `Refs`.
   red-team review of a freshly generated epic.
 - [`agents/retrospective.md`](agents/retrospective.md) - blameless retro of a
   closed epic that writes lessons into the institutional-knowledge store.
+- [`agents/cross-pollination-librarian.md`](agents/cross-pollination-librarian.md)
+  - Scheduled librarian that scans the issue inbox + Obsidian vault, matches
+    solved mechanisms to open needs via functional tags and/or embeddings, and
+    posts cross-pollination suggestion comments (epic #236).
 - [`agents/openai.yaml`](agents/openai.yaml) - OpenAI/Codex interface
   descriptor for the skill.
 
 ## Optional helpers
 
-Both helpers create the same labels and need an authenticated `gh`. Pick the
-one that matches the host shell:
+Both label helpers create the same labels and need an authenticated `gh`. Pick
+the one that matches the host shell:
 
 - [`scripts/bootstrap-labels.sh`](scripts/bootstrap-labels.sh) - bash, for
   WSL, macOS, Linux, and Git Bash on Windows.
@@ -276,6 +347,9 @@ one that matches the host shell:
 - [`scripts/gemini_to_github.py`](scripts/gemini_to_github.py) - dry-run-first
   helper that splits an exported Gemini brainstorm into idea blocks and emits
   fingerprinted draft issue payloads (Story #237).
+- [`scripts/build_circuits_inventory.py`](scripts/build_circuits_inventory.py) -
+  offline-first helper that walks repos/vault for tagged ideas and emits the
+  circuits inventory as Markdown/JSON (dry-run by default).
 
 If neither works (mobile zip-upload, sandboxed Codex Desktop, no `gh`), fall
 back to the copy-pasteable `gh label create` block in
