@@ -130,12 +130,12 @@ skills:
       under ~/.skill-cleanup-backups/.
 
   idea-incubator:
-    canonical_version: 1.5.0
+    canonical_version: 1.6.0
     runtime: shared
     repo_path: skills/idea-incubator
     last_updated: 2026-06-17
     status: active
-    notes: 1.5.0: added brainstorm-to-issues ingestion mode + reference
+    notes: "1.6.0: workflow automation & agent roles (epic #235); 1.5.0: brainstorm-to-issues ingestion mode + reference"
 
   file-a-patent:
     canonical_version: 0.1.0

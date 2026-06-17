@@ -1,5 +1,40 @@
 # Changelog
 
+## 1.6.0 - 2026-06-17
+
+Epic #235 - Idea-Incubator Workflow Automation & Agent Roles. Makes the
+Gemini -> Obsidian -> Claude -> GitHub pipeline more autonomous and
+self-improving with adversarial review, skeletal hybrid templating, and a
+closed-loop retrospective.
+
+- Added `references/gemini-export-pipeline.md`: design doc for the Gemini-API
+  export half of the pipeline (flow, data contract, fingerprint-based
+  idempotency/dedup, failure handling, and coordination with StudioPipeline
+  #57) (Closes #237).
+- Added `scripts/gemini_to_github.py`: dry-run-first helper that splits an
+  exported Gemini brainstorm into idea blocks and emits fingerprinted draft
+  issue payloads with inline domain routing (Closes #237).
+- Added `agents/devils-advocate.md`: dual-role adversarial red-team agent that
+  reviews a freshly generated epic before filing - challenges assumptions,
+  names the weakest story, surfaces hidden dependencies, lists failure modes
+  (Closes #238).
+- Added `references/templates/hybrid-issue-template.md` and a GitHub-native
+  form at `.github/ISSUE_TEMPLATE/hybrid-idea.md`: skeletal HW/SW/firmware
+  hybrid issue with an Expected PDM Artifacts checklist (CAD, BOM, schematic,
+  firmware, test plan, DHF links, etc.) (Closes #239).
+- Added `agents/retrospective.md`: blameless retrospective agent for closed
+  epics that scores estimate accuracy and writes lessons into the
+  institutional-knowledge store (Closes #240).
+- Added `references/institutional-knowledge.md`: lessons-learned store format
+  plus the pre-read step that feeds prior lessons into the next brainstorm
+  parse; cross-linked to the retrospective agent (Closes #241).
+- Added `references/domain-label-routing.md`: data-driven keyword/signal ->
+  domain-label routing table with confidence thresholds and a needs-triage
+  fallback (Closes #242).
+- Updated `SKILL.md`: documented the export pipeline, agent roles, hybrid
+  template, routing, and pre-read; added new trigger phrases; bumped version to
+  1.6.0.
+
 ## 1.5.0 - 2026-06-17
 
 - Added brainstorm-to-issues ingestion mode + reference

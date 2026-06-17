@@ -1,7 +1,7 @@
 ---
 name: idea-incubator
-version: 1.4.4
-last-updated: 2026-05-18
+version: 1.6.0
+last-updated: 2026-06-17
 description: >-
   Capture, classify, connect, review, and promote speculative ideas into a
   searchable GitHub issue inbox. Use when the user says "new idea", "incubate
@@ -57,6 +57,11 @@ This skill works best with these MCP connectors. Claude will suggest connecting 
 - `ingest this brainstorm`
 - `break this into epics and stories`
 - `here's my next brainstorming doc`
+- `red-team this epic`
+- `devil's advocate`
+- `retro this epic`
+- `lessons learned`
+- `process my inbox`
 
 The phrases are kept punctuation-free so substring-matching agents (Codex,
 Gemini CLI) hit them as reliably as Claude does.
@@ -72,7 +77,16 @@ Gemini CLI) hit them as reliably as Claude does.
 1. **Capture** - turn one idea into one issue draft. If the input is a note,
    URL, or voice-to-text fragment, keep the draft short and actionable.
 2. **Intake** - split a pasted Telegram dump into candidate ideas. Keep
-   uncertain splits visible instead of guessing.
+   uncertain splits visible instead of guessing. For brainstorms exported from
+   Gemini, use the
+   [`references/gemini-export-pipeline.md`](references/gemini-export-pipeline.md)
+   flow and the
+   [`scripts/gemini_to_github.py`](scripts/gemini_to_github.py) helper to split
+   into idea blocks and emit draft issue payloads. Run the
+   **prior-lessons pre-read** from
+   [`references/institutional-knowledge.md`](references/institutional-knowledge.md)
+   before generating epics, and apply domain auto-routing per
+   [`references/domain-label-routing.md`](references/domain-label-routing.md).
 3. **Connect** - search for related ideas, prerequisites, duplicates, and
    cross-pollination candidates. Link them; do not auto-close.
 4. **Review** - surface stale ideas, best-fit-for-now ideas, and clusters
@@ -109,6 +123,22 @@ Gemini CLI) hit them as reliably as Claude does.
    be triaged as a unit instead of one-by-one. See the dedicated section
    below; the worked example is in
    [`references/promote-batch-example.md`](references/promote-batch-example.md).
+
+## Agent roles
+
+The incubator can spawn (or paste-in, on hosts without subagents) two dual-role
+agents that close the learning loop around generated epics:
+
+- **Devil's Advocate / Red Team** —
+  [`agents/devils-advocate.md`](agents/devils-advocate.md). Adversarially
+  reviews a freshly generated epic *before* it is filed: challenges
+  assumptions, names the weakest story, surfaces hidden dependencies, and lists
+  failure modes. Invoke right after an epic is generated.
+- **Retrospective / Lessons-Learned** —
+  [`agents/retrospective.md`](agents/retrospective.md). Reviews a *closed* epic
+  and its stories/PRs, scores estimate accuracy, and writes lessons into
+  [`references/institutional-knowledge.md`](references/institutional-knowledge.md),
+  which the Intake pre-read loads on the next cycle.
 
 ## Promote-batch mode
 
@@ -188,6 +218,20 @@ When in doubt for a recovery/import cluster, default to `Refs`.
   - Brainstorm → GitHub epics/stories/points ingestion pipeline: process,
     label/body conventions, Fibonacci point rubric, domain→repo routing
     table, and IP / Masonic care rules.
+- [`references/templates/hybrid-issue-template.md`](references/templates/hybrid-issue-template.md)
+  - Skeletal hardware/software/firmware hybrid issue template with an Expected
+    PDM Artifacts checklist. GitHub-native form lives at
+    `.github/ISSUE_TEMPLATE/hybrid-idea.md`.
+- [`references/gemini-export-pipeline.md`](references/gemini-export-pipeline.md)
+  - Design doc for the Gemini -> Obsidian -> GitHub export pipeline, including
+    data contract, idempotency/dedup, failure handling, and coordination with
+    StudioPipeline #57.
+- [`references/domain-label-routing.md`](references/domain-label-routing.md)
+  - Data-driven keyword/signal -> domain-label routing table with confidence
+    thresholds and a needs-triage fallback.
+- [`references/institutional-knowledge.md`](references/institutional-knowledge.md)
+  - Lessons-learned store format plus the pre-read step that feeds prior
+    lessons into the next brainstorm parse. Written by the retrospective agent.
 - [`references/private-media-family-archive.md`](references/private-media-family-archive.md)
   - Privacy-first promotion template for family archives, photo albums,
     scanned documents, and personal video.
@@ -207,6 +251,15 @@ When in doubt for a recovery/import cluster, default to `Refs`.
 - [`references/promote-batch-example.md`](references/promote-batch-example.md)
   - Worked example: legacy-import / Weather Balloon Camera Vessel cluster.
 
+## Bundled agents
+
+- [`agents/devils-advocate.md`](agents/devils-advocate.md) - adversarial
+  red-team review of a freshly generated epic.
+- [`agents/retrospective.md`](agents/retrospective.md) - blameless retro of a
+  closed epic that writes lessons into the institutional-knowledge store.
+- [`agents/openai.yaml`](agents/openai.yaml) - OpenAI/Codex interface
+  descriptor for the skill.
+
 ## Optional helpers
 
 Both helpers create the same labels and need an authenticated `gh`. Pick the
@@ -220,6 +273,9 @@ one that matches the host shell:
 - [`scripts/promote_batch_readiness.py`](scripts/promote_batch_readiness.py) -
   offline-first helper that converts saved issue JSON plus local anchor roots
   and inventory CSVs into a Promote-batch readiness matrix.
+- [`scripts/gemini_to_github.py`](scripts/gemini_to_github.py) - dry-run-first
+  helper that splits an exported Gemini brainstorm into idea blocks and emits
+  fingerprinted draft issue payloads (Story #237).
 
 If neither works (mobile zip-upload, sandboxed Codex Desktop, no `gh`), fall
 back to the copy-pasteable `gh label create` block in
