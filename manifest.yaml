@@ -282,6 +282,19 @@ skills:
       summary. Scales by named scope across twingrid/triplegrid/quadgrid via
       /tmp lockfile.
 
+  run-benchmark:
+    canonical_version: 0.1.0
+    runtime: shared
+    repo_path: plugins/coding/skills/run-benchmark
+    last_updated: 2026-06-13
+    status: active
+    notes: >-
+      Drive an AI-agent benchmark contribution end-to-end (run, scrutinize,
+      issue, PR, submit) with verify-don't-trust integrity. Benchmark-agnostic:
+      orients on the target repo's own contract (AGENTS.md / CONTRIBUTING.md)
+      and detects its harness. MakerBench-HWE is the worked reference;
+      GrabCADBench / CADGenBench / SWE-bench-family and internal evals in scope.
+
   run-swarm:
     canonical_version: 1.2.1
     runtime: shared
