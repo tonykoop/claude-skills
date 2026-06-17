@@ -1,15 +1,39 @@
 ---
 name: sprint-supervisor
-version: 1.3.1
-last-updated: 2026-06-15
-description: Babysit a running multi-pane WRFCoin tmux sprint while the user is AFK or asleep. Polls the manager pane and grid persona panes every ~4 min via ScheduleWakeup, auto-approves routine codex permission prompts using a fixed rubric, escalates destructive prompts, and produces a morning summary. Use this skill whenever the user says "watch the sprint", "supervise overnight", "I'm going to bed keep the sprint going", "babysit the panes", "keep an eye on twingrid", or invokes "/sprint-supervisor" — even without the word "supervisor". Scales by named scope — one instance handles a twingrid (18 panes), multiple instances divide-and-conquer a triplegrid or quadgrid by scoping each supervisor to a slice of grids (e.g. consensus, infra-backend, frontend) coordinated via /tmp lockfile so peers don't double-approve. Pairs with sprint-watchdog.sh which absorbs the mechanical ~70% of approvals; this skill handles the judgment ~30% — commands, rate-limit prompts, escalation.
+version: 1.4.0
+last-updated: 2026-06-16
+description: Babysit a running multi-pane tmux agent sprint while the user is AFK or asleep. Polls the manager pane and grid persona panes every ~4 min via ScheduleWakeup, auto-approves routine agent permission prompts using a configurable rubric, escalates destructive prompts, and produces a morning summary. Use this skill whenever the user says "watch the sprint", "supervise overnight", "I'm going to bed keep the sprint going", "babysit the panes", "keep an eye on twingrid", or invokes "/sprint-supervisor" — even without the word "supervisor". Scales by named scope — one instance handles a twingrid (18 panes), multiple instances divide-and-conquer a triplegrid or quadgrid by scoping each supervisor to a slice of grids coordinated via /tmp lockfile so peers don't double-approve. Pairs with sprint-watchdog.sh which absorbs the mechanical ~70% of approvals; this skill handles the judgment ~30% — commands, rate-limit prompts, escalation.
 ---
 
 # /sprint-supervisor
 
-Watch an already-running tmux sprint and keep it unblocked while the user is away. The sprint manager (a codex agent in tmux window `0:0`) dispatches work to a persona grid; this skill steps in when either the manager or a grid pane stalls on a permission prompt the user would normally answer.
+Watch an already-running tmux sprint and keep it unblocked while the user is away. The sprint manager (an agent in tmux window `0:0`) dispatches work to a persona grid; this skill steps in when either the manager or a grid pane stalls on a permission prompt the user would normally answer.
 
 This skill is intentionally split from the mechanical watchdog hook. The hook absorbs the routine ~70% of approvals (plain edit prompts) without needing a model in the loop. This skill handles the judgment 30% — command approvals, rate-limit prompts, refusal-list calls, and the morning summary.
+
+> **Project-agnostic core.** This skill is the generic `tmux-agent-supervisor`. All project-specific behavior (refusal-list paths, approval-rubric entries, repo groupings, host names, citation format) lives in a config file — see the **Configuration** section. A worked configuration for one real project ("wrfcoin") ships as the commented example block in `references/supervisor-config.example.yaml`; treat it as illustrative, not as a default.
+
+## Configuration
+
+The refusal list, the approval rubric, and the project-specific labels (repo groupings, host names, workspace paths, PR citation format) are **externalized into a config file** so the skill core stays generic and you can release or share it without leaking project internals.
+
+**Where to look.** On first run, look for a supervisor config in this order and use the first one that exists:
+
+1. `$SPRINT_SUPERVISOR_CONFIG` (explicit path, if the user set it)
+2. `~/.claude/sprint-supervisor-config.yaml` (per-user install)
+3. `<skill-dir>/references/supervisor-config.example.yaml` (bundled generic defaults — safe fallback)
+
+If only the example is found, run with the **generic defaults** from it (conservative refusal list, provider-agnostic rubric, placeholder labels) and mention once that the user can copy the example to `~/.claude/sprint-supervisor-config.yaml` and customize it.
+
+**What the config controls** (see `references/supervisor-config.example.yaml` for the full schema and a commented wrfcoin-flavored example):
+
+- `workspace_dir` / `worktrees_dir` — the roots the refusal list treats as "safe to operate within". Anything destructive *outside* these escalates.
+- `refusal_list` — patterns that must never be auto-approved (data wipes, force-push to protected branches, secret exfiltration, permission-policy broadening, etc.). Generic defaults are provided; projects extend with their own protected hosts/paths.
+- `approval_rubric` — the allow/confirm/escalate rows by prompt shape. The defaults are provider-agnostic (codex/claude/gemini/agy); projects add their own benign-command allowlist (e.g. read-only ops on a specific host).
+- `labels` — `repo_groups` for the morning summary, `pr_citation_format` (e.g. `<owner>/<repo>#<n>`), `protected_branches`, and any named host aliases.
+- `notifications` — Slack channel id (or none), and whether to use `PushNotification`.
+
+When this SKILL.md gives a concrete example (a path, a host, a repo group), read it as a **placeholder** that the config supplies for real. The illustrative strings below use `<repo>`, `~/work/<project>`, `<host>` etc. on purpose.
 
 ## Invocation modes
 
@@ -23,18 +47,18 @@ Scope = `default`. Watches the manager (`0:0`) and all panes in `twingrid-a` and
 
 **Scoped supervisor (triplegrid+ or specialized):**
 ```
-/sprint-supervisor consensus --targets twingrid-a
-/sprint-supervisor infra-backend --targets twingrid-b,twingrid-c
-/sprint-supervisor frontend --targets twingrid-d
+/sprint-supervisor group-a --targets twingrid-a
+/sprint-supervisor group-b --targets twingrid-b,twingrid-c
+/sprint-supervisor group-c --targets twingrid-d
 ```
 The first token after the skill name is the scope name. `--targets` is a comma-separated list of tmux sessions (or `session:window.pane` IDs if the user wants finer granularity). The manager pane (`0:0`) is **always watched by every scope** unless the user passes `--no-manager` — the manager is the brain and you want every supervisor to notice if it dies.
 
 **If the user invokes the skill without a clear scope and you're not sure**, ask:
-> "What should I watch? Defaults: scope=`default`, targets=`twingrid-a` and `twingrid-b`. Say something like 'just the consensus grids on twingrid-a' if you want me scoped narrower."
+> "What should I watch? Defaults: scope=`default`, targets=`twingrid-a` and `twingrid-b`. Say something like 'just group-a on twingrid-a' if you want me scoped narrower."
 
 ## Dispatch modes — warm-start vs cold-start
 
-The skill assumes a running sprint by default (warm-start). But Tony often dispatches it remotely (e.g. from the Claude mobile app while away from his desk), and in that case the sprint manager itself may not be running yet. The skill detects this on first iteration and bootstraps if needed.
+The skill assumes a running sprint by default (warm-start). But it is often dispatched remotely (e.g. from the Claude mobile app while away from the desk), and in that case the sprint manager itself may not be running yet. The skill detects this on first iteration and bootstraps if needed.
 
 **Warm-start (default).** A sprint manager is already running in `0:0` and panes already exist in the target sessions. Skip straight to the loop.
 
@@ -62,10 +86,10 @@ See `references/dispatch-patterns.md` for worked patterns including the mobile c
    tmux capture-pane -t 0:0 -p -S -20 | tail -20
    ```
 3. **Target sessions exist.** Run `tmux list-sessions` and verify your scope's targets are present.
-4. **Watchdog hook is running** (recommended, not required). The watchdog defaults to `twingrid-a twingrid-b`, so always pass your scope's actual targets via `SPRINT_SESSIONS`. Start it after writing the lockfile in step 5 so you can pull targets straight from it:
+4. **Watchdog hook is running** (recommended, not required). The watchdog defaults to `twingrid-a twingrid-b`, so always pass your scope's actual targets via `SPRINT_SESSIONS`. Start it after writing the lockfile in step 5 so you can pull targets straight from it. The watchdog script path is configurable (`watchdog_script` in the config; defaults to `~/.claude/skills/sprint-supervisor/scripts/sprint-watchdog.sh` or wherever the install placed it):
    ```bash
    SPRINT_SESSIONS="$(python3 -c "import json; print(' '.join(json.load(open('/tmp/sprint-supervisor/<scope>.lock'))['targets']))")" \
-     nohup /home/tony/wrfcoin/scripts/sprint-watchdog.sh > /tmp/sprint-watchdog.log 2>&1 &
+     nohup "$WATCHDOG_SCRIPT" > /tmp/sprint-watchdog.log 2>&1 &
    disown
    ```
    Check the log at `/tmp/sprint-watchdog.log` to confirm it logged `sessions='<your targets>'` rather than the default. Without the watchdog, you'll spend most of your cycles on routine edit prompts instead of judgment work. **Don't skip the `SPRINT_SESSIONS` export** — the watchdog will silently watch the wrong sessions and you'll wonder why no edit prompts ever get auto-approved (2026-05-18 lesson).
@@ -199,7 +223,7 @@ for sess in <target1> <target2>; do
 done
 ```
 
-For each stuck pane that **isn't** claimed by a peer (from step 2), apply the rubric below. **Space approvals ~2s apart** to avoid codex-pane API overload.
+For each stuck pane that **isn't** claimed by a peer (from step 2), apply the rubric below. **Space approvals ~2s apart** to avoid agent-pane API overload.
 
 ### 5. Periodic post-merge prune sweep (every 4th wakeup ≈ 16 min)
 
@@ -223,7 +247,8 @@ If a peer supervisor's lockfile claims any repo you'd touch, skip those repos
 this cycle and let the peer's own sweep handle them. (Sweep mode currently
 walks all repos under `WORKSPACE_DIR`; if peers exist, scope yourself by
 running the script repo-by-repo with `--repo <name>` for only the repos
-relevant to your panes' lanes.)
+relevant to your panes' lanes.) `WORKSPACE_DIR` comes from `workspace_dir` in
+the config (see Configuration).
 
 The motivation is the 2026-05 WSL2 disk-bloat incident; see
 `feedback_post_merge_prune.md` for the rule and rationale.
@@ -233,6 +258,8 @@ The motivation is the 2026-05 WSL2 disk-bloat incident; see
 Always re-schedule unless the user has returned or an escalation triggered. If escalation triggered, surface to the user and pause — don't auto-resume until the user acknowledges.
 
 ## Approval rubric
+
+> The rows below are the **generic defaults**. Project-specific additions (e.g. a benign read-only command allowlist on a named host) come from `approval_rubric` in the config — see `references/supervisor-config.example.yaml`.
 
 **Provider-agnostic note.** Grid panes may be running `codex` (gpt-X), `claude`, `gemini`, or `agy` (Antigravity, Gemini-backed) CLIs. The sprint-manager may also actively *migrate* a budget-exhausted pane from one provider to another (e.g. exit the codex CLI, launch `claude` in the same pane, brief availability test, resume dispatching that lane — see `tmux-sprint/references/provider-failover.md`, repo issue #166). Each CLI has its own prompt phrasing — codex says "Would you like to make the following edits?", claude says it differently, gemini/agy differently again — but the *shapes* are the same: edit confirmation, command confirmation, rate-limit alert. Match the shape, judge the action, ignore which CLI is asking. If you see a prompt shape the rubric doesn't cover (a new CLI's UI, an unusual phrasing), fall through to the "anything else" row and lean conservative.
 
@@ -244,24 +271,26 @@ Always re-schedule unless the user has returned or an escalation triggered. If e
 | `Would you like to make the following edits?` with `1. Yes / 2. No` (no `a` option) | `y Enter` |
 | `Would you like to run the following command?` for benign read-only (`npm audit`, `cargo test`, `cargo check`, `gh pr view`, `gh pr list`, `gh issue view`, `git status`, `git diff`, `git log`, `ls`, `find` with `-maxdepth`) | `p Enter` (always-allow) |
 | `Would you like to run the following command?` for `gh pr create/comment/ready/merge`, `gh issue close/comment`, `git push` to a feature/codex branch, `git rebase`, `git push --force-with-lease` to a feature branch | `y Enter` |
-| `Would you like to run the following command?` for `ssh` read-only ops on the N5 host (`python3 node-dashboard.py`, `docker ps`, `find`, `ls`, `git status`) | `y Enter` |
+| `Would you like to run the following command?` for `ssh` read-only ops on a config-listed host (e.g. `<host>`: dashboard scripts, `docker ps`, `find`, `ls`, `git status`) — only if the host appears in the config's allowlist | `y Enter` |
 | `Approaching rate limits — Switch to gpt-5.4-mini?` | `2 Enter` (Keep current model). The reason is **not** that downshifting is always wrong — it's that the sprint-manager may have a better plan (e.g. migrate the pane to a different provider entirely: codex → claude → gemini). Preserving model choice keeps that path open. The manager owns the pivot; the supervisor just doesn't shortcut it. |
 | Provider availability test prompt (sprint-manager dispatching a brief "are you up?" probe to a freshly-launched `claude` or `gemini` in a previously-exhausted pane) | Same rules as the corresponding edit/command rubric row apply — judge by shape, not by which CLI is asking. |
 | Anything else, or a command you can't immediately classify | Capture the last 40 lines first (`tmux capture-pane -p -t <pane> -S -40`), then judge. Lean conservative — when in doubt, escalate, don't approve. |
 
-The reason this rubric is structured by prompt-pattern rather than by command-substring is that codex's prompt UI is the stable surface — its options change rarely. Command shapes are not. Match the prompt, then sanity-check the command, then act.
+The reason this rubric is structured by prompt-pattern rather than by command-substring is that the agent CLI prompt UI is the stable surface — its options change rarely. Command shapes are not. Match the prompt, then sanity-check the command, then act.
 
 ## Refusal list — do NOT auto-approve, escalate to user
 
+> The patterns below are the **generic defaults**. Projects add their own protected paths/hosts/branches via `refusal_list` in the config — see `references/supervisor-config.example.yaml`. Path/host placeholders (`<worktrees_dir>`, `<host>`, protected branches) are resolved from the config.
+
 If a prompt requests any of these, **do not approve and do not dismiss**. Capture context, fire a `PushNotification` to wake the user, append to `notable_events`, surface it in your next response, and pause the loop:
 
-- `rm -rf` targeting paths outside `/home/tony/wrfcoin/worktrees/` or `/tmp/`
+- `rm -rf` targeting paths outside the configured `worktrees_dir` (default placeholder `~/work/<project>/worktrees/`) or `/tmp/`
 - `DROP TABLE`, `DROP DATABASE`, `redis-cli FLUSHALL`, or any other live-data wipe
-- `git push --force` (without `--with-lease`) to `main` or `master`
-- `git push` to `main` directly (not via PR merge)
+- `git push --force` (without `--with-lease`) to a protected branch (default: `main` / `master`)
+- `git push` to a protected branch directly (not via PR merge)
 - Anything that prints, exfiltrates, or writes secrets / env files / private keys
 - `git branch -D` against more than 2 branches in one command
-- Live service restart on the N5 testnet that isn't authorized by the active handoff contract
+- Live service restart on a production/testnet host that isn't authorized by the active handoff contract
 - Any command modifying `~/.ssh/`, system services, or sudo state
 - Broadening an agent's permission policy: `--dangerously-skip-permissions`, `skipPermissions`, persistently auto-allowing `run_shell_command`, or editing `~/.gemini/policies/auto-saved.toml` to add shell access (agy / Antigravity — #191)
 
@@ -296,25 +325,25 @@ If this supervisor instance also stands up worktrees and launches panes (warm ha
 
 ## AFK notifications
 
-The supervisor runs to keep the sprint going while Tony is AFK or asleep. Two outbound channels exist; use both when appropriate.
+The supervisor runs to keep the sprint going while the user is AFK or asleep. Two outbound channels exist; use both when appropriate.
 
-**Primary: `PushNotification` tool.** Always available, no auth dependency. Auto-suppresses when Tony is at the keyboard (last keystroke < 60s) so it doesn't distract him mid-work. Use it for the **urgent path** — anything that would otherwise sit until the next wakeup cycle and matters enough to interrupt him:
+**Primary: `PushNotification` tool.** Always available, no auth dependency. Auto-suppresses when the user is at the keyboard (last keystroke < 60s) so it doesn't distract them mid-work. Use it for the **urgent path** — anything that would otherwise sit until the next wakeup cycle and matters enough to interrupt them:
 
-- Refusal-list trigger (see below). Send BEFORE pausing the loop so he sees it on his phone.
+- Refusal-list trigger (see below). Send BEFORE pausing the loop so they see it on their phone.
 - Manager death / "Waiting for background terminal" >20 min.
 - Pile-up of >8 stuck grid panes.
-- Provider failover that needs his decision (manager exhausted weekly budget on all providers).
+- Provider failover that needs a decision (manager exhausted weekly budget on all providers).
 
-Keep messages under 200 chars, one line, no markdown. Lead with what he'd act on. Examples:
+Keep messages under 200 chars, one line, no markdown. Lead with what they'd act on. Examples:
 
 ```
 PushNotification(status="proactive", message="sprint-supervisor escalation: 10 grid panes stuck, manager may be dead. Pane tails in next reply.")
 PushNotification(status="proactive", message="REFUSAL: manager tried git push --force to main. Paused. Open the CLI to review.")
 ```
 
-Don't notify for routine progress, individual merge approvals, or anything you can handle inside the rubric without him.
+Don't notify for routine progress, individual merge approvals, or anything you can handle inside the rubric without the user.
 
-**Secondary: Slack `slack_send_message`** (best-effort, may fail). Use for **morning summaries** and other non-urgent posts that benefit from markdown / threading / phone reply. Wrap in a try/except — if the call fails with `OAuth token does not meet scope requirement user:mcp_servers`, silently skip Slack and write the same summary to `/tmp/sprint-supervisor/<scope>.summary.md` for him to read in the terminal next time he invokes the supervisor.
+**Secondary: Slack `slack_send_message`** (best-effort, may fail). Use for **morning summaries** and other non-urgent posts that benefit from markdown / threading / phone reply. Wrap in a try/except — if the call fails with `OAuth token does not meet scope requirement user:mcp_servers`, silently skip Slack and write the same summary to `/tmp/sprint-supervisor/<scope>.summary.md` for the user to read in the terminal next time they invoke the supervisor.
 
 ```python
 try:
@@ -330,7 +359,7 @@ except Exception as e:
 
 The Slack scope dependency: Slack write requires the CLI session's OAuth token to include `user:mcp_servers`. If the user installed the Slack app AFTER starting this CLI session, this session won't have it; the next fresh session will. Don't ask the user to log out mid-supervision.
 
-**Configuring the Slack channel.** First-time setup: if `~/.claude/sprint-supervisor-slack.json` doesn't exist, ask the user once which channel/DM to use, save the channel_id to that file, and reuse it forever. Don't prompt every time.
+**Configuring the Slack channel.** First-time setup: if no Slack channel is set in the config (`notifications.slack_channel_id`), ask the user once which channel/DM to use, save the channel_id to the config, and reuse it forever. Don't prompt every time.
 
 ## Escalation triggers — surface proactively
 
@@ -347,11 +376,11 @@ When escalating: write a one-paragraph summary at the top of your next response,
 
 ## Coordination with peer supervisors
 
-When the user grows past twingrid (triplegrid = 27-36 agents, quadgrid = 36-45), they'll typically run multiple supervisors in separate Claude sessions, each scoped to a topic-coherent slice of grids. Examples:
+When the user grows past twingrid (triplegrid = 27-36 agents, quadgrid = 36-45), they'll typically run multiple supervisors in separate Claude sessions, each scoped to a topic-coherent slice of grids. Scope names are arbitrary and project-defined (the config's `labels.repo_groups` is a good source); for example:
 
-- **`consensus`** scope watches the smart-contracts and core4 persona grids (where most cross-pane coordination happens).
-- **`infra-backend`** scope watches the infra and backend persona grids.
-- **`frontend`** scope watches the frontend and UX grids.
+- A **`group-a`** scope watches the grids where most cross-pane coordination happens.
+- A **`group-b`** scope watches the infra/backend grids.
+- A **`group-c`** scope watches the frontend / UX grids.
 
 Each supervisor:
 1. Owns its declared targets (lockfile claims them).
@@ -368,13 +397,13 @@ See `references/scaling-topology.md` for worked triplegrid/quadgrid examples and
 When the user returns, lead with a structured summary scoped to **your** slice. Sections in order:
 
 1. **Sprint manager** — hours running, auto-compact count, current task, context/budget remaining. (Only the first supervisor to report should cover this; subsequent supervisors can skip if a peer already did.)
-2. **Merges that landed** — grouped by repo (core4 / infra / backend / frontend / smart-contracts), with PR numbers.
+2. **Merges that landed** — grouped by repo (use the config's `labels.repo_groups`), with PR numbers.
 3. **Issues closed** — grouped by repo.
-4. **N5 Pro testnet** — starting state → ending state (height, peers, alerts, svc up). Only if your scope touches N5 diagnostics.
+4. **Production / testnet diagnostics** — starting state → ending state (only if your scope touches diagnostics for a host listed in the config).
 5. **What I handled directly** — count of stuck-pane approvals, ssh diagnostics approved, rate-limit prompts answered.
 6. **Caveats / things to review** — panes that exhausted weekly budget, anything escalated, anything ambiguous.
 
-Cite PR numbers as `wrfcoin/<repo>#NNNN` so the user can click. See `references/morning-summary.md` for a worked example with the exact phrasing patterns that have worked well.
+Cite PR numbers using the config's `labels.pr_citation_format` (default `<owner>/<repo>#<n>`) so the user can click. See `references/morning-summary.md` for a worked example with the exact phrasing patterns that have worked well.
 
 **Delivery.** When the supervisor first detects `current_phase` flipping to `idle` (sprint complete), build the summary once and:
 1. Save to `/tmp/sprint-supervisor/<scope>.summary.md` (always — this is the canonical copy).
@@ -423,7 +452,7 @@ a single tmux build.
 - **Doesn't dispatch new work** to grid panes. The manager owns that.
 - **Doesn't merge PRs.** The manager owns that.
 - **Doesn't `/clear` or `/compact`** the manager. Let it self-compact.
-- **Doesn't touch the live N5 testnet directly** — only approves the manager's read-only diagnostics.
+- **Doesn't touch a live production/testnet host directly** — only approves the manager's read-only diagnostics.
 - **Doesn't dispatch the manager's own commands** — only approves or refuses what the manager asks for.
 - **Doesn't reorganize the grid topology.** If a peer supervisor dies, surface it to the user; don't unilaterally absorb its scope.
 
@@ -448,14 +477,14 @@ When the user returns and dismisses the supervisor:
 
 ## Tuning notes from the 2026-05-18 session
 
-Second full-sprint run (4 rounds, 32 PRs merged across 32 instrument repos, ~2h 12m manager runtime, 35 supervisor cycles). New findings:
+Second full-sprint run (4 rounds, 32 PRs merged across 32 repos, ~2h 12m manager runtime, 35 supervisor cycles). New findings:
 
 - **Adaptive cadence beats fixed 240s.** Prompt density is front-loaded (dispatch, first verify sweep, first PR creation all within the first ~10 min) and tails to zero once "Goal achieved" appears. The 30/240/1800 schedule formalized above came from manually ramping cadence during this run and saved an estimated half-dozen unnecessary cycles in the idle phase.
 - **Wakeup-prompt re-pasting was wasteful.** ~30 cycles each re-pasted the full rubric + per-iter status as the next wakeup's prompt. With cache warm this added measurable cost. Lockfile-resume + one-line wakeup prompts (see "Loop cadence") replace this entirely.
 - **Watchdog session scoping is a footgun.** Watchdog hard-defaults to `twingrid-a twingrid-b`. The 2026-05-18 sprint used `8` and `r28-review-grid` and the watchdog silently watched the wrong sessions until manual kill+respawn. Prereq #4 now requires passing `SPRINT_SESSIONS` from the lockfile.
 - **`.pending` short-circuit pattern was new.** Watchdog handles edit prompts; command-shape prompts that need supervisor judgment used to wait a full cycle. Writing a `.pending` marker on detection lets the next iteration know to act immediately instead of sleeping its scheduled cadence.
 - **PushNotification is the right urgent channel.** Slack MCP write requires `user:mcp_servers` scope which sessions started before Slack-app install don't have. PushNotification works in every session and auto-suppresses when user is active — exactly what an AFK escalation channel should do. Slack-send is a nice-to-have for morning summaries from fresh sessions.
-- **Codex sandbox DNS block created ~6 cycles of `gh` escalation friction.** See `[[codex_sandbox_dns_blocked]]`. Manager-side batching (one `gh search prs --owner` instead of looping `gh pr list --repo X`) would cut this to one approval per sprint.
+- **Sandbox DNS block created ~6 cycles of `gh` escalation friction.** Some agent CLIs sandbox network access; `gh` calls then need host-side approval. Manager-side batching (one `gh search prs --owner` instead of looping `gh pr list --repo X`) would cut this to one approval per sprint.
 - **Manager auto-compacted cleanly at 9% → 86%** mid-sprint without incident, matching the 2026-05-12 behavior.
 
 ## Tuning notes from the 2026-05-12 session
@@ -466,6 +495,6 @@ These came out of the first overnight run; update if subsequent runs change them
 - **The watchdog should run if available** — without it, the supervisor model spends most of its cycles on routine edit approvals instead of judgment work.
 - **Manager averaged one auto-compact every ~1.5 hours.** Always recovered cleanly (7-9% → 78-91%).
 - **Grid panes started hitting weekly budget exhaustion ~5 hours in.** Manager pivoted to running select lanes from its own context — this worked. Don't try to "fix" exhausted panes from the supervisor side; just preserve their model choice via the rate-limit rubric.
-- **Forward improvement (not yet implemented): multi-provider failover before manager-absorption.** When a sprinter pane exhausts its weekly budget on provider A, the *better* pivot — before falling back to the manager absorbing the lane — is for the manager to exit that pane's codex session (keeping the pane open), launch a different CLI (`claude`, `gemini`), run a brief availability probe, and resume dispatching that lane via the new provider. This is **manager** work, not supervisor work — but the supervisor needs to recognize provider-availability-probe prompts and approve them the same way it approves regular dispatch. See `sprint-supervisor-issues-to-file.md` Issue 7 for the infrastructure work, and the provider-agnostic note at the top of the rubric.
+- **Forward improvement (not yet implemented): multi-provider failover before manager-absorption.** When a sprinter pane exhausts its weekly budget on provider A, the *better* pivot — before falling back to the manager absorbing the lane — is for the manager to exit that pane's codex session (keeping the pane open), launch a different CLI (`claude`, `gemini`), run a brief availability probe, and resume dispatching that lane via the new provider. This is **manager** work, not supervisor work — but the supervisor needs to recognize provider-availability-probe prompts and approve them the same way it approves regular dispatch. See repo issue #166 for the infrastructure work, and the provider-agnostic note at the top of the rubric.
 - **One pile-up of 10 stuck grid panes** happened when the manager was deep in a multi-merge sequence and stopped polling its own grid. Watchdog would have caught most of these.
 - **A second-level sprint manager** assisted successfully — same skill, same rubric, different scope. The lockfile coordination pattern in this skill formalizes that experience.

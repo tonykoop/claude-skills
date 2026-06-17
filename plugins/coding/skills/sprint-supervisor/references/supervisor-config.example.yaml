@@ -1,0 +1,135 @@
+# sprint-supervisor configuration (example)
+# -----------------------------------------------------------------------------
+# Copy this file to ~/.claude/sprint-supervisor-config.yaml (or set
+# $SPRINT_SUPERVISOR_CONFIG to its path) and customize for your project.
+#
+# The skill core is project-agnostic. Everything that used to be hardcoded in
+# SKILL.md — protected paths, the refusal list, the benign-command allowlist,
+# repo groupings, host names, PR citation format — now lives here.
+#
+# Lookup order (first match wins):
+#   1. $SPRINT_SUPERVISOR_CONFIG
+#   2. ~/.claude/sprint-supervisor-config.yaml
+#   3. <skill-dir>/references/supervisor-config.example.yaml  (these defaults)
+#
+# The values below the "GENERIC DEFAULTS" heading are safe, conservative
+# defaults. A real-world filled-in example ("wrfcoin") follows at the bottom,
+# commented out — it is illustrative only, NOT a default.
+# =============================================================================
+
+# ----------------------------------------------------------------------------
+# GENERIC DEFAULTS
+# ----------------------------------------------------------------------------
+
+# Roots the refusal list treats as "safe to operate within". Destructive ops
+# OUTSIDE these escalate to the user instead of being auto-approved.
+workspace_dir: "~/work"               # where prune-after-merge --sweep walks
+worktrees_dir: "~/work/worktrees"     # where agent worktrees live
+
+# Path to the mechanical watchdog companion. Optional; the skill works without
+# it but spends more cycles on routine edit prompts.
+watchdog_script: "~/.claude/skills/sprint-supervisor/scripts/sprint-watchdog.sh"
+
+# Branches that must never be force-pushed or pushed-to directly.
+protected_branches:
+  - main
+  - master
+
+# Hosts the supervisor is allowed to approve READ-ONLY ssh diagnostics on.
+# Empty by default — no host is trusted until you add it. Each entry lists the
+# exact read-only commands that may be auto-approved for that host; anything
+# else on that host escalates.
+trusted_hosts: []
+#   - alias: "<host>"
+#     allow_readonly:
+#       - "docker ps"
+#       - "git status"
+#       - "ls"
+#       - "find"
+
+# Refusal list — patterns that must NEVER be auto-approved. The skill already
+# hard-codes a baseline (data wipes, secret exfiltration, permission-policy
+# broadening, force-push to protected branches). Add project-specific extras
+# here; they are appended to the baseline, never replace it.
+refusal_list:
+  extra_patterns: []
+  #   - "live service restart on <host> without an active handoff contract"
+  #   - "rm -rf outside ${worktrees_dir} or /tmp/"
+
+# Approval rubric extensions. The generic provider-agnostic rubric (edit
+# confirm / command confirm / rate-limit) is built in. Use this to ADD a
+# project's benign read-only command allowlist. Anything not listed here and
+# not in the built-in benign set falls through to "escalate, lean conservative".
+approval_rubric:
+  benign_readonly_extra: []
+  #   - "npm audit"
+  #   - "cargo test"
+  #   - "cargo check"
+  # Host-scoped read-only ops are configured via trusted_hosts above.
+
+# Labels used in the morning summary and PR citations.
+labels:
+  # Group merged PRs by repo in the morning summary. Keys are display group
+  # names; values are the repos that belong to each group.
+  repo_groups: {}
+  #   backend: ["api", "worker"]
+  #   frontend: ["web", "ui"]
+
+  # How to render a clickable PR reference in summaries.
+  # Tokens: <owner> <repo> <n>
+  pr_citation_format: "<owner>/<repo>#<n>"
+
+# Notification channels.
+notifications:
+  use_push_notification: true      # urgent path; always available
+  slack_channel_id: null           # set once for morning summaries, or leave null
+
+# =============================================================================
+# EXAMPLE: filled-in project config ("wrfcoin")  --  ILLUSTRATIVE ONLY
+# -----------------------------------------------------------------------------
+# This block shows how the original, project-specific behavior is expressed as
+# config. It is commented out on purpose; uncomment/adapt in your own copy.
+#
+# workspace_dir: "/home/tony/wrfcoin"
+# worktrees_dir: "/home/tony/wrfcoin/worktrees"
+# watchdog_script: "/home/tony/wrfcoin/scripts/sprint-watchdog.sh"
+#
+# protected_branches:
+#   - main
+#   - master
+#
+# trusted_hosts:
+#   - alias: "N5"                 # the N5 Pro testnet host
+#     allow_readonly:
+#       - "python3 node-dashboard.py"
+#       - "docker ps"
+#       - "find"
+#       - "ls"
+#       - "git status"
+#
+# refusal_list:
+#   extra_patterns:
+#     - "live service restart on the N5 testnet not authorized by the active handoff contract"
+#
+# approval_rubric:
+#   benign_readonly_extra:
+#     - "npm audit"
+#     - "cargo test"
+#     - "cargo check"
+#     - "gh pr view"
+#     - "gh pr list"
+#     - "gh issue view"
+#
+# labels:
+#   repo_groups:
+#     core4:           ["core4"]
+#     infra:           ["infra"]
+#     backend:         ["backend"]
+#     frontend:        ["frontend"]
+#     smart-contracts: ["smart-contracts"]
+#   pr_citation_format: "wrfcoin/<repo>#<n>"
+#
+# notifications:
+#   use_push_notification: true
+#   slack_channel_id: "C0XXXXXXX"
+# =============================================================================
