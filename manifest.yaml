@@ -130,12 +130,12 @@ skills:
       under ~/.skill-cleanup-backups/.
 
   idea-incubator:
-    canonical_version: 1.4.4
+    canonical_version: 1.5.0
     runtime: shared
     repo_path: skills/idea-incubator
-    last_updated: 2026-05-18
+    last_updated: 2026-06-17
     status: active
-    notes: Promote-batch mode; readiness matrix, evidence-ledger, LFS prompts for recovery/import; offline-first promote-batch readiness helper (promote_batch_readiness.py) with existing-anchor checks and GitHub query fallbacks; private media/family archive promotion template; yearbook/design-book rollout workflow with pilot edition, consent/proof gates, image-gen derivative boundaries, EXIF/GPS handling, provenance-ledger defaults, photo-album/private-media pilot source-photo rules, compact private-media owner decision stub, and instrument design-book/yearbook/portfolio chapter promotion pattern.
+    notes: 1.5.0: added brainstorm-to-issues ingestion mode + reference
 
   file-a-patent:
     canonical_version: 0.1.0

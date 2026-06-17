@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased - 2026-06-17
+## 1.5.0 - 2026-06-17
 
 - Added brainstorm-to-issues ingestion mode + reference
   (`references/brainstorm-to-issues-pipeline.md`): documents Tony's
