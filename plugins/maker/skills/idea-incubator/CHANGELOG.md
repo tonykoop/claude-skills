@@ -1,5 +1,40 @@
 # Changelog
 
+## 1.7.0 - 2026-06-17
+
+- **Cross-Pollination Engine (epic #236)** - turns the incubator from a linear
+  conveyor belt into a semantic web that notices when a mechanism solved for
+  one gadget is the exact fit another gadget needs. Source brainstorm:
+  `HWE Project Management and Documentation Brainstorm.md` (Gemini, 2026-06-16).
+- Added `references/functional-tagging-schema.md`: a controlled vocabulary plus
+  YAML frontmatter spec (`functions:` / `interfaces:` / `materials:`) applied to
+  every idea at intake. This is the backbone the rest of the epic builds on
+  (Closes #243).
+- Added `references/obsidian/shared-subassemblies-MOC.md`: an Obsidian
+  Map-of-Content with Dataview and dataviewjs queries that group ideas by
+  shared functional tags to surface recurring subassemblies (Closes #244).
+- Added `references/universal-interface-guide.md`: the "Lego rule" design guide
+  standardizing mounting patterns, fasteners, tolerance classes, connectors/
+  pinouts, and naming so subassemblies stay swappable. Cross-links HWE-Pipeline
+  #39 (cross-layer maker signature / cohesion) (Closes #245).
+- Added `references/prompts/constraint-injection.md`: a reusable prompt fragment
+  that injects the Universal Interface constraints into design-generation
+  requests, with usage notes and a before/after example (Closes #246).
+- Added `agents/cross-pollination-librarian.md`: an agent definition for a
+  scheduled librarian that scans the GitHub issue inbox + Obsidian vault, uses
+  functional tags and/or embeddings to match solved mechanisms to open needs,
+  and posts cross-pollination suggestion comments with noise guardrails
+  (Closes #247).
+- Added `references/circuits-inventory.md` and
+  `scripts/build_circuits_inventory.py`: a portfolio-wide index of reusable
+  functional primitives ("circuits") plus an offline-first, dry-run-default
+  builder that walks repos/vault for tagged ideas and emits Markdown/JSON
+  (Closes #248).
+- Updated `SKILL.md`: added a Cross-pollinate mode (mode 7), a Cross-pollination
+  engine section, new trigger phrases (`cross-pollinate`, `tag this idea`,
+  `what reuses this`), a Bundled agents section, and references to the new
+  files; tag-honesty operating rule added.
+
 ## 1.6.0 - 2026-06-17
 
 Epic #235 - Idea-Incubator Workflow Automation & Agent Roles. Makes the
