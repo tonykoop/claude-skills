@@ -6,7 +6,7 @@
     "email": "tonykoop@gmail.com",
     "url": "https://github.com/tonykoop"
   },
-  "description": "Tony Koop's skill marketplace. Three first-class plugins: 'maker' for physical-world design and personal practice; 'coding' for software/engineering operations; 'studiopipeline' for the StudioPipeline hardware-engineering / dogfood workflow (canonical source in the standalone tonykoop/StudioPipeline repo). Auto-updates from the claude-skills git repo.",
+  "description": "Tony Koop's skill marketplace. Three first-class plugins: 'maker' for physical-world design and personal practice; 'coding' for software/engineering operations; 'studiopipeline' for the agentic video-production pipeline for makers (canonical source in the standalone tonykoop/StudioPipeline repo). Auto-updates from the claude-skills git repo.",
   "plugins": [
     {
       "name": "maker",
@@ -24,10 +24,13 @@
     },
     {
       "name": "studiopipeline",
-      "source": "https://github.com/tonykoop/StudioPipeline.git",
-      "description": "StudioPipeline hardware-engineering / dogfood workflow (MakerBench, hwe). Canonical source lives in the standalone tonykoop/StudioPipeline repo; this marketplace references it, mirroring how the maker plugin treats the standalone instrument-maker and makerspace repos. Skills are authored in that repo, not here.",
-      "category": "engineering",
-      "tags": ["studiopipeline", "hardware-engineering", "makerbench", "hwe", "dogfood"]
+      "source": {
+        "source": "github",
+        "repo": "tonykoop/StudioPipeline"
+      },
+      "description": "Agentic video-production pipeline for makers: turns an archive of build photos and footage into finished episodic videos via interactive discovery, asset mapping, multi-scene scripting, and render-ready payloads for AI video tools (HeyGen, Veo, Runway), with two human-in-the-loop greenlights. Canonical source lives in the standalone tonykoop/StudioPipeline repo; this marketplace references it, mirroring how the maker plugin treats standalone build repos.",
+      "category": "media",
+      "tags": ["studiopipeline", "video", "youtube", "content-pipeline", "makers", "heygen", "veo", "runway"]
     }
   ]
 }
