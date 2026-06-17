@@ -137,6 +137,18 @@ references:
   - path: references/experimental-acoustic-rigs.md
     purpose: "Bench-rig minimum outputs before a performance-instrument packet"
     load_when: "Building an experimental acoustic test rig"
+  - path: references/solidworks-integration.md
+    purpose: "Master sketch + design table + global equations workflow, Extract_Dimensions.swp macro schema, SW design-table generation, SW quality gates"
+    load_when: "Setting up or extending a SolidWorks model, design table, global equations, dimension extraction, or verifying SW matches Excel"
+  - path: references/folded-stopped-pipe-drone.md
+    purpose: "Folded stopped-pipe drone packet template: centerline stations, equivalent-diameter model, DXF layer contract, straight-reference validation"
+    load_when: "Designing a folded didgeridoo-like drone, laser-laminated labyrinth bore, or compact stopped-pipe proof mule"
+  - path: references/instrument-design-book-chapter-contract.md
+    purpose: "Public design-book/yearbook chapter scaffold: readiness mirror, chapter shape, asset ledger, prompt appendix, Git LFS policy, generated-image labels"
+    load_when: "Producing a public-facing instrument chapter or yearbook plate and bounding its claims to source-packet readiness"
+  - path: references/techniques/headstock-driven-deep-bore-drilling.md
+    purpose: "Reversed-lathe deep-bore drilling technique: bit in headstock, stationary square blank in tailstock vise, fixture/setup/safety guidance"
+    load_when: "Boring long straight bores in square or oversized woodwind stock before turning round"
 
 # Scripts — each declares input and output for a manifest-aware orchestrator.
 scripts:
