@@ -1,0 +1,5 @@
+item_id,item_name,category,qty,unit,material_or_spec,status,source_status,notes
+B001,Primary body blank,material,TBD,each,TBD,assumption,supplier_spec_unverified,Replace with measured stock or verified supplier spec.
+B002,Acoustic element,component,TBD,each,TBD,measurement-required,supplier_spec_unverified,Pitch/tuning behavior must be measured before full packet readiness.
+B003,Fastener or service hardware,hardware,TBD,each,TBD,TBD,substitution_candidate,Keep service access and disassembly in scope.
+B004,Finish or surface treatment,finish,TBD,TBD,TBD,TBD,needs_supplier_quote,Verify compatibility with material and instrument use.

@@ -1,0 +1,7 @@
+claim_id,topic,claim_text,posture,evidence_path_or_url,confidence,next_action
+SRC-001,identity,TBD,TBD,,low,"Select source frame or measured reference"
+SRC-002,scale_length,TBD,TBD,,low,"Do not average incompatible scale choices"
+SRC-003,string_count,TBD,TBD,,low,"Separate active, drone, and sympathetic roles"
+SRC-004,body_construction,TBD,TBD,,low,"Choose branch before CAD/CAM"
+SRC-005,top_or_head_mode,TBD,TBD,,low,"Validate bridge load path"
+SRC-006,setup_geometry,TBD,TBD,,low,"Mock bow sweep before cutting final bridge"

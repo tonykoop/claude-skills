@@ -1,0 +1,3 @@
+member_id,target_hz,target_note,acoustic_law,end_condition,dimension_provenance,predicted_L_geom_mm,wood_species,notes
+KHN-007-G3,196.00,G3,half_wave,both_ends_open,physics_derived,866.9,Hard Maple,half_wave is not in the controlled vocabulary
+KHN-007-A4,440.00,A4,quarter_wave_closed_open,one_end_closed_reed,physics_derived,381.6,Hard Maple,quarter_wave_closed_open also not in vocab

@@ -1,0 +1,3 @@
+coupon_id,branch,reed_source,source_status,source_provenance,reed_material,reed_alone_pitch_hz,reed_alone_note,target_pipe_note,pull_down_cents,onset_pressure_pa,blow_behavior,draw_behavior,gap_setting_mm,window_size_mm,gasket_leak_status,measurement_environment,next_action,notes
+KHN-P0-001,control-build,donor melodica reed C4,donor_part_on_hand,donor instrument measured in shop,phosphor bronze,,,,,,,,,,unknown,"20 C, 45% RH, bench coupon",measure reed-alone pitch before pipe CAD,
+KHN-P0-002,control-build,handmade brass reed blank,supplier_spec_unverified,raw brass sheet spec only,brass,,,,,,,,,,unknown,"20 C, 45% RH, bench coupon",set gap and record onset pressure,
