@@ -11,6 +11,11 @@ description: >-
   Saved Messages is the quick-capture layer; GitHub issues are the durable
   layer. Do not use for ideas that are already scoped and ready to build —
   route those directly to maker-engineering or the relevant specialist.
+  Also use when Tony hands over a brainstorm document (a clipped
+  Gemini/Obsidian conversation) to be filed as GitHub epics, stories, and
+  issues with Fibonacci story points across his repo ecosystem — phrases like
+  "file gh issues/stories/epics from this", "ingest this brainstorm", "break
+  this into epics and stories", "here's my next brainstorming doc".
 ---
 
 # Idea Incubator
@@ -18,6 +23,10 @@ description: >-
 Use this skill to turn rough ideas into a searchable GitHub issue inbox,
 connect them to related work, review the backlog, and promote ready ideas
 into specialist handoffs.
+
+## Mode: Brainstorm → epics/stories/points ingestion
+
+Tony's primary idea-ingestion path is turning a clipped brainstorm document (voice → Gemini → Obsidian → .md) into GitHub **epics, stories, and issues with story points**, deduplicated and routed across his repo ecosystem, then implemented by an Alice–Iris agent grid. When he uploads a brainstorm doc to be filed, follow `references/brainstorm-to-issues-pipeline.md` — it has the full process, the epic/story label + body conventions, the Fibonacci point rubric, the domain→repo routing table, and the IP / Masonic care rules. Confirm scope and routing forks with one AskUserQuestion pass before filing; comment cross-links on existing epics instead of duplicating.
 
 ## Connectors
 
@@ -44,6 +53,10 @@ This skill works best with these MCP connectors. Claude will suggest connecting 
 - `design book rollout`
 - `private media pilot`
 - `photo album pilot`
+- `file gh issues/stories/epics from this`
+- `ingest this brainstorm`
+- `break this into epics and stories`
+- `here's my next brainstorming doc`
 
 The phrases are kept punctuation-free so substring-matching agents (Codex,
 Gemini CLI) hit them as reliably as Claude does.
@@ -171,6 +184,10 @@ When in doubt for a recovery/import cluster, default to `Refs`.
 - [`references/label-schema.md`](references/label-schema.md)
 - [`references/issue-template.md`](references/issue-template.md)
 - [`references/promotion-handoff.md`](references/promotion-handoff.md)
+- [`references/brainstorm-to-issues-pipeline.md`](references/brainstorm-to-issues-pipeline.md)
+  - Brainstorm → GitHub epics/stories/points ingestion pipeline: process,
+    label/body conventions, Fibonacci point rubric, domain→repo routing
+    table, and IP / Masonic care rules.
 - [`references/private-media-family-archive.md`](references/private-media-family-archive.md)
   - Privacy-first promotion template for family archives, photo albums,
     scanned documents, and personal video.
