@@ -7,6 +7,15 @@ intake**. It is the backbone the rest of the epic builds on: MOC dashboards
 (#246), the Cross-Pollination Agent (#247), and the circuits inventory (#248)
 all key off the `functions:` / `interfaces:` / `materials:` facets defined here.
 
+## Story #243 crosswalk
+
+Story #243 originally drafted two intake fields, `functional_tags` and
+`spatial_envelope`. They ship here under the facet model: `functional_tags`
+is implemented as the `functions:` facet, and `spatial_envelope` maps to the
+`interfaces:` facet (mounting / spatial-fit constraints). The naming was
+generalized into the `functions:` / `interfaces:` / `materials:` facets so the
+vocabulary stays additive as new facets are needed.
+
 ## Why functional tags
 
 The incubator was a linear conveyor belt: capture -> connect -> promote. Tags
