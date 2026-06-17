@@ -17,7 +17,7 @@ description: >-
   and shop documentation.
 ---
 
-# Instrument Maker v4.3
+# Instrument Maker v4.5
 
 Design, document, validate, and ship musical instruments end-to-end:
 acoustic physics → parametric design sheet → BOM/sourcing/cut list →
