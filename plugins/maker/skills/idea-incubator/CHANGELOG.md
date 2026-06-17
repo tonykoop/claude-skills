@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased - 2026-06-17
+
+- Added brainstorm-to-issues ingestion mode + reference
+  (`references/brainstorm-to-issues-pipeline.md`): documents Tony's
+  voice→Gemini→Obsidian→GitHub epics/stories/points pipeline, label/body
+  conventions, point rubric, domain→repo routing table, and IP/Masonic care
+  rules.
+
 ## 1.4.4 - 2026-05-18
 
 - Added `references/private-media-decision-stub.md`, a compact owner checklist
