@@ -29,7 +29,7 @@
   "interface": {
     "displayName": "Coding",
     "shortDescription": "Engineering operations, sprint management, CI triage, and review skills.",
-    "longDescription": "A bundled coding operations toolkit for tmux sprint orchestration, sprint supervision, sprint updates, merge review, audit swarms, CI triage, scaffold hygiene, disk cleanup, and skill metadata drift checks. In Codex Desktop it can also use app tools for GitHub, Gmail, Google Calendar, Google Drive, browser automation, and parallel sub-agents when those tools are available.",
+    "longDescription": "A bundled coding operations toolkit for tmux sprint orchestration, sprint supervision, sprint updates, merge review, audit swarms (run-swarm), end-to-end AI-benchmark contribution (run-benchmark), CI triage, scaffold hygiene, disk cleanup, and skill metadata drift checks. In Codex Desktop it can also use app tools for GitHub, Gmail, Google Calendar, Google Drive, browser automation, and parallel sub-agents when those tools are available.",
     "developerName": "Tony Koop",
     "category": "Engineering",
     "capabilities": [
