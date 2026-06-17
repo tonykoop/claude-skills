@@ -181,12 +181,12 @@ skills:
       See skills/instrument-maker/SKILL.md for the skill contract.
 
   yoga-sequencer:
-    canonical_version: 1.2.0
+    canonical_version: 1.2.2
     runtime: shared
     repo_path: skills/yoga-sequencer
-    last_updated: 2026-05-10
+    last_updated: 2026-06-13
     status: active
-    notes: Vinyasa-first shared class-sequencing skill with playlist-builder handoff output. v1.2.0 adds heated-room safety checklist and hot-room cue-volume guidance.
+    notes: Vinyasa-first shared class-sequencing skill with playlist-builder handoff output. v1.2.0 adds heated-room safety checklist and hot-room cue-volume guidance; v1.2.1 mirrors the staple-pose safety boundary into mixed-level defaults (issue #26); v1.2.2 adds worked 45/30-minute playlist handoff examples (issue #27).
 
   makerspace:
     canonical_version: 1.2.0
