@@ -1,0 +1,8 @@
+string_id,variant_id,role,target_pitch,target_hz,scale_length_mm,material_family,gauge_or_diameter,estimated_tension_lbf,retuning_factor,percent_breaking,risk_flags,status,notes
+S1,V2A_bass,active_bowed,C2,65.41,720,TBD_wound_or_bass_string,TBD,,,,unknown_gauge,prototype_assumption,"Round 9 recommended primary bass tagelharpa variant"
+S2,V2A_bass,active_bowed,G2,98.00,720,TBD_wound_or_bass_string,TBD,,,,unknown_gauge,prototype_assumption,""
+S3,V2A_bass,active_bowed,D3,146.83,720,TBD_wound_or_plain_candidate,TBD,,,,unknown_gauge,prototype_assumption,""
+S1,V2B_compact,active_bowed,D2,73.42,620,TBD,TBD,,,,unknown_gauge,prototype_assumption,"Compact four-string variant; do not average with V2A_bass"
+S2,V2B_compact,active_bowed,A2,110.00,620,TBD,TBD,,,,unknown_gauge,prototype_assumption,""
+S3,V2B_compact,active_bowed,D3,146.83,620,TBD,TBD,,,,unknown_gauge,prototype_assumption,""
+S4,V2B_compact,active_bowed,A3,220.00,620,TBD,TBD,,,,unknown_gauge,prototype_assumption,""

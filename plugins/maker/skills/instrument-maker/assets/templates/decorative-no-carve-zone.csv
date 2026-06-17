@@ -1,0 +1,6 @@
+zone_id,part_or_surface,zone_type,geometry_reference,margin_mm,reason,allowed_operations,forbidden_operations,validation_coupon_required,notes
+NCZ-001,soundboard,bridge_patch,TBD,10,"Bridge load and future bridge-foot travel","layout_marks","v-carve,inlay,pocketing",yes,""
+NCZ-002,soundboard,brace_or_patch,TBD,6,"Brace, patch, or soundpost load path","surface_finish","deep_engraving,pocketing",yes,""
+NCZ-003,body_or_tray,glue_ledge,TBD,5,"Top or rim glue surface","none","carve,engrave,finish_buildup",no,""
+NCZ-004,tailpiece_area,tailpiece_anchor,TBD,8,"Tailpiece and fine-tuner clearance","pilot_marks","inlay,pocketing",yes,""
+NCZ-005,neck,setup_adjustment,TBD,5,"Nut, fingerboard, and bow-clearance adjustment","position_markers","deep_inlay",yes,""
