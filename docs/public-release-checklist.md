@@ -35,3 +35,9 @@ Use this before flipping any part of the repo public.
 - [ ] Deprecated skills carry `superseded_by` and a `Deprecated: prefer <successor>` clause in their description.
 - [ ] Runtime adapters reference the portable canonical name and document any divergence.
 - [ ] Project-specific examples are clearly labeled "Example, illustrative:" or generalized.
+- [ ] Umbrella skills document which specialists they route to, and specialists
+      document adjacent skills they intentionally do not own.
+- [ ] Trigger-overlap changes include a behavior fixture, benchmark prompt, or
+      PR note naming the intended winner.
+- [ ] Deprecated or archived skills have removal evidence from the cross-device
+      sync workflow before any repo copy is deleted.
