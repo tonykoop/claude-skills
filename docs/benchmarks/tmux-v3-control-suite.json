@@ -1,0 +1,161 @@
+{
+  "schema_version": 1,
+  "suite_id": "tmux-v3-control-suite",
+  "skill_name": "tmux-sprint-v3",
+  "skill_version": "draft",
+  "runtime_targets": [
+    "Claude Code",
+    "Codex CLI",
+    "Gemini CLI",
+    "Claude Desktop",
+    "Codex Desktop"
+  ],
+  "description": "Design-time benchmark case index for the project-neutral tmux-v3 sprint orchestration bridge.",
+  "archive_notes": [
+    "This suite is a deterministic case index, not a live tmux runner.",
+    "Each case defines prompt fixtures and observable assertions the future v3 benchmark harness must satisfy before v2 cutover."
+  ],
+  "cases": [
+    {
+      "id": "dispatch-reliability",
+      "title": "Dispatch N assignments to N panes",
+      "skill_name": "tmux-sprint-v3",
+      "runtime_targets": [
+        "Claude Code",
+        "Codex CLI",
+        "Gemini CLI"
+      ],
+      "prompt_fixture": "Dispatch this round to alice, bob, cindy, and dan using their assigned markdown files; verify every pane receives only its own assignment.",
+      "expected_mode": "routine dispatch",
+      "expected_artifacts": [
+        "dispatch manifest",
+        "per-pane receipt evidence",
+        "round state file"
+      ],
+      "watch_points": [
+        "No cross-pane assignment leakage",
+        "Every target pane receives exactly one payload",
+        "Round state can be reconstructed after compaction"
+      ],
+      "assertions": [
+        {
+          "id": "all-targets-recorded",
+          "kind": "contains_all",
+          "terms": [
+            "alice",
+            "bob",
+            "cindy",
+            "dan"
+          ]
+        },
+        {
+          "id": "receipt-evidence-present",
+          "kind": "contains_all",
+          "terms": [
+            "pane",
+            "receipt",
+            "assignment"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "prompt-submission",
+      "title": "Submitted text leaves draft buffer",
+      "skill_name": "tmux-sprint-v3",
+      "runtime_targets": [
+        "Claude Code",
+        "Codex CLI",
+        "Gemini CLI"
+      ],
+      "prompt_fixture": "Submit an assignment to a codex pane and verify the enter/submit keystroke registered instead of leaving text in the prompt editor.",
+      "expected_mode": "submission verification",
+      "expected_artifacts": [
+        "before capture",
+        "after capture",
+        "submitted sentinel"
+      ],
+      "watch_points": [
+        "Detects unsent prompt text",
+        "Uses runtime-appropriate submit key",
+        "Records the after-state"
+      ],
+      "assertions": [
+        {
+          "id": "submit-state-recorded",
+          "kind": "contains_all",
+          "terms": [
+            "before",
+            "after",
+            "submitted"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pane-recovery",
+      "title": "Recover dead or resume-required pane",
+      "skill_name": "tmux-sprint-v3",
+      "runtime_targets": [
+        "Codex CLI",
+        "Claude Code"
+      ],
+      "prompt_fixture": "Detect a pane parked at a resume prompt, revive it with the correct runtime adapter, and resume the round without touching unrelated panes.",
+      "expected_mode": "pane recovery",
+      "expected_artifacts": [
+        "preflight state",
+        "recovery action",
+        "post-recovery state"
+      ],
+      "watch_points": [
+        "Recovery is scoped to the dead pane",
+        "Round resumes only after post-check",
+        "No raw send-keys-only success claim"
+      ],
+      "assertions": [
+        {
+          "id": "recovery-evidence-present",
+          "kind": "contains_all",
+          "terms": [
+            "preflight",
+            "recovery",
+            "post"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stop-hooks",
+      "title": "Stop hook blocks unsafe dispatch",
+      "skill_name": "tmux-sprint-v3",
+      "runtime_targets": [
+        "Claude Code",
+        "Codex CLI",
+        "Gemini CLI"
+      ],
+      "prompt_fixture": "A stop condition is raised for a target pane. Verify the dispatcher halts the round, records the reason, and sends no further assignments.",
+      "expected_mode": "hook-gated dispatch",
+      "expected_artifacts": [
+        "stop reason",
+        "blocked dispatch record",
+        "operator escalation"
+      ],
+      "watch_points": [
+        "No further work after stop",
+        "Reason is visible to the operator",
+        "Escalation is connector-neutral"
+      ],
+      "assertions": [
+        {
+          "id": "stop-record-present",
+          "kind": "contains_all",
+          "terms": [
+            "stop",
+            "blocked",
+            "escalation"
+          ]
+        }
+      ]
+    }
+  ]
+}
