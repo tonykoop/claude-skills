@@ -35,12 +35,16 @@ exit code fails the sandbox execution gate.
 
 - **Sandbox execution** - runs each explicit `--command`, captures exit code,
   stdout/stderr snippets, and timeout state.
-- **Markdown/length linter** - checks every `.md` file under `--path` for UTF-8,
-  nonempty content, trailing whitespace, tabs, and line length
-  (`--max-line-length`, default `120`).
+- **Markdown/length linter** - checks every `.md` file under `--path` as a
+  rule matrix: UTF-8, nonempty content, trailing whitespace, tabs, line length
+  (`--max-line-length`, default `120`), heading spacing, and fenced-code closure.
 - **URDF kinematic check** - parses `.urdf` files and requires every
   `revolute` or `prismatic` joint to have a valid `<limit lower upper>` range.
-  It also rejects negative `effort` or `velocity` values when present.
+  It also rejects negative `effort` or `velocity` values when present, missing
+  parent/child links, missing axes on limited joints, invalid continuous-joint
+  limit tags, and mimic references to missing joints. Add
+  `--strict-urdf-joint-types` when unknown joint types should fail instead of
+  being ignored.
 
 ## Output Contract
 
@@ -52,10 +56,11 @@ The script writes a JSON QA decision:
   "decision": "pass",
   "checks": [
     {
-      "gate": "markdown-length",
+      "gate": "markdown:max-line-length",
       "path": "README.md",
       "status": "pass",
-      "detail": "markdown lint passed"
+      "detail": "line lengths passed",
+      "metadata": {}
     }
   ]
 }
