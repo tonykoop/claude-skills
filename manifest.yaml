@@ -111,6 +111,18 @@ skills:
       (the script the original codex SKILL referenced but never shipped). The
       codex variant remains at codex/skills/gh-fix-ci (codex-gh-fix-ci entry).
 
+  studio-release:
+    canonical_version: 0.1.0
+    runtime: portable
+    repo_path: plugins/coding/skills/studio-release
+    last_updated: 2026-06-17
+    status: active
+    notes: >-
+      Studio pipeline release handoff skill for PR/end-of-block validation.
+      Ships a dependency-light headless gate that lints markdown, compiles
+      Python, checks shell scripts with bash -n, stages the source bundle, and
+      emits qa-decision.json plus a single approve/deploy ticket.
+
   codex-gh-fix-ci:
     canonical_version: 1.0.0
     runtime: codex
