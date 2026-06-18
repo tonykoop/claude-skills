@@ -27,6 +27,12 @@ Use this before flipping any part of the repo public.
       install_roots. See scan 2026-06-15.
 - [ ] No stray personal emails beyond the intentional `author` email. Scan
       2026-06-15 flagged `wrfcoin@gmx.com` in `scripts/wolfram-cloud-sync/wolfram_sync.wls`.
+- [ ] License owner/copyright holder is explicitly approved for the public
+      skill ecosystem release, not only inherited from WRFCoin provenance.
+- [ ] Scripts do not hard-code Tony-local checkout roots or private operational
+      accounts; use parameters, env vars, or documented placeholders instead.
+- [ ] Public-release scans report file counts and line counts for private paths,
+      personal data, provenance terms, and suspected secrets.
 - [ ] Benchmarks or smoke tests exist for high-risk skills.
 - [ ] Agentic-skill PRs include the review evidence contract from `docs/review-gates/pr-evidence-contract.md`.
 - [ ] Skill, adapter, hook, command, and benchmark changes pass the static, behavior, runtime, and regression gates in `docs/review-gates/agentic-skill.md`.
