@@ -123,6 +123,17 @@ skills:
       Python, checks shell scripts with bash -n, stages the source bundle, and
       emits qa-decision.json plus a single approve/deploy ticket.
 
+  verification-gates:
+    canonical_version: 0.1.0
+    runtime: portable
+    repo_path: plugins/coding/skills/verification-gates
+    last_updated: 2026-06-17
+    status: active
+    notes: >-
+      Automated QA decision gates for generated work: repeatable command
+      execution, markdown/length linting, and URDF revolute/prismatic
+      joint-limit checks.
+
   codex-gh-fix-ci:
     canonical_version: 1.0.0
     runtime: codex
