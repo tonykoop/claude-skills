@@ -13,9 +13,11 @@ description: ...
 ---
 ```
 
-`name` and `description` remain the trigger-critical fields. `version` and
-`last-updated` make drift detectable across desktop, mobile, Claude, Codex, and
-other runtimes.
+`name` and `description` remain the trigger-critical fields. Tracked runtime
+skills under `claude/skills/` and `codex/skills/` must also carry `version` and
+`last-updated` so drift is detectable across desktop, mobile, Claude, Codex, and
+other runtimes. The values should match the corresponding `manifest.yaml`
+`canonical_version` and `last_updated` entry.
 
 Compatibility note: the current bundled `skill-creator` validator accepts only
 `name` and `description` in `SKILL.md` frontmatter. Until that validator is
