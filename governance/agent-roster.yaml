@@ -25,10 +25,12 @@ last_updated: 2026-06-17
 
 # -----------------------------------------------------------------------------
 # Model families. Maps a concrete model string -> its family. The audit router
-# compares families, not exact versions. Unknown models resolve to family
-# "unknown" and are treated as DISTINCT from everything (fail-open for routing
-# is unsafe, so unknown creators can still be audited, but unknown auditors are
-# rejected — see review_router.py).
+# compares families, not exact versions. A model that is NOT in this table
+# resolves to family "unknown", and review_router.py FAILS CLOSED on it for
+# BOTH roles: an unknown creator OR an unknown auditor blocks the handoff,
+# because distinctness can't be certified when a family is unidentifiable (a
+# new version bump that lands here unmapped must never slip past as "distinct").
+# => keep this table complete for every model in the live fleet.
 # -----------------------------------------------------------------------------
 model_families:
   claude-opus-4-6: opus
@@ -39,6 +41,12 @@ model_families:
   codex-gpt-5.5-mini: gpt-5.5-mini
   codex-gpt-5.4: gpt-5.4
   codex-gpt-5.4-mini: gpt-5.4-mini
+  gpt-5.5: gpt-5.5                        # codex CLI bare model id
+  gpt-5.3-codex-spark: spark              # codex CLI spark id (resolves to "high")
+  gpt-5.3-codex-spark-high: spark
+  gpt-5.3-codex-spark-medium: spark
+  gpt-5.3-codex-spark-low: spark
+  gpt-5.3-codex-spark-xhigh: spark
 
 # -----------------------------------------------------------------------------
 # Departments — the least-privilege boundary (claude-skills#259).

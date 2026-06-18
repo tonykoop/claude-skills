@@ -72,6 +72,16 @@ def assign_auditor(roster: dict, asset: dict) -> RoutingResult:
     require_family = policy.get("require_distinct_family", True)
     agents = roster.get("agents", {})
 
+    # Fail closed on an unknown creator family: if we can't identify the
+    # creator's family we cannot certify that any auditor is genuinely distinct
+    # (an unmapped/new model version would otherwise be matched against a known
+    # auditor as "distinct" and re-enable same-family self-review).
+    if require_family and creator_family == UNKNOWN_FAMILY:
+        return RoutingResult(
+            False, None,
+            f"creator model {creator_model!r} has unknown family; cannot certify a distinct-family auditor",
+        )
+
     for cand in _eligible_auditors(roster):
         if require_agent and cand == creator_agent:
             continue
@@ -122,6 +132,13 @@ def validate_handoff(roster: dict, handoff: dict) -> ValidationResult:
         violations.append(
             f"same model family {cf!r}: {cm!r} audited by {am!r} — cross-model bias blindspot"
         )
+    # Fail closed on EITHER unknown family. If we can't identify the creator's
+    # OR the auditor's family, we cannot certify the two are distinct — and an
+    # unmapped model (e.g. a new version bump like claude-opus-4-9) would
+    # otherwise slip through as "distinct" and silently re-enable same-family
+    # self-review, defeating the whole point of family-level comparison.
+    if cf == UNKNOWN_FAMILY:
+        violations.append(f"creator model {cm!r} has unknown family; cannot certify distinctness (fail closed)")
     if af == UNKNOWN_FAMILY:
         violations.append(f"auditor model {am!r} has unknown family; cannot certify distinctness")
 
