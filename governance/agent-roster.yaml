@@ -197,6 +197,29 @@ agents:
     can_audit: false                  # operator role, not an adversarial auditor
 
 # -----------------------------------------------------------------------------
+# Pipeline symmetry (claude-skills#260). Mirrors the orchestrator's native org
+# model: a front-end Creative Ingestion department feeds a back-end Release
+# Operations department, conveyor-belt style. Full map: AGENTS.md.
+# -----------------------------------------------------------------------------
+pipeline:
+  front_end:                          # raw text -> structured tickets
+    department: creative-ingestion
+    agent: grace
+    skill: idea-incubator
+    heartbeat: "0 7 * * *"            # 07:00 daily morning intake (cron)
+    inputs: [telegram_saved_messages, inbox_notes]
+    emits_label: "idea:incubated"     # tickets land labeled for triage
+  back_end:                           # PRs/assets -> atomic yes/no deploy ticket
+    department: release-operations
+    agent: henry
+    skill: studio-release
+    triggers_on_labels: [release-candidate, pending-deploy]
+    emits_label: "needs-human-signoff"
+    # The deploy ticket is yes/no only; crossing the boundary needs a human
+    # signature via the #258 circuit breaker (protected action).
+    deploy_gate: circuit_breaker
+
+# -----------------------------------------------------------------------------
 # Maximizer Mode — the global dead-man's switch (claude-skills#259).
 # -----------------------------------------------------------------------------
 maximizer_mode:
