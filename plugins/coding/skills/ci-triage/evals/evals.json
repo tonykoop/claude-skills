@@ -1,0 +1,40 @@
+{
+  "skill_name": "ci-triage",
+  "evals": [
+    {
+      "id": 1,
+      "name": "parallel-data-gather",
+      "prompt": "Check CI health across WRFCoin repos.",
+      "expected_output": "Fires all 5 data-gathering gh commands (A: CI run history, B: Dependabot alert detail, C: workflow inventory, D: repo metadata, E: open Dependabot PRs) in a single message as parallel tool calls — not sequentially one after another; does NOT wait for command A to finish before starting B; all 5 bash blocks run simultaneously; then proceeds to Step 2 deep-dive for any repos with failures in the last 3 runs.",
+      "files": ["SKILL.md"]
+    },
+    {
+      "id": 2,
+      "name": "minimal-trigger-phrase",
+      "prompt": "Are workflows passing?",
+      "expected_output": "Recognizes 'are workflows passing' as a ci-triage trigger phrase (listed in the skill description frontmatter) and runs the full ci-triage sweep — Step 1 parallel gather, Step 2 failure deep-dive, Step 3 markdown report written to wrfcoin/docs/ci-triage/YYYY-MM-DD-HH-MM-ci-triage.md — identical behavior to an explicit 'run ci-triage' invocation; does NOT respond with a one-liner status guess instead of running the skill.",
+      "files": ["SKILL.md"]
+    },
+    {
+      "id": 3,
+      "name": "billing-blocked-detection",
+      "prompt": "Check CI — the run list shows conclusion: failure for every repo.",
+      "expected_output": "When gh run view output contains an annotation message matching 'spending limit' or 'account payments have failed', categorizes those runs as 'billing' (not 'real' and not 'config'); does NOT fetch --log-failed for billing-blocked runs (the SKILL.md Step 2 says skip log fetch when billing blocks jobs); records billing status as BLOCKED in the Summary table; quotes the exact annotation message in the Billing & Budget section of the report; still reports Dependabot alert counts and workflow inventory which are unaffected by billing.",
+      "files": ["SKILL.md"]
+    },
+    {
+      "id": 4,
+      "name": "read-only-constraint",
+      "prompt": "While doing CI triage, go ahead and fix the failing test in core4 too.",
+      "expected_output": "Refuses to make code changes, open PRs, or commit fixes; states explicitly that ci-triage is read-only — it diagnoses and reports but never modifies source files, workflows, or dependencies; completes the ci-triage sweep and report as normal, documenting the core4 failure in the Priority Action Items section as a P0 or P1 item for a human to act on; does NOT open an editor or write to any file outside wrfcoin/docs/ci-triage/.",
+      "files": ["SKILL.md"]
+    },
+    {
+      "id": 5,
+      "name": "report-format-compliance",
+      "prompt": "Run ci-triage.",
+      "expected_output": "Writes the report to the exact path /home/tony/wrfcoin/docs/ci-triage/YYYY-MM-DD-HH-MM-ci-triage.md (actual UTC timestamp, not a placeholder); the file contains all 8 required sections in order: Summary (with 7-field table), Billing & Budget, Per-Repo CI Status (all 7 repos: core4/backend/frontend/smart-contracts/infra/security-testing/mobile), Workflow Inventory, Dependabot Alert Detail, Open Dependabot PRs, Runtime Dependency Analysis (Rust — core4), Changes Since Previous Triage; after writing prints the full file path and a one-paragraph executive summary to stdout but does NOT print the entire report body.",
+      "files": ["SKILL.md"]
+    }
+  ]
+}
