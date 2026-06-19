@@ -159,19 +159,11 @@ skills:
       under ~/.skill-cleanup-backups/.
 
   idea-incubator:
-    canonical_version: 1.8.0
-    canonical_version: 1.9.0
-    canonical_version: 1.10.0
-    canonical_version: 1.11.0
     canonical_version: 1.12.0
     runtime: shared
     repo_path: skills/idea-incubator
-    last_updated: 2026-06-18
+    last_updated: 2026-06-19
     status: active
-    notes: "1.8.0: red-team Technical Risks & Assumptions section mandated on every generated epic + conformance checker (#238); 1.7.0: cross-pollination engine (epic #236); 1.6.0: workflow automation & agent roles (epic #235); 1.5.0: brainstorm-to-issues ingestion mode"
-    notes: "1.9.0: retrospective sweep + Institutional Knowledge folder with per-epic backlinks (#240); 1.8.0: red-team Technical Risks & Assumptions on every epic (#238); 1.7.0: cross-pollination engine (epic #236); 1.6.0: workflow automation & agent roles (epic #235); 1.5.0: brainstorm-to-issues ingestion mode"
-    notes: "1.10.0: prior-lessons pre-read loader (#241); 1.9.0: retrospective sweep + Institutional Knowledge folder (#240); 1.8.0: red-team Technical Risks & Assumptions on every epic (#238); 1.7.0: cross-pollination engine (epic #236); 1.6.0: workflow automation & agent roles (epic #235); 1.5.0: brainstorm-to-issues ingestion mode"
-    notes: "1.11.0: tuned confidence-weighted domain router (#242); 1.10.0: prior-lessons pre-read loader (#241); 1.9.0: retrospective sweep + Institutional Knowledge folder (#240); 1.8.0: red-team Technical Risks & Assumptions on every epic (#238); 1.7.0: cross-pollination engine (epic #236); 1.6.0: workflow automation & agent roles (epic #235); 1.5.0: brainstorm-to-issues ingestion mode"
     notes: "1.12.0: cross-pollination epic-level Opportunities Detected report + checker (#247); 1.11.0: tuned domain router (#242); 1.10.0: prior-lessons pre-read (#241); 1.9.0: retrospective sweep (#240); 1.8.0: red-team risks section (#238); 1.7.0: cross-pollination engine (epic #236); 1.6.0: workflow automation & agent roles (epic #235); 1.5.0: brainstorm-to-issues ingestion mode"
 
   file-a-patent:
@@ -274,15 +266,11 @@ skills:
     notes: Bat/bee/observation-hive welfare gates and camera/electronics caveats, plus bird-bath/balcony support, first canonical chickadee laser packet, and a concept-only observation-hive preflight template. v0.4.1 folds the Tillandsia-on-bark sculpture micro-line (issue #45, epic #211) into planters/plant-supports as a reference + minimal example (care routes to houseplant) and adds the first CHANGELOG.
 
   houseplant:
-    canonical_version: 0.4.0
-    canonical_version: 0.5.0
     canonical_version: 0.6.0
     runtime: shared
     repo_path: plugins/maker/skills/houseplant
     last_updated: 2026-06-19
     status: active
-    notes: 'Houseplant and bonsai digital twins plus care workflows, with first-class Blender MCP support. At plugins/maker/skills/houseplant. v0.4.0 adds scripts/health_triage.py — the deterministic triage layer behind the CV health screening (#175): symptom->flag mapping, care-event cross-referencing, health_flag_added records, and pest/rot structural-risk escalation (no chemical recommendations); 12 new tests. v0.3.0 (epic #209) implements the v2 feature set: chrono-horticultural engine with species-scaled wire-removal inspection windows (#172, references/chrono-engine.md + scripts/wire_window.py), bud/bloom chrono-tracker with confidence-explicit forecasting (#173, references/bud-bloom-tracker.md), aerial-root/nebari lifecycle tracker with a teal guided-root trace (#174, references/aerial-roots-nebari.md + scripts/aerial_root_trace.py), CV plant-health check-engine-light screening (#175, references/health-diagnostics.md), simulation-only Blender boolean-union grafting sandbox (#176, references/grafting-sandbox.md + scripts/grafting_sim.py), and a propagation tracker with parent/child lineage (#177, references/propagation.md). v0.2.0 added capture-pipeline routing for four phone modes, ruler-based scale calibration, bundled bpy patterns, the Ficus benjamina starter profile, and a smoke-test suite (now 24 tests).'
-    notes: 'Houseplant and bonsai digital twins plus care workflows, with first-class Blender MCP support. At plugins/maker/skills/houseplant. v0.5.0 adds scripts/bloom_forecast.py — the deterministic bloom-window forecaster behind the bud/bloom tracker (#173): own-log-first then species-baseline, condition-modulated, explicit confidence, always a range; 12 tests. v0.4.0 adds scripts/health_triage.py — the deterministic triage layer behind the CV health screening (#175): symptom->flag mapping, care-event cross-referencing, health_flag_added records, and pest/rot structural-risk escalation (no chemical recommendations); 12 tests. v0.3.0 (epic #209) implements the v2 feature set: chrono-horticultural engine with species-scaled wire-removal inspection windows (#172, references/chrono-engine.md + scripts/wire_window.py), bud/bloom chrono-tracker with confidence-explicit forecasting (#173, references/bud-bloom-tracker.md), aerial-root/nebari lifecycle tracker with a teal guided-root trace (#174, references/aerial-roots-nebari.md + scripts/aerial_root_trace.py), CV plant-health check-engine-light screening (#175, references/health-diagnostics.md), simulation-only Blender boolean-union grafting sandbox (#176, references/grafting-sandbox.md + scripts/grafting_sim.py), and a propagation tracker with parent/child lineage (#177, references/propagation.md). v0.2.0 added capture-pipeline routing for four phone modes, ruler-based scale calibration, bundled bpy patterns, the Ficus benjamina starter profile, and a smoke-test suite (now 24 tests).'
     notes: 'Houseplant and bonsai digital twins plus care workflows, with first-class Blender MCP support. At plugins/maker/skills/houseplant. v0.6.0 adds scripts/propagation_tracker.py — parent/child lineage tree + lifecycle validation + rooting-window forecast behind the propagation tracker (#177); 18 tests. v0.5.0 adds scripts/bloom_forecast.py — deterministic bloom-window forecaster behind the bud/bloom tracker (#173). v0.4.0 adds scripts/health_triage.py — deterministic triage layer behind the CV health screening (#175). v0.3.0 (epic #209) implements the v2 feature set: chrono-horticultural engine with species-scaled wire-removal inspection windows (#172, references/chrono-engine.md + scripts/wire_window.py), bud/bloom chrono-tracker with confidence-explicit forecasting (#173, references/bud-bloom-tracker.md), aerial-root/nebari lifecycle tracker with a teal guided-root trace (#174, references/aerial-roots-nebari.md + scripts/aerial_root_trace.py), CV plant-health check-engine-light screening (#175, references/health-diagnostics.md), simulation-only Blender boolean-union grafting sandbox (#176, references/grafting-sandbox.md + scripts/grafting_sim.py), and a propagation tracker with parent/child lineage (#177, references/propagation.md). v0.2.0 added capture-pipeline routing for four phone modes, ruler-based scale calibration, bundled bpy patterns, the Ficus benjamina starter profile, and a smoke-test suite (now 24 tests).'
 
   energy-management:
