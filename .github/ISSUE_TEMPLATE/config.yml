@@ -1,0 +1,8 @@
+# Force new issues through a structured template instead of a blank box, so
+# every hybrid hardware/software/firmware issue carries the same skeletal
+# backbone (Expected PDM Artifacts checklist) by default. Refs #239.
+blank_issues_enabled: false
+contact_links:
+  - name: Quick idea capture (no PDM backbone needed)
+    url: https://github.com/tonykoop/claude-skills/issues/new?template=hybrid-idea.md
+    about: Even rough captures should start from the hybrid template; promote later.

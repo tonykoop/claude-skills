@@ -35,9 +35,25 @@ assignees: []
 - Sensors / actuators / protocols:
 - Power / boot / update strategy:
 
+### Hybrid (system integration)
+<!-- The cross-cutting concerns that no single discipline owns. This is what
+     makes the issue hybrid rather than three parallel tracks. -->
+- Interfaces between HW/SW/FW (what crosses each boundary):
+- Shared timing / state / data contracts:
+- Integration + end-to-end test strategy:
+- Open coupling risks (where a change in one layer breaks another):
+
 ## Expected PDM Artifacts
 <!-- Check the artifacts this idea will need before it is build-complete.
-     Leave unchecked items visible so the gap is obvious. -->
+     Leave unchecked items visible so the gap is obvious. The first three are
+     the required backbone for every hybrid issue; the rest are as-needed. -->
+
+### Required backbone
+- [ ] **ICD** — Interface Control Document defining every HW/SW/FW interface
+- [ ] **Design Justification README** — why this design, trade-offs, rejected alternatives
+- [ ] **CAD / source version** — pinned CAD revision + firmware/software commit or tag
+
+### As needed
 - [ ] CAD model (part/assembly) + revision
 - [ ] Drawing(s) with GD&T where needed
 - [ ] Bill of Materials (BOM) with sourcing
