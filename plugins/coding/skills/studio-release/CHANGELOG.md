@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.3.0 — 2026-06-19
+
+- Add first machine-runnable eval suite (`evals/evals.json`): 4 evals covering
+  passing gate (auto-release-eligible), escalate-human-review on ambiguous
+  confidence, distinct-model auditor assignment, and dirty-source noted
+  (not hidden) in ticket.
+
 ## v0.2.0
 
 - Added confidence scoring + circuit-breaker routing

@@ -115,10 +115,10 @@ skills:
       codex variant remains at codex/skills/gh-fix-ci (codex-gh-fix-ci entry).
 
   studio-release:
-    canonical_version: 0.2.0
+    canonical_version: 0.3.0
     runtime: portable
     repo_path: plugins/coding/skills/studio-release
-    last_updated: 2026-06-18
+    last_updated: 2026-06-19
     status: active
     notes: >-
       Studio pipeline release handoff skill for PR/end-of-block validation.
@@ -127,7 +127,8 @@ skills:
       emits qa-decision.json plus a single approve/deploy ticket. v0.2.0 adds
       confidence scoring + circuit-breaker routing, a checksummed
       publish-manifest.json for the Studio Pipeline, and adversarial-QA auditor
-      assignment via the governance review_router (claude-skills#256).
+      assignment via the governance review_router (claude-skills#256). v0.3.0
+      adds first machine-runnable eval suite (4 evals).
 
   verification-gates:
     canonical_version: 0.1.0
