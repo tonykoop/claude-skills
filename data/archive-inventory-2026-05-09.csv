@@ -1,0 +1,354 @@
+RelativePath,Depth,FileCount,TotalSizeMB,LastModified,Extensions
+acro,1,0,0,3/21/2026,
+acrolove,1,5,0.33,1/23/2023,.png
+Adobe,1,2,0,1/23/2023,.log
+Adobe PDF,1,0,0,1/23/2023,
+Adobe PDF\Extras,2,7,0.14,1/23/2023,.joboptions
+Adobe PDF\Settings,2,5,0.09,1/23/2023,.joboptions
+Adobe\dynamiclinkmediaserver,2,0,0,1/23/2023,
+Adobe\dynamiclinkmediaserver\7.0,3,0,0,2/3/2014,
+Adobe\Help,2,1,0,1/23/2023,.db
+AdobeStockPhotos,1,0,0,1/23/2023,
+AdobeStockPhotos\Downloaded Comps,2,0,0,6/9/2014,
+AdobeStockPhotos\Previous Searches,2,0,0,6/9/2014,
+AdobeStockPhotos\Purchased Images,2,0,0,6/9/2014,
+Bracketron,1,8,1.35,1/23/2023,".doc,.docx,.pdf"
+CAD,1,30,54.97,1/23/2023,".jpg,.pdf,.sldasm,.slddrw,.sldprt,.xlsx,.zip"
+CAD\Clock,2,10,18.06,1/23/2023,".edrw,.eprt,.jpg,.slddrw,.sldprt,.stl"
+CAD\CNC Sled,2,23,4.43,1/23/2023,".sldasm,.sldprt"
+CAD\CNC Sled\Drawings,3,3,0.4,1/23/2023,.slddrw
+CAD\CNC Sled\Open Vessel Spacers,3,1,0.47,1/23/2023,.sldprt
+CAD\CNC Sled\Wedges,3,31,5.89,1/23/2023,".ai,.pdf,.sldasm,.slddrw,.sldprt"
+CAD\CNC-files,2,0,0,1/23/2023,
+CAD\CNC-files\CNC-Files,3,0,0,1/23/2023,
+CAD\CNC-files\CNC-Files\CNC1610,4,8,1.65,3/21/2026,".doc,.jpg"
+CAD\CNC-files\CNC-Files\CNC1610\Assembly instructions,5,3,5.42,1/23/2023,".doc,.jpg,.pdf"
+CAD\CNC-files\CNC-Files\CNC2417,4,7,8.87,1/23/2023,".jpg,.pdf"
+CAD\CNC-files\CNC-Files\Control Software,4,2,10.39,1/23/2023,".doc,.jar"
+CAD\CNC-files\CNC-Files\Control Software\Driver,5,1,0.22,1/23/2023,.exe
+CAD\CNC-files\CNC-Files\Control Software\Grblcontrol,5,16,44.74,1/23/2023,",.dll,.exe,.ini"
+CAD\CNC-files\CNC-Files\Control Software\Grblcontrol\platforms,6,1,1.26,1/23/2023,.dll
+CAD\CNC-files\CNC-Files\Control Software\Grblcontrol\translations,6,18,2.51,1/23/2023,".qm,.ts"
+CAD\CNC-files\CNC-Files\Control Software\GrblPanel-Release-1.0.9.10,5,7,0.88,1/23/2023,",.config,.dll,.exe,.txt"
+CAD\CNC-files\CNC-Files\Control Software\GrblPanel-Release-1.0.9.10\fr,6,1,0.03,1/23/2023,.dll
+CAD\CNC-files\CNC-Files\Drivers,4,2,12.57,1/23/2023,.exe
+CAD\CNC-files\CNC-Files\Drivers\CH340G_USB,5,9,0.27,1/23/2023,".cat,.dll,.exe,.inf,.sys,.vxd"
+CAD\CNC-files\CNC-Files\Firmware,4,0,0,1/23/2023,
+CAD\CNC-files\CNC-Files\Firmware\grbl-master,5,4,0.04,1/23/2023,",.gitignore,.md"
+CAD\CNC-files\CNC-Files\Firmware\grbl-master\build,6,1,0,1/23/2023,.gitignore
+CAD\CNC-files\CNC-Files\Firmware\grbl-master\doc,6,0,0,1/23/2023,
+CAD\CNC-files\CNC-Files\Firmware\grbl-master\doc\csv,7,4,0.01,1/23/2023,.csv
+CAD\CNC-files\CNC-Files\Firmware\grbl-master\doc\log,7,8,0.17,1/23/2023,.txt
+CAD\CNC-files\CNC-Files\Firmware\grbl-master\doc\markdown,7,6,0.12,1/23/2023,.md
+CAD\CNC-files\CNC-Files\Firmware\grbl-master\doc\media,7,7,0.16,1/23/2023,",.pdf,.png,.svg"
+CAD\CNC-files\CNC-Files\Firmware\grbl-master\doc\script,7,2,0.01,1/23/2023,.py
+CAD\CNC-files\CNC-Files\Firmware\grbl-master\grbl,6,39,0.42,1/23/2023,".c,.h"
+CAD\CNC-files\CNC-Files\Firmware\grbl-master\grbl\examples,7,0,0,1/23/2023,
+CAD\CNC-files\CNC-Files\Firmware\grbl-master\grbl\examples\grblUpload,8,2,0,1/23/2023,".ino,.txt"
+CAD\CNC-files\CNC-Files\Firmware\grbl-master\grbl\examples\grblWrite_BuildInfo,8,2,0,1/23/2023,".ino,.txt"
+CAD\CNC-files\CNC-Files\Firmware\XLoader,5,6,2.54,1/23/2023,".conf,.dll,.exe,.txt"
+CAD\CNC-files\CNC-Files\Gcode Generation,4,0,0,1/23/2023,
+CAD\CNC-files\CNC-Files\Gcode Generation\F-Engrave-1.59_win,5,23,10.16,1/23/2023,".dll,.exe,.pyd,.txt"
+CAD\CNC-files\CNC-Files\Gcode Generation\F-Engrave-1.59_win\F-Engrave-1.59_src,6,6,0.42,1/23/2023,".bat,.ico,.py,.txt"
+CAD\CNC-files\CNC-Files\Gcode Generation\F-Engrave-1.59_win\F-Engrave-1.59_src\TTF2CXF_STREAM,7,4,0.03,1/23/2023,",.cpp,.txt"
+CAD\CNC-files\CNC-Files\Gcode Generation\F-Engrave-1.59_win\fonts,6,18,2.02,1/23/2023,".cxf,.ttf,.txt"
+CAD\CNC-files\CNC-Files\Gcode Generation\F-Engrave-1.59_win\tcl,6,0,0,1/23/2023,
+CAD\CNC-files\CNC-Files\Gcode Generation\F-Engrave-1.59_win\tcl\tcl8.4,7,9,0.12,1/23/2023,",.tcl"
+CAD\CNC-files\CNC-Files\Gcode Generation\F-Engrave-1.59_win\tcl\tcl8.4\encoding,8,78,1.35,1/23/2023,.enc
+CAD\CNC-files\CNC-Files\Gcode Generation\F-Engrave-1.59_win\tcl\tcl8.4\opt0.4,8,2,0.03,1/23/2023,.tcl
+CAD\CNC-files\CNC-Files\Gcode Generation\F-Engrave-1.59_win\tcl\tk8.4,7,30,0.42,1/23/2023,",.tcl,.terms"
+CAD\CNC-files\CNC-Files\Gcode Generation\F-Engrave-1.59_win\tcl\tk8.4\msgs,8,13,0.05,1/23/2023,.msg
+CAD\CNC-files\CNC-Files\Laser,4,4,8.13,1/23/2023,".doc,.exe,.log,.xml"
+CAD\CNC-files\CNC-Files\Laser\font,5,1,1.36,1/23/2023,.ttf
+CAD\CNC-files\CNC-Files\Laser\ie,5,0,0,1/23/2023,
+CAD\CNC-files\CNC-Files\Laser\ie\machinelist,6,4,0.01,1/23/2023,.html
+CAD\CNC-files\CNC-Files\Laser\ie\machinelist\css,7,1,0,1/23/2023,.css
+CAD\CNC-files\CNC-Files\Laser\ie\machinelist\images,7,5,0.19,1/23/2023,.jpg
+CAD\CNC-files\CNC-Files\Laser\ie\machinelist\js,7,2,0.07,1/23/2023,.js
+CAD\CNC-files\CNC-Files\Laser\ie\share,6,2,0.03,1/23/2023,".html,.jpg"
+CAD\CNC-files\CNC-Files\Laser\Language,5,3,0.02,1/23/2023,.txt
+CAD\CNC-files\CNC-Files\Laser\logo,5,37,2.13,1/23/2023,".db,.jpg,.nc,.png"
+CAD\CNC-files\CNC-Files\Laser\nc,5,14,2.72,1/23/2023,.lnc
+CAD\CNC-files\CNC-Files\PCB Design Software,4,0,0,1/23/2023,
+CAD\CNC-files\CNC-Files\PCB Design Software\coppercam,5,5,6.18,1/23/2023,".db,.exe,.jpg"
+CAD\CNC-files\CNC-Files\PCB Design Software\coppercam\coppercam,6,1,4.67,1/23/2023,.exe
+CAD\CNC-files\CNC-Files\Post Processor,4,1,0.02,1/23/2023,.cps
+CAD\CNC-files\CNC-Files\Test G-Code,4,3,0.29,1/23/2023,.nc
+CAD\Cryptex,2,47,45.25,1/23/2023,".db,.jpg,.pdf,.sldasm,.slddrw,.sldprt,.stl"
+CAD\Cryptex\Base,3,9,49.05,1/23/2023,".db,.sldprt,.stl"
+CAD\Cryptex\Blocks,3,6,0.38,1/23/2023,".db,.sldblk"
+CAD\Cryptex\Chamber,3,3,6.21,1/23/2023,".db,.sldprt"
+CAD\Cryptex\Rings,3,17,30.6,1/23/2023,".db,.sldprt"
+CAD\Cryptex\Version 2,3,13,5.39,1/23/2023,".sldasm,.sldprt"
+CAD\Gavels,2,4,0.48,1/23/2023,.sldprt
+CAD\Gun Safe,2,24,7.02,1/23/2023,".ai,.pdf,.sldasm,.sldprt"
+CAD\Gun Safe\EP15847 - CABINET PANELS,3,40,16.61,1/23/2023,".pdf,.sldasm,.slddrw,.sldprt"
+CAD\Gun Safe\EP15848 - SHELF PANEL SERIES,3,72,55.82,1/23/2023,".pdf,.sldasm,.slddrw,.sldprt"
+CAD\Gun Safe\EP15849 - VITRINE PANEL SERIES,3,1,1,1/23/2023,.sldasm
+CAD\Gun Safe\EP15850-EP15855 SHOWCASE CABINETS,3,209,179.59,1/23/2023,".dwg,.pdf,.sldasm,.slddrw,.sldprt"
+CAD\Gun Safe\EP15856 - HANDGUN MAGNET PANEL SERIES,3,24,22.77,1/23/2023,".pdf,.sldasm,.slddrw,.sldprt"
+CAD\Gun Safe\EP15857 - HANDGUN MAGAZINE INSERT PANEL SERIES,3,25,16.46,1/23/2023,".pdf,.sldasm,.slddrw,.sldprt"
+CAD\Gun Safe\EP15858 - HANDGUN DOWEL BRACKET PANEL SERIES,3,15,18.63,1/23/2023,".pdf,.sldasm,.slddrw,.sldprt"
+CAD\Gun Safe\EP15859 - LONG GUN PANEL SERIES,3,2,24.21,1/23/2023,.sldasm
+CAD\Gun Safe\Mcmaster,3,20,15.94,1/23/2023,".pdf,.sldprt"
+CAD\Hexacopter Gimbal Mount,2,10,8.12,1/23/2023,".sldasm,.sldprt"
+CAD\Hexacopter Gimbal Mount\Final Print,3,3,1.46,1/23/2023,.stl
+CAD\Hexacopter Gimbal Mount\New folder,3,9,4.53,1/23/2023,".sldprt,.stl"
+CAD\Hydro Unit,2,21,9.94,1/23/2023,".sldblk,.slddrw,.sldprt"
+CAD\Kiwi MultiKopter,2,0,0,1/23/2023,
+CAD\Kiwi MultiKopter\3. Tricopters,3,0,0,6/2/2014,
+CAD\Kiwi MultiKopter\4. Quadcopters,3,0,0,6/2/2014,
+CAD\Kiwi MultiKopter\6. Hexacopters,3,8,1.12,1/23/2023,".sldasm,.sldprt"
+CAD\Kiwi MultiKopter\8. Octocopters,3,0,0,6/2/2014,
+CAD\Liberator,2,4,0.15,1/23/2023,".jpg,.rtf,.txt"
+CAD\Liberator\DD Liberator (stl),3,16,5.76,1/23/2023,.stl
+CAD\Native American Flutes,2,15,9.2,1/23/2023,".jpg,.pdf,.sldasm,.sldprt"
+CAD\Original QRM 3D Solidworks Model,2,4,0,1/23/2023,".txt,.url"
+CAD\Original QRM 3D Solidworks Model\Build Video's,3,5,0,1/23/2023,".txt,.url"
+CAD\Original QRM 3D Solidworks Model\DXF,3,6,0.14,1/23/2023,.dxf
+CAD\Original QRM 3D Solidworks Model\IGES & STEP,3,2,17.15,1/23/2023,".igs,.step"
+CAD\Original QRM 3D Solidworks Model\SolidWorks 2012,3,24,12.77,1/23/2023,".pdf,.sldasm,.sldprt"
+CAD\Picture Frames,2,24,2.17,1/23/2023,".pdf,.sldasm,.slddrw,.sldprt"
+CAD\Quadcopter,2,13,1.52,1/23/2023,".jpg,.pdf,.txt,.url,.xlsx"
+CAD\Quadcopter\Build Video's,3,5,0,1/23/2023,".txt,.url"
+CAD\Quadcopter\DXF,3,6,0.14,1/23/2023,.dxf
+CAD\Quadcopter\IGES & STEP,3,2,17.15,1/23/2023,".igs,.step"
+CAD\Quadcopter\SolidWorks 2012,3,44,17.23,1/23/2023,".dxf,.pdf,.sldasm,.slddrw,.sldprt"
+CAD\Segmented Bowl,2,4,0.63,1/23/2023,".sldasm,.sldprt"
+CAD\Segmented Bowl\Joe's Lidded Vessels,3,8,1.52,1/23/2023,".sldasm,.sldprt"
+CAD\Segmented Bowl\Master Segments,3,7,1.21,1/23/2023,".sldasm,.slddrw,.sldprt"
+CAD\Segmented Bowl\Vessel #1,3,3,1.16,1/23/2023,.sldasm
+CAD\Segmented Bowl\Vessel #1\1. Small Bowls - 6 in,4,0,0,1/23/2023,
+CAD\Segmented Bowl\Vessel #1\1. Small Bowls - 6 in\12 Piece,5,6,1.1,1/23/2023,".sldasm,.sldprt"
+CAD\Segmented Bowl\Vessel #1\1. Small Bowls - 6 in\16 Piece,5,6,0.99,1/23/2023,".sldasm,.sldprt"
+CAD\Segmented Bowl\Vessel #1\1. Small Bowls - 6 in\24 Piece,5,6,1.16,1/23/2023,".sldasm,.sldprt"
+CAD\Segmented Bowl\Vessel #1\2. Medium Bowls - 9 in,4,0,0,1/23/2023,
+CAD\Segmented Bowl\Vessel #1\2. Medium Bowls - 9 in\12 Piece,5,7,1.12,1/23/2023,".sldasm,.sldprt"
+CAD\Segmented Bowl\Vessel #1\2. Medium Bowls - 9 in\16 piece,5,7,1.12,1/23/2023,".sldasm,.sldprt"
+CAD\Segmented Bowl\Vessel #1\2. Medium Bowls - 9 in\24 Piece,5,7,1.32,1/23/2023,".sldasm,.sldprt"
+CAD\Segmented Bowl\Vessel #1\3. Large Bowls - 12 in,4,0,0,1/23/2023,
+CAD\Segmented Bowl\Vessel #1\3. Large Bowls - 12 in\12 Piece,5,8,1.38,1/23/2023,".sldasm,.sldprt"
+CAD\Segmented Bowl\Vessel #1\3. Large Bowls - 12 in\16 Piece,5,8,1.5,1/23/2023,".sldasm,.sldprt"
+CAD\Segmented Bowl\Vessel #1\3. Large Bowls - 12 in\24 Piece,5,8,1.47,1/23/2023,".sldasm,.sldprt"
+CAD\Segmented Bowl\Vessel #1\4. Extra Large Bowls - 15 in,4,0,0,1/23/2023,
+CAD\Segmented Bowl\Vessel #1\4. Extra Large Bowls - 15 in\12 Piece,5,9,1.62,1/23/2023,".sldasm,.sldprt"
+CAD\Segmented Bowl\Vessel #1\4. Extra Large Bowls - 15 in\16 Piece,5,9,1.53,1/23/2023,".sldasm,.sldprt"
+CAD\Segmented Bowl\Vessel #1\4. Extra Large Bowls - 15 in\24 Piece,5,9,2.03,1/23/2023,".sldasm,.sldprt"
+CAD\Segmented Bowl\Vessel #4,3,3,1.42,1/23/2023,".png,.sldasm,.slddrw"
+CAD\Segmented Bowl\Vessel #4\12.5in Diameter,4,13,2.64,1/23/2023,".sldasm,.sldprt"
+CAD\Segmented Bowl\Vessel #4\15.5in Diameter,4,15,3.02,1/23/2023,".sldasm,.sldprt"
+CAD\Segmented Bowl\Vessel #4\6.5in Diameter,4,10,1.98,1/23/2023,".sldasm,.sldprt"
+CAD\Segmented Bowl\Vessel #4\9.5in Diameter,4,11,2.25,1/23/2023,".sldasm,.sldprt"
+CAD\Segmented Woodworking - Fractal,2,11,2.84,1/23/2023,".png,.sldasm,.sldprt"
+CAD\Standing Desk,2,12,3.74,1/23/2023,".sldasm,.sldprt"
+CAD\Stencil Stuff,2,5,6.98,1/23/2023,.jpg
+CAD\Treasure Chest,2,8,0.38,1/23/2023,".sldasm,.sldprt"
+CAD\Water Dish,2,9,4.02,1/23/2023,".jpg,.sldprt,.stl"
+CAD\Weather Balloon Camera Vessel,2,46,816.81,1/23/2023,".eprt,.jpg,.sldprt,.stl"
+CAD\Wood Stave Instruments,2,6,11.03,1/23/2023,".docx,.gif,.pdf,.xlsx"
+CAD\Wood Stave Instruments\Ashiko Drums,3,3,0.37,1/23/2023,".sldprt,.xlsx"
+CAD\Wood Stave Instruments\Cylinder Drums,3,2,4.57,1/23/2023,".sldprt,.xlsx"
+CAD\Wood Stave Instruments\Didgeridoos,3,17,2.29,1/23/2023,".gif,.sldasm,.sldprt,.txt,.xlsx"
+CAD\Wood Stave Instruments\Didgeridoos\Assemblies,4,3,0.44,1/23/2023,".sldasm,.sldprt"
+CAD\Wood Stave Instruments\Didgeridoos\Drawings,4,1,0.48,1/23/2023,.slddrw
+CAD\Wood Stave Instruments\Didgeridoos\Parts,4,2,2.33,1/23/2023,.sldprt
+CAD\Wood Stave Instruments\Didgeridoos\PDFs,4,1,0.06,1/23/2023,.pdf
+CAD\Wood Stave Instruments\Djembe,3,10,2.62,1/23/2023,".png,.sldasm,.sldprt"
+Custom Office Templates,1,0,0,4/20/2013,
+DbgLogs,1,0,0,10/5/2014,
+DJI Phantom,1,9,18.55,1/23/2023,.pdf
+EE3005,1,3,0.4,1/23/2023,".doc,.docx"
+EE3006,1,17,25.08,1/23/2023,".doc,.docx,.jpg,.pdf"
+Electric Forest 2017,1,20,3096.93,1/23/2023,".ai,.jpg,.pdf"
+Electric Forest Scroll 2016,1,20,123,1/23/2023,".ai,.pdf,.sldasm,.sldprt"
+google drive archive 3-3-18,1,11,13.05,3/21/2026,".docx,.gdoc,.gsheet,.jpg,.pdf,.xlsx"
+google drive archive 3-3-18\Ashiko Makers Club,2,46,25.99,1/23/2023,".jpg,.pdf,.png,.sldasm,.slddrw,.sldprt"
+google drive archive 3-3-18\Ashiko Makers Club\Ashiko,3,10,3.97,1/23/2023,".pdf,.png,.slddrw"
+google drive archive 3-3-18\Ashiko Makers Club\Ashiko Drums,3,25,4.98,1/23/2023,".gsheet,.jpg,.sldasm,.sldprt"
+google drive archive 3-3-18\Ashiko Makers Club\Djembe,3,14,2.98,1/23/2023,".sldasm,.sldprt"
+google drive archive 3-3-18\Ashiko Makers Club\Images,3,18,11.82,1/23/2023,".jpg,.png"
+google drive archive 3-3-18\Ashiko Makers Club\PDFs,3,11,15.52,1/23/2023,.pdf
+google drive archive 3-3-18\Ashiko Makers Club\Spokes,3,7,0.7,1/23/2023,".pdf,.slddrw,.sldprt"
+google drive archive 3-3-18\Ashiko Makers Club\Stave Gallery,3,0,0,1/23/2023,
+google drive archive 3-3-18\Ashiko Makers Club\Stave Gallery\By Board,4,0,0,1/23/2023,
+google drive archive 3-3-18\Ashiko Makers Club\Stave Gallery\By Board\Cedar Board A,5,3,25.84,1/23/2023,.jpg
+google drive archive 3-3-18\Ashiko Makers Club\Stave Gallery\By Board\Cedar Board B,5,3,27.09,1/23/2023,.jpg
+google drive archive 3-3-18\Ashiko Makers Club\Stave Gallery\By Board\Cherry Board A,5,5,42.84,1/23/2023,.jpg
+google drive archive 3-3-18\Ashiko Makers Club\Stave Gallery\By Board\Cherry Board B,5,5,42.97,1/23/2023,.jpg
+google drive archive 3-3-18\Ashiko Makers Club\Stave Gallery\By Board\Cherry Board C,5,5,43.61,1/23/2023,.jpg
+google drive archive 3-3-18\Ashiko Makers Club\Stave Gallery\By Board\Cherry Board D,5,5,43.78,1/23/2023,.jpg
+google drive archive 3-3-18\Ashiko Makers Club\Stave Gallery\By Board\Cherry Board E,5,5,42.19,1/23/2023,.jpg
+google drive archive 3-3-18\Ashiko Makers Club\Stave Gallery\By Board\Hard Maple Board A,5,5,39.07,1/23/2023,.jpg
+google drive archive 3-3-18\Ashiko Makers Club\Stave Gallery\By Board\Hard Maple Board B,5,5,39.93,1/23/2023,.jpg
+google drive archive 3-3-18\Ashiko Makers Club\Stave Gallery\By Board\Hard Maple Board C,5,5,39.95,1/23/2023,.jpg
+google drive archive 3-3-18\Ashiko Makers Club\Stave Gallery\By Board\Hard Maple Board D,5,5,38.93,1/23/2023,.jpg
+google drive archive 3-3-18\Ashiko Makers Club\Stave Gallery\By Board\Hard Maple Board E,5,5,40.58,1/23/2023,.jpg
+google drive archive 3-3-18\Ashiko Makers Club\Stave Gallery\By Board\Padauk,5,5,44.27,1/23/2023,.jpg
+google drive archive 3-3-18\Ashiko Makers Club\Stave Gallery\By Board\Purpleheart,5,4,33.43,1/23/2023,.jpg
+google drive archive 3-3-18\Ashiko Makers Club\Stave Gallery\By Drum Maker,4,0,0,1/23/2023,
+google drive archive 3-3-18\Ashiko Makers Club\Stave Gallery\By Drum Maker\Cedar Test Drum,5,7,60.13,1/23/2023,.jpg
+google drive archive 3-3-18\Ashiko Makers Club\Stave Gallery\By Drum Maker\Dallas Nustvold,5,7,59.24,1/23/2023,.jpg
+google drive archive 3-3-18\Ashiko Makers Club\Stave Gallery\By Drum Maker\Dan Estenson,5,8,66.42,1/23/2023,.jpg
+google drive archive 3-3-18\Ashiko Makers Club\Stave Gallery\By Drum Maker\Dan Plante,5,0,0,3/9/2015,
+google drive archive 3-3-18\Ashiko Makers Club\Stave Gallery\By Drum Maker\Joe Spitzenberger,5,7,55.63,1/23/2023,.jpg
+google drive archive 3-3-18\Ashiko Makers Club\Stave Gallery\By Drum Maker\Joe's Spare,5,8,63.88,1/23/2023,.jpg
+google drive archive 3-3-18\Ashiko Makers Club\Stave Gallery\By Drum Maker\Max Okray,5,7,57.08,1/23/2023,.jpg
+google drive archive 3-3-18\Ashiko Makers Club\Stave Gallery\By Drum Maker\Mike Nieland,5,7,60.31,1/23/2023,.jpg
+google drive archive 3-3-18\Ashiko Makers Club\Stave Gallery\By Drum Maker\Mike's Spare,5,8,62.12,1/23/2023,.jpg
+google drive archive 3-3-18\Ashiko Makers Club\Stave Gallery\By Drum Maker\Tony Koop,5,7,57.29,1/23/2023,.jpg
+google drive archive 3-3-18\Ashiko Makers Club\Stave Gallery\By Drum Maker\Tony's Spare,5,7,53.45,1/23/2023,.jpg
+google drive archive 3-3-18\Ashiko Makers Club\Stave Gallery\By Drum Maker\Tyler Kilbury,5,7,56.17,1/23/2023,.jpg
+google drive archive 3-3-18\Ashiko Makers Club\To Print,3,5,2.51,1/23/2023,.stl
+google drive archive 3-3-18\Ashiko Makers Club\Turning Photos,3,0,0,1/23/2023,
+google drive archive 3-3-18\Ashiko Makers Club\Turning Photos\Dallas,4,32,142.31,1/23/2023,.jpg
+"google drive archive 3-3-18\Ashiko Makers Club\Turning Photos\Dan P, Dan E, Dallas",4,57,290.2,1/23/2023,.jpg
+google drive archive 3-3-18\Ashiko Makers Club\Turning Photos\Dan Plante,4,38,192.84,1/23/2023,.jpg
+google drive archive 3-3-18\Ashiko Makers Club\Turning Photos\Mike,4,38,108.77,1/23/2023,.jpg
+google drive archive 3-3-18\Didgeridoo,2,3,10.52,1/23/2023,".gif,.pdf"
+google drive archive 3-3-18\Documents,2,13,0.75,1/23/2023,".docx,.pdf,.url,.xlsx"
+google drive archive 3-3-18\Documents\Cover Letters,3,10,0.45,1/23/2023,".docx,.pdf"
+google drive archive 3-3-18\Documents\Job Descriptions,3,7,0.74,1/23/2023,.pdf
+google drive archive 3-3-18\Documents\Thank You Letters,3,2,0.24,1/23/2023,".docx,.pdf"
+google drive archive 3-3-18\Google Photos,2,1931,4670.98,3/21/2026,".gif,.jpg,.png"
+google drive archive 3-3-18\Pictures,2,0,0,4/15/2013,
+google drive archive 3-3-18\Public,2,0,0,4/15/2013,
+GoPro Footage,1,3,0.12,3/21/2026,".db,.lrv,.thm"
+Kickstarter,1,12,37.2,1/23/2023,".docx,.jpg,.mp3,.pdf,.xlsx"
+Kickstarter\Address Stickers,2,1,0.26,1/23/2023,.pdf
+Kickstarter\Address Stickers\Printed,3,11,0.44,1/23/2023,.pdf
+Kickstarter\Backer Reports,2,15,0.09,1/23/2023,".csv,.xlsx"
+Kickstarter\Backer Reports - April 21st,2,0,0,1/20/2015,
+Kickstarter\Excel,2,9,0.51,1/23/2023,.xlsx
+Kickstarter\Flyer,2,12,217.03,3/21/2026,".ai,.jpg,.pdf"
+Kickstarter\FlySafe,2,12,3.42,1/23/2023,.pdf
+Kickstarter\Images,2,31,37.95,1/23/2023,".ai,.jpg,.png,.tiff,.zip"
+Kickstarter\Images\Product Images,3,0,0,1/23/2023,
+Kickstarter\Images\Product Images\3DRobotics,4,5,0.34,1/23/2023,.jpg
+Kickstarter\Images\Product Images\BH Photo Video,4,1,0.01,1/23/2023,.jpg
+Kickstarter\Images\Product Images\Helipal.com,4,14,1.82,1/23/2023,.jpg
+Kickstarter\Images\Product Images\RCPlant,4,1,0.03,1/23/2023,.crdownload
+Kickstarter\Images\Product Images\REI,4,1,0.02,1/23/2023,.jpg
+Kickstarter\Images\Product Images\xaircraftamerica.com,4,1,0.03,1/23/2023,.jpg
+Kickstarter\Kickstarter Originals,2,1,0.02,1/23/2023,.xlsx
+Kickstarter\Kickstarter Originals\11x14,3,11,61.78,1/23/2023,.jpg
+Kickstarter\Kickstarter Originals\12x18,3,11,65.21,1/23/2023,.jpg
+Kickstarter\Kickstarter Originals\12x18 Canvas Wrap,3,7,45.42,1/23/2023,.jpg
+Kickstarter\Kickstarter Originals\8x10,3,11,62.61,1/23/2023,.jpg
+Kickstarter\Kickstarter Originals\Originals,3,12,44.11,1/23/2023,.jpg
+Kickstarter\Kickstarter Originals\Originals\Done,4,0,0,4/3/2014,
+Kickstarter\Kickstarter TK,2,0,0,1/23/2023,
+Kickstarter\Kickstarter TK\Backer Reports,3,0,0,1/21/2015,
+Kickstarter\Kickstarter TK\Manuals,3,0,0,1/21/2015,
+Kickstarter\Manuals,2,7,13.41,1/23/2023,.pdf
+Kickstarter\Photo Stickers,2,15,14.65,1/23/2023,".ai,.docx,.jpg"
+Kickstarter\Photo Stickers\PDFS,3,11,2.61,1/23/2023,.pdf
+Kickstarter\Photo Stickers\PDFS\Post Kickstarter,4,12,7.25,1/23/2023,.pdf
+Kickstarter\Receipts,2,18,4.51,1/23/2023,.pdf
+Kickstarter\Replacement photos,2,4,13.12,1/23/2023,.jpg
+Kickstarter\WHCC,2,7,26.77,1/23/2023,.jpg
+Kickstarter\WHCC\B Side,3,45,125.4,1/23/2023,.jpg
+Misc,1,8,11.62,1/23/2023,".ai,.jpg,.pdf"
+Misc\Photos for UofM Ambulatory Care Center,2,0,0,1/23/2023,
+Misc\Photos for UofM Ambulatory Care Center\High Quality,3,37,149.05,1/23/2023,.jpg
+Misc\Photos for UofM Ambulatory Care Center\Thumbnails,3,37,15.02,1/23/2023,.jpg
+Music,1,3,18.28,1/23/2023,".db,.mp3"
+My Data Sources,1,4,0,1/23/2023,".ico,.ini,.odc"
+OneNote Notebooks,1,0,0,5/16/2013,
+Pandora's Documents,1,4,2.21,1/23/2023,.pdf
+Pics,1,19,83.29,1/23/2023,".db,.jpg"
+Recordings,1,5,233.81,1/23/2023,.mp3
+Required Reading Materials - G0766,1,3,4.14,1/23/2023,.pdf
+Resume,1,10,2.64,1/23/2023,".docx,.indd,.pdf"
+Scarves,1,2,9.39,1/23/2023,.jpg
+Scarves\Christmas Scarves 2017,2,6,20.99,1/23/2023,".jpg,.xlsx"
+Scarves\Christmas Scarves 2017\edited,3,5,19.38,1/23/2023,.jpg
+Scarves\For Sale,2,48,264.15,1/23/2023,.jpg
+Scarves\No Pocket - For Sale,2,12,64.28,1/23/2023,.jpg
+Scarves\Not FS,2,6,31.23,1/23/2023,.jpg
+Scarves\Not Yet Ready,2,33,172.55,1/23/2023,.jpg
+SolidWorks Downloads,1,1,0.01,1/23/2023,.p2m
+SolidWorks Downloads\SolidWorks 2012 x64 Edition SP02,2,1,0,1/23/2023,.id
+SolidWorks Downloads\SolidWorks 2014 x64 SP02\swx2014-0.0-2.0-x,3,1,33.61,1/23/2023,.msp
+SolidWorks Visual Studio Tools for Applications,1,0,0,1/23/2023,
+SolidWorks Visual Studio Tools for Applications\Templates,2,0,0,1/23/2023,
+SolidWorks Visual Studio Tools for Applications\Templates\ItemTemplates,3,0,0,1/23/2023,
+SolidWorks Visual Studio Tools for Applications\Templates\ItemTemplates\Visual Basic,4,0,0,5/4/2013,
+SolidWorks Visual Studio Tools for Applications\Templates\ItemTemplates\Visual C#,4,0,0,5/4/2013,
+SolidWorks Visual Studio Tools for Applications\Templates\ProjectTemplates,3,0,0,1/23/2023,
+SolidWorks Visual Studio Tools for Applications\Templates\ProjectTemplates\Visual Basic,4,0,0,5/4/2013,
+SolidWorks Visual Studio Tools for Applications\Templates\ProjectTemplates\Visual C#,4,0,0,5/4/2013,
+SolidWorksComposer,1,0,0,1/23/2023,
+SolidWorksComposer\User,2,0,0,2/20/2014,
+The QC Group,1,4,1.05,1/23/2023,".doc,.docx,.pdf"
+to organize,1,62,759.76,1/23/2023,".ai,.crdownload,.docx,.gif,.jpg,.lnk,.pdf,.png,.psd,.sldprt,.svg,.xls,.xlsx,.zip"
+to organize\104ND300,2,179,1343.58,1/23/2023,.jpg
+to organize\104ND307,2,5,41.07,1/23/2023,.jpg
+to organize\104ND308,2,46,204.12,1/23/2023,.jpg
+to organize\Coffee Table,2,37,10.43,1/23/2023,".ai,.pdf,.sldasm,.slddrw,.sldprt"
+to organize\Shacket Photos and Video,2,0,0,1/23/2023,
+to organize\Shacket Photos and Video\Cordaround,3,19,67.92,1/23/2023,.jpg
+to organize\Shacket Photos and Video\Herringbone,3,20,79.42,1/23/2023,.jpg
+to organize\Stencil Art REV072715,2,72,239.41,1/23/2023,".ai,.ase,.jpg,.nef,.pdf,.png,.psd,.slddrw,.sldprt,.svg"
+To Organize2,1,151,263.87,1/23/2023,".ai,.bmp,.doc,.docx,.dxf,.gif,.jpg,.pdf,.png,.sldasm,.slddrw,.sldprt,.svg,.xlsx"
+tonykoop.com,1,4,103.48,1/23/2023,".txt,.zip"
+tonykoop.com\__MACOSX,2,1,0,1/23/2023,.txt
+tonykoop.com\__MACOSX\documentation,3,3,0,1/23/2023,"._documentation,.ds_store,.html"
+tonykoop.com\__MACOSX\documentation\documentation,4,1,0,1/23/2023,.ds_store
+tonykoop.com\__MACOSX\documentation\documentation\assets,5,0,0,1/23/2023,
+tonykoop.com\__MACOSX\documentation\documentation\assets\blueprint-css,6,0,0,1/23/2023,
+tonykoop.com\__MACOSX\documentation\documentation\assets\blueprint-css\plugins,7,0,0,1/23/2023,
+tonykoop.com\__MACOSX\documentation\documentation\assets\blueprint-css\plugins\buttons,8,0,0,1/23/2023,
+tonykoop.com\__MACOSX\documentation\documentation\assets\blueprint-css\plugins\buttons\icons,9,3,0,1/23/2023,.png
+tonykoop.com\__MACOSX\documentation\documentation\assets\blueprint-css\plugins\link-icons,8,0,0,1/23/2023,
+tonykoop.com\__MACOSX\documentation\documentation\assets\blueprint-css\plugins\link-icons\icons,9,8,0,1/23/2023,.png
+tonykoop.com\__MACOSX\documentation\documentation\assets\blueprint-css\src,7,1,0,1/23/2023,.png
+tonykoop.com\__MACOSX\documentation\documentation\assets\images,6,36,0.01,1/23/2023,".ds_store,.jpg,.png"
+tonykoop.com\__MACOSX\documentation\documentation\assets\js,6,0,0,1/23/2023,
+tonykoop.com\__MACOSX\documentation\documentation\assets\js\prettyPhoto,7,0,0,1/23/2023,
+tonykoop.com\__MACOSX\documentation\documentation\assets\js\prettyPhoto\images,8,0,0,1/23/2023,
+tonykoop.com\__MACOSX\documentation\documentation\assets\js\prettyPhoto\images\prettyPhoto,9,0,0,1/23/2023,
+tonykoop.com\__MACOSX\documentation\documentation\assets\js\prettyPhoto\images\prettyPhoto\dark_rounded,10,5,0,1/23/2023,".gif,.png"
+tonykoop.com\__MACOSX\documentation\documentation\assets\js\prettyPhoto\images\prettyPhoto\dark_square,10,5,0,1/23/2023,".gif,.png"
+tonykoop.com\__MACOSX\documentation\documentation\assets\js\prettyPhoto\images\prettyPhoto\facebook,10,8,0,1/23/2023,".gif,.png"
+tonykoop.com\__MACOSX\documentation\documentation\assets\js\prettyPhoto\images\prettyPhoto\light_rounded,10,4,0,1/23/2023,".gif,.png"
+tonykoop.com\__MACOSX\documentation\documentation\assets\js\prettyPhoto\images\prettyPhoto\light_square,10,4,0,1/23/2023,".gif,.png"
+tonykoop.com\documentation,2,2,0.01,1/23/2023,".ds_store,.html"
+tonykoop.com\documentation\documentation,3,2,0.03,1/23/2023,".ds_store,.html"
+tonykoop.com\documentation\documentation\assets,4,0,0,1/23/2023,
+tonykoop.com\documentation\documentation\assets\blueprint-css,5,4,0.02,1/23/2023,.css
+tonykoop.com\documentation\documentation\assets\blueprint-css\plugins,6,0,0,1/23/2023,
+tonykoop.com\documentation\documentation\assets\blueprint-css\plugins\buttons,7,2,0,1/23/2023,".css,.txt"
+tonykoop.com\documentation\documentation\assets\blueprint-css\plugins\buttons\icons,8,3,0,1/23/2023,.png
+tonykoop.com\documentation\documentation\assets\blueprint-css\plugins\fancy-type,7,2,0,1/23/2023,".css,.txt"
+tonykoop.com\documentation\documentation\assets\blueprint-css\plugins\link-icons,7,2,0,1/23/2023,".css,.txt"
+tonykoop.com\documentation\documentation\assets\blueprint-css\plugins\link-icons\icons,8,8,0.09,1/23/2023,.png
+tonykoop.com\documentation\documentation\assets\blueprint-css\plugins\rtl,7,2,0,1/23/2023,".css,.txt"
+tonykoop.com\documentation\documentation\assets\blueprint-css\src,6,7,0.02,1/23/2023,".css,.png"
+tonykoop.com\documentation\documentation\assets\images,5,36,1.18,1/23/2023,".ds_store,.jpg,.png"
+tonykoop.com\documentation\documentation\assets\images\_notes,6,2,0.03,1/23/2023,.mno
+tonykoop.com\documentation\documentation\assets\js,5,2,0.09,1/23/2023,.js
+tonykoop.com\documentation\documentation\assets\js\prettyPhoto,6,1,0,1/23/2023,
+tonykoop.com\documentation\documentation\assets\js\prettyPhoto\css,7,1,0.01,1/23/2023,.css
+tonykoop.com\documentation\documentation\assets\js\prettyPhoto\images,7,0,0,1/23/2023,
+tonykoop.com\documentation\documentation\assets\js\prettyPhoto\images\prettyPhoto,8,0,0,1/23/2023,
+tonykoop.com\documentation\documentation\assets\js\prettyPhoto\images\prettyPhoto\dark_rounded,9,5,0.01,1/23/2023,".gif,.png"
+tonykoop.com\documentation\documentation\assets\js\prettyPhoto\images\prettyPhoto\dark_square,9,5,0.01,1/23/2023,".gif,.png"
+tonykoop.com\documentation\documentation\assets\js\prettyPhoto\images\prettyPhoto\facebook,9,8,0.01,1/23/2023,".gif,.png"
+tonykoop.com\documentation\documentation\assets\js\prettyPhoto\images\prettyPhoto\light_rounded,9,4,0.01,1/23/2023,".gif,.png"
+tonykoop.com\documentation\documentation\assets\js\prettyPhoto\images\prettyPhoto\light_square,9,4,0.01,1/23/2023,".gif,.png"
+tonykoop.com\documentation\documentation\assets\js\prettyPhoto\js,7,1,0.02,1/23/2023,.js
+tonykoop.com\License,2,2,0.01,1/23/2023,.txt
+tonykoop.com\Licensing,2,2,0.01,1/23/2023,.txt
+tonykoop.com\wordpress,2,16,0.13,1/23/2023,".html,.php,.txt"
+Verizon2.0_Log,1,0,0,1/11/2014,
+Website,1,16,5.77,1/23/2023,".css,.html,.jpg,.png"
+Website\directory,2,6,0.55,1/23/2023,.jpg
+Website\m,2,4,0.01,1/23/2023,.html
+Website\m\photography,3,10,8.7,1/23/2023,.jpg
+Website\m\woodworking,3,0,0,11/25/2015,
+Website\u,2,5,0.03,1/23/2023,.html
+Website\u\Elliott_Rachel,3,0,0,11/23/2015,
+Website\u\Opatz_Kevin,3,0,0,11/23/2015,
+Website\u\Shefchik_Dan,3,0,0,11/23/2015,
+Website\u\Spitzenberger_Joe,3,0,0,11/23/2015,
+Website\u\tonykoop,3,7,3.75,1/23/2023,",.gif,.html,.jpg"
