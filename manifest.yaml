@@ -23,14 +23,14 @@ install_roots:
 
 skills:
   skills-meta:
-    canonical_version: 1.0.1
+    canonical_version: 1.0.2
     runtime: portable
     repo_path: skills/skills-meta
-    last_updated: 2026-06-15
+    last_updated: 2026-06-19
     status: active
     notes: >-
       Portable drift-audit skill for Claude, Codex, Gemini, and desktop
-      installs.
+      installs. evals/evals.json added in v1.0.2 (5 evals).
 
   tmux-v2:
     canonical_version: 2.0.0

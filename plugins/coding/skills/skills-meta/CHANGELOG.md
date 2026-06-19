@@ -1,5 +1,24 @@
 # Changelog — skills-meta
 
+## v1.0.2 — 2026-06-19 (structured evals + bidirectional drift detection)
+
+Added `evals/evals.json` — the skill's first machine-runnable eval suite
+(five cases covering the full behavioral surface):
+
+- **eval 1** `drift-check-summary`: inventory + drift report with mobile-friendly
+  summary counts, per-skill issue tags, unreadable-root reporting, and
+  read-only enforcement.
+- **eval 2** `single-skill-version-probe`: `--mode single` version check;
+  falls back to `python scripts/skills-meta.py --version` when no PATH shim.
+- **eval 3** `manifest-last-updated-stale-detection`: exercises the new
+  `manifest-last-updated-stale:<date>` flag (bidirectional drift: SKILL.md
+  newer than manifest) introduced in v1.0.2 on the drift branch.
+- **eval 4** `cross-install-sync-dry-run`: sync dry-run with transitive
+  `requires` expansion, per-skill `+copy`/`=keep`/`!drift` output, and
+  `--apply` gate.
+- **eval 5** `fix-duplicates-dry-run`: deterministic keep/remove plan with
+  symlink annotation; no deletions without `--apply`.
+
 ## 1.0.1 - 2026-06-15
 
 - Added `references/resync-note-2026-06-15.md`: a dated, read-only drift
