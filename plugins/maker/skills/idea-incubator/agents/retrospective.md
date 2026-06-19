@@ -84,10 +84,34 @@ Phrases are punctuation-free for substring-matching hosts.
   **Applies-to:** <tag>, <tag>
 ```
 
+## Sweep first, then distill
+
+Do not retro from memory. Run the sweep to gather the evidence mechanically:
+
+```bash
+python3 plugins/maker/skills/idea-incubator/scripts/retrospective_sweep.py \
+  --epic <N> --repo <owner/name>
+```
+
+It parses the epic's `## Stories` checklist, pulls each child story's final
+state + labels, collects commits that reference the epic (`git log --grep`), and
+PR references, then writes two files into the Institutional Knowledge folder
+([`../references/institutional-knowledge/`](../references/institutional-knowledge/)):
+
+- `epic-<N>-sweep.json` — the raw evidence (provenance).
+- `epic-<N>-retro.md` — a ready-to-fill retro note that already carries a
+  `Source: epic #N` backlink and a `## Backlink` section for traceability.
+
+Distill the human lessons *into* that note's "Lessons" block, working from the
+swept evidence. Use `--dry-run` to preview without writing.
+
 ## Write-back
 
-After the human accepts the lessons, append each one to
+After the human accepts the lessons in `epic-<N>-retro.md`, append each one to
+the aggregate pre-read store
 [`../references/institutional-knowledge.md`](../references/institutional-knowledge.md)
 under the matching domain section, using the entry format defined there. Do not
 overwrite existing lessons; append and date-stamp. Never auto-append without the
-human's OK (house rule: do not auto-close or auto-mutate the durable layer).
+human's OK (house rule: do not auto-close or auto-mutate the durable layer). The
+per-epic note stays in the folder as the audit trail; the aggregate store stays
+the curated index the pre-read loads.
