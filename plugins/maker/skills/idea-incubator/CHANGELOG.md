@@ -1,5 +1,46 @@
 # Changelog
 
+## 1.13.0 - 2026-06-19
+
+- **Offline Shared Subassemblies reporter (#244).** Added
+  `scripts/shared_subassemblies.py` — the portable, unit-tested twin of the
+  Obsidian Shared Subassemblies MOC. It reproduces the MOC's Dataview dashboards
+  (shared subassemblies = functions in 2+ ideas, shared interfaces, and
+  cross-pollination candidate pairs) from the `functions:` / `interfaces:`
+  frontmatter, in pure stdlib, so the view works in Codex/Gemini CLI, CI, and a
+  terminal where Dataview isn't available. The MOC + SKILL Review mode point at
+  it. Added `tests/test_shared_subassemblies.py` (11 cases). Also realigns the
+  SKILL.md version with the manifest (see note below).
+
+> Note: entries 1.9.0–1.12.0 below were reconstructed — their original CHANGELOG
+> bumps were lost when the stacked idea-incubator PRs were auto-merged (the
+> manifest version advanced to 1.12.0 but SKILL.md/CHANGELOG stayed at 1.8.0).
+
+## 1.12.0 - 2026-06-19
+
+- **Cross-pollination epic-level report (#247).** Mandated the
+  `### Cross-Pollination Opportunities Detected` epic section (interface reuse /
+  interoperability / silo alert, each cited) on `agents/cross-pollination-librarian.md`,
+  with `scripts/check_cross_pollination_section.py` enforcing it.
+
+## 1.11.0 - 2026-06-19
+
+- **Tuned domain router (#242).** `scripts/domain_router.py` — confidence-weighted
+  routing with word-boundary matching and a safe `needs-clarification` fallback;
+  `gemini_to_github.py` delegates to it (replacing the any-keyword baseline).
+
+## 1.10.0 - 2026-06-19
+
+- **Prior-lessons pre-read loader (#241).** `scripts/prior_lessons_preread.py` —
+  ranks Institutional Knowledge lessons by tag overlap, caps the injection, and
+  degrades gracefully when the store/folder is empty.
+
+## 1.9.0 - 2026-06-19
+
+- **Retrospective sweep (#240).** `scripts/retrospective_sweep.py` — sweeps a
+  closed epic's child stories, referencing commits, and PR references into a
+  backlinked `epic-<N>-retro.md` note under the Institutional Knowledge folder.
+
 ## 1.8.0 - 2026-06-18
 
 - **Devil's Advocate / Red Team output wiring (#238, epic #235).** Made the
