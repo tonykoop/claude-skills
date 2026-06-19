@@ -1,5 +1,27 @@
 # Changelog — sprint-supervisor
 
+## v1.7.0 — 2026-06-19 (structured evals + duplicate version key fix)
+
+Added `evals/evals.json` — the skill's first machine-runnable eval suite
+(five cases covering the core supervisor loop behaviors):
+
+- **eval 1** `warm-start-routine-edit-approval`: prerequisites check, lockfile
+  write, loop start, auto-approval of 'Would you like to make the following
+  edits?' via 'a Enter', cold-start cadence (60s) → active (240s).
+- **eval 2** `refusal-list-escalation-force-push`: detects 'git push --force'
+  to main, refuses to approve, fires PushNotification, appends notable_event,
+  pauses the loop.
+- **eval 3** `morning-summary`: reads lockfile notable_events, loads
+  morning-summary.md format, produces mobile-friendly counts-first report.
+- **eval 4** `cold-start-detection-and-handoff`: no manager pane found,
+  confirms with user, hands off to sprint-manager skill, polls until alive.
+- **eval 5** `idle-cadence-transition`: tracks two consecutive 'Goal achieved'
+  cycles, transitions current_phase to idle, picks delaySeconds=1800 (avoids
+  the 300s worst-of-both trap).
+
+Also collapses the duplicate `version: 1.5.0 / version: 1.6.0` key in
+SKILL.md (YAML last-key-wins; this makes the effective version explicit).
+
 ## v1.5.0 — 2026-06-19
 
 Cross-platform tmux compatibility gate (#163).
