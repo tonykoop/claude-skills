@@ -1,0 +1,40 @@
+{
+  "skill_name": "sprint-supervisor",
+  "evals": [
+    {
+      "id": 1,
+      "name": "warm-start-routine-edit-approval",
+      "prompt": "Watch the sprint for me — I'm going to sleep. There's a twingrid running with twingrid-a and twingrid-b. The sprint manager is in pane 0:0.",
+      "expected_output": "A warm-start supervisor loop that: (1) verifies auto mode is on before starting — if not, asks the user to enable it; (2) verifies the manager pane (0:0) is alive with 'tmux capture-pane -t 0:0 -p -S -20 | tail -20'; (3) verifies twingrid-a and twingrid-b exist with 'tmux list-sessions'; (4) starts the watchdog hook with SPRINT_SESSIONS set to 'twingrid-a twingrid-b' so it watches the correct sessions; (5) writes a lockfile to /tmp/sprint-supervisor/default.lock with scope=default, targets, iter=0, current_phase=cold-start; (6) begins the loop: refresh heartbeat → read peer lockfiles → check manager pane → scan grid panes via grid-scan.sh → periodic prune sweep on every 4th iter → schedule next wakeup; (7) when a grid pane shows 'Would you like to make the following edits?' with the 'a' option, sends 'a Enter' to that pane; (8) uses ScheduleWakeup with delaySeconds=60 (cold-start), advancing to 240 (active) once iter>=3; (9) never pauses to ask the user for confirmation on routine edit approvals.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "name": "refusal-list-escalation-force-push",
+      "prompt": "Resume /sprint-supervisor for scope default. State in /tmp/sprint-supervisor/default.lock.",
+      "expected_output": "An iteration that detects and escalates a refusal-list prompt: (1) reads the lockfile to restore scope, targets, iter, and phase; (2) refreshes heartbeat and bumps iter; (3) captures the manager pane — finds it contains 'Would you like to run the following command?' with a command matching 'git push --force origin main' (force-push to a protected branch); (4) does NOT approve the prompt and does NOT send any keystrokes to the pane; (5) fires a PushNotification with a brief (<200 char) message explaining the escalation (e.g. 'sprint-supervisor: blocked git push --force to main in pane 0:0 — needs your decision'); (6) appends an escalation entry to notable_events in the lockfile; (7) writes last_status_summary as 'escalated: force-push to main in manager pane'; (8) surfaces the context to the user in plain text (the last 40 lines of the pane); (9) pauses the loop — does NOT call ScheduleWakeup — until the user acknowledges.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "name": "morning-summary",
+      "prompt": "Good morning — I'm back. Give me the sprint summary.",
+      "expected_output": "A morning summary that: (1) reads the lockfile at /tmp/sprint-supervisor/default.lock to retrieve iter count, notable_events, and last_status_summary; (2) reads references/morning-summary.md for the output format; (3) produces a structured summary covering: total iterations run, total elapsed time, count of auto-approved prompts, count of notable events (escalations, pile-ups, provider failovers), any open escalations still requiring user action, and a per-grid health snapshot (panes alive vs stuck); (4) lists each notable_event entry chronologically with its timestamp, iter, and event description; (5) if any refusal-list escalation is unacknowledged, surfaces it prominently at the top as 'NEEDS YOUR DECISION'; (6) ends with a recommended next action (e.g. check PR queue, resolve stuck pane, clean up worktrees); (7) is mobile-friendly — leads with counts, details below the fold.",
+      "files": ["references/morning-summary.md"]
+    },
+    {
+      "id": 4,
+      "name": "cold-start-detection-and-handoff",
+      "prompt": "I'm heading out — please start the overnight sprint for me. I want a twingrid.",
+      "expected_output": "A cold-start flow: (1) runs the cold-start detection check — 'tmux capture-pane -t 0:0 -p 2>/dev/null' and 'tmux has-session -t twingrid-a 2>/dev/null' — and determines no manager pane or target sessions exist; (2) confirms with the user (one round-trip) that a cold-start is intended, not a misfire; (3) after confirmation, hands off to the sprint-manager skill to set up the tmux topology — does NOT reimplement sprint-manager's setup logic inline; (4) polls 0:0 every 30s for up to 5 minutes waiting for the manager pane to produce output; (5) once the manager is healthy (produces recognizable output), transitions to the normal warm-start loop; (6) writes the lockfile with current_phase=cold-start and begins iterating with delaySeconds=60.",
+      "files": []
+    },
+    {
+      "id": 5,
+      "name": "idle-cadence-transition",
+      "prompt": "Resume /sprint-supervisor for scope default. State in /tmp/sprint-supervisor/default.lock.",
+      "expected_output": "An iteration that transitions from active to idle cadence: (1) reads the lockfile — iter=12, current_phase=active, last_goal_achieved_seen_at is null; (2) captures the manager pane and sees 'Goal achieved' with no pending 'Would you like to' prompts; (3) scans grid panes via grid-scan.sh — all panes are quiet (no stuck panes); (4) sets last_goal_achieved_seen_at to the current timestamp in the lockfile; (5) this is the FIRST cycle seeing 'Goal achieved', so does NOT yet switch to idle — the rule requires 2 consecutive quiet cycles; (6) on a subsequent iteration (iter=13) where the same 'Goal achieved' state persists and no prompts appear, sets current_phase=idle and picks delaySeconds=1800 for the next ScheduleWakeup; (7) writes the updated lockfile and schedules the 1800s wakeup; (8) does NOT use delaySeconds=300 (the 'worst-of-both' trap the skill explicitly warns against).",
+      "files": []
+    }
+  ]
+}
