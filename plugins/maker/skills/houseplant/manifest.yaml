@@ -1,10 +1,10 @@
-# Houseplant — Skill Manifest (v0.7.0)
+# Houseplant — Skill Manifest (v0.8.0)
 # Structured discoverability so an agent can read this manifest first,
 # decide what to load, and skip the prose. SKILL.md is the orchestrator;
 # this is its index.
 
 name: houseplant
-version: 0.7.0
+version: 0.8.0
 display_name: Houseplant
 audience:
   - Tony (primary)
@@ -116,6 +116,11 @@ scripts:
     inputs: ["PLANT_ID", "ROOT_ID", "START", "END", "STATE", "optional DROOP/SAMPLES"]
     outputs: ["teal poly-curve <plant_id>_aerial_root_trace_<root_id> in 04_markers with state metadata"]
     requires_blender: true
+  - path: scripts/aerial_root_tracker.py
+    purpose: "Aerial-root lifecycle transition validation + health/warmth intervention gate + remaining time-to-fused forecast (the decision layer behind aerial_root_trace.py). Completes #174."
+    inputs: ["STATE (tip_promising|guided|reached_soil|thickening|fused)", "GROWTH_CLASS", "CONDITION", "SPECIES", "HEALTHY", "WARM", "optional FROM_DATE"]
+    outputs: ["dict: next_state, intervention {act, guidance}, forecast {remaining_days_min/max, confidence, window}"]
+    requires_blender: false
   - path: scripts/health_triage.py
     purpose: "Triage observed health symptoms into health_flag_added records and a pest/rot structural-risk verdict; inspection-first, never chemical (#175)"
     inputs: ["JSON: observations[{symptom,photo,region}], care_events[{type,date}], today"]
@@ -190,7 +195,7 @@ v2_features:
     delivered: [references/bud-bloom-tracker.md, scripts/bloom_forecast.py]  # marker reuses cut_marker.py; forecast helper added v0.5.0
   - issue: 174
     feature: aerial-root and nebari guidance tracker
-    delivered: [references/aerial-roots-nebari.md, scripts/aerial_root_trace.py]
+    delivered: [references/aerial-roots-nebari.md, scripts/aerial_root_trace.py, scripts/aerial_root_tracker.py]  # lifecycle/gate/forecast decision layer added v0.8.0
   - issue: 175
     feature: computer-vision plant health diagnostics
     delivered: [references/health-diagnostics.md, scripts/health_triage.py]  # script added v0.4.0

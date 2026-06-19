@@ -1,5 +1,25 @@
 # Changelog — houseplant
 
+## v0.8.0 — 2026-06-19 (aerial-root lifecycle + forecast — #174)
+
+Adds the decision layer behind the aerial-root/nebari tracker (#174). The
+reference and `aerial_root_trace.py` (Blender geometry + stamped state) shipped
+in v0.3.0; the lifecycle/gate/forecast logic the issue calls for had no runnable,
+testable implementation until now.
+
+- Added `scripts/aerial_root_tracker.py` (pure Python, no bpy): validates the
+  `tip_promising → guided → reached_soil → thickening → fused` (or `failed`)
+  lifecycle transitions, gates intervention suggestions on plant health + warmth
+  (only guide aerial roots on a healthy plant in warm active growth, per the
+  reference), and forecasts the **remaining** time-to-fused as a window (range,
+  never a single date) with explicit confidence from current state + growth
+  class + conditions (ficus-tuned). Mirrors `propagation_tracker.py`.
+- Added 12 `AerialRootTracker` tests (lifecycle order/terminal/transitions,
+  intervention gating, forecast range + monotonicity + warm-vs-cool); houseplant
+  suite now 102.
+- `references/aerial-roots-nebari.md` + `SKILL.md` route the lifecycle/forecast
+  step at the script; local + root `manifest.yaml` register it under #174.
+
 ## v0.7.0 — 2026-06-19 (graft heal-window + risk verdict — #176)
 
 Completes the last computable gap in the grafting sandbox (#176). `grafting_sim.py`
