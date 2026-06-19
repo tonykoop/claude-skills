@@ -1,5 +1,20 @@
 # Changelog — houseplant
 
+## v0.9.0 — 2026-06-19 (collection-wide care dashboard — #209)
+
+Adds `scripts/collection_dashboard.py`: the first aggregator that glues all the
+individual chrono scripts (care_cadence, wire_window, bloom_forecast,
+propagation_tracker, health_triage) into a single prioritised care view across
+the whole collection. Input is a collection JSON file listing plants with their
+growth class, phase, care events, active buds, propagules, and health
+observations; output is a Markdown dashboard bucketed into Overdue / Today / This
+week / This month / Later. Health flags with pest/rot category are boosted to the
+top of their bucket; structural-work blockers surface when open pest/rot flags
+are present. 37 tests (bucket classification, all six task builders, full-plant
+render, multi-plant, CLI stdin/stderr). Resolves the "what needs attention across
+my whole collection today" question that the individual scripts couldn't answer
+alone.
+
 ## v0.8.0 — 2026-06-19 (aerial-root lifecycle + forecast — #174)
 
 Adds the decision layer behind the aerial-root/nebari tracker (#174). The
