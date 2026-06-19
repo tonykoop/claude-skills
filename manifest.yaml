@@ -84,11 +84,16 @@ skills:
       first machine-runnable eval suite (4 evals) and corrects stale repo_path.
 
   disk-cleanup:
-    canonical_version: 1.0.0
+    canonical_version: 1.1.0
     runtime: claude
-    repo_path: claude/skills/disk-cleanup
-    last_updated: 2026-05-08
+    repo_path: plugins/coding/skills/disk-cleanup
+    last_updated: 2026-06-19
     status: active
+    notes: >-
+      Weekly-to-biweekly disk recovery: cargo clean per worktree, merged-branch
+      pruning, npm/pnpm cache cleaning, optional Docker prune, and WSL VHD shrink
+      prompt. v1.1.0 adds first machine-runnable eval suite (4 evals) and corrects
+      stale repo_path.
 
   codex-merge-manager:
     canonical_version: 1.0.0
