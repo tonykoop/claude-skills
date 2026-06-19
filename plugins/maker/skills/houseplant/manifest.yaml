@@ -1,5 +1,6 @@
 # Houseplant — Skill Manifest (v0.4.0)
 # Houseplant — Skill Manifest (v0.5.0)
+# Houseplant — Skill Manifest (v0.6.0)
 # Structured discoverability so an agent can read this manifest first,
 # decide what to load, and skip the prose. SKILL.md is the orchestrator;
 # this is its index.
@@ -7,6 +8,7 @@
 name: houseplant
 version: 0.4.0
 version: 0.5.0
+version: 0.6.0
 display_name: Houseplant
 audience:
   - Tony (primary)
@@ -123,6 +125,11 @@ scripts:
     inputs: ["PLANT_ID", "SCION_OBJ", "STOCK_OBJ", "GRAFT_LABEL", "optional BLEND_RADIUS/DATE_OVERRIDE"]
     outputs: ["fused mesh in Plant_<plant_id>/05_simulations/sim_graft_<label>_<date>/ with graft metadata"]
     requires_blender: true
+  - path: scripts/propagation_tracker.py
+    purpose: "Build the parent/child lineage tree from parent_plant_id links (ancestors/descendants), validate the started->rooted->potted_up->independent lifecycle, and forecast a rooting window with confidence (#177)"
+    inputs: ["JSON: records[{plant_id,parent_plant_id,state}], propagation{method,species,condition,started_date}"]
+    outputs: ["Propagation lineage tree (indented) + Rooting forecast block (range, confidence, check cadence)"]
+    requires_blender: false
 
 # Assets — non-code material the skill ships.
 assets:
@@ -186,7 +193,7 @@ v2_features:
     delivered: [references/grafting-sandbox.md, scripts/grafting_sim.py]
   - issue: 177
     feature: propagation tracker
-    delivered: [references/propagation.md]
+    delivered: [references/propagation.md, scripts/propagation_tracker.py]  # lineage+lifecycle+rooting helper added v0.6.0
 
 # Sibling skills the houseplant skill may hand off to.
 hand_offs:
