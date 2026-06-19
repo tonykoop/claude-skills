@@ -22,6 +22,33 @@ Cross-platform tmux compatibility gate (#163).
 - `SKILL.md` Compatibility section documents the preflight, adds verified-version
   rows for old/absent tmux, and makes the "gate behind a version check" rule
   mechanical rather than advisory.
+## v1.6.0 — 2026-06-19
+
+Mobile cold-start: ship the dispatch watcher (#160). (Stacks above the #163
+tmux-preflight work at v1.5.0.)
+
+### Added
+
+- **`scripts/sprint-dispatch-watcher.sh`** — the PC-side half of mobile
+  cold-start that `dispatch-patterns.md` §2 committed to but had only deferred
+  as "a small follow-up." Polls a dispatch folder, **atomically claims** a fresh
+  dispatch (`mv` into `claimed/`, so a double-fire launches one manager, never
+  two), gates **stale** dispatches (`requested_at` older than
+  `SPRINT_SUPERVISOR_MAX_AGE_SECONDS`, default 3600), validates `action:
+  cold-start`, writes a `status/<scope>.status.json` the phone polls, and hands
+  the actual launch to a pluggable `--exec` wrapper (prints the bootstrap line
+  with no `--exec`). Portable (bash 3.2 / BSD+GNU date), fail-soft, sourceable
+  for tests.
+- **`tests/test-sprint-dispatch-watcher.sh`** — JSON field extraction, staleness
+  gating, atomic claim, status write-back, invalid-action rejection, and the
+  no-double-launch guard.
+
+### Changed
+
+- **`references/dispatch-patterns.md`** §2 — documents the shipped watcher
+  (usage, guarantees, test seams) and updates the #160 status: the watcher is
+  now implemented + tested; what remains is Tony's signal-transport choice and a
+  single live phone→PC run (depends on his home setup, not the repo).
 
 ## v1.4.0 — 2026-06-16
 

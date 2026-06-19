@@ -310,6 +310,7 @@ skills:
 
   sprint-supervisor:
     canonical_version: 1.5.0
+    canonical_version: 1.6.0
     runtime: claude
     repo_path: plugins/coding/skills/sprint-supervisor
     last_updated: 2026-06-19
@@ -324,6 +325,8 @@ skills:
       /tmp lockfile. v1.5.0 adds scripts/tmux-preflight.sh — a cross-platform
       tmux version gate (soft-warns on old tmux, guides on missing tmux) wired
       into grid-scan.sh (#163).
+      /tmp lockfile. v1.6.0 ships scripts/sprint-dispatch-watcher.sh (mobile
+      cold-start PC-side watcher with atomic claim + staleness gate, #160).
 
   run-benchmark:
     canonical_version: 0.1.0
