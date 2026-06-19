@@ -1,0 +1,40 @@
+{
+  "skill_name": "merge-review",
+  "evals": [
+    {
+      "id": 1,
+      "name": "single-pr-approve-and-merge",
+      "prompt": "Review and merge PR #42 in wrfcoin/backend. It's linked to issue #37 which asks for rate-limit headers on the /submit endpoint. The CI is green.",
+      "expected_output": "A full 8-step review that: (1) calls 'gh pr view 42 --repo wrfcoin/backend --json ...' to gather PR details and 'gh pr diff 42 --repo wrfcoin/backend' for the diff; (2) posts a notification comment on issue #37 ('Merge-manager reviewing PR #42 for this issue...'); (3) runs the Codex wait-gate since 'backend' is a Codex-enabled repo — polls for a Codex review against the HEAD SHA for up to 120s; (4) works through all six checklist items (scope match, test coverage, CI status, code quality, implementation correctness, merge safety) and reports each as pass/fail; (5) posts a structured review comment on PR #42 using the REVIEW template with a verdict table; (6) with all checks passing and Codex review cleared, merges PR #42; (7) posts a closing comment on both the PR and issue #37 citing the SHA and key changes; (8) runs prune-after-merge.sh --repo backend --branch <head-branch> --apply --json to clean up the merged branch and any associated worktree.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "name": "single-pr-changes-requested",
+      "prompt": "Review PR #88 in wrfcoin/core4. It claims to fix issue #71 (missing nil-check in the consensus vote handler). CI is red on the 'test/unit' step.",
+      "expected_output": "A review that stops at CHANGES REQUESTED: (1) gathers PR details and diff via gh CLI; (2) notifies issue #71 of the review start; (3) runs the Codex wait-gate (core4 is enabled); (4) works through the checklist — CI status is FAIL (real code failure visible in logs, not billing noise), which is a blocker; (5) posts a structured review comment with 'Verdict: CHANGES REQUESTED', the CI failure as a blocker item citing the failing step, and what specifically needs to be fixed; (6) does NOT merge; (7) comments on issue #71 explaining what revision is needed and that the PR is blocked on the CI failure; (8) does NOT run prune-after-merge.sh since no merge occurred.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "name": "codex-wait-gate-timeout",
+      "prompt": "Review and merge PR #15 in wrfcoin/core4. Issue #12 is linked. CI is green but Codex hasn't posted a review yet.",
+      "expected_output": "A review that handles Codex timeout gracefully: (1) gathers PR details and diff; (2) notifies issue #12; (3) runs the Codex wait-gate — polls every 8s up to 120s for a Codex review against HEAD SHA; (4) after 120s with no fresh Codex review, notes 'codex-timed-out' explicitly in the review comment's Codex review row (does NOT treat the timeout as a blocker — the skill says merge is allowed on timeout); (5) completes the other five checklist items; (6) if remaining checks pass, proceeds with APPROVE verdict noting the timeout; (7) merges and posts closing comments on PR #15 and issue #12; (8) runs prune-after-merge.sh cleanup.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "name": "parallel-fan-out-three-prs",
+      "prompt": "I have three PRs to review: #201 in wrfcoin/shared-protocol, #305 in wrfcoin/backend, and #418 in wrfcoin/frontend. Can you review all three?",
+      "expected_output": "A parallel-then-sequential workflow: (1) detects 3 PRs — triggers the parallel fan-out path (skill requires 3+ PRs to fan out); (2) spawns three read-only sub-agents in a single message (one per PR), each labeled 'review-<repo>-<pr-number>' using the general-purpose agent type at sonnet model; (3) each sub-agent runs gather/notify/codex-wait-gate/checklist steps only — no merges, no edits, returns a structured VERDICT block; (4) after all three sub-agents return, aggregates results into a table showing verdict, blockers, and warnings per PR; (5) then processes merges SEQUENTIALLY in dependency order: shared-protocol first (#201, upstream), then backend (#305), then frontend (#418); (6) for each merge: posts the review comment, merges if APPROVE, posts closing comments, runs prune-after-merge.sh; (7) if any PR is CHANGES REQUESTED, skips its merge, posts revision handoff, and continues with the next in order.",
+      "files": []
+    },
+    {
+      "id": 5,
+      "name": "quick-fix-then-merge",
+      "prompt": "PR #77 in wrfcoin/infra looks good but is missing a closing brace in the Terraform config — it's the only problem and CI is red because of it. Can you fix and merge?",
+      "expected_output": "A quick-fix-then-merge flow: (1) gathers PR details and identifies the missing brace as a trivial, safe fix (Terraform config, not consensus code, schema, or shared types); (2) uses a temporary worktree to cherry-pick the PR branch, applies the single-character fix, and force-pushes to the same branch with --force-with-lease; (3) documents the quick fix in a PR comment before re-running the checklist ('Quick fix applied: added missing closing brace in <file>'); (4) waits for CI to go green; (5) re-runs the codex wait-gate against the new HEAD SHA (core4/infra is enabled); (6) if checklist passes, posts the structured APPROVE review comment and merges; (7) posts closing comments on PR #77 and the linked issue; (8) runs prune-after-merge.sh to clean up the branch and temp worktree.",
+      "files": []
+    }
+  ]
+}
