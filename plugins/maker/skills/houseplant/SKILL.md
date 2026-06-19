@@ -1,6 +1,7 @@
 ---
 name: houseplant
 version: 0.4.0
+version: 0.5.0
 last-updated: 2026-06-19
 description: Manage houseplant and bonsai collection digital twins plus care workflows, with first-class Blender MCP support. Use this skill whenever the user mentions a houseplant or bonsai specimen, pruning plans, wire-coil bending or training, mobile phone scans (photogrammetry, LiDAR, orbit video, lazy-susan video), multi-angle plant photos, bonsai aerial roots or nebari, bud/bloom tracking, plant care checklists, watering or fertilizing schedules, propagation logs, ruler-based scale calibration of a 3D scan, or any task that updates an Obsidian/Markdown/spreadsheet plant database. Use this skill even when the user only mentions "my plant" plus an action (prune, wire, train, repot, scan, model) — it owns that workflow.
 ---
@@ -22,7 +23,7 @@ The killer app this skill enables is **simulate before you cut**: build a parame
    - **Bonsai pruning, wiring, aerial roots, branch styling, ficus-specific guidance**: [`references/bonsai-module.md`](references/bonsai-module.md).
    - **Obsidian/spreadsheet records, care checklists, reminder drafts**: [`references/collection-records-and-care.md`](references/collection-records-and-care.md).
    - **Watering / fertilizing / wire-removal scheduling** (dynamic, observation-driven checks; wire bite-in inspection windows): [`references/chrono-engine.md`](references/chrono-engine.md).
-   - **Bud / bloom / new-flush tracking and forecasting** (pink markers, bloom-window prediction, bud-drop logging): [`references/bud-bloom-tracker.md`](references/bud-bloom-tracker.md).
+   - **Bud / bloom / new-flush tracking and forecasting** (pink markers, bloom-window prediction, bud-drop logging): [`references/bud-bloom-tracker.md`](references/bud-bloom-tracker.md). For a deterministic bloom-window estimate with explicit confidence, run [`scripts/bloom_forecast.py`](scripts/bloom_forecast.py) (own-log first, then species baseline, modulated by conditions).
    - **Aerial-root and nebari development** (teal markers, guided-root tracing, `tip_promising → fused` lifecycle): [`references/aerial-roots-nebari.md`](references/aerial-roots-nebari.md).
    - **Plant-health screening from photos** ("check-engine light": chlorosis/leaf-drop/pest flags cross-referenced to care events): [`references/health-diagnostics.md`](references/health-diagnostics.md). After the vision pass names the symptoms, run [`scripts/health_triage.py`](scripts/health_triage.py) to turn them into `health_flag_added` event records and compute the pest/rot risk escalation deterministically.
    - **Virtual grafting preview** (Blender boolean-union fusion silhouette, simulation-only): [`references/grafting-sandbox.md`](references/grafting-sandbox.md).
@@ -53,6 +54,7 @@ Inspect first, then write. Idempotency matters: check for existing collections a
 - `scripts/cut_marker.py` — places a colored empty/sphere marker at a coordinate with the skill's color semantics (also serves bud `pink` and aerial-root `teal` events).
 - `scripts/sim_collection.py` — clones the current-state twin into a dated `05_simulations/sim_<scenario>` collection for non-destructive what-if.
 - `scripts/wire_window.py` — pure-Python chrono helper; returns the wire-removal inspection window (first-inspection date + recheck cadence) from species growth class, the wired date, and active-growth state.
+- `scripts/bloom_forecast.py` — pure-Python bloom-window forecaster; returns a date range (never a single date) plus explicit confidence from the plant's own bud→bloom logs (preferred), a species baseline, and a warm/cool condition modifier.
 - `scripts/aerial_root_trace.py` — draws a teal, gently-drooping guided-root path from a branch tip to a substrate landing point and stamps its lifecycle state.
 - `scripts/grafting_sim.py` — simulation-only boolean-union graft preview: duplicates scion + stock into a dated `05_simulations/sim_graft_*` collection and smooths the seam; never touches the canonical twin.
 
