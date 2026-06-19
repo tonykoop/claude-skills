@@ -288,10 +288,10 @@ skills:
     notes: 'Houseplant and bonsai digital twins plus care workflows, with first-class Blender MCP support. At plugins/maker/skills/houseplant. v0.8.0 adds scripts/aerial_root_tracker.py — the decision layer behind aerial_root_trace.py (#174): aerial-root lifecycle transition validation, a health/warmth intervention gate, and a remaining time-to-fused forecast (range + confidence); 12 tests. v0.7.0 adds scripts/graft_heal_window.py — the deterministic graft heal-window (multi-year range + confidence) and Medium/High risk verdict behind the grafting sandbox (#176); 13 tests. v0.6.0 adds scripts/propagation_tracker.py (parent/child lineage tree + lifecycle + rooting forecast, #177) and scripts/care_cadence.py (watering/fertilizing CHECK-cadence engine, #172). v0.5.0 adds scripts/bloom_forecast.py — deterministic bloom-window forecaster behind the bud/bloom tracker (#173). v0.4.0 adds scripts/health_triage.py — deterministic triage layer behind the CV health screening (#175). v0.3.0 (epic #209) implements the v2 feature set: chrono-horticultural engine with species-scaled wire-removal inspection windows (#172, references/chrono-engine.md + scripts/wire_window.py), bud/bloom chrono-tracker with confidence-explicit forecasting (#173, references/bud-bloom-tracker.md), aerial-root/nebari lifecycle tracker with a teal guided-root trace (#174, references/aerial-roots-nebari.md + scripts/aerial_root_trace.py), CV plant-health check-engine-light screening (#175, references/health-diagnostics.md), simulation-only Blender boolean-union grafting sandbox (#176, references/grafting-sandbox.md + scripts/grafting_sim.py), and a propagation tracker with parent/child lineage (#177, references/propagation.md). v0.2.0 added capture-pipeline routing for four phone modes, ruler-based scale calibration, bundled bpy patterns, the Ficus benjamina starter profile, and a smoke-test suite.'
 
   energy-management:
-    canonical_version: 0.1.0
+    canonical_version: 0.2.0
     runtime: shared
     repo_path: plugins/maker/skills/energy-management
-    last_updated: 2026-06-15
+    last_updated: 2026-06-19
     status: active
     notes: >-
       Data-light capacity-to-task matching for making/teaching/sprint work
@@ -301,6 +301,7 @@ skills:
       planning, handoff). Reuses idea-incubator labels (ready-now + domain)
       instead of inventing a parallel taxonomy. Hard boundaries: no medical or
       mental-health advice, no invented metrics, no persistent personal store.
+      v0.2.0 adds first machine-runnable eval suite (5 evals).
 
   playlist-builder:
     canonical_version: 0.1.0
