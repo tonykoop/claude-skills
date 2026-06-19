@@ -18,6 +18,16 @@ Added `evals/evals.json` — the skill's first machine-runnable eval suite
   `--apply` gate.
 - **eval 5** `fix-duplicates-dry-run`: deterministic keep/remove plan with
   symlink annotation; no deletions without `--apply`.
+## 1.0.2 — 2026-06-19
+
+- Added `manifest-last-updated-stale` issue flag: fired when SKILL.md
+  `last-updated` is newer than manifest `last_updated`, catching the reverse
+  of the existing `stale-last-updated` check. Bidirectional drift is now
+  detected in both directions.
+- Fixed three manifest `last_updated` entries whose values were stale relative
+  to their SKILL.md counterparts: merge-review (2026-05-08→2026-05-20),
+  instrument-maker (2026-05-17→2026-06-13), source-citations (2026-06-15→2026-05-22).
+- Fixed pre-existing test version strings (1.0.0→1.0.1) in VersionFlagTests.
 
 ## 1.0.1 - 2026-06-15
 

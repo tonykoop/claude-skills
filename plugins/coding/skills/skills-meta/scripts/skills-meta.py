@@ -546,10 +546,12 @@ def annotate_records(records: list[SkillRecord], manifest: dict[str, Any]) -> tu
             manifest_updated = str(record.manifest.get("last_updated") or "")
             if not record.last_updated:
                 append_issue(record, "missing-last-updated")
-            elif is_date(record.last_updated) and manifest_updated and record.last_updated < manifest_updated:
-                append_issue(record, f"stale-last-updated:{manifest_updated}")
             elif not is_date(record.last_updated):
                 append_issue(record, "unparseable-last-updated")
+            elif manifest_updated and record.last_updated < manifest_updated:
+                append_issue(record, f"stale-last-updated:{manifest_updated}")
+            elif manifest_updated and record.last_updated > manifest_updated:
+                append_issue(record, f"manifest-last-updated-stale:{record.last_updated}")
 
             if not record.changelog_path:
                 append_issue(record, "missing-changelog")
