@@ -9,6 +9,7 @@ Back-end guardrails for the multi-agent sprint system (Epic
 | --- | --- | --- |
 | [#259](https://github.com/tonykoop/claude-skills/issues/259) | Least-privilege tool/secret scopes + spend dead-man's switch | `spend_guard.py` |
 | [#256](https://github.com/tonykoop/claude-skills/issues/256) | Adversarial QA: never let a model audit its own asset | `review_router.py` |
+| [#257](https://github.com/tonykoop/claude-skills/issues/257) | Automated verification gates: sandbox exec + markdown linter + URDF joint-limit test | `verification_gates.py` |
 
 Everything is driven by one config — [`agent-roster.yaml`](agent-roster.yaml) —
 so the rules live in the orchestration config, not in any agent's prompt.
@@ -68,6 +69,35 @@ $ python review_router.py validate --handoff handoff.json
 
 Full walkthrough: [`examples/creator-auditor-handoff.md`](examples/creator-auditor-handoff.md).
 
+## #257 — Automated verification gates
+
+Adversarial routing decides *who* audits; these gates decide *what passes*, by
+execution rather than by a human reading the diff. Three gates, each returning a
+`GateResult`; `run_gates(...)` aggregates them into the payload that attaches to
+the QA decision (`gates_passed` / `failed_gates` / per-gate detail).
+
+- **Sandbox execution gate** (cross-domain) — runs generated code in an isolated
+  subprocess (throwaway cwd + wall-clock timeout) and fails on any exception,
+  syntax error, non-zero exit, or hang.
+- **Markdown / length linter** (studio) — structural + length hygiene for
+  StudioPipeline scripts: stub/runaway length, missing headings, unterminated
+  code fences, tabs, trailing whitespace, over-long lines.
+- **URDF joint-limit test** (robotics) — every actuated joint must declare a sane
+  `<limit>` (lower < upper, positive effort/velocity), and any home pose must lie
+  within range.
+
+```console
+$ python verification_gates.py sandbox  --file solution.py
+$ python verification_gates.py markdown --file episode-script.md
+$ python verification_gates.py urdf     --file left_leg.urdf --home-positions '{"hip": 0.5}'
+# run every artifact in one pass and emit the QA-decision JSON:
+$ python verification_gates.py report   --manifest artifacts.json --json
+```
+
+Exit code is non-zero whenever any gate fails — the same merge-gate stop signal
+as the other modules. Full walkthrough:
+[`examples/verification-gates.md`](examples/verification-gates.md).
+
 ## Config resolution
 
 Both modules resolve `agent-roster.yaml` in this order (first match wins):
@@ -92,3 +122,7 @@ $ pytest governance/tests -q
 - **Review hop:** `tmux-sprint` / `sprint-supervisor` call
   `review_router.assign` to pick the auditor and `validate_handoff` as the
   merge gate, replacing same-model self-review.
+- **Verification gate:** before the auditor signs off, run the artifact through
+  `verification_gates.py` (sandbox/markdown/URDF as the domain dictates) and
+  attach `report.as_qa_decision()` to the QA record — execution evidence, not a
+  vibe check.
