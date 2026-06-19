@@ -100,6 +100,20 @@ skills:
       prompt. v1.1.0 adds first machine-runnable eval suite (4 evals) and corrects
       stale repo_path.
 
+  ci-triage:
+    canonical_version: 0.2.0
+    runtime: claude
+    repo_path: plugins/coding/skills/ci-triage
+    last_updated: 2026-06-19
+    status: active
+    notes: >-
+      Read-only CI and Dependabot health check across all 7 WRFCoin repos
+      (core4, backend, frontend, smart-contracts, infra, security-testing,
+      mobile). Fires 5 gh commands in parallel, categorizes failures as
+      billing/real/config, writes a timestamped markdown report to
+      wrfcoin/docs/ci-triage/. v0.2.0 adds first machine-runnable eval suite
+      (5 evals).
+
   codex-merge-manager:
     canonical_version: 1.0.0
     runtime: codex
