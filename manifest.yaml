@@ -67,7 +67,7 @@ skills:
     canonical_version: 1.0.0
     runtime: claude
     repo_path: claude/skills/merge-review
-    last_updated: 2026-05-08
+    last_updated: 2026-05-20
     status: active
 
   sprint-update:
@@ -197,7 +197,7 @@ skills:
     canonical_version: 4.5.0
     runtime: shared
     repo_path: skills/instrument-maker
-    last_updated: 2026-05-17
+    last_updated: 2026-06-13
     status: active
     notes: |
       Official public invocation and repo path are now instrument-maker. The
@@ -347,6 +347,7 @@ skills:
     runtime: shared
     repo_path: plugins/coding/skills/source-citations
     last_updated: 2026-06-19
+    last_updated: 2026-05-22
     status: active
     notes: >-
       Bibliography + techniques catalog for instrument repos. Builds a keyed
