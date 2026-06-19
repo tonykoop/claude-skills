@@ -1,7 +1,7 @@
 ---
 name: idea-incubator
-version: 1.7.0
-last-updated: 2026-06-17
+version: 1.8.0
+last-updated: 2026-06-18
 description: >-
   Capture, classify, connect, review, and promote speculative ideas into a
   searchable GitHub issue inbox. Use when the user says "new idea", "incubate
@@ -158,7 +158,13 @@ agents that close the learning loop around generated epics:
   [`agents/devils-advocate.md`](agents/devils-advocate.md). Adversarially
   reviews a freshly generated epic *before* it is filed: challenges
   assumptions, names the weakest story, surfaces hidden dependencies, and lists
-  failure modes. Invoke right after an epic is generated.
+  failure modes. Invoke right after an epic is generated. **Every generated
+  top-level epic MUST carry a `### Technical Risks & Assumptions` section** —
+  the filed form of this pass, appended to the epic body with a role-attribution
+  line, leaving the optimist `## Vision` / `## Stories` / `**Rollup:**` content
+  unchanged. The section must list concrete, epic-specific risks, never generic
+  boilerplate. Verify with
+  [`scripts/check_epic_risks_section.py`](scripts/check_epic_risks_section.py).
 - **Retrospective / Lessons-Learned** —
   [`agents/retrospective.md`](agents/retrospective.md). Reviews a *closed* epic
   and its stories/PRs, scores estimate accuracy, and writes lessons into

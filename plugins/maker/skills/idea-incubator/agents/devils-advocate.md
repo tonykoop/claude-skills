@@ -94,3 +94,35 @@ mechanically:
 
 Keep it mobile-readable. Do not score emotional resonance numerically (house
 rule). The recommendation line is advisory only - the human decides.
+
+## Filed form: the epic's `### Technical Risks & Assumptions` section
+
+The critique above is the working artifact. When the epic is filed, its content
+is distilled into a **mandatory `### Technical Risks & Assumptions` section on
+the epic body** (see
+[`../references/brainstorm-to-issues-pipeline.md`](../references/brainstorm-to-issues-pipeline.md)).
+This is what makes the red-team pass attributable as a distinct role in the
+shipped output, and what keeps the optimist `## Vision` / `## Stories` /
+`**Rollup:**` content unchanged (the section is appended, never a rewrite).
+
+The filed section follows this exact shape:
+
+```markdown
+### Technical Risks & Assumptions
+
+_Red-Team pass (Devil's Advocate role — `agents/devils-advocate.md`). Optimist
+breakdown above is unchanged._
+
+- **Assumption:** <load-bearing assumption> -> <what breaks if false>
+- **Weakest story:** #<N> <title> - <failure mode>
+- **Hidden dependency:** <story A> collides with <story B>: <reason>
+- **Failure mode:** <concrete way the epic ends up half-done/wrong>
+- **Estimate check:** <story/rollup> feels <light/heavy> because <hidden work>
+```
+
+Every bullet must name a specific story, file, interface, or assumption from
+*this* epic - generic boilerplate ("there may be unforeseen risks") is a defect.
+If the pass genuinely finds nothing material, say so and name what was checked
+rather than omitting the section. The
+[`../scripts/check_epic_risks_section.py`](../scripts/check_epic_risks_section.py)
+checker enforces the section header and attribution on any filed epic body.
