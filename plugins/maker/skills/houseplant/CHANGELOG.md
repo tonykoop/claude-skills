@@ -25,6 +25,29 @@ symptoms from photos) now has a deterministic triage layer behind it.
 
 - `references/health-diagnostics.md` and `SKILL.md` health routing now point the
   output step at `health_triage.py`.
+## v0.5.0 — 2026-06-19 (bloom-forecast helper — #173)
+
+Adds the optional prediction helper for the bud/bloom tracker (#173). The
+pink-marker workflow still needs no script (it reuses `cut_marker.py`); this
+implements the documented forecast *order-of-evidence* deterministically.
+(Stacks above the #175 health-triage work at v0.4.0.)
+
+### Added
+
+- **`scripts/bloom_forecast.py`** — pure-Python. Forecasts a bloom **window**
+  (always a date range, never a single date) with an honest confidence tier:
+  the plant's own bud→bloom logs win (≥3 → high, 1–2 → medium), species baseline
+  is the low-confidence fallback, an unknown species is flagged provisional, and
+  warm/cool conditions modulate the window. Emits the reference's Bloom Forecast
+  output format with a calendar "photograph every N days until open" cadence.
+- **`tests/test_bloom_forecast.py`** — 12 cases (confidence tiers, baseline
+  lookup, condition modulation, the always-a-range invariant, date anchoring,
+  cadence bounds, CLI).
+
+### Changed
+
+- `references/bud-bloom-tracker.md` + `SKILL.md` route the forecast step at the
+  helper; per-skill + root `manifest.yaml` list it under #173.
 
 ## v0.3.0 — 2026-06-15 (v2 feature set — epic #209)
 
