@@ -1,0 +1,42 @@
+[
+  {
+    "symbol": "Au",
+    "name": "Gold",
+    "crustal_abundance_ppm": 0.004,
+    "annual_run_rate_tonnes": 3100,
+    "abundant_substitutes": ["Cu", "Al"],
+    "notes": "Common reflex 'coat it in gold for EMI/contacts' is the canonical reject: Cu or Al plating serves the same shielding/conduction at ~5 orders more abundance.",
+    "gateable_today": true,
+    "source": "USGS crustal-abundance + production figures (order-of-magnitude)"
+  },
+  {
+    "symbol": "Al",
+    "name": "Aluminium",
+    "crustal_abundance_ppm": 82300,
+    "annual_run_rate_tonnes": 69000000,
+    "abundant_substitutes": [],
+    "notes": "Most abundant metal in the crust; the default abundant substitute.",
+    "gateable_today": true,
+    "source": "USGS crustal-abundance + production figures (order-of-magnitude)"
+  },
+  {
+    "symbol": "Fe",
+    "name": "Iron",
+    "crustal_abundance_ppm": 56300,
+    "annual_run_rate_tonnes": 2500000000,
+    "abundant_substitutes": [],
+    "notes": "Structural default; effectively unconstrained by scarcity.",
+    "gateable_today": true,
+    "source": "USGS crustal-abundance + production figures (order-of-magnitude)"
+  },
+  {
+    "symbol": "Nd",
+    "name": "Neodymium",
+    "crustal_abundance_ppm": 41.5,
+    "annual_run_rate_tonnes": 0,
+    "abundant_substitutes": ["Fe"],
+    "notes": "Rare-earth magnet driver; run-rate left 0 here to exercise the run-rate-unknown path. Prefer Fe-based magnetics or geometry that avoids a permanent magnet where feasible.",
+    "gateable_today": true,
+    "source": "crustal-abundance (order-of-magnitude); run-rate intentionally omitted as 0"
+  }
+]

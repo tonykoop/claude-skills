@@ -1,0 +1,50 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Element Inventory Row",
+  "description": "One chemical element's planetary reality: crustal abundance + global run-rate, distilled into a scarcity penalty an AI design agent uses to reject scarce-material geometry before it reaches the grader (claude-skills#205).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "symbol",
+    "name",
+    "crustal_abundance_ppm",
+    "annual_run_rate_tonnes",
+    "gateable_today",
+    "source"
+  ],
+  "properties": {
+    "symbol": {
+      "type": "string",
+      "pattern": "^[A-Z][a-z]?$",
+      "description": "Element symbol, e.g. 'Au', 'Al', 'Fe'."
+    },
+    "name": {"type": "string", "minLength": 1},
+    "crustal_abundance_ppm": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "description": "A_c: average crustal abundance in parts per million by mass."
+    },
+    "annual_run_rate_tonnes": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Global annual production/run-rate in metric tonnes (0 = effectively not produced)."
+    },
+    "scarcity_penalty": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Optional precomputed 0..1 triage weight (0 = abundant, 1 = extremely scarce). If absent the validator derives it from crustal_abundance_ppm."
+    },
+    "abundant_substitutes": {
+      "type": "array",
+      "items": {"type": "string", "pattern": "^[A-Z][a-z]?$"},
+      "description": "Suggested abundant-atom alternatives for the common engineering use, e.g. Au->[Cu, Al] for an EMI coat."
+    },
+    "notes": {"type": "string"},
+    "gateable_today": {
+      "type": "boolean",
+      "description": "True if a MakerBench seed can enforce a scarcity penalty on this element today (abundance is static and known)."
+    },
+    "source": {"type": "string", "minLength": 1}
+  }
+}
