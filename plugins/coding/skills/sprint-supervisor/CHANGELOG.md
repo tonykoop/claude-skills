@@ -1,5 +1,26 @@
 # Changelog — sprint-supervisor
 
+## v1.8.0 — 2026-06-19 (morning-summary generic worked example — Refs #164)
+
+Genericized `references/morning-summary.md` for public release (Refs #164):
+
+- **Template** — replaced hardcoded project-specific group names, repo
+  citation strings, and N5-testnet section with generic placeholders
+  (`<owner>/<repo>#<n>`, `<group>`, `<host>`). Added note that section 4
+  (named host / service) is only emitted when `trusted_hosts` is configured.
+- **Worked example** — replaced the project-coupled worked example with a
+  fictional-project equivalent (`acme/core`, `acme/infra`, etc.) and swapped
+  the private workspace path (`rm -rf /home/tony/wrfcoin/cache-old/`) for the
+  generic placeholder `rm -rf <workspace>/cache-old/`. Added a preamble
+  directing users to populate group names from `labels.repo_groups` in their
+  config.
+- Removed the private "N5 Pro testnet" section from the template; a generic
+  "Named host / service" section replaces it with a conditional note.
+
+This is the last sprint-supervisor reference doc that contained project-coupled
+content; combined with prior PRs #229, #251, and the config/README work, the
+skill is now fully public-release-ready for the `coding` plugin.
+
 ## v1.7.0 — 2026-06-19 (structured evals + duplicate version key fix)
 
 Added `evals/evals.json` — the skill's first machine-runnable eval suite
