@@ -340,10 +340,10 @@ skills:
     notes: Adds duplicate-aware issue filing, related-issue handling, gated label creation, manager summary queues, Tony-decision queues, skill-owner routing, and machine-readable JSON/CSV queue artifacts while preserving personal GitHub and WRFCoin swarm behavior.
 
   source-citations:
-    canonical_version: 0.1.0
+    canonical_version: 0.2.0
     runtime: shared
     repo_path: plugins/coding/skills/source-citations
-    last_updated: 2026-06-15
+    last_updated: 2026-06-19
     status: active
     notes: >-
       Bibliography + techniques catalog for instrument repos. Builds a keyed
@@ -353,6 +353,7 @@ skills:
       never hand-edited. Pilot rollout (3-5 done-bar instrument repos) and
       promotion of unconfirmed technique seeds run on the desktop where the
       individual instrument repos live; this entry only ships the skill.
+      v0.2.0 adds first machine-runnable eval suite (5 evals).
 
   scaffold-hygiene:
     canonical_version: 0.2.0
