@@ -1,7 +1,7 @@
 {
   "$schema": "https://claude.com/schemas/plugin.json",
   "name": "coding",
-  "version": "1.1.0",
+  "version": "2.0.0",
   "description": "Engineering operations: tmux multi-pane sprint orchestration, PR review, sprint supervision, GitHub-Queue sync, swarm dispatch, CI triage, failing-check fixing, source-citation registries, scaffold hygiene, disk cleanup, and the skills-meta drift auditor.",
   "author": {
     "name": "Tony Koop",
