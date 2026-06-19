@@ -1,0 +1,33 @@
+{
+  "skill_name": "gh-fix-ci",
+  "evals": [
+    {
+      "id": 1,
+      "name": "inspect-and-fix-failing-pytest",
+      "prompt": "CI is red on my PR #47. Can you fix it?",
+      "expected_output": "A full inspect-then-fix flow that: (1) runs 'gh auth status' first — if unauthenticated, stops and asks the user to run 'gh auth login'; (2) resolves the PR to wrfcoin/<repo>#47 (or the current branch's PR) via 'gh pr view --json number,url'; (3) runs the bundled script 'python3 <skill-dir>/scripts/inspect_pr_checks.py --repo . --pr 47' to locate failing checks and pull log snippets; (4) identifies the failing check as a GitHub Actions check (not Buildkite) and extracts the failure snippet (e.g. a pytest assertion error at file:line); (5) does NOT implement any fix yet — drafts a concise plan inline and requests explicit user approval; (6) after approval, implements the fix, summarizes diffs/tests, and asks whether to open/update a PR; (7) re-runs 'gh pr checks 47' after changes to confirm CI is now green.",
+      "files": ["scripts/inspect_pr_checks.py"]
+    },
+    {
+      "id": 2,
+      "name": "external-ci-provider-scoping",
+      "prompt": "PR #12 is failing — the check is called 'buildkite/test'. Can you fix it?",
+      "expected_output": "A correctly scoped response that: (1) runs inspect_pr_checks.py or 'gh pr checks 12' to inspect the failing check; (2) identifies that 'buildkite/test' has a detailsUrl pointing to a Buildkite host, NOT a GitHub Actions run URL; (3) labels the check as 'external (Buildkite)' and reports only the detailsUrl so the user can navigate there directly; (4) does NOT attempt to pull Buildkite logs, drive the Buildkite UI, or implement a fix based on the external provider; (5) offers to check whether there are any GitHub Actions checks also failing on the same PR that ARE in scope.",
+      "files": ["scripts/inspect_pr_checks.py"]
+    },
+    {
+      "id": 3,
+      "name": "no-logs-missing-run-id",
+      "prompt": "Fix CI on PR #88. The check says it failed but I can't see any logs.",
+      "expected_output": "A graceful no-logs handling that: (1) runs inspect_pr_checks.py -- which first tries 'gh pr checks --json' and then falls back to 'gh run view <run_id> --log' or 'gh api /repos/<owner>/<repo>/actions/jobs/<job_id>/logs' if the run is still in progress; (2) if no log content is available after all fallbacks, explicitly says 'Missing logs: could not retrieve log content for check <name>' rather than guessing; (3) reports whatever metadata IS available (check name, conclusion, run URL); (4) suggests the user navigate to the run URL directly or re-run the check to produce fresh logs; (5) does NOT invent or hallucinate failure content when logs are absent.",
+      "files": ["scripts/inspect_pr_checks.py"]
+    },
+    {
+      "id": 4,
+      "name": "json-output-for-automation",
+      "prompt": "Run the CI inspector on PR #200 and give me the machine-readable output.",
+      "expected_output": "A machine-readable invocation that: (1) runs 'python3 <skill-dir>/scripts/inspect_pr_checks.py --repo . --pr 200 --json'; (2) emits valid JSON output covering failing checks, log snippets, and external-provider flags; (3) reports the script's exit code (non-zero when failures remain, per the script's automation contract); (4) does NOT apply any fixes or open any PRs — this is an inspect-only call; (5) offers to show the human-readable output or proceed to drafting a fix plan after the user has reviewed the JSON.",
+      "files": ["scripts/inspect_pr_checks.py"]
+    }
+  ]
+}

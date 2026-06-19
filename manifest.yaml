@@ -102,10 +102,10 @@ skills:
       ~/.skill-cleanup-backups/.
 
   gh-fix-ci:
-    canonical_version: 0.1.0
+    canonical_version: 0.2.0
     runtime: claude
     repo_path: plugins/coding/skills/gh-fix-ci
-    last_updated: 2026-06-15
+    last_updated: 2026-06-19
     status: active
     notes: >-
       Claude-usable port of the Codex-only gh-fix-ci into the coding plugin
@@ -114,6 +114,7 @@ skills:
       drafts a fix plan before implementing. Ships scripts/inspect_pr_checks.py
       (the script the original codex SKILL referenced but never shipped). The
       codex variant remains at codex/skills/gh-fix-ci (codex-gh-fix-ci entry).
+      v0.2.0 adds evals/evals.json (4 evals).
 
   studio-release:
     canonical_version: 0.3.0
