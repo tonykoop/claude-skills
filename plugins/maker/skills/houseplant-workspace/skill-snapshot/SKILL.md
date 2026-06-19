@@ -1,5 +1,7 @@
 ---
 name: houseplant
+version: 0.1.0
+last-updated: 2026-05-23
 description: Manage houseplant collection digital twins and care workflows. Use when working with houseplant or bonsai collection records, mobile photogrammetry or LiDAR scans, Blender MCP or bpy scene updates, annotated plant photos, bonsai pruning or wiring plans, bud or bloom tracking, care checklists, calendar reminders, propagation logs, or Obsidian/Markdown/spreadsheet plant databases.
 ---
 
