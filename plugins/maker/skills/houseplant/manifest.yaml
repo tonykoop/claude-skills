@@ -1,10 +1,10 @@
-# Houseplant — Skill Manifest (v0.6.0)
+# Houseplant — Skill Manifest (v0.6.1)
 # Structured discoverability so an agent can read this manifest first,
 # decide what to load, and skip the prose. SKILL.md is the orchestrator;
 # this is its index.
 
 name: houseplant
-version: 0.6.0
+version: 0.6.1
 display_name: Houseplant
 audience:
   - Tony (primary)

@@ -21,6 +21,22 @@
       "prompt": "My ficus twin is already built in Blender — collection is Plant_ficus-benjamina-01, the trunk is `ficus-benjamina-01_trunk_curve`, and I've got primary branches `ficus-benjamina-01_branch_L01` through `_L03` on the left and `_R01` through `_R02` on the right. Before I take the shears to the live plant, I want to see what removing branch L03 (the secondary leader competing with the main apex) and bringing R02 down with wire would actually look like. Build me the simulation, take a viewport screenshot when you're done, and tell me the silhouette change. Do not touch the current-state collections.",
       "expected_output": "A Blender MCP session that: (1) calls get_objects_summary first to verify the named objects exist; (2) creates a new sim_<scenario>_<date> collection under Plant_ficus-benjamina-01/05_simulations/ using sim_collection.py; (3) hides or ghosts L03 in the sim (not in the current-state twin); (4) generates a wire coil around R02 via wire_coil.py and bends the simulated R02 curve; (5) calls get_screenshot_of_window_as_image or render_thumbnail_to_path; (6) reports the silhouette change concretely; (7) leaves a sync log noting what was simulated vs. what was preserved.",
       "files": []
+    },
+    {
+      "id": 4,
+      "name": "aerial-root-lifecycle-log",
+      "prompt": "I just spotted a new aerial root tip emerging from a low branch on my ficus-benjamina-01, about 4 cm above the soil level. It's maybe 3 cm long so far. The plant is healthy — it's been growing actively all month, and I watered three days ago. I want to guide this root down to the soil to thicken the nebari. What should I do right now, and what's the follow-up plan? I have Blender MCP set up and the digital twin is at Plant_ficus-benjamina-01.",
+      "expected_output": "A response that: (1) routes to aerial-roots-nebari.md as the primary reference; (2) logs an `aerial_root_observed` event for the new tip with lifecycle state `tip_promising`; (3) recommends an appropriate early intervention (humidity tent, sphagnum moss wrap, or leave-alone-for-now) based on the plant's health gate (active growth, recently watered — gate is passed); (4) uses aerial_root_trace.py in Blender to place a teal drooping-path trace from the branch tip toward a substrate landing point, with state='tip_promising'; (5) outlines the lifecycle stages to expect (tip_promising → guided → reached_soil → thickening → fused) with estimated timelines and inspection triggers; (6) produces a calendar-ready follow-up reminder for the first check (≥1 week); (7) does not prescribe interventions if the health gate had failed (e.g. yellowing, recent pest stress).",
+      "files": [],
+      "refs": ["#174"]
+    },
+    {
+      "id": 5,
+      "name": "grafting-sim-approach-graft",
+      "prompt": "I have two ficus plants I want to merge — ficus-benjamina-01 (the main specimen with a nice nebari) and ficus-benjamina-02 (a younger plant with a thicker basal trunk I want to fuse to patch a bare lower-trunk spot on the first). Before I make any cuts, I want to see a simulation of what the fused silhouette would look like. Both plants have Blender digital twins: Plant_ficus-benjamina-01 and Plant_ficus-benjamina-02. The target graft point on the main tree is the lower trunk about 8 cm above the nebari. Do the simulation and tell me what you see.",
+      "expected_output": "A response that: (1) explicitly routes to grafting-sandbox.md and notes that grafting is flagged High risk and is simulation-only; (2) calls get_objects_summary to inspect both Plant_ collections before writing any code; (3) uses grafting_sim.py with the scion (a trunk segment object from ficus-benjamina-02) and stock (the lower-trunk area object from ficus-benjamina-01), producing a dated sim_graft_<label>_<date>/ collection under 05_simulations/ — never touching either current-state twin; (4) applies a boolean union and corrective seam smoothing in the simulation only; (5) calls render_thumbnail_to_path or get_screenshot_of_window_as_image to capture a before/after silhouette comparison; (6) reports what the fused silhouette looks like (is the bare spot covered? is the taper natural?); (7) lists the pre-cutting checklist from grafting-sandbox.md (health gate, cambium alignment, aftercare supplies); (8) does not attempt to instruct on the physical cut without explicit user confirmation.",
+      "files": [],
+      "refs": ["#176"]
     }
   ]
 }

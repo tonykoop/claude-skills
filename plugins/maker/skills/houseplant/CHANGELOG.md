@@ -1,5 +1,21 @@
 # Changelog — houseplant
 
+## v0.6.1 — 2026-06-19 (v2 eval coverage — #174, #176)
+
+Added two eval cases covering the aerial-root tracker and grafting sandbox
+v2 features that shipped in v0.3.0–v0.6.0 but had no eval coverage:
+
+- **eval 4** `aerial-root-lifecycle-log` (#174): tests routing to
+  `aerial-roots-nebari.md`, `aerial_root_observed` event logging,
+  health-gate enforcement, `aerial_root_trace.py` Blender trace, lifecycle
+  stage plan (`tip_promising → guided → reached_soil → thickening → fused`),
+  and calendar-ready follow-up reminder.
+- **eval 5** `grafting-sim-approach-graft` (#176): tests routing to
+  `grafting-sandbox.md`, High-risk flag, `get_objects_summary` pre-inspect,
+  `grafting_sim.py` simulation-only boolean-union in `05_simulations/`,
+  render/screenshot output, and pre-cutting checklist — never touching
+  either current-state twin.
+
 ## v0.6.0 — 2026-06-19 (watering/fertilizing cadence engine — #172)
 
 Completes the watering/fertilizing half of the Chrono-Horticultural Engine
