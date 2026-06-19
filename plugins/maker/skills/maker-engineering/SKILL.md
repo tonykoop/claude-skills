@@ -1,7 +1,7 @@
 ---
 name: maker-engineering
-version: 1.1.0
-last-updated: 2026-05-10
+version: 1.2.0
+last-updated: 2026-06-19
 description: >-
   Route physical making projects when the right specialist is unclear, the user
   asks "I want to make X", "help me design this physical thing", "is this
