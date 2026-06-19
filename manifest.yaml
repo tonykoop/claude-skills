@@ -354,6 +354,19 @@ skills:
       promotion of unconfirmed technique seeds run on the desktop where the
       individual instrument repos live; this entry only ships the skill.
 
+  scaffold-hygiene:
+    canonical_version: 0.2.0
+    runtime: claude
+    repo_path: plugins/coding/skills/scaffold-hygiene
+    last_updated: 2026-06-19
+    status: active
+    notes: >-
+      Read-only scaffolding hygiene sweep across WRFCoin multi-repo workspace.
+      Launches 4 parallel sub-agents (build/CI, env vars/Docker, cross-repo API
+      contracts, docs/operator guides), files GitHub issues for real drift, and
+      writes a timestamped report. v0.2.0 adds first machine-runnable eval suite
+      (4 evals) and adds this canonical manifest entry.
+
 planned_skills:
   energy-management:
     status: issue-handoff
