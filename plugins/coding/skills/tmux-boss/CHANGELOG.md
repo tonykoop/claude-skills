@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.0 — 2026-06-19
+
+- Add first machine-runnable eval suite (`evals/evals.json`): 4 evals covering
+  auto-approve routine edit prompt, escalate destructive/ambiguous prompt,
+  lockfile coordination for peer instances, and morning summary report.
+- Add manifest.yaml entry (skill was missing from canonical manifest).
+
 ## 0.1.0 - 2026-06-15
 
 - Initial public release of the portable tmux-swarm supervision pattern,

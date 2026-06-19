@@ -1,7 +1,7 @@
 ---
 name: tmux-boss
-version: 0.1.0
-last-updated: 2026-06-15
+version: 0.2.0
+last-updated: 2026-06-19
 status: active
 description: >-
   Supervise an already-running multi-pane tmux agent swarm while the operator

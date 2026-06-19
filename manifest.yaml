@@ -377,6 +377,20 @@ skills:
       writes a timestamped report. v0.2.0 adds first machine-runnable eval suite
       (4 evals) and adds this canonical manifest entry.
 
+  tmux-boss:
+    canonical_version: 0.2.0
+    runtime: claude
+    repo_path: plugins/coding/skills/tmux-boss
+    last_updated: 2026-06-19
+    status: active
+    notes: >-
+      Generic project-neutral operational supervisor for a tmux-based agent
+      swarm. Polls manager and worker panes on a fixed cadence (default 240s),
+      auto-approves routine permission prompts via a configurable approval
+      rubric, escalates destructive/ambiguous prompts, coordinates peer
+      instances via lockfile, and produces morning summaries. v0.2.0 adds first
+      machine-runnable eval suite (4 evals) and this manifest entry.
+
 planned_skills:
   energy-management:
     status: issue-handoff
