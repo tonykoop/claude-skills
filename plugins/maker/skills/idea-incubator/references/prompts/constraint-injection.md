@@ -19,8 +19,9 @@ the tokens you chose:
 
 1. MOUNTING: expose at least one standard mount face. Choose from:
    t-slot-2020 (M5), t-slot-3030 (M6), vesa-75 (M4), vesa-100 (M4),
-   hole-pattern-43x43 (M4), dovetail-arca, keyhole-pair. A bespoke face is
-   allowed ONLY in addition to one standard face.
+   hole-pattern-43x43 (M4), dovetail-arca, keyhole-pair,
+   magnetic-m4 (N52 disc + M4 pin, light-load rapid-swap only).
+   A bespoke face is allowed ONLY in addition to one standard face.
 2. FASTENERS: use M5 for structure and M3 for electronics by default. In
    printed plastic, specify heat-set inserts (heat-set-m3 / heat-set-m5), never
    tapped plastic. Imperial (1/4-20) only for legacy camera/photo interfaces;
@@ -28,9 +29,10 @@ the tokens you chose:
 3. FITS: name every mating fit as one of clearance-loose, slip-h7, press-p7,
    or thread. Default FDM mating parts to clearance-loose plus a test coupon.
 4. ELECTRICAL (if any): use connector tokens xt60 (keyed DC power),
-   jst-ph (signal), usb-c (user-facing), or grove (prototyping); declare a
-   single VCC (3v3 or 5v); use pinout i2c-4pin or uart-3v3 with documented pin
-   order. No bare-wire DC.
+   jst-ph (signal), usb-c (user-facing), grove (prototyping),
+   or can-usbc (CAN bus over USB-C via SLCAN/candleLight adapter); declare a
+   single VCC (3v3 or 5v); use pinout i2c-4pin, uart-3v3, or can-2wire
+   (CAN_H/CAN_L + 120 Ω termination) with documented pin order. No bare-wire DC.
 5. NAMING: name the subassembly <domain>-<function>-<variant>, e.g.
    maker-index-detent-8mm.
 6. OUTPUT: end with an `interfaces:` YAML list (mount:, fastener:, tolerance:,
@@ -95,3 +97,42 @@ tapped/glued plastic instead of a heat-set insert, no named fit, no
 The "after" bracket now mates with every other T-slot-2020 module and every
 Arca-Swiss plate in the portfolio, and it arrives pre-tagged for the MOC (#244)
 and the agent (#247).
+
+## Second example — CAN-bus sensor node with magnetic quick-swap
+
+**Request:** "Design a wireless humidity sensor that mounts on my instrument rack
+and reports to the main controller."
+
+### Before (no constraint injection)
+
+> I'll put a DHT22 on a small PCB with an ESP8266 and power it over a custom
+> 3-wire cable (GND, VCC, DATA). Mount it with double-sided tape.
+
+Problems: non-standard cable, Wi-Fi adds new RF dependency, double-sided tape is
+not removable without damage, no `interfaces:` block.
+
+### After (with constraint injection)
+
+> Chosen tokens: `mount:magnetic-m4` (no-tool rack swap, load ≤ 10 N),
+> `connector:can-usbc` (plugs into the rack's existing CAN bus USB-C port,
+> SLCAN adapter already present), `pinout:can-2wire` (CAN_H / CAN_L, 120 Ω at
+> rack end), `fastener:heat-set-m3` (M3 inserts in printed enclosure),
+> `tolerance:clearance-loose` (printed dovetail on magnet housing).
+>
+> Design: a printed enclosure with an N52 25 mm magnet disc + M4 alignment pin
+> on the back face. Inside: a Canable-compatible CAN-USB-C adapter board,
+> SHT31 humidity + temp sensor on I2C (`pinout:i2c-4pin` header for bench
+> debug). CAN ID assigned in firmware; no Wi-Fi, no extra RF.
+>
+> ```yaml
+> interfaces:
+>   - mount:magnetic-m4
+>   - connector:can-usbc
+>   - pinout:can-2wire
+>   - pinout:i2c-4pin
+>   - fastener:heat-set-m3
+>   - tolerance:clearance-loose
+> ```
+
+The sensor snaps onto any magnetic-m4 face in the portfolio and speaks the same
+CAN bus already in the rack — zero new cables.
