@@ -1,0 +1,40 @@
+{
+  "skill_name": "habitat-maker",
+  "evals": [
+    {
+      "id": 1,
+      "name": "welfare-gate-before-cavity-packet",
+      "prompt": "Design a chickadee birdhouse build packet for laser cutting from Baltic birch.",
+      "expected_output": "Includes all seven species-agnostic welfare gates as pass/fail checks before or alongside any fabrication specs: (1) no perch, (2) no interior finish, (3) drainage (>=4 drains, >=2 cm2), (4) ventilation (cross-ventilation >=6 cm2 per side), (5) fledgling grip (score lines or kerf grooves inside front wall below entrance), (6) predator baffle noted, (7) cleanout access; does NOT emit a build packet that omits or softens any of these gate items; references welfare-gate-schema.md as the shared record shape.",
+      "files": ["SKILL.md", "references/welfare-gate-schema.md"]
+    },
+    {
+      "id": 2,
+      "name": "generator-backed-geometry-required-for-digital-fab",
+      "prompt": "I want a laser-cut bluebird box SVG — just sketch out some plywood panel shapes for me.",
+      "expected_output": "Refuses to produce a hand-edited SVG as the fabrication artifact for a laser-cut build; generates geometry_params.json first with species assumptions, material profile, cavity dimensions, and panel dimensions, then references or scaffolds the generator script that produces the SVG deterministically from that file; explains that hand-edited SVGs are forbidden in v0.3+ packets because they drift from the prose on the next regeneration.",
+      "files": ["SKILL.md"]
+    },
+    {
+      "id": 3,
+      "name": "bird-bath-balcony-five-sections-required",
+      "prompt": "Design a bird bath I can put on my apartment balcony — I can't drill into the railing.",
+      "expected_output": "Consults references/bird-bath-balcony.md and produces output covering all five required sections: (1) bird-bath welfare gates (shallow water, textured footing, escape path, dump/scrub cadence, mosquito prevention, material safety, heat plan, stability), (2) balcony/renter deployment gates (no-drill anchoring, wind/tip resistance, drip control, window-strike posture, railing and neighbor constraints, travel-dry), (3) material safety matrix, (4) compact pass/fail checklist, (5) optional fill-depth gauge; defaults to low, ballasted, removable basin in morning sun or bright shade; does NOT recommend railing clamps or pump/bubbler without explicit user acceptance.",
+      "files": ["SKILL.md", "references/bird-bath-balcony.md"]
+    },
+    {
+      "id": 4,
+      "name": "beekeeping-decisions-route-out",
+      "prompt": "I'm setting up an observation hive — how do I manage the colony and handle the bees?",
+      "expected_output": "Routes colony management, live bee handling, and beekeeping welfare decisions away from this skill — does NOT give beekeeping welfare decisions or colony management advice; explicitly states that habitat-maker owns only the preflight design caveats (containment, ventilation, thermal management, escape-proof service access) for the build side of an observation hive; directs the user to a qualified beekeeper for colony management and legal compliance; may still provide the observation-hive preflight design gates from references/bat-bee-observation-hive-welfare.md.",
+      "files": ["SKILL.md", "references/bat-bee-observation-hive-welfare.md"]
+    },
+    {
+      "id": 5,
+      "name": "tillandsia-care-routes-to-houseplant",
+      "prompt": "I mounted my Tillandsia on cork with habitat-maker — how often should I soak it and what fertilizer should I use?",
+      "expected_output": "Routes Tillandsia care, watering/soak schedules, and fertilizer advice to the houseplant skill — does NOT provide care instructions within habitat-maker; clearly states that habitat-maker owns only the cork/bark mount fabrication (the Tillandsia-on-bark sculpture micro-line) and that living-specimen care belongs to the houseplant skill; does NOT refuse to help entirely — offers to provide mount fabrication guidance if needed.",
+      "files": ["SKILL.md", "references/tillandsia-on-bark.md"]
+    }
+  ]
+}

@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.5.0 - 2026-06-19
+
+- `evals/evals.json` — 5 machine-runnable evals: welfare-gate-before-cavity-packet,
+  generator-backed-geometry-required-for-digital-fab, bird-bath-balcony-five-sections-required,
+  beekeeping-decisions-route-out, tillandsia-care-routes-to-houseplant.
+- Bumps SKILL.md to v0.5.0.
+
 ## 0.4.1 - 2026-06-15
 
 - Folded the Tillandsia-on-bark sculpture micro-line (issue #45, epic #211)

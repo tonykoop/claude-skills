@@ -290,12 +290,12 @@ skills:
     notes: Portable snapshot from reverse-engineering/skills/v1/reverse-engineer for cross-platform review. v1.1.0 adds image-access preflight and degraded-mode banner (#70).
 
   habitat-maker:
-    canonical_version: 0.4.1
+    canonical_version: 0.5.0
     runtime: shared
     repo_path: plugins/maker/skills/habitat-maker
-    last_updated: 2026-06-15
+    last_updated: 2026-06-19
     status: active
-    notes: Bat/bee/observation-hive welfare gates and camera/electronics caveats, plus bird-bath/balcony support, first canonical chickadee laser packet, and a concept-only observation-hive preflight template. v0.4.1 folds the Tillandsia-on-bark sculpture micro-line (issue #45, epic #211) into planters/plant-supports as a reference + minimal example (care routes to houseplant) and adds the first CHANGELOG.
+    notes: "v0.5.0 adds machine-runnable eval suite (5 evals: welfare-gate-before-cavity-packet, generator-backed-geometry-required-for-digital-fab, bird-bath-balcony-five-sections-required, beekeeping-decisions-route-out, tillandsia-care-routes-to-houseplant)."
 
   houseplant:
     canonical_version: 0.9.0
