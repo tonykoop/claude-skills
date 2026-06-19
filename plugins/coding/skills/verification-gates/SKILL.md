@@ -1,7 +1,7 @@
 ---
 name: verification-gates
-version: 0.1.0
-last-updated: 2026-06-17
+version: 0.2.0
+last-updated: 2026-06-19
 description: >-
   Run automated verification gates for agent-authored work when a headless
   runtime should decide pass/fail before human review: sandbox command
