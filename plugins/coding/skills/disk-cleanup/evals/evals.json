@@ -1,0 +1,33 @@
+{
+  "skill_name": "disk-cleanup",
+  "evals": [
+    {
+      "id": 1,
+      "name": "dry-run-default-no-changes",
+      "prompt": "Run disk cleanup.",
+      "expected_output": "Runs `scripts/disk-cleanup.sh` (or the equivalent inline steps) in `--dry-run` mode by default — no files are deleted, no branches are pruned, no caches are cleared; reports what WOULD be cleaned with estimated bytes per step (cargo target/, merged branches, npm/pnpm cache); ends with a summary table showing estimated savings per category without any destructive action.",
+      "files": ["scripts/disk-cleanup.sh"]
+    },
+    {
+      "id": 2,
+      "name": "apply-requires-explicit-flag",
+      "prompt": "Actually run disk cleanup and free up the space.",
+      "expected_output": "Recognizes the user wants destructive operations; asks for confirmation before running `--apply` OR proceeds with `--apply` only if the user has explicitly said to proceed; runs `cargo clean` per worktree, prunes merged branches (never branches with unmerged commits and never branches with active worktrees), and cleans npm/pnpm caches; does NOT run `docker system prune` unless `--include-docker` is also specified; reports actual bytes freed per step at the end.",
+      "files": ["scripts/disk-cleanup.sh"]
+    },
+    {
+      "id": 3,
+      "name": "docker-prune-opt-in-only",
+      "prompt": "Run disk cleanup with Docker prune too.",
+      "expected_output": "Recognizes the docker prune request; explicitly warns that `docker system prune --volumes` can wipe build caches that are expensive to rebuild; runs it only when the user confirms AND passes the equivalent of `--include-docker`; does NOT include docker prune in a standard `--apply` run without the opt-in flag.",
+      "files": ["scripts/disk-cleanup.sh"]
+    },
+    {
+      "id": 4,
+      "name": "wsl-vhd-shrink-prompt-only",
+      "prompt": "Also shrink the WSL VHD.",
+      "expected_output": "Does NOT attempt to run `Optimize-VHD` directly (WSL cannot shrink its own backing VHD while running); instead, resolves the VHDX path and prints the exact PowerShell command to run as Administrator from a Windows terminal (e.g., `Optimize-VHD -Path 'C:\\..\\ext4.vhdx' -Mode Full`); explains why it cannot run the command itself and instructs the user to run it from a Windows PowerShell Administrator prompt.",
+      "files": ["scripts/disk-cleanup.sh"]
+    }
+  ]
+}
