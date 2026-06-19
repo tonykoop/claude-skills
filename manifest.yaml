@@ -356,12 +356,12 @@ skills:
       v0.2.0 adds first machine-runnable eval suite (5 evals).
 
   run-swarm:
-    canonical_version: 1.2.1
+    canonical_version: 1.3.0
     runtime: shared
     repo_path: skills/run-swarm
-    last_updated: 2026-05-11
+    last_updated: 2026-06-19
     status: active
-    notes: Adds duplicate-aware issue filing, related-issue handling, gated label creation, manager summary queues, Tony-decision queues, skill-owner routing, and machine-readable JSON/CSV queue artifacts while preserving personal GitHub and WRFCoin swarm behavior.
+    notes: Adds duplicate-aware issue filing, related-issue handling, gated label creation, manager summary queues, Tony-decision queues, skill-owner routing, and machine-readable JSON/CSV queue artifacts while preserving personal GitHub and WRFCoin swarm behavior. v1.3.0 adds first machine-runnable eval suite (4 evals).
 
   source-citations:
     canonical_version: 0.2.0

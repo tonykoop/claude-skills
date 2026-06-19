@@ -1,7 +1,7 @@
 ---
 name: run-swarm
-version: 1.2.1
-last-updated: 2026-05-11
+version: 1.3.0
+last-updated: 2026-06-19
 description: >-
   Launch a read-only multi-agent audit swarm for either WRFCoin repos or
   Tony's personal GitHub projects. Use when the user says "/run-swarm",
