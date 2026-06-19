@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.0 — 2026-06-19
+
+- Add first machine-runnable eval suite (`evals/evals.json`): 4 evals covering
+  read-only refresh (no edits), personal GitHub queue with Label/Model/Batch
+  columns, WRFCoin persona queue update, and archive follow-up before
+  regenerating dispatch prompts.
+
 ## 1.1.1 - 2026-05-11
 
 - Added read-only refresh mode guidance for reporting stale sprint counts,
