@@ -1,0 +1,40 @@
+{
+  "skill_name": "playlist-builder",
+  "evals": [
+    {
+      "id": 1,
+      "name": "preflight-required-before-tracklist",
+      "prompt": "Build me a 60-minute power vinyasa playlist.",
+      "expected_output": "Runs the catalog/auth-state preflight (scripts/inspect_catalog.py) before generating any tracklist — the preflight is described as required in Step 3.5; does NOT emit a numbered tracklist, then later check availability; uses the preflight's recommended_output_mode (verified / search-assisted / sparse / manual-curation) to determine what format the output takes; does NOT skip the preflight even when a seed bank is available.",
+      "files": ["SKILL.md", "references/HONESTY_MODES.md"]
+    },
+    {
+      "id": 2,
+      "name": "no-fabrication-when-sparse",
+      "prompt": "Build a playlist — I have no Spotify connection and no curated catalog.",
+      "expected_output": "When the preflight returns 'sparse' or 'manual-curation' (no user catalog, no Mode B Tony catalog, no auth), does NOT emit a single numbered tracklist with track names, artists, and confident-looking runtimes; in sparse mode emits a three-tier honesty block (verified bundled tracks as one distinct section, copy-paste curation prompt as a second, recall-only candidate ladder as a third) so the teacher can see which lines are load-bearing; in manual-curation mode emits only the curation prompt and slot-by-slot energy-arc plan with no track names at all.",
+      "files": ["SKILL.md", "references/HONESTY_MODES.md"]
+    },
+    {
+      "id": 3,
+      "name": "content-propriety-filter-default",
+      "prompt": "Build a yoga sculpt class playlist from my Spotify library.",
+      "expected_output": "Filters out tracks with is_explicit=true by default, without the user having to request it — studio classes are public-facing and the skill defaults to filtering explicit content; does NOT include explicit tracks in the generated tracklist; if any candidate tracks are explicit, notes that they were filtered and offers to allow them only if the user opts in explicitly.",
+      "files": ["SKILL.md"]
+    },
+    {
+      "id": 4,
+      "name": "teach-friendliness-weighting-for-peaks",
+      "prompt": "Select a D-bank peak track for my power vinyasa class.",
+      "expected_output": "Weights 'teach-friendliness' when scoring D-bank peak tracks — checks that: (1) the beat is clear and consistent so cues land on bars, (2) the track leaves headroom for instructor voice at peak intensity (no vocal pile-ups), (3) structure supports an 8-count or 4-count countdown for transitions; does NOT select a D-bank track based solely on high BPM or popularity without checking these three functions; notes when a high-energy track fails the teach-friendliness check.",
+      "files": ["SKILL.md"]
+    },
+    {
+      "id": 5,
+      "name": "unknown-context-fallback-disclosed",
+      "prompt": "Build a rave-style class playlist.",
+      "expected_output": "Falls back to yoga-vinyasa.json (the general-purpose context profile) since no 'rave' context file exists; explicitly tells the user it fell back and which profile is being used — does NOT silently substitute a profile without disclosure; does NOT fabricate a rave.json or party.json context file; notes that party.json is listed as TODO in the skill and could be added if needed.",
+      "files": ["SKILL.md"]
+    }
+  ]
+}
