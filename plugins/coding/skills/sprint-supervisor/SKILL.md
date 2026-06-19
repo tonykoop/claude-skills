@@ -1,7 +1,7 @@
 ---
 name: sprint-supervisor
-version: 1.4.0
-last-updated: 2026-06-16
+version: 1.5.0
+last-updated: 2026-06-19
 description: Babysit a running multi-pane tmux agent sprint while the user is AFK or asleep. Polls the manager pane and grid persona panes every ~4 min via ScheduleWakeup, auto-approves routine agent permission prompts using a configurable rubric, escalates destructive prompts, and produces a morning summary. Use this skill whenever the user says "watch the sprint", "supervise overnight", "I'm going to bed keep the sprint going", "babysit the panes", "keep an eye on twingrid", or invokes "/sprint-supervisor" — even without the word "supervisor". Scales by named scope — one instance handles a twingrid (18 panes), multiple instances divide-and-conquer a triplegrid or quadgrid by scoping each supervisor to a slice of grids coordinated via /tmp lockfile so peers don't double-approve. Pairs with sprint-watchdog.sh which absorbs the mechanical ~70% of approvals; this skill handles the judgment ~30% — commands, rate-limit prompts, escalation.
 ---
 
@@ -421,25 +421,37 @@ Linux, WSL2, and macOS, but the default shell and `date` differ across them.
 |---|---|---|
 | WSL2 Ubuntu 24.04 + tmux 3.4 | Verified | `list-panes -F '#{pane_id}'`, `capture-pane -p`, `capture-pane -p -S -N`, `has-session` all work. `/tmp/sprint-supervisor/` lockfiles live on the WSL filesystem and need no special handling across the WSL boundary. |
 | WSL2 Ubuntu 22.04 + tmux 3.2/3.3 | Expected OK | Same flags. |
-| macOS Homebrew tmux 3.4+ | Expected OK once the portability fixes below are in | The tmux flags used are stable since 2.x; the gotchas are shell/`date`, not tmux. |
+| macOS Homebrew tmux 3.4+ | Expected OK (portability fixes applied) | The tmux flags used are stable since 2.x; the gotchas are shell/`date`, not tmux. |
 | macOS default `/bin/bash` 3.2 | Gated | `grid-scan.sh` reads panes with a portable `while read` loop, not `mapfile` (bash 4+ only). |
+| tmux < 3.2 (e.g. macOS default 2.x) | Soft-gated | `tmux-preflight.sh` detects it and warns (exit 4); scanning continues but may miss prompts — upgrade via Homebrew. |
+| tmux not installed | Guarded | `tmux-preflight.sh` exits 3 with install guidance; `grid-scan.sh` exits cleanly instead of emitting confusing empty output. |
 
 Portability fixes applied this round (#163):
 
+- **`tmux-preflight.sh`** (new) — the concrete version gate. It probes `tmux -V`,
+  normalizes the version (`tmux 3.2a` → `3.2`, `tmux next-3.5` → `3.5`), and
+  compares against `MIN_TMUX_VERSION` (3.2). Exit `0` = supported, `4` = present
+  but old (soft warning, scanning continues), `3` = tmux absent (clear install
+  guidance). `grid-scan.sh` sources it and runs `run_preflight --quiet` before
+  scanning, so a missing/old tmux yields **one actionable message** instead of
+  confusing empty output. Source it to unit-test `parse_tmux_version` /
+  `version_ge` / `run_preflight` (test seam: `TMUX_VERSION_OVERRIDE`, `TMUX_BIN`).
 - **`grid-scan.sh`** — replaced `mapfile -t` with a `while IFS= read -r` loop
   (bash 3.2 safe), and switched from `capture-pane | tail -12` to
   `capture-pane -p -S -40` so a prompt sitting above trailing blank pane rows
   isn't pushed out of a short tail window (observed on tmux 3.4). Widened
   `PROMPT_REGEX` with a generic confirmation catch-all so a new CLI's phrasing
-  surfaces to the supervisor instead of being silently missed.
+  surfaces to the supervisor instead of being silently missed. Now preflights
+  tmux before scanning.
 - **`notify-supervisor.sh`** — `date -Iseconds` (GNU-only) and `%3N`
   millisecond format (GNU-only) now fall back to portable
   `date -u +%Y-%m-%dT%H:%M:%SZ` and epoch seconds on BSD/macOS.
 - **Lockfile snippet** in Prerequisites uses portable
   `date -u +%Y-%m-%dT%H:%M:%SZ` instead of `date -Iseconds`.
 
-If a flag turns out to be incompatible on a platform, gate it behind a
-`tmux -V` version check rather than letting the script fail loud — never assume
+The gating rule is now mechanical, not just advice: an incompatible/old/missing
+tmux is detected by `tmux-preflight.sh` and surfaced as a soft warning with
+install guidance rather than a loud failure or silent empty scan — never assume
 a single tmux build.
 
 > **Note:** `sprint-watchdog.sh` is an install-time companion (it ships into the

@@ -1,5 +1,28 @@
 # Changelog — sprint-supervisor
 
+## v1.5.0 — 2026-06-19
+
+Cross-platform tmux compatibility gate (#163).
+
+### Added
+
+- `scripts/tmux-preflight.sh` — probes `tmux -V`, normalizes the version, and
+  compares against `MIN_TMUX_VERSION` (3.2). Soft-gates instead of failing loud:
+  exit 0 supported, 4 present-but-old (warn + continue), 3 absent (install
+  guidance). Sourceable for unit tests (`parse_tmux_version`, `version_ge`,
+  `run_preflight`; test seams `TMUX_VERSION_OVERRIDE` / `TMUX_BIN`).
+- `tests/test-tmux-preflight.sh` — covers version parsing, comparison, and all
+  three exit codes.
+
+### Changed
+
+- `scripts/grid-scan.sh` now sources the preflight and gates before scanning, so
+  a missing/old tmux yields one actionable message instead of confusing empty
+  output.
+- `SKILL.md` Compatibility section documents the preflight, adds verified-version
+  rows for old/absent tmux, and makes the "gate behind a version check" rule
+  mechanical rather than advisory.
+
 ## v1.4.0 — 2026-06-16
 
 Public release readiness — genericization + configurable rubric (epic #164).

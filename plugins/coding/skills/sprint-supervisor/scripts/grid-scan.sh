@@ -23,6 +23,18 @@ if [ "$#" -lt 1 ]; then
   exit 2
 fi
 
+# Gate on tmux availability/version instead of emitting confusing empty output
+# when tmux is missing or too old (#163). Soft gate: an old tmux still proceeds.
+_preflight="$(dirname "${BASH_SOURCE[0]}")/tmux-preflight.sh"
+if [ -f "$_preflight" ]; then
+  # shellcheck source=/dev/null
+  . "$_preflight"
+  run_preflight --quiet; _pf=$?
+  # status 3 (tmux absent) is fatal for scanning; 4 (old tmux) is a soft warning
+  # and we continue. A clean grid still exits 0.
+  [ "$_pf" = "3" ] && exit 0
+fi
+
 # Prompt families across codex, claude, agy/gemini. The trailing catch-all
 # (generic confirmation shapes) means a new CLI's phrasing surfaces to the
 # supervisor for judgment instead of being silently missed.
