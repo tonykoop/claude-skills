@@ -1,5 +1,26 @@
 # Changelog — houseplant
 
+## v0.6.0 — 2026-06-19 (watering/fertilizing cadence engine — #172)
+
+Completes the watering/fertilizing half of the Chrono-Horticultural Engine
+(#172). The chrono-engine reference and `wire_window.py` (wire-removal windows)
+shipped earlier; the watering/fertilizing scheduling the issue title names had no
+runnable implementation until now.
+
+- Added `scripts/care_cadence.py` (pure Python, no bpy): turns a species
+  growth-speed class + season/phase + heat signal + recent stressors into a
+  calendar-ready watering **check** (cadence + trigger + done-condition, phrased
+  as an observation loop rather than a fixed timer) and a fertilizing cadence
+  that suspends in dormancy and for ~6 weeks after a repot/root reduction.
+  Caller-overridable globals for exec()-style use, matching the other scripts.
+- Added 11 `CareCadence` tests (class/heat/phase/stressor effects, fertilizer
+  suspension, check-phrasing, ≥1-day floor, validation); houseplant suite now 59.
+- `references/chrono-engine.md` now points at the new script; local + root
+  manifests register it under #172's delivered list.
+- **Fix:** collapsed duplicate `version` / `canonical_version` / `notes` keys in
+  `SKILL.md`, the local `manifest.yaml`, and the root `manifest.yaml` left by
+  stacked-PR merges (the same dup-key class PR #303 fixed for idea-incubator).
+
 ## v0.4.0 — 2026-06-19 (health-triage engine — #175)
 
 Completes the CV plant-health "check-engine light" (#175), which shipped in
