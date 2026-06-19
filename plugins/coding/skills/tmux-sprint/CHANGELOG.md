@@ -1,5 +1,11 @@
 # Changelog - tmux-sprint
 
+## v2.9.0 — 2026-06-19
+
+- Add first machine-runnable eval suite (`evals/evals.json`): 5 evals covering
+  label-aware batch routing, TwinGrid blind A/B handoff, provider-failover
+  exhaustion detection, Codex goal lane dispatch, and Partner Peek template.
+
 ## v2.8.0 - 2026-06-18
 
 - Implemented the provider-failover detection/state slice (#166): new

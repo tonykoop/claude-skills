@@ -45,10 +45,10 @@ skills:
       backups under ~/.skill-cleanup-backups/.
 
   tmux-sprint:
-    canonical_version: 2.8.0
+    canonical_version: 2.9.0
     runtime: claude
     repo_path: plugins/coding/skills/tmux-sprint
-    last_updated: 2026-06-18
+    last_updated: 2026-06-19
     status: active
     notes: >-
       Claude-side tmux sprint counterpart with TwinGrid blind A/B, Partner
@@ -61,7 +61,7 @@ skills:
       reference, goal test) resolving issue #117. v2.8.0 implements the
       provider-failover detection/state slice (provider_failover.py: exhaustion
       detection, round-state record, morning-summary table; no keystrokes) for
-      issue #166.
+      issue #166. v2.9.0 adds first machine-runnable eval suite (5 evals).
 
   merge-review:
     canonical_version: 0.2.0
