@@ -1,5 +1,29 @@
 # Changelog — houseplant
 
+## v0.7.0 — 2026-06-19 (graft heal-window + risk verdict — #176)
+
+Completes the last computable gap in the grafting sandbox (#176). `grafting_sim.py`
+builds the fused silhouette in Blender, but the reference's "Heal expectation
+<range>" and "Risk <Medium|High>" were computed nowhere.
+
+### Added
+
+- **`scripts/graft_heal_window.py`** — pure-Python (no Blender). Estimates the
+  graft's multi-year **heal window** (months + dates, conservative range with
+  confidence) from graft type (approach / trunk-patch / multi-tree-fusion),
+  species fusion-readiness (readily / moderate / poorly), and warm/cool
+  conditions; and returns the **risk verdict** — **High** on a weak/pest-flagged
+  plant (defer) or a species that does not fuse readily, **Medium** otherwise.
+  Renders the reference's heal/risk lines and re-states the simulation-only
+  boundary.
+- **`tests/test_graft_heal_window.py`** — 13 cases (range invariant, graft-type
+  ordering, fusion-class + condition modulation, all risk paths, rendering, CLI).
+
+### Changed
+
+- `references/grafting-sandbox.md` + `SKILL.md` route the heal/risk step at the
+  helper; per-skill + root `manifest.yaml` list it under #176.
+
 ## v0.6.0 — 2026-06-19 (watering/fertilizing cadence engine — #172)
 
 Completes the watering/fertilizing half of the Chrono-Horticultural Engine
