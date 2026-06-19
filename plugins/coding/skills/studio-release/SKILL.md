@@ -1,7 +1,7 @@
 ---
 name: studio-release
-version: 0.2.0
-last-updated: 2026-06-18
+version: 0.3.0
+last-updated: 2026-06-19
 description: >-
   Verify and stage an agent-produced skill, script, or release bundle when a
   feature branch reaches pull-request review or the end of an assigned work
