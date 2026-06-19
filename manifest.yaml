@@ -303,12 +303,12 @@ skills:
       mental-health advice, no invented metrics, no persistent personal store.
 
   playlist-builder:
-    canonical_version: 0.1.0
+    canonical_version: 0.2.0
     runtime: shared
-    repo_path: skills/playlist-builder
-    last_updated: 2026-05-10
+    repo_path: plugins/maker/skills/playlist-builder
+    last_updated: 2026-06-19
     status: active
-    notes: "Initial snapshot with catalog/auth-state preflight (issue 72) for honest sparse-catalog output."
+    notes: "v0.2.0 adds machine-runnable eval suite (5 evals: preflight-required, no-fabrication-when-sparse, content-propriety-filter, teach-friendliness-weighting, unknown-context-fallback)."
 
   sprint-supervisor:
     canonical_version: 1.7.0
