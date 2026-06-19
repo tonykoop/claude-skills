@@ -28,24 +28,18 @@ from pathlib import Path
 from typing import Any
 
 # --- Domain routing -------------------------------------------------------
-# Minimal inline routing so the script is self-contained. The authoritative,
-# extensible ruleset lives in references/domain-label-routing.md; this inline
-# fallback mirrors that table's domains (instrument, woodworking, sheet-metal,
-# electronics, firmware, software, yoga, maker). Keep it in rough sync, or load
-# that table when a data-driven, confidence-weighted version is wired up.
-# TODO: load routing rules from references/domain-label-routing.md (or a JSON
-# export of it) instead of this inline fallback.
-DOMAIN_KEYWORDS: dict[str, tuple[str, ...]] = {
-    "instrument": ("flute", "harp", "didgeridoo", "drum", "acoustic", "reed", "fipple", "bore", "string"),
-    "woodworking": ("wood", "plywood", "joinery", "dovetail", "router", "lathe", "cabinet", "grain"),
-    "sheet-metal": ("sheet metal", "brake", "plasma", "bend", "flat pattern", "shear", "weld", "gauge"),
-    "electronics": ("pcb", "pcba", "schematic", "gerber", "microcontroller", "mcu", "sensor", "i2c", "spi", "circuit"),
-    "firmware": ("firmware", "flash", "bootloader", "rtos", "embedded", "register", "interrupt", "hal"),
-    "software": ("script", "app", "api", "webhook", "automation", "cli", "database", "frontend", "backend"),
-    "yoga": ("yoga", "vinyasa", "asana", "sequence", "pose", "savasana", "class"),
-    "maker": ("jig", "fixture", "workholding", "mold", "cnc", "laser cutter", "3d print", "mill", "fabricate"),
-}
-NEEDS_TRIAGE_LABEL = "needs-clarification"
+# Routing is delegated to the tuned, confidence-weighted router in
+# domain_router.py (the data-driven implementation of
+# references/domain-label-routing.md). It replaces the old any-keyword inline
+# fallback, which confidently mislabeled captures on a single incidental
+# substring hit. The router stays self-contained (stdlib only), so importing it
+# does not add a dependency.
+try:  # absolute import when run as a loose script
+    from domain_router import NEEDS_TRIAGE_LABEL  # noqa: F401 (re-exported for callers)
+    from domain_router import route_labels as _route_labels
+except ImportError:  # package-relative import when imported as a module
+    from .domain_router import NEEDS_TRIAGE_LABEL  # noqa: F401 (re-exported for callers)
+    from .domain_router import route_labels as _route_labels
 
 
 @dataclass
@@ -134,19 +128,12 @@ def derive_title(block: str) -> str:
 
 
 def route_labels(block: str) -> list[str]:
-    """Assign domain labels by keyword. Always includes 'capture'.
+    """Assign domain labels via the tuned confidence-weighted router.
 
-    TODO: replace with confidence-scored routing from
-    references/domain-label-routing.md.
+    Always includes 'capture'; unroutable captures fall back to
+    'needs-clarification'. See domain_router.py / domain-label-routing.md.
     """
-    labels = ["capture"]
-    haystack = block.lower()
-    matched = [dom for dom, kws in DOMAIN_KEYWORDS.items() if any(k in haystack for k in kws)]
-    if matched:
-        labels.extend(matched)
-    else:
-        labels.append(NEEDS_TRIAGE_LABEL)
-    return labels
+    return _route_labels(block)
 
 
 def build_body(block: IdeaBlock, conversation_id: str) -> str:
