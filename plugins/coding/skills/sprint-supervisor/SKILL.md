@@ -447,6 +447,25 @@ a single tmux build.
 > rules apply to it — `date -u +%Y-%m-%dT%H:%M:%SZ` over `date -Iseconds`, and
 > a portable pane-read loop. Apply them when that script is next packaged.
 
+## Marathon mode (long-haul ~5h runs)
+
+A **marathon** is a grid run meant to stay productive through a full ~5-hour usage block *without* (a) the scarce budget exhausting early or (b) the Opus supervisor hitting its own usage limit and killing the run. When the user says "marathon" (or wants an overnight that lasts), supervise with these in mind. Full rationale in `feedback_marathon_grid_pattern.md`.
+
+**Budget ordering (lean on cheap/resettable, protect scarce):**
+- **codex-spark = workhorse** — if the user has a reset button it's ~unlimited; lean on it hardest.
+- **gpt-5.5 = second-heaviest** — synthesizer / merge-queue / reviewer roles.
+- **Sonnet = the scarce worker budget** — this is what caps a marathon; pace it (fewer lanes, hard sub-fanout caps).
+- **Opus 4.8 = scarcest → supervisor/manager ONLY, never a churning worker.** The supervisor's own Opus quota is the thing most likely to kill the marathon.
+
+**Approved 9-agent topologies:**
+- **4 Sonnet + 4 codex-spark + 1 gpt-5.5**, two-phase: all 8 produce PRs, then **cross-peer-review** (Sonnet review the codex PRs, codex review the Sonnet PRs); gpt-5.5 = synthesizer / merge-queue. Cross-review is free useful burn + adversarial verify.
+- **3 Sonnet + 3 codex-spark + 3 gpt-5.5** — heavier on resettable/codex-side budgets, for huge backlogs.
+
+**The pacing levers matter more than the model mix** (this is what actually kills marathons):
+1. **Cap per-agent sub-fanout** — no 40-agent sub-swarms. On 2026-06-19 a single lane's 40-agent audit burned ~2.4M tokens and helped cap Sonnet in ~90 min. Bake "Task sub-swarms ≤3; go serial for breadth" into the dispatch contract; if you see a lane fan out massively, flag it (it's a budget bomb, not progress).
+2. **Lean Opus supervisor** — long cadence (20–30 min once past cold-start), minimal cycles, never worker-grade work. (The 2026-06-19 supervisor ran 56 cycles, many redundant.)
+3. **Useful burn, not raw burn** — cross-review rounds + loop-until-dry-with-caps + staggered waves beat one giant sub-swarm.
+
 ## What this skill does NOT do
 
 - **Doesn't dispatch new work** to grid panes. The manager owns that.
@@ -498,3 +517,12 @@ These came out of the first overnight run; update if subsequent runs change them
 - **Forward improvement (not yet implemented): multi-provider failover before manager-absorption.** When a sprinter pane exhausts its weekly budget on provider A, the *better* pivot — before falling back to the manager absorbing the lane — is for the manager to exit that pane's codex session (keeping the pane open), launch a different CLI (`claude`, `gemini`), run a brief availability probe, and resume dispatching that lane via the new provider. This is **manager** work, not supervisor work — but the supervisor needs to recognize provider-availability-probe prompts and approve them the same way it approves regular dispatch. See repo issue #166 for the infrastructure work, and the provider-agnostic note at the top of the rubric.
 - **One pile-up of 10 stuck grid panes** happened when the manager was deep in a multi-merge sequence and stopped polling its own grid. Watchdog would have caught most of these.
 - **A second-level sprint manager** assisted successfully — same skill, same rubric, different scope. The lockfile coordination pattern in this skill formalizes that experience.
+
+## Tuning notes from the 2026-06-19 run (marathon-that-wasn't)
+
+Overnight launch-hardening run that burned out at **~90 min** (real output: 5 PRs + 28 issues, all created 06:35–08:00 UTC, then the grid was dead while the supervisor kept ticking for hours). Hard lessons:
+
+- **Detect working-vs-idle by the SPINNER/TIMER line, not a verb list.** Claude's spinner verb is whimsical and unbounded (Bootstrapping, Transfiguring, Bloviating, Garnishing, Topsy-turvying, Philosophising, Sautéed, Ebbing, Percolating, …). A regex of verbs will mislabel busy lanes as idle — this wasted ~15 cycles on 2026-06-19. Instead treat a pane as **working** iff it shows an activity marker: `\(\d+m ?\d+s ·`, `esc to interrupt`, `↓ \d`/`↑ \d` tokens, `% until auto-compact`, `\d+/\d+ agents`, or `queued`. Treat as **idle** only when the bare input prompt (`❯` / `›`) shows with no such marker AND no compose text.
+- **Verify progress against SCM ground truth, never pane scrollback.** Pane spinners can outrun reality — a stalled/looping lane *looks* active. When reporting "what got done" (esp. the morning summary), pull it from the SCM: `gh pr view <n> --json additions,deletions,commits,createdAt` (real diff size + commit times) and `gh issue list --json createdAt` (when work actually stopped). On 2026-06-19 the commit timestamps proved all real output ended at ~08:00 UTC even though panes "looked busy" for hours afterward. **Build the morning summary from PR diffs/commit-times + issue-create-times, then spot-check claims (e.g. a PR with 0 additions, or whose last commit predates the run, was not actually worked).**
+- **A budget that vanishes fast = runaway sub-fanout, not productivity.** When a lane reports `N/40 agents` or burns >1M tokens on one task, that's a budget bomb — surface it; it's the most likely cause of an early burnout. See Marathon mode + `feedback_marathon_grid_pattern.md`.
+- **"Ran out of usage" is a distinct end state from "Goal achieved."** When grid panes show session/weekly-limit messages (`You've used N% of your session limit`) and stop producing, the marathon is *capped*, not done — say so plainly rather than narrating continued progress. Once SCM shows no new commits/issues for 2+ cycles, flip to a quiet health-watch hold and stop re-reporting "still working."

@@ -85,6 +85,15 @@ for shape only.
 - Answering destructive prompts on the operator's behalf — those always
   escalate.
 
+## Operational gotchas (hard-won)
+
+Generic lessons that bit real overnight runs — they hold regardless of project profile:
+
+- **Detect working-vs-idle by an activity MARKER, not the CLI's spinner verb.** Agent CLIs cycle through whimsical, unbounded spinner words (Bootstrapping, Transfiguring, Philosophising, …); a verb allowlist will mislabel busy panes as idle. Treat a pane as **working** iff it shows a live marker — an elapsed timer `(\d+m ?\d+s`, `esc to interrupt`, token counters (`↓`/`↑ \d`), a `% until auto-compact` / context line, an `N/M agents` sub-task line, or `queued`. Treat as **idle** only when the bare input prompt shows with none of those and no pending compose text.
+- **Verify reported progress against SCM ground truth, never pane scrollback.** A stalled or looping pane can *look* active for a long time. Before reporting "what got done" (especially the morning summary), pull it from the SCM — PR diff sizes + commit timestamps, issue create-times — and spot-check: a PR with zero additions, or whose last commit predates the run, was not actually worked. Pane captures narrate intent; the SCM records reality.
+- **"Out of usage / rate-limited" is a distinct end state from "goal achieved."** When panes show session/weekly-limit messages and stop producing, the run is *capped*, not complete — report that plainly. Once the SCM shows no new commits/issues for 2+ cycles, flip to a quiet health-watch hold; don't keep narrating "still working."
+- **A budget that drains fast is usually runaway sub-fanout, not productivity.** A worker that spawns a large sub-swarm (tens of sub-agents) or burns >1M tokens on one task is a budget bomb; surface it. For long-haul ("marathon") runs, cap per-agent sub-fanout and keep the (expensive-model) supervisor on a long, lean cadence so its own quota doesn't end the run.
+
 ## Relationship to `sprint-supervisor`
 
 `sprint-supervisor` (private, project-specific) becomes a thin adapter over
