@@ -1,7 +1,7 @@
 ---
 name: cross-pollination-librarian
-version: 0.1.0
-last-updated: 2026-06-16
+version: 0.2.0
+last-updated: 2026-06-18
 description: >-
   Periodically scans the GitHub idea inbox and the Obsidian vault, uses the
   functional tags (functions/interfaces/materials) from the idea-incubator
@@ -86,6 +86,58 @@ nothing was closed or changed._
 
 When the match came from embeddings, replace the match-signal line with
 `Match signal: embedding similarity 0.86 (no shared tags - verify before reuse)`.
+
+## Epic-level report: `### Cross-Pollination Opportunities Detected`
+
+Per-pair comments help the two ideas find each other, but the payoff the engine
+exists for is an **Epic-level roll-up**: a single section the librarian appends
+to a relevant epic so a human sees, in one place, every reuse opportunity its
+stories touch. Every run that finds matches under an epic emits this
+**exactly-named** section onto the epic body:
+
+```markdown
+### Cross-Pollination Opportunities Detected
+
+_Posted by cross-pollination-librarian (run <date>). Suggestions only — nothing
+was closed or changed._
+
+#### Interface reuse
+- Reuse the `index-detent` subassembly solved in #142 (built) for #207 —
+  shared functions `index-detent`, `slide`. Source: #142.
+
+#### Interoperability
+- #150 and #168 both expose `bus:i2c-3v3`; they can interoperate without an
+  adapter (Lego rule, universal-interface-guide). Sources: #150, #168.
+
+#### Silo alert
+- #211 re-solves the `spring-return` mechanism already shipped in #98 across a
+  different domain — no `reuses:`/`solved-in:` link exists yet. Sources: #98, #211.
+```
+
+The three opportunity classes are distinct and derive from the matching tiers:
+
+- **Interface reuse** — a mature *source* idea's mechanism fits a less-mature
+  *need* (function overlap + maturity direction, steps 1 & 4). "Reuse X from #A
+  in #B."
+- **Interoperability** — two ideas share an `interfaces:` token, so they can
+  physically/electrically mate (step 2; boosted by the universal-interface
+  guide #245). "#A and #B both expose Y."
+- **Silo alert** — a cross-`domain:` match where the need re-solves something an
+  existing idea already has and nothing links them yet (step 5). "#B re-solves
+  what #A already provides; siloed."
+
+Rules for the section:
+
+- Omit a subsection that has no opportunities (do not emit an empty heading),
+  but always keep the top-level `### Cross-Pollination Opportunities Detected`
+  header so the report is greppable and the conformance checker can find it.
+- **Every bullet cites the specific source issue/note(s)** that triggered it
+  (`Source:` / `Sources:` with `#N` or a vault note path) — an uncited
+  recommendation is a defect.
+- Idempotent: replace the prior `### Cross-Pollination Opportunities Detected`
+  section in place on re-run rather than appending a second one.
+- Validate the section with
+  [`../scripts/check_cross_pollination_section.py`](../scripts/check_cross_pollination_section.py).
 
 ## Guardrails against noise
 
