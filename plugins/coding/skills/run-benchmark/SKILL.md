@@ -1,7 +1,7 @@
 ---
 name: run-benchmark
-version: 0.1.0
-last-updated: 2026-06-13
+version: 0.2.0
+last-updated: 2026-06-19
 description: >-
   Drive an AI-agent benchmark contribution end-to-end — run the harness on a
   model, scrutinize and aggregate the results, file issues, open pull requests,

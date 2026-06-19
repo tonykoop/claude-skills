@@ -1,5 +1,30 @@
 # Changelog — run-benchmark
 
+## 0.2.0 — 2026-06-19 (eval suite)
+
+Adds the first machine-runnable eval suite (5 evals) covering the skill's
+verify-don't-trust behavioral contracts.
+
+### Added
+
+- `evals/evals.json` — 5 evals:
+  1. `orient-before-run` — Phase 0 orientation executes before the harness is
+     touched; concrete map written from the benchmark's own docs.
+  2. `canary-preserved-verbatim` — contamination canary preserved as-is in the
+     bundle; missing canary flagged before submission.
+  3. `no-answer-key-leak` — oracle/gold files refused; failure described from
+     public metadata only.
+  4. `infra-error-honest-reporting` — timed-out rows marked errored using the
+     benchmark's own error sentinel; not laundered into zeros or dropped.
+  5. `no-self-verification` — submission PR opens at default unverified state;
+     maintainer attestation is the only path to verified status.
+
+### Changed
+
+- `SKILL.md` — bumped to v0.2.0 (`last-updated: 2026-06-19`).
+- Root `manifest.yaml` — updated `canonical_version` to 0.2.0 and appended
+  eval suite note.
+
 ## 0.1.0 — 2026-06-13
 
 Initial release.
