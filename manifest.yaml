@@ -64,11 +64,16 @@ skills:
       issue #166.
 
   merge-review:
-    canonical_version: 1.0.0
+    canonical_version: 0.2.0
     runtime: claude
     repo_path: claude/skills/merge-review
     last_updated: 2026-05-20
+    repo_path: plugins/coding/skills/merge-review
+    last_updated: 2026-06-19
     status: active
+    notes: >-
+      evals/evals.json added in v0.2.0 (5 evals). canonical_version corrected
+      from stale 1.0.0 to match SKILL.md lineage (0.1.0 initial, 0.2.0 evals).
 
   sprint-update:
     canonical_version: 1.2.0
