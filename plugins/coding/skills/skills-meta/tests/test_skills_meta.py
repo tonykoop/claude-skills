@@ -101,7 +101,7 @@ class VersionFlagTests(unittest.TestCase):
     def test_version_works_without_manifest_or_cwd_assumptions(self) -> None:
         rc, out = self._run_version()
         self.assertEqual(rc, 0, msg=out)
-        self.assertEqual(out, "skills-meta 1.0.0")
+        self.assertEqual(out, "skills-meta 1.0.2")
 
     def test_version_prefers_manifest_canonical_version_when_available(self) -> None:
         manifest = self.tmp / "manifest.yaml"
@@ -119,7 +119,7 @@ class VersionFlagTests(unittest.TestCase):
         )
         rc, out = self._run_version("--manifest", str(manifest))
         self.assertEqual(rc, 0, msg=out)
-        self.assertEqual(out, "skills-meta 9.8.7 (installed 1.0.0)")
+        self.assertEqual(out, "skills-meta 9.8.7 (installed 1.0.2)")
 
 
 class SingleModeDeterminismTests(unittest.TestCase):
