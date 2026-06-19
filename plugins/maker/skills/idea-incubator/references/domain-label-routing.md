@@ -5,12 +5,19 @@ labels for HWE/maker captures, with confidence thresholds and a
 fallback/needs-triage path. Keep this table the source of truth so routing is
 easy to extend without touching code.
 
-Used by the parser (Stage 3 of the
-[Gemini export pipeline](gemini-export-pipeline.md)) and mirrored in the inline
-fallback inside [`../scripts/gemini_to_github.py`](../scripts/gemini_to_github.py).
-It also produces the tags the [institutional-knowledge pre-read](institutional-knowledge.md)
+This table is implemented by
+[`../scripts/domain_router.py`](../scripts/domain_router.py) — the tuned,
+confidence-weighted router that [`../scripts/gemini_to_github.py`](../scripts/gemini_to_github.py)
+now delegates to (replacing its old any-keyword inline fallback). Used by the
+parser (Stage 3 of the [Gemini export pipeline](gemini-export-pipeline.md)). It
+also produces the tags the [institutional-knowledge pre-read](institutional-knowledge.md)
 filters on, so keep the label vocabulary aligned with
 [`label-schema.md`](label-schema.md).
+
+> **Implementation note.** Single-word signals match on a word boundary, so an
+> incidental substring (`pose` inside `purpose`, `app` inside `happen`) no
+> longer fires a confident mislabel — the precision win behind #242. Multi-word
+> signals (`sheet metal`, `flat pattern`) still match as substrings.
 
 ## How routing works
 
