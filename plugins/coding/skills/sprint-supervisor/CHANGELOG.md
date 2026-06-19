@@ -43,6 +43,32 @@ Added `evals/evals.json` — the skill's first machine-runnable eval suite
 Also collapses the duplicate `version: 1.5.0 / version: 1.6.0` key in
 SKILL.md (YAML last-key-wins; this makes the effective version explicit).
 
+## v1.6.0 — 2026-06-19
+
+Mobile cold-start watcher (#160).
+
+### Added
+
+- `scripts/sprint-dispatch-watcher.sh` — polls `SPRINT_DISPATCH_DIR` (default:
+  `~/sprint-dispatch`) every `POLL_INTERVAL` seconds (default: 30) for unclaimed
+  dispatch JSON files. Atomically claims each file via `mv` to `claimed/`,
+  launches `tmux` manager + sprint sessions, dispatches `/sprint-supervisor`, and
+  writes a status JSON back to `status/` so the phone can poll for "manager up".
+  Supports `--dry-run` for installation validation without live tmux actions.
+  Single-instance guard via `/tmp/sprint-dispatch-watcher.lock`.
+- `scripts/sprint-dispatch-watcher.service` — systemd user unit (install under
+  `~/.config/systemd/user/`). Set `SPRINT_DISPATCH_DIR` via the `Environment=`
+  line to point at a cloud-synced folder (Dropbox, OneDrive, Google Drive, etc.)
+  so the phone can drop dispatch files through the synced folder and the watcher
+  picks them up.
+
+### Changed
+
+- `references/dispatch-patterns.md` §2 prerequisites: replaced the "watcher is a
+  small follow-up" stub with concrete install instructions (systemd + login-tmux
+  fallback), a signal-transport menu (synced folder / webhook / SSH relay), and
+  an updated status note marking the script as shipped.
+
 ## v1.5.0 — 2026-06-19
 
 Cross-platform tmux compatibility gate (#163).
