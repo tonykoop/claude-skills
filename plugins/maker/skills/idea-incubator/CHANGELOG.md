@@ -27,34 +27,51 @@
   it. Added `tests/test_shared_subassemblies.py` (11 cases). Also realigns the
   SKILL.md version with the manifest (see note below).
 
-> Note: entries 1.9.0–1.12.0 below were reconstructed — their original CHANGELOG
-> bumps were lost when the stacked idea-incubator PRs were auto-merged (the
-> manifest version advanced to 1.12.0 but SKILL.md/CHANGELOG stayed at 1.8.0).
-
 ## 1.12.0 - 2026-06-19
 
-- **Cross-pollination epic-level report (#247).** Mandated the
-  `### Cross-Pollination Opportunities Detected` epic section (interface reuse /
-  interoperability / silo alert, each cited) on `agents/cross-pollination-librarian.md`,
-  with `scripts/check_cross_pollination_section.py` enforcing it.
+- **Cross-pollination Opportunities Detected report (#247, PR #298).** Upgraded
+  `agents/cross-pollination-librarian.md` to v0.2.0: epics MUST now carry a
+  `### Cross-Pollination Opportunities Detected` section distinguishing
+  interface-reuse, interoperability, and silo-alert classes; in-place
+  replacement is idempotent so re-runs don't duplicate the section.
+- Added `scripts/check_cross_pollination_section.py`: conformance checker
+  readable from a file, stdin, or a live issue via `gh`.
+- 8 tests, all green.
 
 ## 1.11.0 - 2026-06-19
 
-- **Tuned domain router (#242).** `scripts/domain_router.py` — confidence-weighted
-  routing with word-boundary matching and a safe `needs-clarification` fallback;
-  `gemini_to_github.py` delegates to it (replacing the any-keyword baseline).
+- **Confidence-weighted domain router (#242, PR #297).** Added
+  `scripts/domain_router.py` (139 lines) implementing the
+  `references/domain-label-routing.md` rules: keyword-signal weighting,
+  confidence threshold gating, and `needs-triage` fallback.
+- `scripts/gemini_to_github.py` updated to delegate domain labelling to
+  `domain_router` instead of the inline ad-hoc fallback.
+- Updated `references/domain-label-routing.md` to document the routing
+  algorithm and tuning knobs.
 
 ## 1.10.0 - 2026-06-19
 
-- **Prior-lessons pre-read loader (#241).** `scripts/prior_lessons_preread.py` —
-  ranks Institutional Knowledge lessons by tag overlap, caps the injection, and
-  degrades gracefully when the store/folder is empty.
+- **Prior-lessons pre-read loader (#241, PR #294).** Added
+  `scripts/prior_lessons_preread.py`: parses the aggregate Institutional
+  Knowledge store, ranks lessons by `Applies-to` tag overlap with the draft's
+  tags, caps to `--limit` (default 5), falls back to `general`-tagged lessons
+  when nothing matches, and renders a ready-to-prepend "prior lessons to honor"
+  block.
+- Updated `references/institutional-knowledge.md` with the pre-read step and
+  cross-links to the new script.
 
 ## 1.9.0 - 2026-06-19
 
-- **Retrospective sweep (#240).** `scripts/retrospective_sweep.py` — sweeps a
-  closed epic's child stories, referencing commits, and PR references into a
-  backlinked `epic-<N>-retro.md` note under the Institutional Knowledge folder.
+- **Retrospective sweep + Institutional Knowledge folder (#240, PR #293).**
+  Added `scripts/retrospective_sweep.py`: given `--epic N`, parses the epic's
+  `## Stories` checklist, pulls each child story's final state and labels,
+  collects commits referencing the epic via `git log --grep`, and writes
+  `epic-<N>-sweep.json` (raw evidence) and `epic-<N>-retro.md` (retro note
+  with `Source: epic #N` backlink) into the Institutional Knowledge folder.
+- Added `references/institutional-knowledge/README.md` documenting the folder
+  layout and file-naming conventions.
+- Updated `agents/retrospective.md` to invoke the sweep script and point to
+  the output folder.
 
 ## 1.8.0 - 2026-06-18
 
