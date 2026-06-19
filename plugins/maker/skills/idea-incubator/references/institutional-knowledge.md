@@ -47,6 +47,15 @@ Before the parser generates new epics/stories from a brainstorm (Stage 3 of the
 4. **Cite, do not silently obey.** When a lesson changes a decision, note it in
    the generated epic ("applied lesson: <title>") so the choice is auditable.
 
+Steps 2–3 are automated by
+[`../scripts/prior_lessons_preread.py`](../scripts/prior_lessons_preread.py):
+pass `--tags <a,b>` (or `--brainstorm <file>` for naive tag derivation) and it
+parses this store plus any per-epic notes under
+[`institutional-knowledge/`](institutional-knowledge/), ranks by tag overlap,
+caps to `--limit` (default 5), falls back to `general` lessons when nothing
+matches, and prints the ready-to-prepend block. It exits cleanly with an
+explicit "no prior lessons" note when the store/folder is empty or missing.
+
 Keep the pre-read cheap: cap the injected lessons (e.g. top 5 by tag overlap)
 so the parse prompt does not bloat. Stale or contradicted lessons should be
 edited at the source by a later retro, not worked around in the parser.
