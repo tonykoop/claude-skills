@@ -38,6 +38,17 @@ Apply these on top of the base cadence:
 - **Dormancy / cool season** — stretch watering checks, suspend or minimize fertilizer, and lengthen wire-inspection cadence (cambium thickens slowly).
 - **Stressed / pest-flagged** (from [`health-diagnostics.md`](health-diagnostics.md)) — suspend fertilizer, no structural work, watering checks driven purely by the plant not the calendar.
 
+## Computing the watering/fertilizing cadence
+
+The watering-check and fertilizing cadences above are implemented in
+[`../scripts/care_cadence.py`](../scripts/care_cadence.py) (pure Python, no bpy):
+it turns a growth-speed class + phase + heat signal + recent stressors into a
+calendar-ready watering **check** (cadence + trigger + done-condition, phrased as
+an observation loop, not a fixed timer) and a fertilizing cadence that suspends
+in dormancy and for ~6 weeks after a repot. Import `care_schedule(...)` or run it
+with the documented overridable globals. (Wire-removal windows stay in
+`wire_window.py`, below.)
+
 ## Wire-removal inspection windows
 
 This is the engine's headline feature: **wire bites in as the branch thickens, and thickening rate is species- and season-dependent.** From the `wired` event date, compute an inspection window rather than a fixed removal date, because the branch — not the calendar — decides when the wire must come off.

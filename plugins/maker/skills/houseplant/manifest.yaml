@@ -1,12 +1,10 @@
-# Houseplant — Skill Manifest (v0.4.0)
-# Houseplant — Skill Manifest (v0.5.0)
+# Houseplant — Skill Manifest (v0.6.0)
 # Structured discoverability so an agent can read this manifest first,
 # decide what to load, and skip the prose. SKILL.md is the orchestrator;
 # this is its index.
 
 name: houseplant
-version: 0.4.0
-version: 0.5.0
+version: 0.6.0
 display_name: Houseplant
 audience:
   - Tony (primary)
@@ -103,6 +101,11 @@ scripts:
     inputs: ["WIRED_DATE", "GROWTH_CLASS (fast|moderate|slow)", "ACTIVE_GROWTH"]
     outputs: ["dict with first_inspection date, recheck_cadence_days, inspection_ladder, and calendar-ready guidance string"]
     requires_blender: false
+  - path: scripts/care_cadence.py
+    purpose: "Watering + fertilizing CHECK-cadence engine: species growth class + season/phase + heat + stressors -> observation-loop watering checks and fertilizing cadence (suspended in dormancy / after repot). Completes the watering/fertilizing half of #172."
+    inputs: ["GROWTH_CLASS (fast|moderate|slow)", "PHASE (active_growth|hardening|dormancy|repot_recovery)", "HEAT", "STRESSORS"]
+    outputs: ["dict: watering check {cadence_days, reminder, trigger, done_when}, fertilizing plan {cadence_days|suspended}, wire-removal pointer"]
+    requires_blender: false
   - path: scripts/bloom_forecast.py
     purpose: "Forecast a bloom window (date range, never a single date) with explicit confidence from the plant's own bud->bloom logs, species baseline, and warm/cool conditions (#173)"
     inputs: ["JSON: history_intervals_days, species, condition, anchor_date, plant_id/event/stage/location"]
@@ -171,7 +174,7 @@ benchmark:
 v2_features:
   - issue: 172
     feature: chrono-horticultural calendar engine
-    delivered: [references/chrono-engine.md, scripts/wire_window.py]
+    delivered: [references/chrono-engine.md, scripts/wire_window.py, scripts/care_cadence.py]  # care_cadence.py (watering/fertilizing cadence) added v0.6.0
   - issue: 173
     feature: bud and bloom chrono-tracker
     delivered: [references/bud-bloom-tracker.md, scripts/bloom_forecast.py]  # marker reuses cut_marker.py; forecast helper added v0.5.0
