@@ -1,6 +1,6 @@
 ---
 name: houseplant
-version: 0.8.0
+version: 0.9.0
 last-updated: 2026-06-19
 description: Manage houseplant and bonsai collection digital twins plus care workflows, with first-class Blender MCP support. Use this skill whenever the user mentions a houseplant or bonsai specimen, pruning plans, wire-coil bending or training, mobile phone scans (photogrammetry, LiDAR, orbit video, lazy-susan video), multi-angle plant photos, bonsai aerial roots or nebari, bud/bloom tracking, plant care checklists, watering or fertilizing schedules, propagation logs, ruler-based scale calibration of a 3D scan, or any task that updates an Obsidian/Markdown/spreadsheet plant database. Use this skill even when the user only mentions "my plant" plus an action (prune, wire, train, repot, scan, model) — it owns that workflow.
 ---
@@ -59,6 +59,7 @@ Inspect first, then write. Idempotency matters: check for existing collections a
 - `scripts/grafting_sim.py` — simulation-only boolean-union graft preview: duplicates scion + stock into a dated `05_simulations/sim_graft_*` collection and smooths the seam; never touches the canonical twin.
 - `scripts/graft_heal_window.py` — pure-Python; estimates the graft's multi-year heal-window range (by graft type, species fusion-readiness, conditions) and the Medium/High risk verdict (High on weak/pest-flagged plants or non-fusing species) to narrate the silhouette preview.
 - `scripts/propagation_tracker.py` — pure-Python; builds the parent/child lineage tree from `parent_plant_id` links (ancestors/descendants), validates the started→rooted→potted_up→independent lifecycle, and forecasts a rooting window with confidence.
+- `scripts/collection_dashboard.py` — pure-Python; aggregates care tasks from all individual chrono scripts (watering cadence, fertilizing schedule, wire inspection windows, bloom watch, propagule root-check, health flags) across every plant in a collection JSON file and renders a prioritised Markdown dashboard bucketed by urgency (overdue / today / this week / this month / later).
 
 `assets/` holds starter profiles for specific specimens (e.g. `assets/ficus-benjamina-starter.md`). Use them as a baseline plant record when the user hasn't created their own.
 
