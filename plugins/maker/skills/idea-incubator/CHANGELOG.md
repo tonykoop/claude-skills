@@ -1,5 +1,20 @@
 # Changelog
 
+## 1.14.0 - 2026-06-19
+
+- **image-gen-2 chapter asset-contract validator (#210).** Added
+  `scripts/image_chapter_validator.py` — a pure-stdlib gate that validates a
+  chapter JSON manifest against the contract defined in
+  `references/image-gen-2-chapter-template.md`. Enforces: all 10 required asset
+  sidecar fields, `derivative: true` and `non_dimensional: true` on every
+  generated asset, allowed `kind` values, `packet_ref` present and matching,
+  `proof-reviewed` threshold for publication (blocks on draft/privacy-reviewed),
+  and the two-source rule (authority artifacts may NOT carry `derivative: true`).
+  JSON output with `decision`, `publishable`, `violations[]`, and asset/artifact
+  counts. Exit 0 = pass, 1 = violations, 2 = bad input; `--require-publishable`
+  flag for CI use. 47 tests in `tests/test_image_chapter_validator.py`.
+  Also adds `tests/` directory (first tests for idea-incubator).
+
 ## 1.13.0 - 2026-06-19
 
 - **Offline Shared Subassemblies reporter (#244).** Added

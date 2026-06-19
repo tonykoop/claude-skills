@@ -1,6 +1,6 @@
 ---
 name: idea-incubator
-version: 1.13.0
+version: 1.14.0
 last-updated: 2026-06-19
 description: >-
   Capture, classify, connect, review, and promote speculative ideas into a
@@ -360,6 +360,15 @@ the one that matches the host shell:
 - [`scripts/build_circuits_inventory.py`](scripts/build_circuits_inventory.py) -
   offline-first helper that walks repos/vault for tagged ideas and emits the
   circuits inventory as Markdown/JSON (dry-run by default).
+- [`scripts/image_chapter_validator.py`](scripts/image_chapter_validator.py) -
+  validates an image-gen-2 chapter manifest against the asset-contract defined
+  in `references/image-gen-2-chapter-template.md` (Refs #92, #100, #210):
+  checks required sidecar fields, enforces `derivative: true` and
+  `non_dimensional: true` on all generated assets, validates `kind` values,
+  enforces `packet_ref`, blocks publication when any asset is below
+  `proof-reviewed`, and enforces the two-source rule on authority artifacts.
+  Exit 0 = pass, 1 = violations, 2 = bad input. Use `--require-publishable`
+  to fail on a valid-but-draft chapter.
 
 If neither works (mobile zip-upload, sandboxed Codex Desktop, no `gh`), fall
 back to the copy-pasteable `gh label create` block in
