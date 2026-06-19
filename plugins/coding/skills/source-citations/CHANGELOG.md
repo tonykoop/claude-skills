@@ -1,5 +1,12 @@
 # Changelog — source-citations
 
+## 0.2.0 — 2026-06-19
+
+- Add first machine-runnable eval suite (`evals/evals.json`): 5 evals covering
+  registry build from TSV, SOURCES.md generation with valid citations,
+  unknown-key rejection, blank-why rejection, and citation-candidate proposal
+  without auto-write.
+
 ## 0.1.0 — 2026-05-22
 
 Initial release.

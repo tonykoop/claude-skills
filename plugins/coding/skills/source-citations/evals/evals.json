@@ -1,0 +1,40 @@
+{
+  "skill_name": "source-citations",
+  "evals": [
+    {
+      "id": 1,
+      "name": "build-registry-from-tsv",
+      "prompt": "Build the citation registry from the library spreadsheet export.",
+      "expected_output": "Runs `scripts/build_registry.py` against `references/library.tsv` and produces `references/registry.yaml` and `references/registry.json`; each entry gets a stable key derived from the source record; reports how many entries were written, any rows skipped for missing required fields, and whether the output key count matches the row count in the TSV; does NOT invent or guess data for rows with missing fields — those are reported as skipped.",
+      "files": ["scripts/build_registry.py", "references/library.tsv", "references/registry.yaml", "references/registry.json"]
+    },
+    {
+      "id": 2,
+      "name": "generate-sources-md-valid-citations",
+      "prompt": "Generate SOURCES.md for my shakuhachi-bore repo. It already has a .citations.yaml.",
+      "expected_output": "Runs `scripts/gen_sources.py` with the repo path pointing to a `.citations.yaml` that has valid keys (all present in `references/registry.yaml`) and non-empty `why` fields; produces a `SOURCES.md` with one entry per cited key, the source metadata from the registry, and the maker-supplied `why` sentence; does NOT add or remove citations beyond what the `.citations.yaml` specifies; confirms the number of cited sources in the output.",
+      "files": ["scripts/gen_sources.py", "references/registry.yaml", "references/citations-template.yaml"]
+    },
+    {
+      "id": 3,
+      "name": "validator-rejects-unknown-key",
+      "prompt": "Generate SOURCES.md for my koto-bridge repo.",
+      "expected_output": "Calls `scripts/gen_sources.py`; if the repo's `.citations.yaml` contains a key not found in `references/registry.yaml`, refuses to write `SOURCES.md` and reports the unknown key(s) to the user with the error message 'unknown citation key'; does NOT produce a partial or best-effort SOURCES.md — the output is all-or-nothing to prevent fake citations from appearing in research repos.",
+      "files": ["scripts/gen_sources.py", "references/registry.yaml"]
+    },
+    {
+      "id": 4,
+      "name": "validator-rejects-blank-why",
+      "prompt": "The .citations.yaml has some entries where I haven't filled in the why yet. Can you generate the SOURCES.md anyway?",
+      "expected_output": "Refuses to generate `SOURCES.md` when any entry in the repo's `.citations.yaml` has a blank or missing `why` field; explains that every citation requires a maker-written sentence stating how that source informed this instrument; offers to show the `.citations.yaml` template (`references/citations-template.yaml`) so the user can fill in the missing `why` fields; does NOT auto-generate placeholder `why` sentences.",
+      "files": ["scripts/gen_sources.py", "references/citations-template.yaml"]
+    },
+    {
+      "id": 5,
+      "name": "propose-citation-candidates-not-auto-write",
+      "prompt": "I'm working on a dulcimer fret-spacing repo. Can you suggest which sources from the registry might be relevant?",
+      "expected_output": "Proposes citation candidates by searching `references/registry.yaml` for entries whose topic, instrument tags, or keywords match dulcimer / fret / string-vibration / scale-length; presents them as a clearly labelled unconfirmed candidate list with key, title, and a one-line relevance note; does NOT write anything to the repo's `.citations.yaml`; reminds the user that they must decide which sources apply and must write the `why` sentence for each one they accept.",
+      "files": ["references/registry.yaml", "references/instrument-tagging.md"]
+    }
+  ]
+}

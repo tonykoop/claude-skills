@@ -1,7 +1,7 @@
 ---
 name: source-citations
-version: 0.1.0
-last-updated: 2026-05-22
+version: 0.2.0
+last-updated: 2026-06-19
 description: >-
   Turn the Tony Koop instrument-design source library (the Drive spreadsheet of
   ~200 tools, papers, calculators, and references) into a keyed master
