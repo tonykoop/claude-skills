@@ -1,6 +1,6 @@
 # Changelog — houseplant
 
-## v0.6.0 — 2026-06-19 (watering/fertilizing cadence engine — #172)
+## v0.7.0 — 2026-06-19 (watering/fertilizing cadence engine — #172)
 
 Completes the watering/fertilizing half of the Chrono-Horticultural Engine
 (#172). The chrono-engine reference and `wire_window.py` (wire-removal windows)
@@ -14,7 +14,7 @@ runnable implementation until now.
   that suspends in dormancy and for ~6 weeks after a repot/root reduction.
   Caller-overridable globals for exec()-style use, matching the other scripts.
 - Added 11 `CareCadence` tests (class/heat/phase/stressor effects, fertilizer
-  suspension, check-phrasing, ≥1-day floor, validation); houseplant suite now 59.
+  suspension, check-phrasing, ≥1-day floor, validation); houseplant suite now 77.
 - `references/chrono-engine.md` now points at the new script; local + root
   manifests register it under #172's delivered list.
 - **Fix:** collapsed duplicate `version` / `canonical_version` / `notes` keys in
@@ -69,6 +69,30 @@ implements the documented forecast *order-of-evidence* deterministically.
 
 - `references/bud-bloom-tracker.md` + `SKILL.md` route the forecast step at the
   helper; per-skill + root `manifest.yaml` list it under #173.
+## v0.6.0 — 2026-06-19 (propagation lineage + rooting forecast — #177)
+
+Adds the computable layer behind the propagation tracker (#177), which shipped
+in v0.3.0 as a reference doc only. (Stacks above #175 health-triage v0.4.0 and
+#173 bloom-forecast v0.5.0.)
+
+### Added
+
+- **`scripts/propagation_tracker.py`** — pure-Python. Builds the collection's
+  parent/child **lineage tree** from `parent_plant_id` links (ancestors,
+  descendants, indented family tree; external/missing parents become roots,
+  cycles terminate safely) — the issue's headline "see lineage across the
+  collection" ask. Validates the started→rooted→potted_up→independent (or
+  failed) **lifecycle** state machine, derives child ids, and forecasts a
+  **rooting window** (always a date range) with confidence from method + species
+  + warm/cool conditions.
+- **`tests/test_propagation_tracker.py`** — 18 cases (lifecycle transitions,
+  ancestors/descendants/forest/tree, external-parent + cycle safety, child-id
+  derivation, rooting forecast, CLI).
+
+### Changed
+
+- `references/propagation.md` + `SKILL.md` route the lineage/forecast step at the
+  helper; per-skill + root `manifest.yaml` list it under #177.
 
 ## v0.3.0 — 2026-06-15 (v2 feature set — epic #209)
 

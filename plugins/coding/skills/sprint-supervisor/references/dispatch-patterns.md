@@ -84,22 +84,64 @@ The watcher is the one piece that must be **installed and running before the
 phone can dispatch** — see Prerequisites below. Mobile cold-start cannot work
 with zero PC-side setup; something on the PC has to be listening.
 
+### The watcher (shipped): `scripts/sprint-dispatch-watcher.sh`
+
+The watcher is now implemented and tested
+([`scripts/sprint-dispatch-watcher.sh`](../scripts/sprint-dispatch-watcher.sh),
+covered by `tests/test-sprint-dispatch-watcher.sh`). It mirrors
+`notify-supervisor.sh`'s portable, fail-soft style and does the PC-side work:
+
+```bash
+# One-shot (e.g. from a cron/systemd timer): process any pending dispatch, exit.
+sprint-dispatch-watcher.sh --once
+
+# Long-running poller (e.g. under a systemd user unit), launching via a wrapper:
+sprint-dispatch-watcher.sh --interval 30 --exec /path/to/launch-sprint.sh
+```
+
+What it guarantees:
+
+- **Atomic claim.** It `mv`s the dispatch file into `dispatch/claimed/` before
+  acting, so a double-fire (the phone retrying, or two watchers) launches **one**
+  manager, never two.
+- **Staleness gate.** A dispatch whose `requested_at` is older than
+  `SPRINT_SUPERVISOR_MAX_AGE_SECONDS` (default 3600) is ignored, so a stale file
+  resurfacing from a synced folder can't relaunch last night's sprint.
+- **Validation.** Only `action: "cold-start"` is honored; anything else is
+  rejected with a status note.
+- **Status write-back.** It writes `status/<scope>.status.json`
+  (`state: dispatched|rejected|stale`) — the file the phone polls for "manager up".
+- **Pluggable launch.** With no `--exec` it prints the bootstrap line
+  (`/sprint-supervisor scope=… queue=…`) and writes status only — safe to run
+  anywhere. `--exec CMD` hands the actual launch to your wrapper
+  (`CMD <scope> <queue> <claimed-file>`), so the watcher never hardcodes how the
+  manager comes up.
+
+Test seams (`NOW_EPOCH_OVERRIDE`, `SPRINT_SUPERVISOR_DISPATCH_DIR`,
+`SPRINT_SUPERVISOR_STATUS_DIR`) let the suite exercise claim/staleness/validation
+without a real phone or tmux.
+
 ### Prerequisites for mobile cold-start (install on the PC)
 
-- A persistent watcher process (`sprint-dispatch-watcher.sh`, an analog of the
-  bundled `notify-supervisor.sh` event-drop pattern) under a process manager so
-  it survives reboots (systemd user unit, a login `tmux` session, or Task
-  Scheduler under WSL).
+- The bundled watcher process (`scripts/sprint-dispatch-watcher.sh`, shipped) run
+  under a process manager so it survives reboots (systemd user unit, a login
+  `tmux` session, or Task Scheduler under WSL). It already claims atomically and
+  gates stale dispatches — install it, don't re-invent it.
 - A path the phone can write to and the PC can read: either a cloud-synced
   folder both ends see, or a tiny inbound endpoint that lands the JSON on disk.
-- The watcher must claim the dispatch atomically (`mv` into a `claimed/` dir)
-  so a double-fire doesn't launch two managers.
+  Point the watcher at it with `SPRINT_SUPERVISOR_DISPATCH_DIR` (or
+  `--dispatch-dir`).
+- A launch wrapper for `--exec` if you want the watcher to actually start the
+  sprint (otherwise it prints the bootstrap line and writes status for an
+  operator/agent to act on).
 
-> **Status (#160):** path *chosen and documented*; a full live phone→PC test
-> still needs Tony to confirm the synced-folder/endpoint piece and run it once
-> end-to-end. The watcher script itself is a small follow-up — it mirrors
-> `scripts/notify-supervisor.sh`. Until the watcher is installed, fall back to
-> warm-start (§1) or a Cowork session that is already up. Don't invent a
+> **Status (#160):** path *chosen and documented*, and the **watcher script is
+> shipped + tested** (`scripts/sprint-dispatch-watcher.sh`). What remains is
+> Tony's to confirm: the **signal transport** (which synced folder / inbound
+> endpoint the phone writes to) and a single live phone→PC end-to-end run, since
+> that depends on his home setup, not the repo. Until the watcher is installed
+> and pointed at a real transport, fall back to warm-start (§1) or a Cowork
+> session that is already up. Don't invent a
 > remote-execution mechanism that isn't actually in place — confirm with Tony
 > which signal transport he wants before standing up the watcher.
 

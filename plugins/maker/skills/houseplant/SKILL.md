@@ -1,6 +1,6 @@
 ---
 name: houseplant
-version: 0.6.0
+version: 0.7.0
 last-updated: 2026-06-19
 description: Manage houseplant and bonsai collection digital twins plus care workflows, with first-class Blender MCP support. Use this skill whenever the user mentions a houseplant or bonsai specimen, pruning plans, wire-coil bending or training, mobile phone scans (photogrammetry, LiDAR, orbit video, lazy-susan video), multi-angle plant photos, bonsai aerial roots or nebari, bud/bloom tracking, plant care checklists, watering or fertilizing schedules, propagation logs, ruler-based scale calibration of a 3D scan, or any task that updates an Obsidian/Markdown/spreadsheet plant database. Use this skill even when the user only mentions "my plant" plus an action (prune, wire, train, repot, scan, model) — it owns that workflow.
 ---
@@ -26,7 +26,7 @@ The killer app this skill enables is **simulate before you cut**: build a parame
    - **Aerial-root and nebari development** (teal markers, guided-root tracing, `tip_promising → fused` lifecycle): [`references/aerial-roots-nebari.md`](references/aerial-roots-nebari.md).
    - **Plant-health screening from photos** ("check-engine light": chlorosis/leaf-drop/pest flags cross-referenced to care events): [`references/health-diagnostics.md`](references/health-diagnostics.md). After the vision pass names the symptoms, run [`scripts/health_triage.py`](scripts/health_triage.py) to turn them into `health_flag_added` event records and compute the pest/rot risk escalation deterministically.
    - **Virtual grafting preview** (Blender boolean-union fusion silhouette, simulation-only): [`references/grafting-sandbox.md`](references/grafting-sandbox.md).
-   - **Propagation** (cuttings, air-layering, rooting timelines, parent/child lineage): [`references/propagation.md`](references/propagation.md).
+   - **Propagation** (cuttings, air-layering, rooting timelines, parent/child lineage): [`references/propagation.md`](references/propagation.md). Run [`scripts/propagation_tracker.py`](scripts/propagation_tracker.py) to render the collection's lineage tree from `parent_plant_id` links and to forecast a rooting window with confidence.
 5. **Recommend decisively.** Include risk level, evidence, assumptions, and a quick pre-action verification step for irreversible physical actions. Be explicit about what was simulated vs. what was observed.
 6. **Sync results back.** Blender scene changes, annotated images, plant record updates, calendar-ready reminders, care checklists.
 
@@ -53,9 +53,11 @@ Inspect first, then write. Idempotency matters: check for existing collections a
 - `scripts/cut_marker.py` — places a colored empty/sphere marker at a coordinate with the skill's color semantics (also serves bud `pink` and aerial-root `teal` events).
 - `scripts/sim_collection.py` — clones the current-state twin into a dated `05_simulations/sim_<scenario>` collection for non-destructive what-if.
 - `scripts/wire_window.py` — pure-Python chrono helper; returns the wire-removal inspection window (first-inspection date + recheck cadence) from species growth class, the wired date, and active-growth state.
+- `scripts/care_cadence.py` — pure-Python chrono helper; turns species growth class + season/phase + heat + recent stressors into a calendar-ready watering **check** (cadence + trigger + done-condition) and a fertilizing cadence that suspends in dormancy and after a repot.
 - `scripts/bloom_forecast.py` — pure-Python bloom-window forecaster; returns a date range (never a single date) plus explicit confidence from the plant's own bud→bloom logs (preferred), a species baseline, and a warm/cool condition modifier.
 - `scripts/aerial_root_trace.py` — draws a teal, gently-drooping guided-root path from a branch tip to a substrate landing point and stamps its lifecycle state.
 - `scripts/grafting_sim.py` — simulation-only boolean-union graft preview: duplicates scion + stock into a dated `05_simulations/sim_graft_*` collection and smooths the seam; never touches the canonical twin.
+- `scripts/propagation_tracker.py` — pure-Python; builds the parent/child lineage tree from `parent_plant_id` links (ancestors/descendants), validates the started→rooted→potted_up→independent lifecycle, and forecasts a rooting window with confidence.
 
 `assets/` holds starter profiles for specific specimens (e.g. `assets/ficus-benjamina-starter.md`). Use them as a baseline plant record when the user hasn't created their own.
 
