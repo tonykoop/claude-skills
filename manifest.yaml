@@ -297,7 +297,6 @@ skills:
     notes: "Initial snapshot with catalog/auth-state preflight (issue 72) for honest sparse-catalog output."
 
   sprint-supervisor:
-    canonical_version: 1.5.0
     canonical_version: 1.6.0
     runtime: claude
     repo_path: plugins/coding/skills/sprint-supervisor
