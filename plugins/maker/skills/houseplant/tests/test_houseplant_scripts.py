@@ -41,6 +41,7 @@ EXPECTED_SCRIPTS = {
     "aerial_root_trace.py",
     "grafting_sim.py",
     "care_cadence.py",
+    "aerial_root_tracker.py",
 }
 
 
@@ -277,6 +278,75 @@ class CareCadence(unittest.TestCase):
         self.assertEqual(sched["watering"]["task"], "watering")
         self.assertEqual(sched["fertilizing"]["task"], "fertilizing")
         self.assertIn("wire_window.py", sched["wire_removal"])
+
+
+class AerialRootTracker(unittest.TestCase):
+    """#174 aerial-root: lifecycle + intervention gate + thickening forecast (no bpy)."""
+
+    def setUp(self):
+        import aerial_root_tracker as mod
+        self.mod = mod
+
+    def test_lifecycle_order_advances(self):
+        self.assertEqual(self.mod.next_state("tip_promising"), "guided")
+        self.assertEqual(self.mod.next_state("reached_soil"), "thickening")
+
+    def test_fused_is_terminal(self):
+        self.assertTrue(self.mod.is_terminal("fused"))
+        with self.assertRaises(ValueError):
+            self.mod.next_state("fused")
+
+    def test_valid_transitions(self):
+        self.assertTrue(self.mod.valid_transition("guided", "reached_soil"))
+        self.assertFalse(self.mod.valid_transition("tip_promising", "fused"))  # no skipping
+        self.assertTrue(self.mod.valid_transition("guided", "failed"))         # can fail
+        self.assertFalse(self.mod.valid_transition("fused", "failed"))         # not after fused
+
+    def test_unknown_state_raises(self):
+        with self.assertRaises(ValueError):
+            self.mod.next_state("sprouting")
+
+    def test_intervention_gated_on_health_and_warmth(self):
+        held = self.mod.intervention_for("guided", healthy=False, warm=True)
+        self.assertFalse(held["act"])
+        self.assertIn("HOLD", held["guidance"])
+        cold = self.mod.intervention_for("guided", healthy=True, warm=False)
+        self.assertFalse(cold["act"])
+
+    def test_intervention_acts_when_healthy_and_warm(self):
+        ok = self.mod.intervention_for("guided", healthy=True, warm=True)
+        self.assertTrue(ok["act"])
+        self.assertIn("guide", ok["guidance"].lower())
+
+    def test_forecast_is_a_range_with_confidence(self):
+        fc = self.mod.thickening_forecast("guided", "fast", "warm", species="ficus")
+        self.assertLess(fc["remaining_days_min"], fc["remaining_days_max"])
+        self.assertIn(fc["confidence"], {"low", "medium", "high"})
+
+    def test_later_state_has_less_remaining_time(self):
+        early = self.mod.thickening_forecast("tip_promising", "moderate")["remaining_days_max"]
+        late = self.mod.thickening_forecast("thickening", "moderate")["remaining_days_max"]
+        self.assertGreater(early, late)
+
+    def test_warm_shortens_vs_cool(self):
+        warm = self.mod.thickening_forecast("guided", "fast", "warm")["remaining_days_max"]
+        cool = self.mod.thickening_forecast("guided", "fast", "cool")["remaining_days_max"]
+        self.assertLess(warm, cool)
+
+    def test_fused_forecast_reports_done(self):
+        fc = self.mod.thickening_forecast("fused", "fast")
+        self.assertTrue(fc["fused"])
+
+    def test_forecast_unknown_class_raises(self):
+        with self.assertRaises(ValueError):
+            self.mod.thickening_forecast("guided", "turbo")
+
+    def test_track_combines_views(self):
+        t = self.mod.track("reached_soil", "fast", "warm", species="ficus",
+                           from_date="2026-06-19")
+        self.assertEqual(t["next_state"], "thickening")
+        self.assertTrue(t["intervention"]["act"])
+        self.assertIn("window_start", t["forecast"])
 
 
 # ---------------------------------------------------------------------------
