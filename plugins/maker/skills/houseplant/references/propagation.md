@@ -37,7 +37,11 @@ Event types (extends `collection-records-and-care.md`):
 
 ## Parent/child lineage
 
-Track lineage so the collection's family tree is visible:
+Track lineage so the collection's family tree is visible. The deterministic
+helper [`../scripts/propagation_tracker.py`](../scripts/propagation_tracker.py)
+builds this tree from the `parent_plant_id` links (ancestors / descendants /
+indented tree), validates the lifecycle transitions, and forecasts a rooting
+window — feed it the collection's propagule records as JSON. Lineage rules:
 
 - Every propagule carries a `parent_plant_id` from the moment it is started.
 - Use a child id derived from the parent: e.g. parent `ficus-benjamina-01` -> cuttings `ficus-benjamina-01-c01`, `-c02`, ... While dependent, the propagule lives as a sub-record / log lines under the parent.
