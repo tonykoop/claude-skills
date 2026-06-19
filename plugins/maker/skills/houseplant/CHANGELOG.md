@@ -1,5 +1,31 @@
 # Changelog — houseplant
 
+## v0.4.0 — 2026-06-19 (health-triage engine — #175)
+
+Completes the CV plant-health "check-engine light" (#175), which shipped in
+v0.3.0 as a reference doc only. The vision pass (the multimodal agent naming
+symptoms from photos) now has a deterministic triage layer behind it.
+
+### Added
+
+- **`scripts/health_triage.py`** — pure-Python (no Blender). Maps observed
+  symptoms to candidate flags, cross-references recent care events (a repot
+  within ~14 days re-reads a sudden drop as transplant stress; a recent feed
+  re-reads margin burn as fertilizer/salt), renders the `health_flag_added`
+  event records with evidence + explicit confidence, and computes the
+  structural-work risk escalation — any open **pest/rot** flag forces
+  pruning/wiring/root work to **High** risk (per `bonsai-module.md`). Enforces
+  the reference's posture: screen-not-diagnose, inspection-first, **never** a
+  chemical recommendation; pest/rot candidates default to low confidence.
+- **`tests/test_health_triage.py`** — 12 cases (symptom mapping, unknown-symptom
+  surfacing, care cross-reference incl. the 14-day window, risk escalation,
+  no-chemicals posture, rendering).
+
+### Changed
+
+- `references/health-diagnostics.md` and `SKILL.md` health routing now point the
+  output step at `health_triage.py`.
+
 ## v0.3.0 — 2026-06-15 (v2 feature set — epic #209)
 
 Implements the six modules deferred from v1 (the original BonsaiBot brainstorm), extending the existing skill in place. All new work shares the Blender MCP + Obsidian/Markdown plant-database context; the simulate-before-you-cut philosophy and the color semantics (red/amber/blue/green/pink/teal) carry through unchanged.
