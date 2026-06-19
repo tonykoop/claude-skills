@@ -503,8 +503,38 @@ When the user returns and dismisses the supervisor:
    rm -f /tmp/sprint-supervisor/<scope>.pending
    # Keep <scope>.summary.md and <scope>.prune.log — user may want to grep them later.
    ```
-3. Stop the watchdog if you started it (check via `pgrep -f sprint-watchdog.sh`).
+3. Stop the watchdog if you started it. **Use the bracket trick so `pkill` doesn't match its own command line and kill your shell:** `pkill -f '[s]print-watchdog.sh'` (plain `pkill -f sprint-watchdog.sh` self-matches and aborts with exit 144 — 2026-06-19 lesson). Confirm with `pgrep -f '[s]print-watchdog.sh'`.
 4. Don't reschedule another wakeup.
+
+## Close-down procedure (full sprint teardown)
+
+When the user says "wrap up the sprint" / "close down" / "tear down the grid," run this ordered procedure. **Order matters: the safety checks gate the destructive cleanup — never prune before confirming no unpushed work would be lost.**
+
+1. **Settle in-flight work.** Confirm no background builds/migrations/merges are mid-flight; let them finish and report. Don't tear down while a task is running.
+2. **Deliver the close-out summary** in chat (merges by repo, issues closed, what's held + why, live-host state). See "Morning summary."
+2b. **Write a persisted SPRINT HANDOFF doc** to `<workspace>/docs/plans/<date>-sprint-handoff.md` — the durable artifact the next session/manager reads first (an evolved sprint-tracker). It MUST contain these sections:
+   - **Status / what was done** — merged PRs by repo with #s, issues closed, live-host/deploy state, key fixes (with the one-line *why* for non-obvious ones).
+   - **Up next** — the prioritized open work: ready-to-merge PRs, held PRs + what unblocks each, and the real gating items (e.g. launch gates). Be specific (PR/issue #s, branch names, file:line where known).
+   - **Lessons learned** — what actually bit this sprint and the rule that prevents it next time (cite concretely, e.g. "stale-branch merges revert main — rebase + re-cut, see #1836/#1806").
+   - **Concerns to watch** — latent risks, fragile areas, things that "look done but aren't," budget/usage constraints, and anything verified-by-claim-not-evidence.
+   Keep it scannable but specific; link the go/no-go scorecard if one exists. Save the matching durable facts to memory (see step 8). This doc + memory together replace a hand-maintained sprint tracker.
+3. **Stash check** — stashes live per-repo (shared across that repo's worktrees) and **survive worktree removal / branch deletion**, so they're not at risk from cleanup, but surface them so the user can review/drop stale ones:
+   ```bash
+   for r in <repos>; do echo "== $r =="; git -C <workspace>/$r stash list; done
+   ```
+4. **Unpushed-work check (the real gate).** Scan every worktree for uncommitted (`dirty`) or unpushed (`ahead>0`, or a never-pushed `noup` branch with unique commits) state:
+   ```bash
+   git -C <repo> worktree list --porcelain | awk '/^worktree /{print $2}' | while read wt; do
+     dirty=$(git -C "$wt" status --porcelain | wc -l)
+     ahead=$(git -C "$wt" rev-list --count '@{u}..HEAD' 2>/dev/null || echo noup)
+     [ "$dirty" -gt 0 ] || { [ "$ahead" != 0 ] && [ "$ahead" != noup ]; } && echo "$wt dirty=$dirty ahead=$ahead"
+   done
+   ```
+   Distinguish: `dirty=` large counts on a `main` worktree are usually **build artifacts** (target/, node_modules), not work; `ahead>0` and `noup`-with-unique-commits are **real unpushed commits** — list those explicitly and get the user's call (push vs discard) before any `--apply` cleanup.
+5. **Disk cleanup** — run `/disk-cleanup` **dry-run first** (it defaults to dry-run; reports bytes freed without destroying), review what it would prune, then `--apply` only after the user confirms and step 4 is clear. It is safe-by-default (refuses dirty/unmerged worktrees, resets persona worktrees rather than removing) but the dry-run→review→apply discipline still matters.
+6. **Tear down the grid** — kill only the sprint session(s) you launched (`tmux kill-session -t sprint`), never the user's manager/reviewer/other sessions. Verify with `tmux has-session -t sprint`.
+7. **Stop the watchdog + clean scope files** (see "On exit" steps 2–3).
+8. **Save memory** for any non-obvious decisions/findings from the sprint, and **don't reschedule a wakeup** — the loop is over.
 
 ## Tuning notes from the 2026-05-18 session
 
