@@ -1,10 +1,10 @@
-# Houseplant — Skill Manifest (v0.3.0)
+# Houseplant — Skill Manifest (v0.4.0)
 # Structured discoverability so an agent can read this manifest first,
 # decide what to load, and skip the prose. SKILL.md is the orchestrator;
 # this is its index.
 
 name: houseplant
-version: 0.3.0
+version: 0.4.0
 display_name: Houseplant
 audience:
   - Tony (primary)
@@ -106,6 +106,11 @@ scripts:
     inputs: ["PLANT_ID", "ROOT_ID", "START", "END", "STATE", "optional DROOP/SAMPLES"]
     outputs: ["teal poly-curve <plant_id>_aerial_root_trace_<root_id> in 04_markers with state metadata"]
     requires_blender: true
+  - path: scripts/health_triage.py
+    purpose: "Triage observed health symptoms into health_flag_added records and a pest/rot structural-risk verdict; inspection-first, never chemical (#175)"
+    inputs: ["JSON: observations[{symptom,photo,region}], care_events[{type,date}], today"]
+    outputs: ["health_flag_added event blocks + structural-work risk (normal|High)"]
+    requires_blender: false
   - path: scripts/grafting_sim.py
     purpose: "Simulation-only boolean-union graft preview: duplicate scion+stock into dated sim_graft collection, union, corrective-smooth the seam; canonical twin untouched"
     inputs: ["PLANT_ID", "SCION_OBJ", "STOCK_OBJ", "GRAFT_LABEL", "optional BLEND_RADIUS/DATE_OVERRIDE"]
@@ -168,7 +173,7 @@ v2_features:
     delivered: [references/aerial-roots-nebari.md, scripts/aerial_root_trace.py]
   - issue: 175
     feature: computer-vision plant health diagnostics
-    delivered: [references/health-diagnostics.md]
+    delivered: [references/health-diagnostics.md, scripts/health_triage.py]  # script added v0.4.0
   - issue: 176
     feature: virtual grafting sandbox in Blender
     delivered: [references/grafting-sandbox.md, scripts/grafting_sim.py]

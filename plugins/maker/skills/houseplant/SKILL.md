@@ -1,7 +1,7 @@
 ---
 name: houseplant
-version: 0.3.0
-last-updated: 2026-06-15
+version: 0.4.0
+last-updated: 2026-06-19
 description: Manage houseplant and bonsai collection digital twins plus care workflows, with first-class Blender MCP support. Use this skill whenever the user mentions a houseplant or bonsai specimen, pruning plans, wire-coil bending or training, mobile phone scans (photogrammetry, LiDAR, orbit video, lazy-susan video), multi-angle plant photos, bonsai aerial roots or nebari, bud/bloom tracking, plant care checklists, watering or fertilizing schedules, propagation logs, ruler-based scale calibration of a 3D scan, or any task that updates an Obsidian/Markdown/spreadsheet plant database. Use this skill even when the user only mentions "my plant" plus an action (prune, wire, train, repot, scan, model) — it owns that workflow.
 ---
 
@@ -24,7 +24,7 @@ The killer app this skill enables is **simulate before you cut**: build a parame
    - **Watering / fertilizing / wire-removal scheduling** (dynamic, observation-driven checks; wire bite-in inspection windows): [`references/chrono-engine.md`](references/chrono-engine.md).
    - **Bud / bloom / new-flush tracking and forecasting** (pink markers, bloom-window prediction, bud-drop logging): [`references/bud-bloom-tracker.md`](references/bud-bloom-tracker.md).
    - **Aerial-root and nebari development** (teal markers, guided-root tracing, `tip_promising → fused` lifecycle): [`references/aerial-roots-nebari.md`](references/aerial-roots-nebari.md).
-   - **Plant-health screening from photos** ("check-engine light": chlorosis/leaf-drop/pest flags cross-referenced to care events): [`references/health-diagnostics.md`](references/health-diagnostics.md).
+   - **Plant-health screening from photos** ("check-engine light": chlorosis/leaf-drop/pest flags cross-referenced to care events): [`references/health-diagnostics.md`](references/health-diagnostics.md). After the vision pass names the symptoms, run [`scripts/health_triage.py`](scripts/health_triage.py) to turn them into `health_flag_added` event records and compute the pest/rot risk escalation deterministically.
    - **Virtual grafting preview** (Blender boolean-union fusion silhouette, simulation-only): [`references/grafting-sandbox.md`](references/grafting-sandbox.md).
    - **Propagation** (cuttings, air-layering, rooting timelines, parent/child lineage): [`references/propagation.md`](references/propagation.md).
 5. **Recommend decisively.** Include risk level, evidence, assumptions, and a quick pre-action verification step for irreversible physical actions. Be explicit about what was simulated vs. what was observed.

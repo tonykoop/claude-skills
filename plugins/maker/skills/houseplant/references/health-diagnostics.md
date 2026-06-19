@@ -47,6 +47,15 @@ State the cross-reference in the output ("yellowing of lower leaves + a repot 9 
 
 ## Output: health flags on the record
 
+The vision pass names the symptoms; [`../scripts/health_triage.py`](../scripts/health_triage.py)
+turns them into the records below deterministically — it maps each symptom to a
+candidate flag, cross-references recent care events (a repot within ~14 days
+re-reads a sudden drop as stress; a recent feed re-reads margin burn as
+fertilizer/salt), defaults pest/rot candidates to **low** confidence, and emits
+the `health_flag_added` blocks plus the structural-risk verdict. Feed it the
+observed symptoms as JSON (`{"observations": [...], "care_events": [...],
+"today": "..."}`); it never recommends a chemical.
+
 Each finding becomes a `health_flag_added` event (existing event type) with evidence:
 
 ```markdown
