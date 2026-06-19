@@ -305,10 +305,10 @@ skills:
     notes: "Initial snapshot with catalog/auth-state preflight (issue 72) for honest sparse-catalog output."
 
   sprint-supervisor:
-    canonical_version: 1.3.0
+    canonical_version: 1.5.0
     runtime: claude
     repo_path: plugins/coding/skills/sprint-supervisor
-    last_updated: 2026-06-15
+    last_updated: 2026-06-19
     status: active
     deps:
       - sprint-manager  # cold-start handoff: supervisor bootstraps manager when no manager is running; do not reimplement manager topology here
@@ -317,7 +317,9 @@ skills:
       sprint-watchdog.sh (mechanical ~70% of approvals); this skill handles
       judgment ~30% — commands, rate-limit prompts, escalation, morning
       summary. Scales by named scope across twingrid/triplegrid/quadgrid via
-      /tmp lockfile.
+      /tmp lockfile. v1.5.0 adds scripts/tmux-preflight.sh — a cross-platform
+      tmux version gate (soft-warns on old tmux, guides on missing tmux) wired
+      into grid-scan.sh (#163).
 
   run-benchmark:
     canonical_version: 0.1.0
