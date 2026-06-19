@@ -143,15 +143,16 @@ skills:
       adds first machine-runnable eval suite (4 evals).
 
   verification-gates:
-    canonical_version: 0.1.0
+    canonical_version: 0.2.0
     runtime: portable
     repo_path: plugins/coding/skills/verification-gates
-    last_updated: 2026-06-17
+    last_updated: 2026-06-19
     status: active
     notes: >-
       Automated QA decision gates for generated work: repeatable command
       execution, markdown/length linting, and URDF revolute/prismatic
-      joint-limit checks.
+      joint-limit checks. v0.2.0 adds first machine-runnable eval suite
+      (4 evals).
 
   codex-gh-fix-ci:
     canonical_version: 1.0.0
