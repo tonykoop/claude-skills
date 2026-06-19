@@ -328,10 +328,10 @@ skills:
       evals); collapses duplicate version keys in SKILL.md.
 
   run-benchmark:
-    canonical_version: 0.1.0
+    canonical_version: 0.2.0
     runtime: shared
     repo_path: plugins/coding/skills/run-benchmark
-    last_updated: 2026-06-13
+    last_updated: 2026-06-19
     status: active
     notes: >-
       Drive an AI-agent benchmark contribution end-to-end (run, scrutinize,
@@ -339,6 +339,7 @@ skills:
       orients on the target repo's own contract (AGENTS.md / CONTRIBUTING.md)
       and detects its harness. MakerBench-HWE is the worked reference;
       GrabCADBench / CADGenBench / SWE-bench-family and internal evals in scope.
+      v0.2.0 adds first machine-runnable eval suite (5 evals).
 
   run-swarm:
     canonical_version: 1.2.1
