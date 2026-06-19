@@ -36,9 +36,16 @@ Pick from this set before inventing a new hole pattern. Tag the choice as
 | `mount:hole-pattern-43x43` | 43x43 mm square, M4 | NEMA-17-adjacent, small brackets |
 | `mount:dovetail-arca` | Arca-Swiss dovetail | Quick-release camera/optic mounts |
 | `mount:keyhole-pair` | Two keyhole slots @ 16 mm o.c. step | Wall-hung modules, STAS-style |
+| `mount:magnetic-m4` | N52 magnet + M4 alignment pin, 25 mm disc | Rapid-swap, light-load, no-tool swap modules |
 
 Rule: a new module gets at least **one** standard mount face, even if it also
 has a bespoke face. That one standard face is its Lego stud.
+
+`mount:magnetic-m4` notes: N52 (neodymium grade 52) 25 mm disc magnet, retained
+with an M4 alignment pin so the joint is rotation-keyed, not free-spinning. Load
+limit ~10 N perpendicular, ~2 N shear — suitable for sensors, small tools, and
+indicator panels, not structural joints. Pair with a ferrous or matching-magnet
+mating plate in the host module.
 
 ## 2. Fastener standards
 
@@ -84,8 +91,10 @@ project. Tag as `interfaces: [connector:<value>, pinout:<value>]`.
 | `connector:jst-ph` | JST-PH 2.0 mm | Signal / low-current, removable |
 | `connector:usb-c` | USB-C | Data + power, user-facing |
 | `connector:grove` | Grove 4-pin | Quick sensor prototyping |
+| `connector:can-usbc` | CAN bus tunneled over USB-C (SLCAN or candleLight firmware) | Multi-node CAN networks with a single cable |
 | `pinout:i2c-4pin` | GND, VCC(3v3), SDA, SCL (in that order) | I2C sensors |
 | `pinout:uart-3v3` | GND, TX, RX, VCC(3v3) | Serial debug / comms |
+| `pinout:can-2wire` | CAN_H, CAN_L (120 Ω termination at each bus end) | CAN bus nodes |
 
 Rules:
 - One **VCC convention per project**: declare 3v3 or 5v in the project README;
@@ -93,6 +102,10 @@ Rules:
 - Power connectors must be **polarity-keyed** (XT60) - no bare-wire DC.
 - Pin order is part of the contract; document it where the connector is
   defined, and reference the token in frontmatter.
+- `connector:can-usbc` requires a USB-C adapter with SLCAN or candleLight
+  firmware (e.g., Canable, Cantact). Declare the adapter model in the
+  project README. Bus termination (120 Ω at both ends) is the installer's
+  responsibility; note it in the wiring diagram.
 
 ## 5. Naming convention
 
@@ -115,9 +128,11 @@ Examples: `maker-index-detent-8mm`, `instrument-tension-brass`,
 For any new subassembly or design-generation request:
 
 1. Does it expose **one standard mount** from section 1? If not, add one.
+   (Magnetic quick-swap? Use `mount:magnetic-m4`. Structural frame? Use `mount:t-slot-2020`.)
 2. Are all fasteners from section 2? Flag any one-off.
 3. Is the fit named from section 3?
 4. If electrical, are connector + pinout from section 4, with a single VCC?
+   (Multi-node CAN network? Add `connector:can-usbc` + `pinout:can-2wire`.)
 5. Is it named per section 5?
 6. Record the chosen tokens in the idea's `interfaces:` frontmatter (#243).
 
