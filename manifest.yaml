@@ -266,16 +266,16 @@ skills:
       packet skill.
 
   laser-art:
-    canonical_version: 0.1.0
+    canonical_version: 0.2.0
     runtime: shared
-    repo_path: skills/laser-art
-    last_updated: 2026-05-11
+    repo_path: plugins/maker/skills/laser-art
+    last_updated: 2026-06-19
     status: active
     notes: >-
       Laser-cut, laser-engraved, and laser-scored decorative art routing skill
       with explicit generated-image versus fabrication-authority boundaries.
-      v0.1.0 has no shell command shim; use skills-meta for version reporting
-      until a real `laser-art --version` command exists.
+      v0.2.0 adds first machine-runnable eval suite (5 evals) and corrects
+      repo_path from skills/ to plugins/maker/skills/.
 
   reverse-engineer:
     canonical_version: 1.1.0
