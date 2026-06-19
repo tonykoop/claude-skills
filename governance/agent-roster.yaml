@@ -104,6 +104,32 @@ departments:
     deny_tools: [github_push, shell, youtube_api]   # auditors read, never write
     deny_secrets: [ROBOTICS_DEPLOY_KEY, YOUTUBE_API_KEY]
 
+  creative-ingestion:                 # front-end: idea-incubator morning heartbeat (#260)
+    description: >-
+      Morning heartbeat (07:00 daily) + on-demand intake: turns raw text,
+      Telegram dumps, and Gemini brainstorms into labeled GitHub issues via
+      the idea-incubator skill. Writes to issue inbox only — never merges PRs.
+    allow_tools: [github_read, github_push, web_search, web_fetch]
+    allow_secrets: [GITHUB_TOKEN]
+    deny_tools: [shell, youtube_api, urdf_validate]
+    deny_secrets: [YOUTUBE_API_KEY, ROBOTICS_DEPLOY_KEY, STUDIOPIPELINE_TOKEN]
+    heartbeat_cron: "0 7 * * *"       # 07:00 daily Pacific
+    trigger_labels: [needs-intake, brainstorm-ready, retro-request]
+    output_label: "wave:0"
+
+  release-operations:                 # back-end: studio-release event-driven gate (#260)
+    description: >-
+      Event-driven monitor: applies the studio-release skill to PRs labelled
+      release-candidate and assets labelled pending-deploy, producing an
+      atomic deploy-ticket issue (needs-human-signoff) for human sign-off.
+      Never self-approves — only operators write; humans set human_signed_off.
+    allow_tools: [github_read, github_push, shell, web_fetch]
+    allow_secrets: [GITHUB_TOKEN, STUDIOPIPELINE_TOKEN]
+    deny_tools: [youtube_api, urdf_validate]
+    deny_secrets: [YOUTUBE_API_KEY, ROBOTICS_DEPLOY_KEY]
+    trigger_labels: [release-candidate, pending-deploy]
+    output_label: "needs-human-signoff"
+
 # -----------------------------------------------------------------------------
 # Agents — the sprint personas. Each agent belongs to one department (scopes)
 # and runs one model (audit-routing family). `can_audit: true` makes an agent
@@ -155,6 +181,20 @@ agents:
     daily_spend_cap_usd: 20.0
     soft_warn_pct: 0.75
     can_audit: true
+
+  grace:                              # creative-ingestion operator (#260)
+    department: creative-ingestion
+    model: claude-sonnet-4-6
+    daily_spend_cap_usd: 10.0
+    soft_warn_pct: 0.75
+    can_audit: false                  # operator role, not an adversarial auditor
+
+  henry:                              # release-operations operator (#260)
+    department: release-operations
+    model: claude-opus-4-8
+    daily_spend_cap_usd: 25.0
+    soft_warn_pct: 0.75
+    can_audit: false                  # operator role, not an adversarial auditor
 
 # -----------------------------------------------------------------------------
 # Maximizer Mode — the global dead-man's switch (claude-skills#259).
