@@ -1,0 +1,33 @@
+{
+  "skill_name": "sprint-update",
+  "evals": [
+    {
+      "id": 1,
+      "name": "read-only-refresh-no-edits",
+      "prompt": "Give me a sprint refresh — what's the current state?",
+      "expected_output": "Runs in read-only refresh mode: fetches live GitHub state (open issue count, open PR count per repo, PR split into ready/draft/overlap clusters, stale sprint count vs live state) without editing the sprint doc, issue labels, PRs, or memory files; produces a manager report with queue drift analysis and candidate changes (items to promote, defer, remove as duplicate/superseded, or route to Tony-decision); does NOT write anything to docs/plans/ or modify any file.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "name": "personal-github-queue-with-label-model-batch",
+      "prompt": "Update the personal GitHub sprint section with the instrument backlog.",
+      "expected_output": "Writes a personal GitHub Queue table with the expanded four-column format: `# | Priority | Label | Model | Batch | Issue | Repo | Description`; each row has a `Label` (e.g., instrument-maker, maker, capture, promote), a `Model` (assigned runtime or TBD), and a `Batch` identifier; does NOT strip these metadata columns or collapse to the compact WRFCoin format; items carrying `risk:ip-privacy`, welfare/safety review labels, or `needs-clarification` are kept out of automatic implementation dispatch even when they also carry `sprint:implementation-pass`.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "name": "wrfcoin-persona-queue-update",
+      "prompt": "Update Alice's queue — she finished round 52.",
+      "expected_output": "Updates the Alice section of the current sprint doc: moves completed round-52 items to the Completed table (with Issue, Repo, PR, SHA, Wave columns), updates the Active table with any in-progress items, and refreshes the Queue table with next-priority work; reads the sprint doc first to understand current state; confirms the persona, round, and sprint doc path before writing; does NOT update other personas' sections or regenerate the whole sprint doc.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "name": "archive-followup-before-regenerating",
+      "prompt": "Regenerate the sprint dispatch prompts.",
+      "expected_output": "Before regenerating dispatch prompts, runs archive follow-through: checks that swarm artifacts from /tmp/ have been promoted, committed, or explicitly deferred; flags any open 'needs-Tony-decision' items without a decision; checks for stale sprint items that are now duplicate or superseded by recent merges; presents the archive-followup report to the manager BEFORE writing new dispatch prompts; does NOT silently drop archive/watch items when regenerating.",
+      "files": []
+    }
+  ]
+}
