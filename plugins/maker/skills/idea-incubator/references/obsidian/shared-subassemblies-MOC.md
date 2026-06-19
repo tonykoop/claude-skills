@@ -15,6 +15,14 @@ Drop this note into your Obsidian vault (e.g. `MOCs/Shared Subassemblies.md`).
 It is the human-facing dashboard; the Cross-Pollination Agent (#247) is the
 automated counterpart.
 
+> **Outside Obsidian?** The Dataview/dataviewjs blocks below only render inside
+> Obsidian with the Dataview plugin. For Codex/Gemini CLI, CI, or a quick
+> terminal check, [`../../scripts/shared_subassemblies.py`](../../scripts/shared_subassemblies.py)
+> reproduces these same views (shared subassemblies, shared interfaces,
+> cross-pollination candidate pairs) from the `functions:` / `interfaces:`
+> frontmatter — `shared_subassemblies.py --dir <notes>` (add `--json` for a
+> machine-readable form). It's the portable, unit-tested twin of this MOC.
+
 ## Setup
 
 - **Required plugin:** [Dataview](https://github.com/blacksmithgu/obsidian-dataview)

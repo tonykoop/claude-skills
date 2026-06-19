@@ -1,7 +1,7 @@
 ---
 name: idea-incubator
-version: 1.8.0
-last-updated: 2026-06-18
+version: 1.13.0
+last-updated: 2026-06-19
 description: >-
   Capture, classify, connect, review, and promote speculative ideas into a
   searchable GitHub issue inbox. Use when the user says "new idea", "incubate
@@ -102,7 +102,11 @@ Gemini CLI) hit them as reliably as Claude does.
    worth revisiting. Summarize; do not score emotional resonance numerically.
    The Obsidian **Shared Subassemblies MOC** in
    [`references/obsidian/shared-subassemblies-MOC.md`](references/obsidian/shared-subassemblies-MOC.md)
-   is the human-facing dashboard for recurring subassemblies.
+   is the human-facing dashboard for recurring subassemblies. Outside Obsidian
+   (Codex/Gemini CLI, CI, terminal), run
+   [`scripts/shared_subassemblies.py`](scripts/shared_subassemblies.py)
+   `--dir <notes>` for the same shared-subassembly / shared-interface /
+   candidate-pair views from the functional-tag frontmatter.
 5. **Promote** - draft the handoff text for the downstream repo or specialist
    skill. Include `closes #N` only when the user wants the tracked issue closed
    by the downstream work. Route to `maker-engineering` for physical builds,
