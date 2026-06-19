@@ -311,7 +311,7 @@ skills:
     notes: "Initial snapshot with catalog/auth-state preflight (issue 72) for honest sparse-catalog output."
 
   sprint-supervisor:
-    canonical_version: 1.7.0
+    canonical_version: 1.8.0
     runtime: claude
     repo_path: plugins/coding/skills/sprint-supervisor
     last_updated: 2026-06-19
@@ -325,7 +325,8 @@ skills:
       summary. Scales by named scope across twingrid/triplegrid/quadgrid via
       /tmp lockfile. v1.5.0 adds tmux-preflight.sh (#163). v1.6.0 adds
       sprint-dispatch-watcher.sh (#160). v1.7.0 adds evals/evals.json (5
-      evals); collapses duplicate version keys in SKILL.md.
+      evals); collapses duplicate version keys in SKILL.md. v1.8.0
+      genericizes morning-summary.md for public release (Refs #164).
 
   run-benchmark:
     canonical_version: 0.1.0
