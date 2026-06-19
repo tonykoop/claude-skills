@@ -1,6 +1,6 @@
 ---
 name: merge-review
-version: 0.2.0
+version: 1.0.0
 last-updated: 2026-06-19
 description: >-
   Review one or more open PRs across WRFCoin repos. For each PR: read the linked issue,
