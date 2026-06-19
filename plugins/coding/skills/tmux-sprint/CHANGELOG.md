@@ -1,5 +1,22 @@
 # Changelog - tmux-sprint
 
+## v2.8.0 - 2026-06-18
+
+- Implemented the provider-failover detection/state slice (#166): new
+  `scripts/provider_failover.py` (stdlib-only) parses the `provider_failover`
+  config, classifies a pane capture into a `failure_reason`
+  (weekly_budget_exhausted / rate_limit_prompt / provider_auth_blocked /
+  provider_cli_missing), builds the round-state failover record with the next
+  provider in the fallback order, and renders the `## Provider Failover`
+  morning-summary table — all detection/state only, no pane keystrokes. The
+  same-pane CLI swap remains the follow-up PR.
+- Transient noise (approval prompts, local test failures, compaction) is
+  explicitly excluded so it never triggers a spurious provider migration.
+- Added `tests/test_provider_failover.py` (31 cases).
+- `references/provider-failover.md`: marked the first slice implemented and
+  added the Cost Economics analysis (per-provider weekly quota, not marginal $,
+  is the dominant constraint; price is only an order tiebreaker).
+
 ## v2.7.0 - 2026-06-15
 
 - Added recursive fan-out mode (resolves #223): a persona pane can act as a
