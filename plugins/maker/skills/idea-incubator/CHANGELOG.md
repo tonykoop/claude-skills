@@ -1,5 +1,23 @@
 # Changelog
 
+## 1.8.0 - 2026-06-18
+
+- **Devil's Advocate / Red Team output wiring (#238, epic #235).** Made the
+  red-team pass produce a durable, attributable artifact instead of an
+  ephemeral critique: every generated top-level epic now MUST carry a
+  `### Technical Risks & Assumptions` section.
+- `references/brainstorm-to-issues-pipeline.md`: added the mandatory section to
+  the epic-body convention and a red-team-before-filing process step; the
+  optimist `## Vision` / `## Stories` / `**Rollup:**` content is preserved
+  unchanged (the section is appended, never a rewrite).
+- `agents/devils-advocate.md`: added a "Filed form" contract mapping the
+  critique into the canonical `### Technical Risks & Assumptions` section with a
+  role-attribution line.
+- Added `scripts/check_epic_risks_section.py`: a dependency-light checker that
+  flags epics missing the section, the role attribution, or carrying only
+  boilerplate. Readable from a file, stdin, or a live issue via `gh`.
+- Added `tests/test_check_epic_risks_section.py` (6 cases, all green).
+
 ## 1.7.0 - 2026-06-17
 
 - **Cross-Pollination Engine (epic #236)** - turns the incubator from a linear
