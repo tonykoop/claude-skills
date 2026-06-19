@@ -101,7 +101,7 @@ class VersionFlagTests(unittest.TestCase):
     def test_version_works_without_manifest_or_cwd_assumptions(self) -> None:
         rc, out = self._run_version()
         self.assertEqual(rc, 0, msg=out)
-        self.assertEqual(out, "skills-meta 1.0.0")
+        self.assertEqual(out, "skills-meta 1.0.2")
 
     def test_version_prefers_manifest_canonical_version_when_available(self) -> None:
         manifest = self.tmp / "manifest.yaml"
@@ -119,7 +119,7 @@ class VersionFlagTests(unittest.TestCase):
         )
         rc, out = self._run_version("--manifest", str(manifest))
         self.assertEqual(rc, 0, msg=out)
-        self.assertEqual(out, "skills-meta 9.8.7 (installed 1.0.0)")
+        self.assertEqual(out, "skills-meta 9.8.7 (installed 1.0.2)")
 
 
 class SingleModeDeterminismTests(unittest.TestCase):
@@ -943,6 +943,91 @@ class FixDuplicatesUnlinksSymlinkTests(unittest.TestCase):
             self.canary.exists(),
             msg="rmtree followed the symlink and deleted the real source",
         )
+
+
+class LastUpdatedDriftTests(unittest.TestCase):
+    """Bidirectional last_updated drift detection:
+    - stale-last-updated:   SKILL.md date < manifest date
+    - manifest-last-updated-stale:  SKILL.md date > manifest date (manifest not updated after skill bump)
+    """
+
+    def setUp(self) -> None:
+        self.tmp = Path(tempfile.mkdtemp(prefix="skills-meta-ludate-"))
+        self.addCleanup(shutil.rmtree, self.tmp, ignore_errors=True)
+        self.repo = self.tmp / "repo"
+        (self.repo / "skills").mkdir(parents=True)
+
+    def _run_inventory(self) -> str:
+        os.chdir(self.repo)
+        argv = ["skills-meta.py", "--mode", "inventory", "--root", "skills"]
+        old_argv, sys.argv = sys.argv, argv
+        buf = io.StringIO()
+        try:
+            with redirect_stdout(buf):
+                sm.main()
+        finally:
+            sys.argv = old_argv
+        return buf.getvalue()
+
+    def test_skill_newer_than_manifest_flags_manifest_stale(self) -> None:
+        write_manifest(
+            self.repo,
+            {
+                "my-skill": {
+                    "canonical_version": "1.0.0",
+                    "runtime": "shared",
+                    "repo_path": "skills/my-skill",
+                    "last_updated": "2026-05-08",
+                    "status": "active",
+                }
+            },
+        )
+        write_skill(self.repo / "skills" / "my-skill", "my-skill", "1.0.0", "2026-05-20")
+        write_changelog(self.repo / "skills" / "my-skill", "1.0.0")
+
+        out = self._run_inventory()
+        self.assertIn("manifest-last-updated-stale:2026-05-20", out, msg=out)
+        self.assertNotIn("stale-last-updated", out, msg=out)
+
+    def test_skill_older_than_manifest_flags_skill_stale(self) -> None:
+        write_manifest(
+            self.repo,
+            {
+                "my-skill": {
+                    "canonical_version": "1.0.0",
+                    "runtime": "shared",
+                    "repo_path": "skills/my-skill",
+                    "last_updated": "2026-06-15",
+                    "status": "active",
+                }
+            },
+        )
+        write_skill(self.repo / "skills" / "my-skill", "my-skill", "1.0.0", "2026-05-22")
+        write_changelog(self.repo / "skills" / "my-skill", "1.0.0")
+
+        out = self._run_inventory()
+        self.assertIn("stale-last-updated:2026-06-15", out, msg=out)
+        self.assertNotIn("manifest-last-updated-stale", out, msg=out)
+
+    def test_matching_dates_produce_no_last_updated_issue(self) -> None:
+        write_manifest(
+            self.repo,
+            {
+                "my-skill": {
+                    "canonical_version": "1.0.0",
+                    "runtime": "shared",
+                    "repo_path": "skills/my-skill",
+                    "last_updated": "2026-05-20",
+                    "status": "active",
+                }
+            },
+        )
+        write_skill(self.repo / "skills" / "my-skill", "my-skill", "1.0.0", "2026-05-20")
+        write_changelog(self.repo / "skills" / "my-skill", "1.0.0")
+
+        out = self._run_inventory()
+        self.assertNotIn("stale-last-updated", out, msg=out)
+        self.assertNotIn("manifest-last-updated-stale", out, msg=out)
 
 
 if __name__ == "__main__":

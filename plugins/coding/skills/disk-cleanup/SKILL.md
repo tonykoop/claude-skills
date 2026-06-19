@@ -1,5 +1,7 @@
 ---
 name: disk-cleanup
+version: 1.1.0
+last-updated: 2026-06-19
 description: >-
   Weekly-to-biweekly disk recovery for a multi-worktree development setup.
   Runs `cargo clean` per worktree, prunes merged remote branches, cleans

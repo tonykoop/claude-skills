@@ -27,6 +27,12 @@ Use this before flipping any part of the repo public.
       install_roots. See scan 2026-06-15.
 - [ ] No stray personal emails beyond the intentional `author` email. Scan
       2026-06-15 flagged `wrfcoin@gmx.com` in `scripts/wolfram-cloud-sync/wolfram_sync.wls`.
+- [ ] License owner/copyright holder is explicitly approved for the public
+      skill ecosystem release, not only inherited from WRFCoin provenance.
+- [ ] Scripts do not hard-code Tony-local checkout roots or private operational
+      accounts; use parameters, env vars, or documented placeholders instead.
+- [ ] Public-release scans report file counts and line counts for private paths,
+      personal data, provenance terms, and suspected secrets.
 - [ ] Benchmarks or smoke tests exist for high-risk skills.
 - [ ] Agentic-skill PRs include the review evidence contract from `docs/review-gates/pr-evidence-contract.md`.
 - [ ] Skill, adapter, hook, command, and benchmark changes pass the static, behavior, runtime, and regression gates in `docs/review-gates/agentic-skill.md`.
@@ -35,3 +41,9 @@ Use this before flipping any part of the repo public.
 - [ ] Deprecated skills carry `superseded_by` and a `Deprecated: prefer <successor>` clause in their description.
 - [ ] Runtime adapters reference the portable canonical name and document any divergence.
 - [ ] Project-specific examples are clearly labeled "Example, illustrative:" or generalized.
+- [ ] Umbrella skills document which specialists they route to, and specialists
+      document adjacent skills they intentionally do not own.
+- [ ] Trigger-overlap changes include a behavior fixture, benchmark prompt, or
+      PR note naming the intended winner.
+- [ ] Deprecated or archived skills have removal evidence from the cross-device
+      sync workflow before any repo copy is deleted.

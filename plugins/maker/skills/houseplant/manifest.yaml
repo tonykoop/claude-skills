@@ -1,10 +1,10 @@
-# Houseplant — Skill Manifest (v0.3.0)
+# Houseplant — Skill Manifest (v0.8.0)
 # Structured discoverability so an agent can read this manifest first,
 # decide what to load, and skip the prose. SKILL.md is the orchestrator;
 # this is its index.
 
 name: houseplant
-version: 0.3.0
+version: 0.8.0
 display_name: Houseplant
 audience:
   - Tony (primary)
@@ -101,16 +101,46 @@ scripts:
     inputs: ["WIRED_DATE", "GROWTH_CLASS (fast|moderate|slow)", "ACTIVE_GROWTH"]
     outputs: ["dict with first_inspection date, recheck_cadence_days, inspection_ladder, and calendar-ready guidance string"]
     requires_blender: false
+  - path: scripts/care_cadence.py
+    purpose: "Watering + fertilizing CHECK-cadence engine: species growth class + season/phase + heat + stressors -> observation-loop watering checks and fertilizing cadence (suspended in dormancy / after repot). Completes the watering/fertilizing half of #172."
+    inputs: ["GROWTH_CLASS (fast|moderate|slow)", "PHASE (active_growth|hardening|dormancy|repot_recovery)", "HEAT", "STRESSORS"]
+    outputs: ["dict: watering check {cadence_days, reminder, trigger, done_when}, fertilizing plan {cadence_days|suspended}, wire-removal pointer"]
+    requires_blender: false
+  - path: scripts/bloom_forecast.py
+    purpose: "Forecast a bloom window (date range, never a single date) with explicit confidence from the plant's own bud->bloom logs, species baseline, and warm/cool conditions (#173)"
+    inputs: ["JSON: history_intervals_days, species, condition, anchor_date, plant_id/event/stage/location"]
+    outputs: ["Bloom Forecast markdown block: window range, confidence tier, basis, photograph cadence"]
+    requires_blender: false
   - path: scripts/aerial_root_trace.py
     purpose: "Trace a teal, gently-drooping guided aerial-root path from tip to substrate landing point with lifecycle state stamped"
     inputs: ["PLANT_ID", "ROOT_ID", "START", "END", "STATE", "optional DROOP/SAMPLES"]
     outputs: ["teal poly-curve <plant_id>_aerial_root_trace_<root_id> in 04_markers with state metadata"]
     requires_blender: true
+  - path: scripts/aerial_root_tracker.py
+    purpose: "Aerial-root lifecycle transition validation + health/warmth intervention gate + remaining time-to-fused forecast (the decision layer behind aerial_root_trace.py). Completes #174."
+    inputs: ["STATE (tip_promising|guided|reached_soil|thickening|fused)", "GROWTH_CLASS", "CONDITION", "SPECIES", "HEALTHY", "WARM", "optional FROM_DATE"]
+    outputs: ["dict: next_state, intervention {act, guidance}, forecast {remaining_days_min/max, confidence, window}"]
+    requires_blender: false
+  - path: scripts/health_triage.py
+    purpose: "Triage observed health symptoms into health_flag_added records and a pest/rot structural-risk verdict; inspection-first, never chemical (#175)"
+    inputs: ["JSON: observations[{symptom,photo,region}], care_events[{type,date}], today"]
+    outputs: ["health_flag_added event blocks + structural-work risk (normal|High)"]
+    requires_blender: false
   - path: scripts/grafting_sim.py
     purpose: "Simulation-only boolean-union graft preview: duplicate scion+stock into dated sim_graft collection, union, corrective-smooth the seam; canonical twin untouched"
     inputs: ["PLANT_ID", "SCION_OBJ", "STOCK_OBJ", "GRAFT_LABEL", "optional BLEND_RADIUS/DATE_OVERRIDE"]
     outputs: ["fused mesh in Plant_<plant_id>/05_simulations/sim_graft_<label>_<date>/ with graft metadata"]
     requires_blender: true
+  - path: scripts/graft_heal_window.py
+    purpose: "Estimate a graft's multi-year heal window (range + confidence) and the Medium/High risk verdict from graft type, species fusion-readiness, conditions, and plant health (#176)"
+    inputs: ["JSON: graft_type, species_fusion, condition, health, grafted_date, plant_id"]
+    outputs: ["Graft Heal Window markdown block: heal-month range + dates, confidence, risk verdict"]
+    requires_blender: false
+  - path: scripts/propagation_tracker.py
+    purpose: "Build the parent/child lineage tree from parent_plant_id links (ancestors/descendants), validate the started->rooted->potted_up->independent lifecycle, and forecast a rooting window with confidence (#177)"
+    inputs: ["JSON: records[{plant_id,parent_plant_id,state}], propagation{method,species,condition,started_date}"]
+    outputs: ["Propagation lineage tree (indented) + Rooting forecast block (range, confidence, check cadence)"]
+    requires_blender: false
 
 # Assets — non-code material the skill ships.
 assets:
@@ -159,22 +189,22 @@ benchmark:
 v2_features:
   - issue: 172
     feature: chrono-horticultural calendar engine
-    delivered: [references/chrono-engine.md, scripts/wire_window.py]
+    delivered: [references/chrono-engine.md, scripts/wire_window.py, scripts/care_cadence.py]  # care_cadence.py (watering/fertilizing cadence) added v0.6.0
   - issue: 173
     feature: bud and bloom chrono-tracker
-    delivered: [references/bud-bloom-tracker.md]  # reuses scripts/cut_marker.py (bud/pink)
+    delivered: [references/bud-bloom-tracker.md, scripts/bloom_forecast.py]  # marker reuses cut_marker.py; forecast helper added v0.5.0
   - issue: 174
     feature: aerial-root and nebari guidance tracker
-    delivered: [references/aerial-roots-nebari.md, scripts/aerial_root_trace.py]
+    delivered: [references/aerial-roots-nebari.md, scripts/aerial_root_trace.py, scripts/aerial_root_tracker.py]  # lifecycle/gate/forecast decision layer added v0.8.0
   - issue: 175
     feature: computer-vision plant health diagnostics
-    delivered: [references/health-diagnostics.md]
+    delivered: [references/health-diagnostics.md, scripts/health_triage.py]  # script added v0.4.0
   - issue: 176
     feature: virtual grafting sandbox in Blender
-    delivered: [references/grafting-sandbox.md, scripts/grafting_sim.py]
+    delivered: [references/grafting-sandbox.md, scripts/grafting_sim.py, scripts/graft_heal_window.py]  # heal-window+risk helper added v0.7.0
   - issue: 177
     feature: propagation tracker
-    delivered: [references/propagation.md]
+    delivered: [references/propagation.md, scripts/propagation_tracker.py]  # lineage+lifecycle+rooting helper added v0.6.0
 
 # Sibling skills the houseplant skill may hand off to.
 hand_offs:

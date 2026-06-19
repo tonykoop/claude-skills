@@ -1,5 +1,124 @@
 # Changelog — sprint-supervisor
 
+## v1.8.0 — 2026-06-19 (morning-summary generic worked example — Refs #164)
+
+Genericized `references/morning-summary.md` for public release (Refs #164):
+
+- **Template** — replaced hardcoded project-specific group names, repo
+  citation strings, and N5-testnet section with generic placeholders
+  (`<owner>/<repo>#<n>`, `<group>`, `<host>`). Added note that section 4
+  (named host / service) is only emitted when `trusted_hosts` is configured.
+- **Worked example** — replaced the project-coupled worked example with a
+  fictional-project equivalent (`acme/core`, `acme/infra`, etc.) and swapped
+  the private workspace path (`rm -rf /home/tony/wrfcoin/cache-old/`) for the
+  generic placeholder `rm -rf <workspace>/cache-old/`. Added a preamble
+  directing users to populate group names from `labels.repo_groups` in their
+  config.
+- Removed the private "N5 Pro testnet" section from the template; a generic
+  "Named host / service" section replaces it with a conditional note.
+
+This is the last sprint-supervisor reference doc that contained project-coupled
+content; combined with prior PRs #229, #251, and the config/README work, the
+skill is now fully public-release-ready for the `coding` plugin.
+
+## v1.7.0 — 2026-06-19 (structured evals + duplicate version key fix)
+
+Added `evals/evals.json` — the skill's first machine-runnable eval suite
+(five cases covering the core supervisor loop behaviors):
+
+- **eval 1** `warm-start-routine-edit-approval`: prerequisites check, lockfile
+  write, loop start, auto-approval of 'Would you like to make the following
+  edits?' via 'a Enter', cold-start cadence (60s) → active (240s).
+- **eval 2** `refusal-list-escalation-force-push`: detects 'git push --force'
+  to main, refuses to approve, fires PushNotification, appends notable_event,
+  pauses the loop.
+- **eval 3** `morning-summary`: reads lockfile notable_events, loads
+  morning-summary.md format, produces mobile-friendly counts-first report.
+- **eval 4** `cold-start-detection-and-handoff`: no manager pane found,
+  confirms with user, hands off to sprint-manager skill, polls until alive.
+- **eval 5** `idle-cadence-transition`: tracks two consecutive 'Goal achieved'
+  cycles, transitions current_phase to idle, picks delaySeconds=1800 (avoids
+  the 300s worst-of-both trap).
+
+Also collapses the duplicate `version: 1.5.0 / version: 1.6.0` key in
+SKILL.md (YAML last-key-wins; this makes the effective version explicit).
+
+## v1.6.0 — 2026-06-19
+
+Mobile cold-start watcher (#160).
+
+### Added
+
+- `scripts/sprint-dispatch-watcher.sh` — polls `SPRINT_DISPATCH_DIR` (default:
+  `~/sprint-dispatch`) every `POLL_INTERVAL` seconds (default: 30) for unclaimed
+  dispatch JSON files. Atomically claims each file via `mv` to `claimed/`,
+  launches `tmux` manager + sprint sessions, dispatches `/sprint-supervisor`, and
+  writes a status JSON back to `status/` so the phone can poll for "manager up".
+  Supports `--dry-run` for installation validation without live tmux actions.
+  Single-instance guard via `/tmp/sprint-dispatch-watcher.lock`.
+- `scripts/sprint-dispatch-watcher.service` — systemd user unit (install under
+  `~/.config/systemd/user/`). Set `SPRINT_DISPATCH_DIR` via the `Environment=`
+  line to point at a cloud-synced folder (Dropbox, OneDrive, Google Drive, etc.)
+  so the phone can drop dispatch files through the synced folder and the watcher
+  picks them up.
+
+### Changed
+
+- `references/dispatch-patterns.md` §2 prerequisites: replaced the "watcher is a
+  small follow-up" stub with concrete install instructions (systemd + login-tmux
+  fallback), a signal-transport menu (synced folder / webhook / SSH relay), and
+  an updated status note marking the script as shipped.
+
+## v1.5.0 — 2026-06-19
+
+Cross-platform tmux compatibility gate (#163).
+
+### Added
+
+- `scripts/tmux-preflight.sh` — probes `tmux -V`, normalizes the version, and
+  compares against `MIN_TMUX_VERSION` (3.2). Soft-gates instead of failing loud:
+  exit 0 supported, 4 present-but-old (warn + continue), 3 absent (install
+  guidance). Sourceable for unit tests (`parse_tmux_version`, `version_ge`,
+  `run_preflight`; test seams `TMUX_VERSION_OVERRIDE` / `TMUX_BIN`).
+- `tests/test-tmux-preflight.sh` — covers version parsing, comparison, and all
+  three exit codes.
+
+### Changed
+
+- `scripts/grid-scan.sh` now sources the preflight and gates before scanning, so
+  a missing/old tmux yields one actionable message instead of confusing empty
+  output.
+- `SKILL.md` Compatibility section documents the preflight, adds verified-version
+  rows for old/absent tmux, and makes the "gate behind a version check" rule
+  mechanical rather than advisory.
+## v1.6.0 — 2026-06-19
+
+Mobile cold-start: ship the dispatch watcher (#160). (Stacks above the #163
+tmux-preflight work at v1.5.0.)
+
+### Added
+
+- **`scripts/sprint-dispatch-watcher.sh`** — the PC-side half of mobile
+  cold-start that `dispatch-patterns.md` §2 committed to but had only deferred
+  as "a small follow-up." Polls a dispatch folder, **atomically claims** a fresh
+  dispatch (`mv` into `claimed/`, so a double-fire launches one manager, never
+  two), gates **stale** dispatches (`requested_at` older than
+  `SPRINT_SUPERVISOR_MAX_AGE_SECONDS`, default 3600), validates `action:
+  cold-start`, writes a `status/<scope>.status.json` the phone polls, and hands
+  the actual launch to a pluggable `--exec` wrapper (prints the bootstrap line
+  with no `--exec`). Portable (bash 3.2 / BSD+GNU date), fail-soft, sourceable
+  for tests.
+- **`tests/test-sprint-dispatch-watcher.sh`** — JSON field extraction, staleness
+  gating, atomic claim, status write-back, invalid-action rejection, and the
+  no-double-launch guard.
+
+### Changed
+
+- **`references/dispatch-patterns.md`** §2 — documents the shipped watcher
+  (usage, guarantees, test seams) and updates the #160 status: the watcher is
+  now implemented + tested; what remains is Tony's signal-transport choice and a
+  single live phone→PC run (depends on his home setup, not the repo).
+
 ## v1.4.0 — 2026-06-16
 
 Public release readiness — genericization + configurable rubric (epic #164).

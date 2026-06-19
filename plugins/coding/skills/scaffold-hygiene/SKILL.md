@@ -1,7 +1,7 @@
 ---
 name: scaffold-hygiene
-version: 0.1.0
-last-updated: 2026-05-20
+version: 0.2.0
+last-updated: 2026-06-19
 description: >-
   Scaffolding hygiene sweep across WRFCoin repos. Checks for drift between
   build/test/deploy scripts, docs, CI workflows, env vars, Docker configs,

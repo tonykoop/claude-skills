@@ -1,5 +1,14 @@
 # Changelog — playlist-builder
 
+## 0.2.0 — 2026-06-19 (eval suite)
+
+Adds the first machine-runnable eval suite (5 evals) and bumps SKILL.md to v0.2.0.
+
+- `evals/evals.json` — 5 evals: preflight-required-before-tracklist,
+  no-fabrication-when-sparse (three-tier honesty block), content-propriety-
+  filter default (explicit tracks filtered), teach-friendliness weighting
+  for D-bank peak selection, and unknown-context fallback disclosed.
+
 ## 0.1.0 — 2026-05-10
 
 Initial repo snapshot (sourced from `/home/tony/.claude/skills/playlist-builder`)

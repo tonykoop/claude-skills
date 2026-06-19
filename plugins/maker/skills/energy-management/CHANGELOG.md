@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.2.0 — 2026-06-19 (eval suite)
+
+Adds the first machine-runnable eval suite (5 evals) and bumps SKILL.md to v0.2.0.
+
+- `evals/evals.json` — 5 evals: capacity-intake-two-inputs, task-matching
+  shortlist-limit (3 items max for micro/focused), deadline-overrides-energy,
+  no-medical-advice (hard boundary), and no-invented-metrics (no focus scores
+  or energy points).
+
 ## 0.1.0 - 2026-06-15
 
 - Created `energy-management` in the Maker plugin (issue #16, epic #211).

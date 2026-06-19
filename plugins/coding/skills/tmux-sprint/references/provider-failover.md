@@ -7,6 +7,14 @@ sprinter pane from one CLI provider to another without abandoning the lane.
 It is intentionally manager-owned: `sprint-supervisor` can approve safe prompt
 shapes, but it should not decide provider routing.
 
+> **Implementation status.** The "Low-Risk First PR Boundary" slice (below) is
+> implemented in [`../scripts/provider_failover.py`](../scripts/provider_failover.py)
+> with tests in [`../tests/test_provider_failover.py`](../tests/test_provider_failover.py):
+> config parsing, exhaustion detection from a pane capture, the round-state
+> provider record, next-provider selection, and the morning-summary table — all
+> **detection/state only, no pane keystrokes**. The same-pane CLI swap
+> (`C-c` / exit / relaunch / probe) is the follow-up PR that builds on this.
+
 ## Goals
 
 - Keep the pane, worktree, assignment, and lane identity stable.
@@ -156,3 +164,46 @@ The first implementation PR should avoid broad tmux rewrites. A safe slice is:
 
 The pane-CLI swap can land only after that detection/state slice is validated
 against saved pane-capture fixtures.
+
+## Cost Economics
+
+The verification task from the issue: *is this worth it on $ alone, or is the
+real constraint per-provider quota?*
+
+The dominant constraint is **per-provider weekly quota, not marginal dollars.**
+The 2026-05-12 incident was panes hitting a *weekly* gpt-5.5 budget ~5 hours in,
+while the host still had unused `claude` and `gemini` quota. Failover helps
+regardless of per-token price because each provider carries an **independent
+quota bucket**: moving an exhausted lane onto a fresh provider buys hours of
+runway that no amount of price optimisation on the exhausted provider could.
+
+Implications for the order:
+
+- Order by **remaining quota and authentication state**, not by cheapest token.
+  A cheaper provider that is already exhausted or unauthenticated is worth
+  nothing this round.
+- `manager-absorb` stays last because it concentrates load on one context — the
+  exact fragility this feature exists to avoid.
+- Per-token price is a tiebreaker only: among providers with quota left, prefer
+  the cheaper one. It never overrides "has quota / is authenticated."
+
+So the feature is justified by quota resilience first; dollar savings are a
+secondary, order-tiebreaking concern.
+
+## Using the detection slice
+
+```console
+# classify a captured pane and emit a round-state failover record
+$ python3 scripts/provider_failover.py detect \
+    --capture pane-capture.txt \
+    --pane sprint:0.3 --persona dan --lane core4-1511 --provider codex
+FAILOVER_CANDIDATE: pane sprint:0.3 (codex) -> claude  reason=weekly_budget_exhausted
+  action: FAILOVER_CANDIDATE      # exit code 1 = candidate; 0 = healthy
+
+# roll the recorded candidates into the morning summary
+$ python3 scripts/provider_failover.py summary --records failover-records.json
+```
+
+`detect` exits 1 when a candidate is found so a manager loop can branch on the
+exit code. Transient noise (approval prompts, local test failures, compaction)
+is explicitly *not* treated as exhaustion and returns exit 0.

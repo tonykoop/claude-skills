@@ -1,7 +1,7 @@
 ---
 name: gh-fix-ci
-version: 0.1.0
-last-updated: 2026-06-15
+version: 0.2.0
+last-updated: 2026-06-19
 description: >-
   Use when a user asks to debug or fix failing GitHub PR checks that run in
   GitHub Actions; use `gh` to inspect checks and logs, summarize failure

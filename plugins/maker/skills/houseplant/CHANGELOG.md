@@ -1,5 +1,158 @@
 # Changelog — houseplant
 
+## v0.9.0 — 2026-06-19 (collection-wide care dashboard — #209)
+
+Adds `scripts/collection_dashboard.py`: the first aggregator that glues all the
+individual chrono scripts (care_cadence, wire_window, bloom_forecast,
+propagation_tracker, health_triage) into a single prioritised care view across
+the whole collection. Input is a collection JSON file listing plants with their
+growth class, phase, care events, active buds, propagules, and health
+observations; output is a Markdown dashboard bucketed into Overdue / Today / This
+week / This month / Later. Health flags with pest/rot category are boosted to the
+top of their bucket; structural-work blockers surface when open pest/rot flags
+are present. 37 tests (bucket classification, all six task builders, full-plant
+render, multi-plant, CLI stdin/stderr). Resolves the "what needs attention across
+my whole collection today" question that the individual scripts couldn't answer
+alone.
+
+## v0.8.0 — 2026-06-19 (aerial-root lifecycle + forecast — #174)
+
+Adds the decision layer behind the aerial-root/nebari tracker (#174). The
+reference and `aerial_root_trace.py` (Blender geometry + stamped state) shipped
+in v0.3.0; the lifecycle/gate/forecast logic the issue calls for had no runnable,
+testable implementation until now.
+
+- Added `scripts/aerial_root_tracker.py` (pure Python, no bpy): validates the
+  `tip_promising → guided → reached_soil → thickening → fused` (or `failed`)
+  lifecycle transitions, gates intervention suggestions on plant health + warmth
+  (only guide aerial roots on a healthy plant in warm active growth, per the
+  reference), and forecasts the **remaining** time-to-fused as a window (range,
+  never a single date) with explicit confidence from current state + growth
+  class + conditions (ficus-tuned). Mirrors `propagation_tracker.py`.
+- Added 12 `AerialRootTracker` tests (lifecycle order/terminal/transitions,
+  intervention gating, forecast range + monotonicity + warm-vs-cool); houseplant
+  suite now 102.
+- `references/aerial-roots-nebari.md` + `SKILL.md` route the lifecycle/forecast
+  step at the script; local + root `manifest.yaml` register it under #174.
+
+## v0.7.0 — 2026-06-19 (graft heal-window + risk verdict — #176)
+
+Completes the last computable gap in the grafting sandbox (#176). `grafting_sim.py`
+builds the fused silhouette in Blender, but the reference's "Heal expectation
+<range>" and "Risk <Medium|High>" were computed nowhere.
+
+### Added
+
+- **`scripts/graft_heal_window.py`** — pure-Python (no Blender). Estimates the
+  graft's multi-year **heal window** (months + dates, conservative range with
+  confidence) from graft type (approach / trunk-patch / multi-tree-fusion),
+  species fusion-readiness (readily / moderate / poorly), and warm/cool
+  conditions; and returns the **risk verdict** — **High** on a weak/pest-flagged
+  plant (defer) or a species that does not fuse readily, **Medium** otherwise.
+  Renders the reference's heal/risk lines and re-states the simulation-only
+  boundary.
+- **`tests/test_graft_heal_window.py`** — 13 cases (range invariant, graft-type
+  ordering, fusion-class + condition modulation, all risk paths, rendering, CLI).
+
+### Changed
+
+- `references/grafting-sandbox.md` + `SKILL.md` route the heal/risk step at the
+  helper; per-skill + root `manifest.yaml` list it under #176.
+
+## v0.6.0 — 2026-06-19 (watering/fertilizing cadence engine — #172)
+
+Completes the watering/fertilizing half of the Chrono-Horticultural Engine
+(#172). The chrono-engine reference and `wire_window.py` (wire-removal windows)
+shipped earlier; the watering/fertilizing scheduling the issue title names had no
+runnable implementation until now.
+
+- Added `scripts/care_cadence.py` (pure Python, no bpy): turns a species
+  growth-speed class + season/phase + heat signal + recent stressors into a
+  calendar-ready watering **check** (cadence + trigger + done-condition, phrased
+  as an observation loop rather than a fixed timer) and a fertilizing cadence
+  that suspends in dormancy and for ~6 weeks after a repot/root reduction.
+  Caller-overridable globals for exec()-style use, matching the other scripts.
+- Added 11 `CareCadence` tests (class/heat/phase/stressor effects, fertilizer
+  suspension, check-phrasing, ≥1-day floor, validation); houseplant suite now 59.
+- `references/chrono-engine.md` now points at the new script; local + root
+  manifests register it under #172's delivered list.
+- **Fix:** collapsed duplicate `version` / `canonical_version` / `notes` keys in
+  `SKILL.md`, the local `manifest.yaml`, and the root `manifest.yaml` left by
+  stacked-PR merges (the same dup-key class PR #303 fixed for idea-incubator).
+
+## v0.4.0 — 2026-06-19 (health-triage engine — #175)
+
+Completes the CV plant-health "check-engine light" (#175), which shipped in
+v0.3.0 as a reference doc only. The vision pass (the multimodal agent naming
+symptoms from photos) now has a deterministic triage layer behind it.
+
+### Added
+
+- **`scripts/health_triage.py`** — pure-Python (no Blender). Maps observed
+  symptoms to candidate flags, cross-references recent care events (a repot
+  within ~14 days re-reads a sudden drop as transplant stress; a recent feed
+  re-reads margin burn as fertilizer/salt), renders the `health_flag_added`
+  event records with evidence + explicit confidence, and computes the
+  structural-work risk escalation — any open **pest/rot** flag forces
+  pruning/wiring/root work to **High** risk (per `bonsai-module.md`). Enforces
+  the reference's posture: screen-not-diagnose, inspection-first, **never** a
+  chemical recommendation; pest/rot candidates default to low confidence.
+- **`tests/test_health_triage.py`** — 12 cases (symptom mapping, unknown-symptom
+  surfacing, care cross-reference incl. the 14-day window, risk escalation,
+  no-chemicals posture, rendering).
+
+### Changed
+
+- `references/health-diagnostics.md` and `SKILL.md` health routing now point the
+  output step at `health_triage.py`.
+## v0.5.0 — 2026-06-19 (bloom-forecast helper — #173)
+
+Adds the optional prediction helper for the bud/bloom tracker (#173). The
+pink-marker workflow still needs no script (it reuses `cut_marker.py`); this
+implements the documented forecast *order-of-evidence* deterministically.
+(Stacks above the #175 health-triage work at v0.4.0.)
+
+### Added
+
+- **`scripts/bloom_forecast.py`** — pure-Python. Forecasts a bloom **window**
+  (always a date range, never a single date) with an honest confidence tier:
+  the plant's own bud→bloom logs win (≥3 → high, 1–2 → medium), species baseline
+  is the low-confidence fallback, an unknown species is flagged provisional, and
+  warm/cool conditions modulate the window. Emits the reference's Bloom Forecast
+  output format with a calendar "photograph every N days until open" cadence.
+- **`tests/test_bloom_forecast.py`** — 12 cases (confidence tiers, baseline
+  lookup, condition modulation, the always-a-range invariant, date anchoring,
+  cadence bounds, CLI).
+
+### Changed
+
+- `references/bud-bloom-tracker.md` + `SKILL.md` route the forecast step at the
+  helper; per-skill + root `manifest.yaml` list it under #173.
+## v0.6.0 — 2026-06-19 (propagation lineage + rooting forecast — #177)
+
+Adds the computable layer behind the propagation tracker (#177), which shipped
+in v0.3.0 as a reference doc only. (Stacks above #175 health-triage v0.4.0 and
+#173 bloom-forecast v0.5.0.)
+
+### Added
+
+- **`scripts/propagation_tracker.py`** — pure-Python. Builds the collection's
+  parent/child **lineage tree** from `parent_plant_id` links (ancestors,
+  descendants, indented family tree; external/missing parents become roots,
+  cycles terminate safely) — the issue's headline "see lineage across the
+  collection" ask. Validates the started→rooted→potted_up→independent (or
+  failed) **lifecycle** state machine, derives child ids, and forecasts a
+  **rooting window** (always a date range) with confidence from method + species
+  + warm/cool conditions.
+- **`tests/test_propagation_tracker.py`** — 18 cases (lifecycle transitions,
+  ancestors/descendants/forest/tree, external-parent + cycle safety, child-id
+  derivation, rooting forecast, CLI).
+
+### Changed
+
+- `references/propagation.md` + `SKILL.md` route the lineage/forecast step at the
+  helper; per-skill + root `manifest.yaml` list it under #177.
+
 ## v0.3.0 — 2026-06-15 (v2 feature set — epic #209)
 
 Implements the six modules deferred from v1 (the original BonsaiBot brainstorm), extending the existing skill in place. All new work shares the Blender MCP + Obsidian/Markdown plant-database context; the simulate-before-you-cut philosophy and the color semantics (red/amber/blue/green/pink/teal) carry through unchanged.

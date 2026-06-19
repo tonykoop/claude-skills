@@ -1,0 +1,40 @@
+{
+  "skill_name": "maker-engineering",
+  "evals": [
+    {
+      "id": 1,
+      "name": "safety-gate-before-build-packet",
+      "prompt": "Help me design a treehouse platform for my kids, about 2 meters off the ground.",
+      "expected_output": "Runs the human-carrying safety gate before issuing any build packet or specialist handoff — the gate is triggered because the platform carries people and could fail above a person; the gate produces all 8 required sub-sections at the top of the packet (intended environment, excluded use cases, anthropometric envelope, load cases and safety factor, prototype-vs-final boundary, staged validation gates, assisted first-use protocol, re-validation triggers); includes the verbatim 'not a certification' clause unmodified; does NOT generate a build packet or route to makerspace without running the gate first.",
+      "files": ["SKILL.md", "references/human-carrying-safety-gate.md"]
+    },
+    {
+      "id": 2,
+      "name": "routing-uses-canonical-specialist-name",
+      "prompt": "I want to design a speaker cabinet with a ported bass reflex tuning.",
+      "expected_output": "Routes to 'instrument-maker' using that exact canonical name in the handoff; does NOT attempt to produce the acoustic design, BOM, CNC toolpaths, or tuning tables itself; names why the umbrella skill is routing rather than proceeding (acoustic design is instrument-maker's domain); produces a crisp handoff prompt that describes the project and constraints without embedding runtime-specific invocation syntax (no $instrument-maker, no /instrument-maker, no slash commands).",
+      "files": ["SKILL.md", "references/routing-decision-tree.md", "references/specialist-registry.md"]
+    },
+    {
+      "id": 3,
+      "name": "doe-mode-complete-matrix",
+      "prompt": "Design an experiment to find the best wood glue and clamping pressure for a strong joint.",
+      "expected_output": "Enters DoE mode and produces a design-of-experiments matrix that includes: factors (glue type, clamping pressure — and optionally wood species, glue-up time), response metric (joint strength or failure load), controls (temperature, humidity, sample size, cure time), a trial matrix (at minimum a two-factor full factorial or fractional design), logging fields, and stop conditions; does NOT perform specialist acoustic or fabrication calculations; does NOT ask more than three questions before proceeding with stated assumptions.",
+      "files": ["SKILL.md", "references/doe-template.md"]
+    },
+    {
+      "id": 4,
+      "name": "intake-three-questions-max",
+      "prompt": "I want to make something for my garage workshop.",
+      "expected_output": "Enters intake mode and asks at most 3 blocking questions to clarify the vague project description (e.g. what object, what problem it solves, what tools/materials are available); if reasonable assumptions can be made, states them and proceeds to a project brief rather than continuing to interrogate; the project brief names the likely specialist route and next action; does NOT ask more than three questions before producing useful output.",
+      "files": ["SKILL.md"]
+    },
+    {
+      "id": 5,
+      "name": "handoff-runtime-agnostic",
+      "prompt": "This project touches both fabrication (a custom jig) and acoustics (absorber panels). Hand it off to the right specialists.",
+      "expected_output": "Produces separate, cross-linked handoff prompts — one for makerspace (jig/fabrication) and one for instrument-maker (acoustic absorber) — each handoff names the specialist by canonical name, describes the work and shared assumptions, and includes an integration checkpoint; crucially, the handoff prompts do NOT contain runtime-specific invocation syntax (no $makerspace, no /instrument-maker, no shell-style commands) so they remain portable across runtimes where the specialists are installed differently.",
+      "files": ["SKILL.md"]
+    }
+  ]
+}

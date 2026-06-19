@@ -38,7 +38,12 @@ Record on the plant timeline with the existing event types:
 
 ## Forecasting the bloom window
 
-Estimate conservatively and make confidence explicit. Order of evidence:
+Estimate conservatively and make confidence explicit. The marker workflow needs
+no script, but this order-of-evidence is implemented as an optional deterministic
+helper, [`../scripts/bloom_forecast.py`](../scripts/bloom_forecast.py), which
+returns a date range (never a single date) and an honest confidence tier
+(own-log ≥3 → high, 1–2 → medium, species-baseline-only → low). Use it to draft
+the forecast, then sanity-check against what you know. Order of evidence:
 
 1. **The user's own historical logs first.** If this plant bloomed before, the interval from comparable bud stage to open flower is the best predictor. Use it and say so.
 2. **Species baseline** as a fallback (rough ranges; vary widely by light/temperature):

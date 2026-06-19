@@ -1,0 +1,33 @@
+{
+  "skill_name": "verification-gates",
+  "evals": [
+    {
+      "id": 1,
+      "name": "passing-sandbox-command-gate",
+      "prompt": "Run the verification gate on this PR's artifact directory. The tests should pass.",
+      "expected_output": "Runs `scripts/verification_gates.py --path <artifact-path> --qa-output qa-decision.json --command 'python3 -m unittest discover'`; all sandbox commands exit 0; writes `qa-decision.json` with `decision: \"pass\"` and a `checks` array where every `gate: \"sandbox_execution\"` entry has `status: \"pass\"`; does NOT install dependencies or mutate the artifact under test; presents the `qa-decision.json` as the source of truth for the PR body.",
+      "files": ["scripts/verification_gates.py"]
+    },
+    {
+      "id": 2,
+      "name": "failing-sandbox-nonzero-exit",
+      "prompt": "Run the verification gate — some tests are failing.",
+      "expected_output": "Runs the sandbox command gate; detects a nonzero exit code from at least one command; writes `qa-decision.json` with `decision: \"fail\"` and the failing command's stdout/stderr snippet captured in the `checks` array; does NOT translate the failure into prose-only approval; presents the failing gate JSON to the operator so they can read the exact error before any action is taken.",
+      "files": ["scripts/verification_gates.py"]
+    },
+    {
+      "id": 3,
+      "name": "markdown-linter-trailing-whitespace",
+      "prompt": "Lint the markdown files in this directory.",
+      "expected_output": "Runs the markdown/length linter gate on all `.md` files under `--path`; checks: UTF-8 encoding, nonempty content, trailing whitespace, tab characters, line length (default max 120), heading spacing, and fenced-code closure; if any `.md` file has trailing whitespace, records a `gate: \"markdown:trailing-whitespace\"` check with `status: \"fail\"` and the file path; writes `qa-decision.json` with `decision: \"fail\"` when any markdown check fails.",
+      "files": ["scripts/verification_gates.py"]
+    },
+    {
+      "id": 4,
+      "name": "urdf-joint-limit-validation",
+      "prompt": "Validate the URDF output from the robot generation agent.",
+      "expected_output": "Parses every `.urdf` file under `--path`; requires every `revolute` or `prismatic` joint to have a valid `<limit lower upper>` element; rejects negative `effort` or `velocity` values when present, missing parent/child links, missing axes on limited joints, and mimic references to missing joints; writes `qa-decision.json` with `decision: \"fail\"` and the specific joint name and error in the `checks` array for each violation; does NOT certify physical safety or robot build safety — reports only the kinematic constraint violations that can be checked statically from the URDF.",
+      "files": ["scripts/verification_gates.py"]
+    }
+  ]
+}

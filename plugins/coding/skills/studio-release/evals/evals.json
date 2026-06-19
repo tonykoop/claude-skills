@@ -1,0 +1,33 @@
+{
+  "skill_name": "studio-release",
+  "evals": [
+    {
+      "id": 1,
+      "name": "passing-gate-auto-release-eligible",
+      "prompt": "Run the studio release gate on this PR branch. Everything looks clean.",
+      "expected_output": "Runs `scripts/studio_release_gate.py` with the source path and PR reference; all checks pass (markdown lint, Python compilation, shell bash -n, artifact index); generates `qa-decision.json` with `decision: \"pass\"`, `routing: \"auto_release_eligible\"`, and a non-zero `confidence` score; generates a `publish-manifest.json` with a sha256-checksummed artifact index and `deploy_target`; does NOT publish or merge automatically — produces the staging bundle for human review and presents the approve/deploy ticket summary.",
+      "files": ["scripts/studio_release_gate.py"]
+    },
+    {
+      "id": 2,
+      "name": "escalate-human-review-on-ambiguous-confidence",
+      "prompt": "The gate finished but I'm not sure if it's auto-releasable.",
+      "expected_output": "If the gate produces `routing: \"escalate_human_review\"` (confidence below the auto-release threshold but no hard failures), presents the ambiguous findings clearly: which checks passed, which were flagged as warnings, and the confidence score; does NOT auto-release or auto-merge; prompts the reviewer to inspect the specific flagged items and decide whether to approve or block; the `qa-decision.json` must be shown with all fields including `confidence` and `routing`.",
+      "files": ["scripts/studio_release_gate.py"]
+    },
+    {
+      "id": 3,
+      "name": "distinct-model-auditor-assignment",
+      "prompt": "Run the release gate for the branch I just produced as Claude Sonnet.",
+      "expected_output": "Runs the gate with `--creator-agent claude --creator-model claude-sonnet-4-6` (or equivalent flags); routes the candidate to a distinct-model auditor via the governance `review_router` — the auditor model must differ from the creator model; if no distinct auditor exists, the gate fails-closed with `routing: \"blocked\"` rather than silently proceeding; if governance modules are absent, auditor routing is skipped cleanly and the `qa-decision.json` records `auditor_routing: \"skipped\"`.",
+      "files": ["scripts/studio_release_gate.py"]
+    },
+    {
+      "id": 4,
+      "name": "dirty-source-noted-not-hidden",
+      "prompt": "Run the release gate — there are some uncommitted changes in the source.",
+      "expected_output": "Confirms the source path; detects that the source is dirty (uncommitted changes present); includes a `dirty-state note` in the approve/deploy ticket body rather than failing outright or hiding the dirty state; the `qa-decision.json` records `dirty_source: true`; does NOT silently proceed as if the source were clean; the reviewer sees the dirty-state note before approving.",
+      "files": ["scripts/studio_release_gate.py"]
+    }
+  ]
+}

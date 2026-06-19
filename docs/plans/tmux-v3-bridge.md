@@ -25,9 +25,16 @@ repo. Link both when issues are enumerated:
   - #225 — recursive fan-out (persona panes as sub-managers) — `tmux-sprint` v2.7.0
   - #222 / #117 — Codex `/goal` lane integration — v2.6.0
   - #195, #193/#194 — bash 3.2-compatible `launch-grid.sh`, preflight/dispatch/restart scripts
-- **External roadmap:** enumerate the open `tmux-sprint` v3 issues in
-  `tonykoop/tmux-sprint` and back-link them here (left as a TODO — issue
-  numbers to be filled in by Tony to avoid guessing).
+- **External roadmap (`tonykoop/tmux-sprint`, open v3 issues):**
+  - `tonykoop/tmux-sprint#1` — v3 roadmap: project-neutral,
+    routine-driven tmux sprint skill.
+  - `tonykoop/tmux-sprint#6` — benchmark suite, watch-points, and run-log
+    validator.
+  - `tonykoop/tmux-sprint#7` — public release readiness and packaging.
+  - `tonykoop/tmux-sprint#8` — versioned skill structure, frozen baselines,
+    and release notes.
+  - `tonykoop/tmux-sprint#24` — smart model routing and lane classification.
+  - `tonykoop/tmux-sprint#27` — usage-window and context-budget controller.
 - **Adjacent skills that must stay coordinated:** `sprint-supervisor`
   (#164 staged extraction), `sprint-update`, `run-swarm`, `sprint-manager`.
 
@@ -80,7 +87,9 @@ divergences (per `docs/public-release-checklist.md`).
 ## AC5 — Benchmark cases
 
 Add fixtures under the repo's benchmarking harness
-(`docs/operational-skill-benchmarking.md`) covering:
+(`docs/operational-skill-benchmarking.md`). The initial suite index lives at
+[`docs/benchmarks/tmux-v3-control-suite.json`](../benchmarks/tmux-v3-control-suite.json)
+and covers:
 
 1. **Dispatch reliability** — N assignments dispatched to N panes; verify each
    landed in the right pane.

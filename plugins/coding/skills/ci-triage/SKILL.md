@@ -1,7 +1,7 @@
 ---
 name: ci-triage
-version: 0.1.0
-last-updated: 2026-05-20
+version: 0.2.0
+last-updated: 2026-06-19
 description: >-
   Run a read-only CI and Dependabot health check across all 7 WRFCoin repos
   (core4, backend, frontend, smart-contracts, infra, security-testing, mobile)

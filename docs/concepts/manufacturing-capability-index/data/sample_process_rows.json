@@ -1,0 +1,41 @@
+[
+  {
+    "process": "cnc-wood-milling",
+    "display_name": "CNC wood milling (3-axis router)",
+    "min_feature_mm": 1.5,
+    "max_envelope_mm": {"x": 1200, "y": 1200, "z": 150},
+    "kinematic_cadence": {"feed_mm_per_min": 3000, "max_speed_before_deflection_mm_per_min": 6000},
+    "energetic_threshold_j_per_cm3": 30,
+    "tolerance_floor_mm": 0.05,
+    "states_of_matter": ["solid"],
+    "as_of": "2026-Q3",
+    "gateable_today": true,
+    "source": "shop-measured on a typical hobby/pro router; min_feature = 2x 0.75mm bit radius"
+  },
+  {
+    "process": "fdm-3d-print",
+    "display_name": "FDM 3D printing (0.4mm nozzle)",
+    "min_feature_mm": 0.8,
+    "max_envelope_mm": {"x": 256, "y": 256, "z": 256},
+    "kinematic_cadence": {"feed_mm_per_min": 9000, "max_speed_before_deflection_mm_per_min": 18000},
+    "energetic_threshold_j_per_cm3": 250,
+    "tolerance_floor_mm": 0.2,
+    "states_of_matter": ["solid", "liquid"],
+    "as_of": "2026-Q3",
+    "gateable_today": true,
+    "source": "typical 0.4mm-nozzle desktop FDM; melt-then-solidify => solid+liquid"
+  },
+  {
+    "process": "co2-laser-cut",
+    "display_name": "CO2 laser cutting (acrylic/ply)",
+    "min_feature_mm": 0.2,
+    "max_envelope_mm": {"x": 900, "y": 600, "z": 20},
+    "kinematic_cadence": {"feed_mm_per_min": 12000, "max_speed_before_deflection_mm_per_min": 30000},
+    "energetic_threshold_j_per_cm3": 400,
+    "tolerance_floor_mm": 0.1,
+    "states_of_matter": ["solid", "gas"],
+    "as_of": "2026-Q3",
+    "gateable_today": true,
+    "source": "60-100W CO2; kerf-limited min feature; ablation => solid+gas (vapor)"
+  }
+]

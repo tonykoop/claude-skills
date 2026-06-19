@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.3.0 - 2026-06-19
+
+- Add first machine-runnable eval suite (`evals/evals.json`): 4 evals covering
+  personal-project swarm launch, WRFCoin swarm launch, duplicate detection
+  before issue filing, and ambiguous-workspace clarification.
+
 ## 1.2.1 - 2026-05-11
 
 - Add a machine-readable queue output contract for JSON/CSV issue landscape

@@ -1,0 +1,246 @@
+# =============================================================================
+# Agent Roster & Governance Config
+# -----------------------------------------------------------------------------
+# Single source of truth for the autonomous-sprint governance layer (Epic #254).
+# Consumed by:
+#   - spend_guard.py       (claude-skills#259) least-privilege scopes + spend caps
+#   - review_router.py     (claude-skills#256) cross-model adversarial QA routing
+#   - confidence_router.py (claude-skills#258) confidence-score circuit breaker
+#
+# Two orthogonal axes:
+#   * DEPARTMENT  -> what an agent may touch  (tools + secrets, least-privilege)
+#   * MODEL FAMILY -> who may audit whose work (adversarial, never self-review)
+#
+# Cross-model comparisons are done at the FAMILY level (opus / sonnet / haiku /
+# gpt-5.5 / gpt-5.5-mini), never the exact version string, so a routine model
+# version bump does not silently let an agent audit its own output.
+#
+# Lookup order (first match wins), mirroring sprint-supervisor-config:
+#   1. $AGENT_ROSTER_CONFIG
+#   2. ~/.claude/agent-roster.yaml
+#   3. governance/agent-roster.yaml   (this file — safe defaults)
+# =============================================================================
+
+schema_version: 1
+last_updated: 2026-06-19
+
+# -----------------------------------------------------------------------------
+# Model families. Maps a concrete model string -> its family. The audit router
+# compares families, not exact versions. A model that is NOT in this table
+# resolves to family "unknown", and review_router.py FAILS CLOSED on it for
+# BOTH roles: an unknown creator OR an unknown auditor blocks the handoff,
+# because distinctness can't be certified when a family is unidentifiable (a
+# new version bump that lands here unmapped must never slip past as "distinct").
+# => keep this table complete for every model in the live fleet.
+# -----------------------------------------------------------------------------
+model_families:
+  claude-opus-4-6: opus
+  claude-opus-4-8: opus
+  claude-sonnet-4-6: sonnet
+  claude-haiku-4-5: haiku
+  codex-gpt-5.5: gpt-5.5
+  codex-gpt-5.5-mini: gpt-5.5-mini
+  codex-gpt-5.4: gpt-5.4
+  codex-gpt-5.4-mini: gpt-5.4-mini
+  gpt-5.5: gpt-5.5                        # codex CLI bare model id
+  gpt-5.3-codex-spark: spark              # codex CLI spark id (resolves to "high")
+  gpt-5.3-codex-spark-high: spark
+  gpt-5.3-codex-spark-medium: spark
+  gpt-5.3-codex-spark-low: spark
+  gpt-5.3-codex-spark-xhigh: spark
+
+# -----------------------------------------------------------------------------
+# Departments — the least-privilege boundary (claude-skills#259).
+# An agent inherits its department's allow/deny lists. `deny` always wins over
+# `allow`; a tool or secret must be explicitly in `allow_tools` / `allow_secrets`
+# to be usable. Everything unlisted is implicitly denied (default-deny).
+# -----------------------------------------------------------------------------
+# Confidence-score routing policy (claude-skills#258).
+# confidence_router.py uses `auto_advance_threshold_pct` to decide whether a
+# reviewed asset auto-advances the sprint ticket or escalates to human review.
+# The immutable deploy barrier (check_deploy_clearance) is enforced separately
+# and has no configurable bypass: human_signed_off MUST be true for any
+# push-to-main or publish action, regardless of confidence score.
+# -----------------------------------------------------------------------------
+confidence_routing:
+  auto_advance_threshold_pct: 90   # score >= 90 + all gates passed -> AUTO_ADVANCE
+  on_escalate: github_mention      # escalation channel: post @mention on the issue/PR
+
+# -----------------------------------------------------------------------------
+departments:
+
+  studio-video:                       # YouTube scripting / StudioPipeline lane
+    description: "Video concepts, scripts, shot lists, thumbnails."
+    allow_tools: [youtube_api, web_search, web_fetch, asset_storage]
+    allow_secrets: [YOUTUBE_API_KEY, STUDIOPIPELINE_TOKEN]
+    deny_tools: [local_filesystem, github_push, shell]   # never the FS or repos
+    deny_secrets: [GITHUB_TOKEN, ROBOTICS_DEPLOY_KEY]
+
+  robotics:
+    description: "URDF, kinematics, humanoid-robotics repo work."
+    allow_tools: [github_read, github_push, shell, urdf_validate, web_search]
+    allow_secrets: [GITHUB_TOKEN]
+    deny_tools: [youtube_api]
+    deny_secrets: [YOUTUBE_API_KEY, STUDIOPIPELINE_TOKEN]
+
+  philosophy:
+    description: "Philosophy repo authoring; docs only."
+    allow_tools: [github_read, github_push, web_search, web_fetch]
+    allow_secrets: [GITHUB_TOKEN]
+    deny_tools: [shell, youtube_api]
+    deny_secrets: [YOUTUBE_API_KEY, ROBOTICS_DEPLOY_KEY]
+
+  maker:                              # woodworking / makerbench-hwe / instruments
+    description: "Maker build packets, CAD handoffs, fabrication docs."
+    allow_tools: [github_read, github_push, shell, web_search]
+    allow_secrets: [GITHUB_TOKEN]
+    deny_tools: [youtube_api]
+    deny_secrets: [YOUTUBE_API_KEY]
+
+  governance:                         # the auditor/orchestrator lane itself
+    description: "Cross-model QA auditors and the orchestrator."
+    allow_tools: [github_read, web_search, web_fetch]
+    allow_secrets: [GITHUB_TOKEN]
+    deny_tools: [github_push, shell, youtube_api]   # auditors read, never write
+    deny_secrets: [ROBOTICS_DEPLOY_KEY, YOUTUBE_API_KEY]
+
+  creative-ingestion:                 # front-end: idea-incubator morning heartbeat (#260)
+    description: >-
+      Morning heartbeat (07:00 daily) + on-demand intake: turns raw text,
+      Telegram dumps, and Gemini brainstorms into labeled GitHub issues via
+      the idea-incubator skill. Writes to issue inbox only — never merges PRs.
+    allow_tools: [github_read, github_push, web_search, web_fetch]
+    allow_secrets: [GITHUB_TOKEN]
+    deny_tools: [shell, youtube_api, urdf_validate]
+    deny_secrets: [YOUTUBE_API_KEY, ROBOTICS_DEPLOY_KEY, STUDIOPIPELINE_TOKEN]
+    heartbeat_cron: "0 7 * * *"       # 07:00 daily Pacific
+    trigger_labels: [needs-intake, brainstorm-ready, retro-request]
+    output_label: "wave:0"
+
+  release-operations:                 # back-end: studio-release event-driven gate (#260)
+    description: >-
+      Event-driven monitor: applies the studio-release skill to PRs labelled
+      release-candidate and assets labelled pending-deploy, producing an
+      atomic deploy-ticket issue (needs-human-signoff) for human sign-off.
+      Never self-approves — only operators write; humans set human_signed_off.
+    allow_tools: [github_read, github_push, shell, web_fetch]
+    allow_secrets: [GITHUB_TOKEN, STUDIOPIPELINE_TOKEN]
+    deny_tools: [youtube_api, urdf_validate]
+    deny_secrets: [YOUTUBE_API_KEY, ROBOTICS_DEPLOY_KEY]
+    trigger_labels: [release-candidate, pending-deploy]
+    output_label: "needs-human-signoff"
+
+# -----------------------------------------------------------------------------
+# Agents — the sprint personas. Each agent belongs to one department (scopes)
+# and runs one model (audit-routing family). `can_audit: true` makes an agent
+# eligible as a QA Auditor in the adversarial gate.
+#
+# daily_spend_cap_usd  -> hard dead-man's switch (claude-skills#259).
+# soft_warn_pct        -> fraction of cap that pauses the heartbeat for audit.
+# -----------------------------------------------------------------------------
+agents:
+
+  alice:
+    department: robotics
+    model: claude-opus-4-8
+    daily_spend_cap_usd: 40.0
+    soft_warn_pct: 0.75
+    can_audit: true
+
+  bob:
+    department: maker
+    model: claude-haiku-4-5
+    daily_spend_cap_usd: 8.0
+    soft_warn_pct: 0.75
+    can_audit: true
+
+  cindy:
+    department: studio-video
+    model: claude-sonnet-4-6
+    daily_spend_cap_usd: 15.0
+    soft_warn_pct: 0.75
+    can_audit: true
+
+  dan:
+    department: robotics
+    model: codex-gpt-5.5
+    daily_spend_cap_usd: 20.0
+    soft_warn_pct: 0.75
+    can_audit: true
+
+  elsa:
+    department: philosophy
+    model: codex-gpt-5.5-mini
+    daily_spend_cap_usd: 6.0
+    soft_warn_pct: 0.75
+    can_audit: true
+
+  frank:
+    department: studio-video
+    model: codex-gpt-5.5
+    daily_spend_cap_usd: 20.0
+    soft_warn_pct: 0.75
+    can_audit: true
+
+  grace:                              # creative-ingestion operator (#260)
+    department: creative-ingestion
+    model: claude-sonnet-4-6
+    daily_spend_cap_usd: 10.0
+    soft_warn_pct: 0.75
+    can_audit: false                  # operator role, not an adversarial auditor
+
+  henry:                              # release-operations operator (#260)
+    department: release-operations
+    model: claude-opus-4-8
+    daily_spend_cap_usd: 25.0
+    soft_warn_pct: 0.75
+    can_audit: false                  # operator role, not an adversarial auditor
+
+# -----------------------------------------------------------------------------
+# Pipeline symmetry (claude-skills#260). Mirrors the orchestrator's native org
+# model: a front-end Creative Ingestion department feeds a back-end Release
+# Operations department, conveyor-belt style. Full map: AGENTS.md.
+# -----------------------------------------------------------------------------
+pipeline:
+  front_end:                          # raw text -> structured tickets
+    department: creative-ingestion
+    agent: grace
+    skill: idea-incubator
+    heartbeat: "0 7 * * *"            # 07:00 daily morning intake (cron)
+    inputs: [telegram_saved_messages, inbox_notes]
+    emits_label: "idea:incubated"     # tickets land labeled for triage
+  back_end:                           # PRs/assets -> atomic yes/no deploy ticket
+    department: release-operations
+    agent: henry
+    skill: studio-release
+    triggers_on_labels: [release-candidate, pending-deploy]
+    emits_label: "needs-human-signoff"
+    # The deploy ticket is yes/no only; crossing the boundary needs a human
+    # signature via the #258 circuit breaker (protected action).
+    deploy_gate: circuit_breaker
+
+# -----------------------------------------------------------------------------
+# Maximizer Mode — the global dead-man's switch (claude-skills#259).
+# -----------------------------------------------------------------------------
+maximizer_mode:
+  enabled: true
+  # If the usage ledger is older than this, the switch FAILS CLOSED: every agent
+  # is treated as paused-pending-audit (a broken/stalled loop cannot keep
+  # spending while reporting nothing).
+  heartbeat_staleness_seconds: 900        # 15 min
+  default_soft_warn_pct: 0.75
+  on_soft_warn: pause_heartbeat_for_audit # pause the loop, notify, await review
+  on_hard_cap: halt_agent                 # stop dispatching to that agent today
+  # Optional org-wide ceiling across ALL agents for one day. null = no ceiling.
+  global_daily_cap_usd: 100.0
+
+# -----------------------------------------------------------------------------
+# Adversarial QA routing policy (claude-skills#256).
+# -----------------------------------------------------------------------------
+review_policy:
+  enabled: true
+  require_distinct_agent: true   # auditor agent != creator agent
+  require_distinct_family: true  # auditor model family != creator model family
+  # If no eligible auditor exists for an asset, the asset is BLOCKED (fail
+  # closed) rather than allowed through on self-review.
+  on_no_auditor: block

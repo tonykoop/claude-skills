@@ -40,6 +40,8 @@ EXPECTED_SCRIPTS = {
     "wire_window.py",
     "aerial_root_trace.py",
     "grafting_sim.py",
+    "care_cadence.py",
+    "aerial_root_tracker.py",
 }
 
 
@@ -208,6 +210,143 @@ class AerialRootTrace(unittest.TestCase):
     def test_too_few_samples_raises(self):
         with self.assertRaises(ValueError):
             self.mod.droop_path_points((0, 0, 0), (1, 0, 0), samples=1)
+
+
+class CareCadence(unittest.TestCase):
+    """#172 chrono-engine: watering + fertilizing CHECK cadence (no bpy)."""
+
+    def setUp(self):
+        import care_cadence as mod
+        self.mod = mod
+
+    def test_faster_class_checked_more_often(self):
+        fast = self.mod.watering_check("fast")["cadence_days"]
+        slow = self.mod.watering_check("slow")["cadence_days"]
+        self.assertLess(fast, slow)
+
+    def test_heat_tightens_watering(self):
+        mild = self.mod.watering_check("moderate", heat=False)["cadence_days"]
+        hot = self.mod.watering_check("moderate", heat=True)["cadence_days"]
+        self.assertLess(hot, mild)
+
+    def test_dormancy_widens_watering(self):
+        active = self.mod.watering_check("slow", phase="active_growth")["cadence_days"]
+        dormant = self.mod.watering_check("slow", phase="dormancy")["cadence_days"]
+        self.assertGreater(dormant, active)
+
+    def test_repot_tightens_watering_and_suspends_fertilizer(self):
+        base = self.mod.watering_check("moderate")["cadence_days"]
+        repot = self.mod.watering_check("moderate", stressors=["repot"])["cadence_days"]
+        self.assertLessEqual(repot, base)
+        fert = self.mod.fertilizing_plan("moderate", stressors=["repot"])
+        self.assertTrue(fert["suspended"])
+        self.assertEqual(fert["resume_after_days"], self.mod.REPOT_FERTILIZE_SUSPEND_DAYS)
+
+    def test_fertilizer_suspended_outside_active_growth(self):
+        self.assertTrue(self.mod.fertilizing_plan("fast", phase="dormancy")["suspended"])
+
+    def test_fertilizer_runs_in_active_growth(self):
+        plan = self.mod.fertilizing_plan("fast", phase="active_growth")
+        self.assertFalse(plan["suspended"])
+        self.assertEqual(plan["cadence_days"], self.mod.FERTILIZE_DAYS["fast"])
+
+    def test_reminders_are_check_phrased_not_fixed_actions(self):
+        # The whole point of the chrono engine: emit observation loops.
+        w = self.mod.watering_check("fast")
+        self.assertIn("Check soil moisture", w["reminder"])
+        self.assertIn("trigger", w)
+        self.assertIn("done_when", w)
+
+    def test_cadence_never_below_one_day(self):
+        # fast + heat + multiple tightening stressors must not round below 1.
+        c = self.mod.watering_check(
+            "fast", phase="repot_recovery", heat=True,
+            stressors=["repot", "small_pot", "free_draining"],
+        )["cadence_days"]
+        self.assertGreaterEqual(c, 1)
+
+    def test_unknown_class_raises(self):
+        with self.assertRaises(ValueError):
+            self.mod.watering_check("turbo")
+
+    def test_unknown_phase_raises(self):
+        with self.assertRaises(ValueError):
+            self.mod.watering_check("fast", phase="winter")
+
+    def test_care_schedule_combines_both(self):
+        sched = self.mod.care_schedule("moderate", heat=True, stressors=["repot"])
+        self.assertEqual(sched["watering"]["task"], "watering")
+        self.assertEqual(sched["fertilizing"]["task"], "fertilizing")
+        self.assertIn("wire_window.py", sched["wire_removal"])
+
+
+class AerialRootTracker(unittest.TestCase):
+    """#174 aerial-root: lifecycle + intervention gate + thickening forecast (no bpy)."""
+
+    def setUp(self):
+        import aerial_root_tracker as mod
+        self.mod = mod
+
+    def test_lifecycle_order_advances(self):
+        self.assertEqual(self.mod.next_state("tip_promising"), "guided")
+        self.assertEqual(self.mod.next_state("reached_soil"), "thickening")
+
+    def test_fused_is_terminal(self):
+        self.assertTrue(self.mod.is_terminal("fused"))
+        with self.assertRaises(ValueError):
+            self.mod.next_state("fused")
+
+    def test_valid_transitions(self):
+        self.assertTrue(self.mod.valid_transition("guided", "reached_soil"))
+        self.assertFalse(self.mod.valid_transition("tip_promising", "fused"))  # no skipping
+        self.assertTrue(self.mod.valid_transition("guided", "failed"))         # can fail
+        self.assertFalse(self.mod.valid_transition("fused", "failed"))         # not after fused
+
+    def test_unknown_state_raises(self):
+        with self.assertRaises(ValueError):
+            self.mod.next_state("sprouting")
+
+    def test_intervention_gated_on_health_and_warmth(self):
+        held = self.mod.intervention_for("guided", healthy=False, warm=True)
+        self.assertFalse(held["act"])
+        self.assertIn("HOLD", held["guidance"])
+        cold = self.mod.intervention_for("guided", healthy=True, warm=False)
+        self.assertFalse(cold["act"])
+
+    def test_intervention_acts_when_healthy_and_warm(self):
+        ok = self.mod.intervention_for("guided", healthy=True, warm=True)
+        self.assertTrue(ok["act"])
+        self.assertIn("guide", ok["guidance"].lower())
+
+    def test_forecast_is_a_range_with_confidence(self):
+        fc = self.mod.thickening_forecast("guided", "fast", "warm", species="ficus")
+        self.assertLess(fc["remaining_days_min"], fc["remaining_days_max"])
+        self.assertIn(fc["confidence"], {"low", "medium", "high"})
+
+    def test_later_state_has_less_remaining_time(self):
+        early = self.mod.thickening_forecast("tip_promising", "moderate")["remaining_days_max"]
+        late = self.mod.thickening_forecast("thickening", "moderate")["remaining_days_max"]
+        self.assertGreater(early, late)
+
+    def test_warm_shortens_vs_cool(self):
+        warm = self.mod.thickening_forecast("guided", "fast", "warm")["remaining_days_max"]
+        cool = self.mod.thickening_forecast("guided", "fast", "cool")["remaining_days_max"]
+        self.assertLess(warm, cool)
+
+    def test_fused_forecast_reports_done(self):
+        fc = self.mod.thickening_forecast("fused", "fast")
+        self.assertTrue(fc["fused"])
+
+    def test_forecast_unknown_class_raises(self):
+        with self.assertRaises(ValueError):
+            self.mod.thickening_forecast("guided", "turbo")
+
+    def test_track_combines_views(self):
+        t = self.mod.track("reached_soil", "fast", "warm", species="ficus",
+                           from_date="2026-06-19")
+        self.assertEqual(t["next_state"], "thickening")
+        self.assertTrue(t["intervention"]["act"])
+        self.assertIn("window_start", t["forecast"])
 
 
 # ---------------------------------------------------------------------------

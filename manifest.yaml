@@ -23,14 +23,14 @@ install_roots:
 
 skills:
   skills-meta:
-    canonical_version: 1.0.1
+    canonical_version: 1.0.2
     runtime: portable
     repo_path: skills/skills-meta
-    last_updated: 2026-06-15
+    last_updated: 2026-06-19
     status: active
     notes: >-
       Portable drift-audit skill for Claude, Codex, Gemini, and desktop
-      installs.
+      installs. evals/evals.json added in v1.0.2 (5 evals).
 
   tmux-v2:
     canonical_version: 2.0.0
@@ -45,10 +45,10 @@ skills:
       backups under ~/.skill-cleanup-backups/.
 
   tmux-sprint:
-    canonical_version: 2.7.0
+    canonical_version: 2.9.0
     runtime: claude
     repo_path: plugins/coding/skills/tmux-sprint
-    last_updated: 2026-06-15
+    last_updated: 2026-06-19
     status: active
     notes: >-
       Claude-side tmux sprint counterpart with TwinGrid blind A/B, Partner
@@ -58,33 +58,61 @@ skills:
       submission, ~/.gemini permission routing, agy -p vs interactive, quota
       warning) and a tmux 3.2+/bash-3.2/BSD-date Compatibility section. v2.6.0
       adds Codex /goal lane integration (dispatch.sh --goal, codex-goal-contract
-      reference, goal test) resolving issue #117.
+      reference, goal test) resolving issue #117. v2.8.0 implements the
+      provider-failover detection/state slice (provider_failover.py: exhaustion
+      detection, round-state record, morning-summary table; no keystrokes) for
+      issue #166. v2.9.0 adds first machine-runnable eval suite (5 evals).
 
   merge-review:
-    canonical_version: 1.0.0
+    canonical_version: 0.2.0
     runtime: claude
     repo_path: claude/skills/merge-review
-    last_updated: 2026-05-08
+    last_updated: 2026-05-20
+    repo_path: plugins/coding/skills/merge-review
+    last_updated: 2026-06-19
     status: active
+    notes: >-
+      evals/evals.json added in v0.2.0 (5 evals). canonical_version corrected
+      from stale 1.0.0 to match SKILL.md lineage (0.1.0 initial, 0.2.0 evals).
 
   sprint-update:
-    canonical_version: 1.1.1
+    canonical_version: 1.2.0
     runtime: claude
-    repo_path: claude/skills/sprint-update
-    last_updated: 2026-05-11
+    repo_path: plugins/coding/skills/sprint-update
+    last_updated: 2026-06-19
     status: active
     notes: >-
       Adds personal GitHub sprint Queue columns for label, model, and batch
       metadata while preserving themed dispatch grouping, plus stale issue
       refresh, read-only refresh reporting, PR pressure clustering, and archive
-      follow-up checks before regenerating sprint dispatch prompts.
+      follow-up checks before regenerating sprint dispatch prompts. v1.2.0 adds
+      first machine-runnable eval suite (4 evals) and corrects stale repo_path.
 
   disk-cleanup:
-    canonical_version: 1.0.0
+    canonical_version: 1.1.0
     runtime: claude
-    repo_path: claude/skills/disk-cleanup
-    last_updated: 2026-05-08
+    repo_path: plugins/coding/skills/disk-cleanup
+    last_updated: 2026-06-19
     status: active
+    notes: >-
+      Weekly-to-biweekly disk recovery: cargo clean per worktree, merged-branch
+      pruning, npm/pnpm cache cleaning, optional Docker prune, and WSL VHD shrink
+      prompt. v1.1.0 adds first machine-runnable eval suite (4 evals) and corrects
+      stale repo_path.
+
+  ci-triage:
+    canonical_version: 0.2.0
+    runtime: claude
+    repo_path: plugins/coding/skills/ci-triage
+    last_updated: 2026-06-19
+    status: active
+    notes: >-
+      Read-only CI and Dependabot health check across all 7 WRFCoin repos
+      (core4, backend, frontend, smart-contracts, infra, security-testing,
+      mobile). Fires 5 gh commands in parallel, categorizes failures as
+      billing/real/config, writes a timestamped markdown report to
+      wrfcoin/docs/ci-triage/. v0.2.0 adds first machine-runnable eval suite
+      (5 evals).
 
   codex-merge-manager:
     canonical_version: 1.0.0
@@ -98,10 +126,10 @@ skills:
       ~/.skill-cleanup-backups/.
 
   gh-fix-ci:
-    canonical_version: 0.1.0
+    canonical_version: 0.2.0
     runtime: claude
     repo_path: plugins/coding/skills/gh-fix-ci
-    last_updated: 2026-06-15
+    last_updated: 2026-06-19
     status: active
     notes: >-
       Claude-usable port of the Codex-only gh-fix-ci into the coding plugin
@@ -110,6 +138,35 @@ skills:
       drafts a fix plan before implementing. Ships scripts/inspect_pr_checks.py
       (the script the original codex SKILL referenced but never shipped). The
       codex variant remains at codex/skills/gh-fix-ci (codex-gh-fix-ci entry).
+      v0.2.0 adds evals/evals.json (4 evals).
+
+  studio-release:
+    canonical_version: 0.3.0
+    runtime: portable
+    repo_path: plugins/coding/skills/studio-release
+    last_updated: 2026-06-19
+    status: active
+    notes: >-
+      Studio pipeline release handoff skill for PR/end-of-block validation.
+      Ships a dependency-light headless gate that lints markdown, compiles
+      Python, checks shell scripts with bash -n, stages the source bundle, and
+      emits qa-decision.json plus a single approve/deploy ticket. v0.2.0 adds
+      confidence scoring + circuit-breaker routing, a checksummed
+      publish-manifest.json for the Studio Pipeline, and adversarial-QA auditor
+      assignment via the governance review_router (claude-skills#256). v0.3.0
+      adds first machine-runnable eval suite (4 evals).
+
+  verification-gates:
+    canonical_version: 0.2.0
+    runtime: portable
+    repo_path: plugins/coding/skills/verification-gates
+    last_updated: 2026-06-19
+    status: active
+    notes: >-
+      Automated QA decision gates for generated work: repeatable command
+      execution, markdown/length linting, and URDF revolute/prismatic
+      joint-limit checks. v0.2.0 adds first machine-runnable eval suite
+      (4 evals).
 
   codex-gh-fix-ci:
     canonical_version: 1.0.0
@@ -130,37 +187,42 @@ skills:
       under ~/.skill-cleanup-backups/.
 
   idea-incubator:
-    canonical_version: 1.4.4
+    canonical_version: 1.14.0
     runtime: shared
-    repo_path: skills/idea-incubator
-    last_updated: 2026-05-18
+    repo_path: plugins/maker/skills/idea-incubator
+    last_updated: 2026-06-19
     status: active
-    notes: Promote-batch mode; readiness matrix, evidence-ledger, LFS prompts for recovery/import; offline-first promote-batch readiness helper (promote_batch_readiness.py) with existing-anchor checks and GitHub query fallbacks; private media/family archive promotion template; yearbook/design-book rollout workflow with pilot edition, consent/proof gates, image-gen derivative boundaries, EXIF/GPS handling, provenance-ledger defaults, photo-album/private-media pilot source-photo rules, compact private-media owner decision stub, and instrument design-book/yearbook/portfolio chapter promotion pattern.
+    notes: "1.14.0: image-gen-2 chapter asset-contract validator (scripts/image_chapter_validator.py + 47 tests; first tests/ dir for idea-incubator) — enforces derivative, non_dimensional, kind, packet_ref, proof-reviewed threshold, two-source rule (#210). 1.13.0: offline Shared Subassemblies reporter — portable twin of the #244 Obsidian MOC dashboards (scripts/shared_subassemblies.py + 11 tests). 1.12.0: cross-pollination epic-level Opportunities Detected report + checker (#247). 1.11.0: tuned domain router (#242). 1.10.0: prior-lessons pre-read (#241). 1.9.0: retrospective sweep (#240). 1.8.0: red-team risks section (#238). 1.7.0: cross-pollination engine (epic #236); 1.6.0: workflow automation & agent roles (epic #235). 1.5.0: brainstorm-to-issues ingestion mode."
 
   file-a-patent:
-    canonical_version: 0.1.0
+    canonical_version: 0.2.0
     runtime: shared
     repo_path: plugins/maker/skills/file-a-patent
-    last_updated: 2026-05-25
+    last_updated: 2026-06-19
     status: active
     notes: >-
       Private, attorney-ready invention packet and provisional-patent
       preparation skill. Does not provide legal advice, file with any office,
-      publish, change licenses, or conclude patentability.
+      publish, change licenses, or conclude patentability. v0.2.0 adds
+      machine-runnable eval suite (5 evals).
 
   maker-engineering:
-    canonical_version: 1.1.0
+    canonical_version: 1.2.0
     runtime: shared
-    repo_path: skills/maker-engineering
-    last_updated: 2026-05-10
+    repo_path: plugins/maker/skills/maker-engineering
+    last_updated: 2026-06-19
     status: active
-    notes: Umbrella routing skill for physical making projects and specialist handoffs. v1.1 adds the human-carrying / floatable-object safety gate.
+    notes: >-
+      Umbrella routing skill for physical making projects and specialist
+      handoffs. v1.1 adds the human-carrying / floatable-object safety gate.
+      v1.2.0 adds first machine-runnable eval suite (5 evals) and corrects
+      repo_path from skills/ to plugins/maker/skills/.
 
   instrument-maker:
     canonical_version: 4.5.0
     runtime: shared
     repo_path: skills/instrument-maker
-    last_updated: 2026-05-17
+    last_updated: 2026-06-13
     status: active
     notes: |
       Official public invocation and repo path are now instrument-maker. The
@@ -181,12 +243,12 @@ skills:
       See skills/instrument-maker/SKILL.md for the skill contract.
 
   yoga-sequencer:
-    canonical_version: 1.2.0
+    canonical_version: 1.2.2
     runtime: shared
     repo_path: skills/yoga-sequencer
-    last_updated: 2026-05-10
+    last_updated: 2026-06-13
     status: active
-    notes: Vinyasa-first shared class-sequencing skill with playlist-builder handoff output. v1.2.0 adds heated-room safety checklist and hot-room cue-volume guidance.
+    notes: Vinyasa-first shared class-sequencing skill with playlist-builder handoff output. v1.2.0 adds heated-room safety checklist and hot-room cue-volume guidance; v1.2.1 mirrors the staple-pose safety boundary into mixed-level defaults (issue #26); v1.2.2 adds worked 45/30-minute playlist handoff examples (issue #27).
 
   makerspace:
     canonical_version: 1.2.0
@@ -209,16 +271,16 @@ skills:
       packet skill.
 
   laser-art:
-    canonical_version: 0.1.0
+    canonical_version: 0.2.0
     runtime: shared
-    repo_path: skills/laser-art
-    last_updated: 2026-05-11
+    repo_path: plugins/maker/skills/laser-art
+    last_updated: 2026-06-19
     status: active
     notes: >-
       Laser-cut, laser-engraved, and laser-scored decorative art routing skill
       with explicit generated-image versus fabrication-authority boundaries.
-      v0.1.0 has no shell command shim; use skills-meta for version reporting
-      until a real `laser-art --version` command exists.
+      v0.2.0 adds first machine-runnable eval suite (5 evals) and corrects
+      repo_path from skills/ to plugins/maker/skills/.
 
   reverse-engineer:
     canonical_version: 1.1.0
@@ -229,26 +291,26 @@ skills:
     notes: Portable snapshot from reverse-engineering/skills/v1/reverse-engineer for cross-platform review. v1.1.0 adds image-access preflight and degraded-mode banner (#70).
 
   habitat-maker:
-    canonical_version: 0.4.1
+    canonical_version: 0.5.0
     runtime: shared
     repo_path: plugins/maker/skills/habitat-maker
-    last_updated: 2026-06-15
+    last_updated: 2026-06-19
     status: active
-    notes: Bat/bee/observation-hive welfare gates and camera/electronics caveats, plus bird-bath/balcony support, first canonical chickadee laser packet, and a concept-only observation-hive preflight template. v0.4.1 folds the Tillandsia-on-bark sculpture micro-line (issue #45, epic #211) into planters/plant-supports as a reference + minimal example (care routes to houseplant) and adds the first CHANGELOG.
+    notes: "v0.5.0 adds machine-runnable eval suite (5 evals: welfare-gate-before-cavity-packet, generator-backed-geometry-required-for-digital-fab, bird-bath-balcony-five-sections-required, beekeeping-decisions-route-out, tillandsia-care-routes-to-houseplant)."
 
   houseplant:
-    canonical_version: 0.3.0
+    canonical_version: 0.9.0
     runtime: shared
     repo_path: plugins/maker/skills/houseplant
-    last_updated: 2026-06-15
+    last_updated: 2026-06-19
     status: active
-    notes: 'Houseplant and bonsai digital twins plus care workflows, with first-class Blender MCP support. At plugins/maker/skills/houseplant. v0.3.0 (epic #209) implements the v2 feature set: chrono-horticultural engine with species-scaled wire-removal inspection windows (#172, references/chrono-engine.md + scripts/wire_window.py), bud/bloom chrono-tracker with confidence-explicit forecasting (#173, references/bud-bloom-tracker.md), aerial-root/nebari lifecycle tracker with a teal guided-root trace (#174, references/aerial-roots-nebari.md + scripts/aerial_root_trace.py), CV plant-health check-engine-light screening (#175, references/health-diagnostics.md), simulation-only Blender boolean-union grafting sandbox (#176, references/grafting-sandbox.md + scripts/grafting_sim.py), and a propagation tracker with parent/child lineage (#177, references/propagation.md). v0.2.0 added capture-pipeline routing for four phone modes, ruler-based scale calibration, bundled bpy patterns, the Ficus benjamina starter profile, and a smoke-test suite (now 24 tests).'
+    notes: 'Houseplant and bonsai digital twins plus care workflows, with first-class Blender MCP support. At plugins/maker/skills/houseplant. v0.9.0 adds scripts/collection_dashboard.py — aggregates all individual chrono scripts (care_cadence, wire_window, bloom_forecast, propagation_tracker, health_triage) across the whole collection into a prioritised Markdown dashboard bucketed by urgency; 37 tests (#209). v0.8.0 adds scripts/aerial_root_tracker.py — the decision layer behind aerial_root_trace.py (#174): aerial-root lifecycle transition validation, a health/warmth intervention gate, and a remaining time-to-fused forecast (range + confidence); 12 tests. v0.7.0 adds scripts/graft_heal_window.py — the deterministic graft heal-window (multi-year range + confidence) and Medium/High risk verdict behind the grafting sandbox (#176); 13 tests. v0.6.0 adds scripts/propagation_tracker.py (parent/child lineage tree + lifecycle + rooting forecast, #177) and scripts/care_cadence.py (watering/fertilizing CHECK-cadence engine, #172). v0.5.0 adds scripts/bloom_forecast.py — deterministic bloom-window forecaster behind the bud/bloom tracker (#173). v0.4.0 adds scripts/health_triage.py — deterministic triage layer behind the CV health screening (#175). v0.3.0 (epic #209) implements the v2 feature set.'
 
   energy-management:
-    canonical_version: 0.1.0
+    canonical_version: 0.2.0
     runtime: shared
     repo_path: plugins/maker/skills/energy-management
-    last_updated: 2026-06-15
+    last_updated: 2026-06-19
     status: active
     notes: >-
       Data-light capacity-to-task matching for making/teaching/sprint work
@@ -258,20 +320,21 @@ skills:
       planning, handoff). Reuses idea-incubator labels (ready-now + domain)
       instead of inventing a parallel taxonomy. Hard boundaries: no medical or
       mental-health advice, no invented metrics, no persistent personal store.
+      v0.2.0 adds first machine-runnable eval suite (5 evals).
 
   playlist-builder:
-    canonical_version: 0.1.0
+    canonical_version: 0.2.0
     runtime: shared
-    repo_path: skills/playlist-builder
-    last_updated: 2026-05-10
+    repo_path: plugins/maker/skills/playlist-builder
+    last_updated: 2026-06-19
     status: active
-    notes: "Initial snapshot with catalog/auth-state preflight (issue 72) for honest sparse-catalog output."
+    notes: "v0.2.0 adds machine-runnable eval suite (5 evals: preflight-required, no-fabrication-when-sparse, content-propriety-filter, teach-friendliness-weighting, unknown-context-fallback)."
 
   sprint-supervisor:
-    canonical_version: 1.3.0
+    canonical_version: 1.8.0
     runtime: claude
     repo_path: plugins/coding/skills/sprint-supervisor
-    last_updated: 2026-06-15
+    last_updated: 2026-06-19
     status: active
     deps:
       - sprint-manager  # cold-start handoff: supervisor bootstraps manager when no manager is running; do not reimplement manager topology here
@@ -280,21 +343,39 @@ skills:
       sprint-watchdog.sh (mechanical ~70% of approvals); this skill handles
       judgment ~30% — commands, rate-limit prompts, escalation, morning
       summary. Scales by named scope across twingrid/triplegrid/quadgrid via
-      /tmp lockfile.
+      /tmp lockfile. v1.5.0 adds tmux-preflight.sh (#163). v1.6.0 adds
+      sprint-dispatch-watcher.sh (#160). v1.7.0 adds evals/evals.json (5
+      evals); collapses duplicate version keys in SKILL.md. v1.8.0
+      genericizes morning-summary.md for public release (Refs #164).
+
+  run-benchmark:
+    canonical_version: 0.2.0
+    runtime: shared
+    repo_path: plugins/coding/skills/run-benchmark
+    last_updated: 2026-06-19
+    status: active
+    notes: >-
+      Drive an AI-agent benchmark contribution end-to-end (run, scrutinize,
+      issue, PR, submit) with verify-don't-trust integrity. Benchmark-agnostic:
+      orients on the target repo's own contract (AGENTS.md / CONTRIBUTING.md)
+      and detects its harness. MakerBench-HWE is the worked reference;
+      GrabCADBench / CADGenBench / SWE-bench-family and internal evals in scope.
+      v0.2.0 adds first machine-runnable eval suite (5 evals).
 
   run-swarm:
-    canonical_version: 1.2.1
+    canonical_version: 1.3.0
     runtime: shared
     repo_path: skills/run-swarm
-    last_updated: 2026-05-11
+    last_updated: 2026-06-19
     status: active
-    notes: Adds duplicate-aware issue filing, related-issue handling, gated label creation, manager summary queues, Tony-decision queues, skill-owner routing, and machine-readable JSON/CSV queue artifacts while preserving personal GitHub and WRFCoin swarm behavior.
+    notes: Adds duplicate-aware issue filing, related-issue handling, gated label creation, manager summary queues, Tony-decision queues, skill-owner routing, and machine-readable JSON/CSV queue artifacts while preserving personal GitHub and WRFCoin swarm behavior. v1.3.0 adds first machine-runnable eval suite (4 evals).
 
   source-citations:
-    canonical_version: 0.1.0
+    canonical_version: 0.2.0
     runtime: shared
     repo_path: plugins/coding/skills/source-citations
-    last_updated: 2026-06-15
+    last_updated: 2026-06-19
+    last_updated: 2026-05-22
     status: active
     notes: >-
       Bibliography + techniques catalog for instrument repos. Builds a keyed
@@ -304,6 +385,34 @@ skills:
       never hand-edited. Pilot rollout (3-5 done-bar instrument repos) and
       promotion of unconfirmed technique seeds run on the desktop where the
       individual instrument repos live; this entry only ships the skill.
+      v0.2.0 adds first machine-runnable eval suite (5 evals).
+
+  scaffold-hygiene:
+    canonical_version: 0.2.0
+    runtime: claude
+    repo_path: plugins/coding/skills/scaffold-hygiene
+    last_updated: 2026-06-19
+    status: active
+    notes: >-
+      Read-only scaffolding hygiene sweep across WRFCoin multi-repo workspace.
+      Launches 4 parallel sub-agents (build/CI, env vars/Docker, cross-repo API
+      contracts, docs/operator guides), files GitHub issues for real drift, and
+      writes a timestamped report. v0.2.0 adds first machine-runnable eval suite
+      (4 evals) and adds this canonical manifest entry.
+
+  tmux-boss:
+    canonical_version: 0.2.0
+    runtime: claude
+    repo_path: plugins/coding/skills/tmux-boss
+    last_updated: 2026-06-19
+    status: active
+    notes: >-
+      Generic project-neutral operational supervisor for a tmux-based agent
+      swarm. Polls manager and worker panes on a fixed cadence (default 240s),
+      auto-approves routine permission prompts via a configurable approval
+      rubric, escalates destructive/ambiguous prompts, coordinates peer
+      instances via lockfile, and produces morning summaries. v0.2.0 adds first
+      machine-runnable eval suite (4 evals) and this manifest entry.
 
 planned_skills:
   energy-management:

@@ -57,6 +57,13 @@ After building the fused preview, render the comparison so the user can judge th
 - Renders: pre <path>, post <path>
 - Heal expectation: silhouette is the multi-year end-state; real fusion takes <range> of warm-season growth
 - Risk: <Medium on a healthy vigorous ficus | High on a weak/pest-flagged plant or non-fusing species>
+
+The `<range>` and `<risk>` are computed by
+[`../scripts/graft_heal_window.py`](../scripts/graft_heal_window.py) — feed it the
+graft type, species fusion-readiness (`readily`/`moderate`/`poorly`), conditions,
+and plant health, and it returns a conservative multi-year heal window (months +
+dates) with confidence plus the Medium/High risk verdict (High on weak/pest-flagged
+plants or non-fusing species). Paste its values into the block:
 - Recommendation: <proceed-after-validation | defer | adjust-position-and-re-preview>
 - "Before cutting" verification: confirm scion/stock contact faces and that cambium will align on the real plant
 ```

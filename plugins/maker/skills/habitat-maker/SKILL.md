@@ -1,7 +1,7 @@
 ---
 name: habitat-maker
-version: 0.4.1
-last-updated: 2026-06-15
+version: 0.5.0
+last-updated: 2026-06-19
 description: >-
   Design wildlife habitat and garden infrastructure — birdhouses, bat houses,
   bee houses, bird baths, bird feeders, planters, pollinator habitat, garden

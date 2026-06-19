@@ -1,0 +1,40 @@
+{
+  "skill_name": "skills-meta",
+  "evals": [
+    {
+      "id": 1,
+      "name": "drift-check-summary",
+      "prompt": "Are my skills up to date? I'm running Claude on WSL2 and also have a Codex CLI install. Give me a quick audit.",
+      "expected_output": "A drift report that: (1) runs in inventory or drift-check mode by invoking scripts/skills-meta.py; (2) scans the default roots (repo-local skills/, ~/.claude/skills/, ~/.codex/skills/) plus any manifest.yaml install_roots entries; (3) leads with a mobile-friendly summary line showing counts — e.g. 'skills found: N, drifted: M, missing: K, duplicates: D'; (4) lists each drifted skill on one line with its installed version, canonical version, and the issue tag (e.g. behind-canonical, stale-last-updated, missing-version); (5) reports any unreadable roots with provenance (manifest/env/cli) and reason (missing, not-a-directory, no-skills-found); (6) does NOT rewrite any installed SKILL.md files — the skill is read-only by default; (7) if any skill has both a version drift AND a stale last-updated, surfaces both issues; (8) offers to show a frontmatter-fix suggestion for any drifted skill.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "name": "single-skill-version-probe",
+      "prompt": "What version of skills-meta is installed and is it current? Just the quick version check.",
+      "expected_output": "A single-skill check that: (1) runs --mode single --skill skills-meta (or equivalent); (2) reports the installed version from SKILL.md (e.g. v1.0.1 or v1.0.2), the canonical version from manifest.yaml, and the last-updated date; (3) shows status ok when they match, or drift with the specific issue tag when they differ (e.g. behind-canonical:1.0.2 or stale-last-updated:2026-06-19); (4) is short — three to five lines maximum, phone-friendly; (5) does NOT launch a full inventory scan of all roots — the user asked only about one skill; (6) if a PATH shim is unavailable, falls back to running python scripts/skills-meta.py --version to obtain the helper's installed version.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "name": "manifest-last-updated-stale-detection",
+      "prompt": "I just updated the SKILL.md for instrument-maker and bumped its last-updated date, but I forgot to update the manifest. Can you check whether any skills have a SKILL.md that's newer than what the manifest records?",
+      "expected_output": "A targeted drift check that: (1) runs skills-meta.py in drift or inventory mode looking for the manifest-last-updated-stale flag (introduced in v1.0.2); (2) identifies any skill where SKILL.md's last-updated date is strictly newer than manifest.yaml's last_updated field for that skill — this is the reverse of the stale-last-updated check; (3) reports the finding as 'manifest-last-updated-stale:<skill-last-updated>' alongside the skill name and both dates; (4) if instrument-maker (or any other skill) is flagged, reports the concrete dates so the user can see the gap at a glance; (5) suggests the corrective action: update the skill's manifest.yaml last_updated to match the SKILL.md date; (6) does NOT modify manifest.yaml without explicit user approval; (7) also notes if no such drift is found ('no manifest-last-updated-stale drift detected').",
+      "files": []
+    },
+    {
+      "id": 4,
+      "name": "cross-install-sync-dry-run",
+      "prompt": "I want to make sprint-supervisor and merge-review available on my Codex CLI install. What would actually get copied? Show me the plan without making any changes.",
+      "expected_output": "A sync dry-run that: (1) runs --mode sync --skill sprint-supervisor,merge-review --target <codex-install-root> without --apply; (2) expands sprint-supervisor's declared 'requires' dependencies from manifest.yaml (e.g. sprint-manager if listed) so the plan includes transitive deps; (3) shows each skill as one of: '+ copy <skill>' (missing at target), '= keep <skill>' (already at target and up to date), or '! drift <skill>' (at target but behind canonical — overwrite needs --force); (4) never creates, writes, or deletes any files during a dry run; (5) notes at the footer that '--apply' is needed to execute the plan, and '--apply --force' to overwrite drifted copies; (6) reports the target root clearly and flags it as 'unreadable' with origin 'cli' if the path does not exist on this machine; (7) produces deterministic output — two runs with the same state give identical output.",
+      "files": []
+    },
+    {
+      "id": 5,
+      "name": "fix-duplicates-dry-run",
+      "prompt": "I have the same skill installed in both my Claude and Codex roots. Show me a fix-duplicates plan so I know which copy to keep and which to remove — but don't delete anything yet.",
+      "expected_output": "A fix-duplicates dry-run that: (1) runs --mode fix-duplicates without --apply; (2) groups every skill that appears at more than one root into a block showing all paths; (3) marks exactly one copy per group as 'keep:' using canonical selection order — manifest repo_path first, then highest semver, then newest last-updated, then first encountered; (4) marks all other copies as 'remove:'; (5) annotates any path that is a symlink with '(symlink to ...)' so the user knows the unlink is safe and will not rmtree through the target; (6) prints a footer reminding the user to add '--apply' to execute the removals; (7) does NOT delete or unlink any files during the dry run — the skill is read-only without --apply; (8) is deterministic across two runs on the same install state.",
+      "files": []
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "skill_name": "run-swarm",
+  "evals": [
+    {
+      "id": 1,
+      "name": "personal-github-swarm-launch",
+      "prompt": "Run the swarm on my personal GitHub projects. I want to see what's missing across my instrument repos.",
+      "expected_output": "A personal-mode swarm that: (1) reads references/personal-project-swarm.md before launching any agents; (2) checks cache freshness using references/freshness-contract.md — if the cache under /tmp/tonykoop-run-swarm-issue-scout-results/ is stale or absent, refreshes it before dispatching agents; (3) launches the 8 default personal-project lenses (instrument acoustics, CAD/fabrication, documentation/storytelling, visual assets, repo hygiene, public readiness, backlog triage, career highlights) as concurrent agents using multi_agent=true when available, or serially otherwise; (4) gives every agent the standard read-only audit contract (cite evidence, search before filing, prefer one high-quality issue over vague ones); (5) collects results into a combined table with: repo, issue/draft title, severity/readiness, Tony decision needed, owner skill, smallest implementation boundary; (6) classifies each item as ready-for-swarm, needs-Tony-decision, or archive/watch — never files issues without this classification; (7) does NOT edit any repo files or open any PRs during the audit pass.",
+      "files": ["references/personal-project-swarm.md", "references/freshness-contract.md", "references/issue-scout-schema.md"]
+    },
+    {
+      "id": 2,
+      "name": "wrfcoin-swarm-launch",
+      "prompt": "Run the swarm on WRFCoin. Focus on security and test coverage.",
+      "expected_output": "A WRFCoin-mode swarm that: (1) identifies the workspace as /home/tony/wrfcoin (WRFCoin mode, not personal GitHub); (2) checks cache freshness for WRFCoin mode; (3) prioritizes the security (#1) and test-coverage (#4) lenses but still launches all 8 WRFCoin lenses (security/hardening, performance, bugs, test coverage, feature completion, platform cohesion, wildcard/growth/DX, expert blind spots); (4) agents receive the standard read-only audit contract and must search existing issues before drafting new ones; (5) produces a combined table classifying each finding as ready-for-implementation-swarm, needs-Tony-decision, or archive/watch; (6) does NOT file any GitHub issues directly — the issue-filing step is a manager action after the audit pass, and requires deduplication before filing.",
+      "files": ["references/freshness-contract.md", "references/issue-scout-schema.md"]
+    },
+    {
+      "id": 3,
+      "name": "duplicate-detection-before-filing",
+      "prompt": "The swarm finished. Can you file the issues it found?",
+      "expected_output": "An issue-filing flow with deduplication: (1) before filing any issue, searches existing open AND closed issues in the target repo using candidate title keywords, repo names, artifact paths, and likely labels; (2) classifies each candidate as exactly-duplicate (same repo, outcome, evidence — do NOT file, add a comment to the existing issue instead), related (distinct outcome — file with Refs #N link), or cluster (multiple findings → one parent with checklist); (3) only files items that are classified as 'ready for implementation swarm' with concrete evidence, target repo, owner skill, and implementation boundary — items needing Tony decisions stay in the queue; (4) does NOT create new labels without prior manager approval for GitHub mutation; (5) if label creation is not approved, adds 'Suggested labels:' inline in the issue body; (6) posts a summary of what was filed vs held vs marked duplicate.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "name": "ambiguous-workspace-clarification",
+      "prompt": "Run the swarm.",
+      "expected_output": "A disambiguation step: (1) the workspace or request is ambiguous (no explicit mention of WRFCoin, personal GitHub, or a specific project); (2) asks one short clarifying question: 'WRFCoin repos or your personal GitHub projects?' (or runs a read-only inventory and defaults to the safer personal mode while noting the assumption); (3) does NOT launch any agents or modify anything before the mode is established; (4) once the user clarifies, proceeds with the appropriate mode (WRFCoin or personal-project) and its associated lens set.",
+      "files": []
+    }
+  ]
+}

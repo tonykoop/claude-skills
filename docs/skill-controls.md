@@ -19,6 +19,24 @@ Codex, Gemini, and future desktop or automation variants.
 - Review gates: every skill PR carries evidence for static, behavior, runtime,
   and regression review before it is merged.
 
+## Required Control Evidence
+
+Every new or changed skill PR should answer this checklist in its review notes
+or linked design doc:
+
+| Control | Required evidence |
+|---|---|
+| Activation | The exact user request shapes that should trigger the skill, plus at least one non-trigger. |
+| Routing | Whether the skill is an umbrella or specialist, and which skills it hands off to or supersedes. |
+| Conflict handling | Adjacent skills that could overlap, the intended winner, and the description or manifest text that makes the winner clear. |
+| Versioning | Manifest entry, canonical version, runtime, status, and changelog source. |
+| Deprecation | If replacing another skill, the old skill's `status`, `superseded_by`, `remove_after`, and route-around wording. |
+| Content placement | Confirmation that long references, scripts, templates, and benchmarks live outside `SKILL.md`. |
+| Public release | Personal paths, private repo names, credentials, and private operational details were scanned or intentionally annotated. |
+
+If a PR cannot provide one row, it should say why and identify the follow-up
+issue. Silent gaps become review findings.
+
 See [cross-device-skill-sync.md](cross-device-skill-sync.md) for the repeatable
 operator workflow that turns packaging and drift detection into a cross-device
 sync pass.
@@ -96,12 +114,29 @@ Routing rules every umbrella should follow:
    what, and what the umbrella is producing for them.
 4. **Refuse to overreach.** If no specialist matches, say so and offer to
    incubate the idea or escalate.
+5. **Leave an audit trail.** When a PR changes umbrella routing, include the
+   old route, new route, trigger phrase, and specialist owner in the PR notes.
 
 Example (portable, illustrative): an umbrella for physical-making intake
 should route requests for "design a flute" to an instrument specialist,
 "build a jig" to a fabrication specialist, and "what is this part" to a
 reverse-engineering specialist, while keeping early-stage idea framing
 inside the umbrella itself.
+
+### Routing Decision Matrix
+
+Use this matrix when deciding whether to activate an umbrella or a specialist:
+
+| User request shape | Runtime should choose | Reason |
+|---|---|---|
+| "Which skill should handle..." | Umbrella | The deliverable is routing or intake, not the final artifact. |
+| "Design/build/write/validate this specific artifact..." | Specialist | The deliverable has a clear owner. |
+| "Make a plan across several domains..." | Umbrella first | The umbrella scopes the work and hands each slice to specialists. |
+| User explicitly names a specialist | Specialist | Explicit invocation outranks broader descriptions. |
+| User names a deprecated skill | Successor specialist, with warning | Deprecated descriptions must say `Deprecated: prefer <successor>`. |
+
+Umbrella skills may ask one concise clarifying question when a wrong handoff
+would create rework or safety risk. Otherwise they should route decisively.
 
 ---
 
@@ -127,6 +162,21 @@ this hierarchy:
 A trigger collision that survives a release is a release blocker. Add a
 benchmark prompt that exercises both skills' descriptions to lock in the
 intended winner.
+
+### Collision Triage Workflow
+
+1. Capture the exact prompt or issue title that caused the collision.
+2. Identify the candidate skills and classify each as umbrella, specialist,
+   runtime adapter, deprecated, or archived.
+3. Pick the intended winner using Activation: Trigger Precedence.
+4. Patch descriptions so the loser contains one of:
+   - `Do not use for <scope>; use <skill> instead.`
+   - `Prefer <skill> when <condition>.`
+   - `Deprecated: prefer <successor>.`
+5. Add a behavior fixture or benchmark prompt when the collision is likely to
+   recur.
+6. Record intentional overlaps in `manifest.yaml` `notes` until the manifest
+   schema grows dedicated `conflicts_with` or `routes_to` fields.
 
 ---
 
@@ -189,6 +239,21 @@ Behavior expectations:
   cross-device sync workflow) reports zero installed copies.
 - Archived skills stay in the repo at their tagged commit so old packages
   remain reproducible.
+
+Removal workflow:
+
+1. Mark the old skill `status: deprecated`, set `deprecated_on`,
+   `superseded_by`, and `remove_after`, and add route-around wording to its
+   description.
+2. Keep packaging and smoke checks green for the deprecated skill until every
+   install root has migrated.
+3. After `remove_after`, run the cross-device sync workflow and attach evidence
+   that no live install still reports the deprecated skill.
+4. Change `status: archived` when the repo copy remains for history but should
+   not activate.
+5. Delete only after the manifest, changelog, package index, and sync evidence
+   agree the skill is gone. The removal commit must name the replacement or the
+   reason no replacement exists.
 
 ---
 
@@ -276,6 +341,20 @@ labeled as illustrative ("Example, illustrative:"). Examples that look like
 required configuration but assume a private project must be generalized
 before release. The detailed checklist lives in
 [public-release-checklist.md](public-release-checklist.md).
+
+Minimum public-release controls for skills, adapters, hooks, and benchmarks:
+
+- Replace private home paths with placeholders such as `<repo-root>`,
+  `<workspace>`, or `<skill-root>`, except where `manifest.yaml` explicitly
+  documents install roots.
+- Replace private repo names with role names unless the public user must know
+  the concrete upstream.
+- Keep private operational playbooks out of `SKILL.md`; put sanitized examples
+  in `references/` or repo docs and label them illustrative.
+- Do not ship comments, fixtures, or examples containing credentials, tokens,
+  personal emails, internal hostnames, or one-off local machine paths.
+- Public examples must be runnable from the repo checkout or clearly marked as
+  pseudocode.
 
 ---
 

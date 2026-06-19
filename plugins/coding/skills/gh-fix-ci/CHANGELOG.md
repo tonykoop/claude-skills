@@ -1,5 +1,18 @@
 # Changelog — gh-fix-ci
 
+## v0.2.0 — 2026-06-19 (structured evals)
+
+Added `evals/evals.json` (4 evals):
+
+- **eval 1** `inspect-and-fix-failing-pytest`: full auth→inspect→plan→approve→
+  implement→recheck flow using inspect_pr_checks.py; drafts plan before editing.
+- **eval 2** `external-ci-provider-scoping`: Buildkite check → label external,
+  report detailsUrl only, do not drive non-GitHub-Actions providers.
+- **eval 3** `no-logs-missing-run-id`: all fallbacks exhausted → report
+  "Missing logs" explicitly rather than inventing content; no hallucination.
+- **eval 4** `json-output-for-automation`: --json flag invocation, validates
+  non-zero exit on remaining failures; no fixes or PRs opened.
+
 ## v0.1.0 — 2026-06-15
 
 - Initial Claude-usable port of the Codex-only `codex/skills/gh-fix-ci` into

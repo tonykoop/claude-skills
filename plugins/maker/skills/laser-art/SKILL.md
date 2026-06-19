@@ -1,7 +1,7 @@
 ---
 name: laser-art
-version: 0.1.0
-last-updated: 2026-05-11
+version: 0.2.0
+last-updated: 2026-06-19
 description: >-
   Design laser-cut, laser-engraved, or laser-scored decorative artwork and
   art-adjacent fabrication packets such as layered wall art, edge-lit acrylic

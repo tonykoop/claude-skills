@@ -1,7 +1,7 @@
 ---
 name: energy-management
-version: 0.1.0
-last-updated: 2026-06-15
+version: 0.2.0
+last-updated: 2026-06-19
 description: >-
   Match Tony's making, teaching, and sprint work to the time and energy he
   actually has right now, and review weekly load before it overcommits. Use

@@ -1,7 +1,7 @@
 ---
 name: sprint-update
-version: 1.1.1
-last-updated: 2026-05-11
+version: 1.2.0
+last-updated: 2026-06-19
 description: >-
   Update the current sprint document with new merge results, persona status changes,
   and velocity stats. Use when the user says "update sprint doc", "sprint update",

@@ -1,7 +1,7 @@
 ---
 name: idea-incubator
-version: 1.4.4
-last-updated: 2026-05-18
+version: 1.14.0
+last-updated: 2026-06-19
 description: >-
   Capture, classify, connect, review, and promote speculative ideas into a
   searchable GitHub issue inbox. Use when the user says "new idea", "incubate
@@ -49,6 +49,9 @@ This skill works best with these MCP connectors. Claude will suggest connecting 
 - `promote the cluster`
 - `batch promote`
 - `review the cluster`
+- `cross-pollinate`
+- `tag this idea`
+- `what reuses this`
 - `yearbook rollout`
 - `design book rollout`
 - `private media pilot`
@@ -57,6 +60,11 @@ This skill works best with these MCP connectors. Claude will suggest connecting 
 - `ingest this brainstorm`
 - `break this into epics and stories`
 - `here's my next brainstorming doc`
+- `red-team this epic`
+- `devil's advocate`
+- `retro this epic`
+- `lessons learned`
+- `process my inbox`
 
 The phrases are kept punctuation-free so substring-matching agents (Codex,
 Gemini CLI) hit them as reliably as Claude does.
@@ -70,13 +78,35 @@ Gemini CLI) hit them as reliably as Claude does.
 ## Modes
 
 1. **Capture** - turn one idea into one issue draft. If the input is a note,
-   URL, or voice-to-text fragment, keep the draft short and actionable.
+   URL, or voice-to-text fragment, keep the draft short and actionable. At
+   capture time, also apply the **functional-tagging schema** in
+   [`references/functional-tagging-schema.md`](references/functional-tagging-schema.md)
+   so the idea joins the cross-pollination web from the start.
 2. **Intake** - split a pasted Telegram dump into candidate ideas. Keep
-   uncertain splits visible instead of guessing.
+   uncertain splits visible instead of guessing. For brainstorms exported from
+   Gemini, use the
+   [`references/gemini-export-pipeline.md`](references/gemini-export-pipeline.md)
+   flow and the
+   [`scripts/gemini_to_github.py`](scripts/gemini_to_github.py) helper to split
+   into idea blocks and emit draft issue payloads. Run the
+   **prior-lessons pre-read** from
+   [`references/institutional-knowledge.md`](references/institutional-knowledge.md)
+   before generating epics, and apply domain auto-routing per
+   [`references/domain-label-routing.md`](references/domain-label-routing.md).
 3. **Connect** - search for related ideas, prerequisites, duplicates, and
-   cross-pollination candidates. Link them; do not auto-close.
+   cross-pollination candidates. Link them; do not auto-close. Use the
+   functional tags (#243) and the **Cross-Pollination Librarian** agent in
+   [`agents/cross-pollination-librarian.md`](agents/cross-pollination-librarian.md)
+   to surface when a mechanism solved in one idea fits another idea's need.
 4. **Review** - surface stale ideas, best-fit-for-now ideas, and clusters
    worth revisiting. Summarize; do not score emotional resonance numerically.
+   The Obsidian **Shared Subassemblies MOC** in
+   [`references/obsidian/shared-subassemblies-MOC.md`](references/obsidian/shared-subassemblies-MOC.md)
+   is the human-facing dashboard for recurring subassemblies. Outside Obsidian
+   (Codex/Gemini CLI, CI, terminal), run
+   [`scripts/shared_subassemblies.py`](scripts/shared_subassemblies.py)
+   `--dir <notes>` for the same shared-subassembly / shared-interface /
+   candidate-pair views from the functional-tag frontmatter.
 5. **Promote** - draft the handoff text for the downstream repo or specialist
    skill. Include `closes #N` only when the user wants the tracked issue closed
    by the downstream work. Route to `maker-engineering` for physical builds,
@@ -104,11 +134,46 @@ Gemini CLI) hit them as reliably as Claude does.
    decision stub in
    [`references/private-media-decision-stub.md`](references/private-media-decision-stub.md)
    before any downstream repo scaffold, imagegen/layout work, or media import.
+   For design-generation handoffs, prepend the **constraint-injection prompt**
+   in [`references/prompts/constraint-injection.md`](references/prompts/constraint-injection.md)
+   so generated designs default to the Universal Interface standards.
 6. **Promote-batch** - cluster-aware promotion. Use when multiple capture
    issues share a recovery, archive, intake-dump, or thematic root and should
    be triaged as a unit instead of one-by-one. See the dedicated section
    below; the worked example is in
    [`references/promote-batch-example.md`](references/promote-batch-example.md).
+7. **Cross-pollinate** - semantic-web mode. Use the functional tags (#243) to
+   notice when a mechanism solved for one gadget is the exact fit another
+   gadget needs. Reads the **circuits inventory** of solved functional
+   primitives in [`references/circuits-inventory.md`](references/circuits-inventory.md)
+   (built by [`scripts/build_circuits_inventory.py`](scripts/build_circuits_inventory.py)),
+   surfaces shared subassemblies via the Obsidian MOC (#244), and posts
+   suggestions via the Cross-Pollination Librarian agent (#247). Standardize
+   mating boundaries against the **Universal Interface guide** in
+   [`references/universal-interface-guide.md`](references/universal-interface-guide.md)
+   so primitives stay swappable (the "Lego rule").
+
+## Agent roles
+
+The incubator can spawn (or paste-in, on hosts without subagents) two dual-role
+agents that close the learning loop around generated epics:
+
+- **Devil's Advocate / Red Team** —
+  [`agents/devils-advocate.md`](agents/devils-advocate.md). Adversarially
+  reviews a freshly generated epic *before* it is filed: challenges
+  assumptions, names the weakest story, surfaces hidden dependencies, and lists
+  failure modes. Invoke right after an epic is generated. **Every generated
+  top-level epic MUST carry a `### Technical Risks & Assumptions` section** —
+  the filed form of this pass, appended to the epic body with a role-attribution
+  line, leaving the optimist `## Vision` / `## Stories` / `**Rollup:**` content
+  unchanged. The section must list concrete, epic-specific risks, never generic
+  boilerplate. Verify with
+  [`scripts/check_epic_risks_section.py`](scripts/check_epic_risks_section.py).
+- **Retrospective / Lessons-Learned** —
+  [`agents/retrospective.md`](agents/retrospective.md). Reviews a *closed* epic
+  and its stories/PRs, scores estimate accuracy, and writes lessons into
+  [`references/institutional-knowledge.md`](references/institutional-knowledge.md),
+  which the Intake pre-read loads on the next cycle.
 
 ## Promote-batch mode
 
@@ -168,6 +233,30 @@ Promote mode's readiness matrix.
 
 When in doubt for a recovery/import cluster, default to `Refs`.
 
+## Cross-pollination engine
+
+The cross-pollination engine (epic #236) turns the incubator from a linear
+conveyor belt into a semantic web. Its pieces compose:
+
+1. **Tag at intake** - apply the functional-tagging schema
+   ([`references/functional-tagging-schema.md`](references/functional-tagging-schema.md))
+   so every idea carries `functions:` / `interfaces:` / `materials:` facets.
+2. **See the overlaps** - the Obsidian Shared Subassemblies MOC
+   ([`references/obsidian/shared-subassemblies-MOC.md`](references/obsidian/shared-subassemblies-MOC.md))
+   groups ideas by shared tags using Dataview.
+3. **Standardize the boundary** - the Universal Interface guide
+   ([`references/universal-interface-guide.md`](references/universal-interface-guide.md))
+   keeps subassemblies swappable; the constraint-injection prompt
+   ([`references/prompts/constraint-injection.md`](references/prompts/constraint-injection.md))
+   enforces it on generated designs.
+4. **Automate the match** - the Cross-Pollination Librarian agent
+   ([`agents/cross-pollination-librarian.md`](agents/cross-pollination-librarian.md))
+   scans inbox + vault and posts cross-pollination suggestion comments.
+5. **Catalog the primitives** - the circuits inventory
+   ([`references/circuits-inventory.md`](references/circuits-inventory.md),
+   built by [`scripts/build_circuits_inventory.py`](scripts/build_circuits_inventory.py))
+   indexes solved functional primitives for reuse.
+
 ## Operating rules
 
 - Default to mobile-friendly, copy-pasteable Markdown.
@@ -178,6 +267,9 @@ When in doubt for a recovery/import cluster, default to `Refs`.
 - Do not hard-code repository ownership or visibility when the target repo is
   unknown. Use a placeholder or ask the user first.
 - Do not auto-close ideas, and do not invent ideas that the user did not capture.
+- Do not guess functional tags. If you cannot name a function honestly, add
+  `needs-clarification` and ask — a wrong tag produces false cross-pollination
+  matches.
 
 ## Bundled references
 
@@ -188,6 +280,35 @@ When in doubt for a recovery/import cluster, default to `Refs`.
   - Brainstorm → GitHub epics/stories/points ingestion pipeline: process,
     label/body conventions, Fibonacci point rubric, domain→repo routing
     table, and IP / Masonic care rules.
+- [`references/templates/hybrid-issue-template.md`](references/templates/hybrid-issue-template.md)
+  - Skeletal hardware/software/firmware hybrid issue template with an Expected
+    PDM Artifacts checklist. GitHub-native form lives at
+    `.github/ISSUE_TEMPLATE/hybrid-idea.md`.
+- [`references/gemini-export-pipeline.md`](references/gemini-export-pipeline.md)
+  - Design doc for the Gemini -> Obsidian -> GitHub export pipeline, including
+    data contract, idempotency/dedup, failure handling, and coordination with
+    StudioPipeline #57.
+- [`references/domain-label-routing.md`](references/domain-label-routing.md)
+  - Data-driven keyword/signal -> domain-label routing table with confidence
+    thresholds and a needs-triage fallback.
+- [`references/institutional-knowledge.md`](references/institutional-knowledge.md)
+  - Lessons-learned store format plus the pre-read step that feeds prior
+    lessons into the next brainstorm parse. Written by the retrospective agent.
+- [`references/functional-tagging-schema.md`](references/functional-tagging-schema.md)
+  - Controlled vocabulary + YAML frontmatter spec (`functions:` /
+    `interfaces:` / `materials:`) applied to every idea at intake (epic #236).
+- [`references/obsidian/shared-subassemblies-MOC.md`](references/obsidian/shared-subassemblies-MOC.md)
+  - Obsidian Map-of-Content with Dataview queries that group ideas by shared
+    functional tags to surface recurring subassemblies (epic #236).
+- [`references/universal-interface-guide.md`](references/universal-interface-guide.md)
+  - Standardized mechanical/electrical interfaces (the "Lego rule") so
+    subassemblies stay swappable across projects (epic #236).
+- [`references/prompts/constraint-injection.md`](references/prompts/constraint-injection.md)
+  - Reusable prompt fragment that injects Universal Interface constraints into
+    design-generation requests (epic #236).
+- [`references/circuits-inventory.md`](references/circuits-inventory.md)
+  - Portfolio-wide index of reusable functional primitives ("circuits") with
+    schema and currency rules (epic #236).
 - [`references/private-media-family-archive.md`](references/private-media-family-archive.md)
   - Privacy-first promotion template for family archives, photo albums,
     scanned documents, and personal video.
@@ -207,10 +328,23 @@ When in doubt for a recovery/import cluster, default to `Refs`.
 - [`references/promote-batch-example.md`](references/promote-batch-example.md)
   - Worked example: legacy-import / Weather Balloon Camera Vessel cluster.
 
+## Bundled agents
+
+- [`agents/devils-advocate.md`](agents/devils-advocate.md) - adversarial
+  red-team review of a freshly generated epic.
+- [`agents/retrospective.md`](agents/retrospective.md) - blameless retro of a
+  closed epic that writes lessons into the institutional-knowledge store.
+- [`agents/cross-pollination-librarian.md`](agents/cross-pollination-librarian.md)
+  - Scheduled librarian that scans the issue inbox + Obsidian vault, matches
+    solved mechanisms to open needs via functional tags and/or embeddings, and
+    posts cross-pollination suggestion comments (epic #236).
+- [`agents/openai.yaml`](agents/openai.yaml) - OpenAI/Codex interface
+  descriptor for the skill.
+
 ## Optional helpers
 
-Both helpers create the same labels and need an authenticated `gh`. Pick the
-one that matches the host shell:
+Both label helpers create the same labels and need an authenticated `gh`. Pick
+the one that matches the host shell:
 
 - [`scripts/bootstrap-labels.sh`](scripts/bootstrap-labels.sh) - bash, for
   WSL, macOS, Linux, and Git Bash on Windows.
@@ -220,6 +354,21 @@ one that matches the host shell:
 - [`scripts/promote_batch_readiness.py`](scripts/promote_batch_readiness.py) -
   offline-first helper that converts saved issue JSON plus local anchor roots
   and inventory CSVs into a Promote-batch readiness matrix.
+- [`scripts/gemini_to_github.py`](scripts/gemini_to_github.py) - dry-run-first
+  helper that splits an exported Gemini brainstorm into idea blocks and emits
+  fingerprinted draft issue payloads (Story #237).
+- [`scripts/build_circuits_inventory.py`](scripts/build_circuits_inventory.py) -
+  offline-first helper that walks repos/vault for tagged ideas and emits the
+  circuits inventory as Markdown/JSON (dry-run by default).
+- [`scripts/image_chapter_validator.py`](scripts/image_chapter_validator.py) -
+  validates an image-gen-2 chapter manifest against the asset-contract defined
+  in `references/image-gen-2-chapter-template.md` (Refs #92, #100, #210):
+  checks required sidecar fields, enforces `derivative: true` and
+  `non_dimensional: true` on all generated assets, validates `kind` values,
+  enforces `packet_ref`, blocks publication when any asset is below
+  `proof-reviewed`, and enforces the two-source rule on authority artifacts.
+  Exit 0 = pass, 1 = violations, 2 = bad input. Use `--require-publishable`
+  to fail on a valid-but-draft chapter.
 
 If neither works (mobile zip-upload, sandboxed Codex Desktop, no `gh`), fall
 back to the copy-pasteable `gh label create` block in

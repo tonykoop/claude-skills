@@ -1,0 +1,40 @@
+{
+  "skill_name": "tmux-sprint",
+  "evals": [
+    {
+      "id": 1,
+      "name": "label-aware-batch-routing",
+      "prompt": "Plan the next sprint batches using the open issue labels.",
+      "expected_output": "Runs `scripts/plan-label-batches.sh` (or follows the label-aware routing contract from `references/label-aware-routing.md`); reads live GitHub labels from the open issue queue; groups issues into themed dispatch batches by label (e.g., instrument-maker, maker, capture, promote); assigns a model lane per batch based on label → model mapping in the routing reference; produces a numbered queue table with `Label`, `Model`, `Batch`, `Issue`, `Repo`, `Description` columns; does NOT assign a model without a label, and does NOT collapse all issues into a single unlabeled batch.",
+      "files": ["scripts/plan-label-batches.sh", "references/label-aware-routing.md"]
+    },
+    {
+      "id": 2,
+      "name": "twingrid-blind-ab-handoff",
+      "prompt": "Set up a TwinGrid A/B test — Alice and Bob are both working on the same feature in separate panes.",
+      "expected_output": "Follows the TwinGrid blind A/B protocol from `references/twingrid-blind-handoff-template.md`: each agent (Alice, Bob) receives the same task prompt independently without visibility into the other's workspace; the manager pane does NOT share intermediate results or context between panes during the work phase; after both complete, the manager runs the blind comparison step using `references/twingrid-manager-matrix.md` to score and pick the better output; produces the TwinGrid handoff summary with both outputs labeled A and B (names suppressed) for comparison.",
+      "files": ["references/twingrid-blind-handoff-template.md", "references/twingrid-manager-matrix.md"]
+    },
+    {
+      "id": 3,
+      "name": "provider-failover-exhaustion-detection",
+      "prompt": "One of the panes hit a budget exhaustion error. What should happen?",
+      "expected_output": "Detects provider exhaustion from the pane's output (quota/rate-limit/budget-exhausted signal); records the round-state in `provider_failover.py`'s state slice without sending any keystrokes to the exhausted pane; marks the pane as `exhausted` in the failover state; routes its pending work to a recovery pane running an alternate provider; does NOT attempt to continue driving the exhausted pane; includes the exhausted pane's state in the morning-summary table produced by `scripts/provider_failover.py`.",
+      "files": ["scripts/provider_failover.py", "references/provider-failover.md"]
+    },
+    {
+      "id": 4,
+      "name": "codex-goal-lane-dispatch",
+      "prompt": "Dispatch the next sprint goal to the Codex lane.",
+      "expected_output": "Runs `scripts/dispatch.sh --goal <goal-text>` (or follows the goal-contract from `references/codex-goal-contract.md`); sends the goal to the designated Codex lane pane; does NOT use the standard prompt dispatch path for goal lanes (the goal contract is distinct from the regular issue-dispatch contract); records the goal assignment so the manager can track whether the Codex lane reached its goal or needs a handoff; does NOT dispatch the same goal to a non-Codex pane.",
+      "files": ["scripts/dispatch.sh", "references/codex-goal-contract.md"]
+    },
+    {
+      "id": 5,
+      "name": "partner-peek-template",
+      "prompt": "Let Bob peek at Alice's current approach before they diverge too much.",
+      "expected_output": "Uses the Partner Peek template from `references/twingrid-partner-peek-template.md`; captures Alice's current summary/approach (not her full output) and sends it as a bounded context window to Bob's pane; does NOT give Bob Alice's complete implementation, only the summary agreed by the template contract; records that a Partner Peek occurred so it can be noted in the session log; the peek is unidirectional unless a second peek is explicitly requested.",
+      "files": ["references/twingrid-partner-peek-template.md"]
+    }
+  ]
+}

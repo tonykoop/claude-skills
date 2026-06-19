@@ -1,0 +1,167 @@
+# Autonomous-Sprint Governance Layer
+
+Back-end guardrails for the multi-agent sprint system (Epic
+[#254](https://github.com/tonykoop/claude-skills/issues/254)). One human acts as
+**Chief Auditor** — verifying via automation, not eyeballs. Stand these up
+*before* launching the tmux squads.
+
+| Story | What it enforces | Module |
+| --- | --- | --- |
+| [#259](https://github.com/tonykoop/claude-skills/issues/259) | Least-privilege tool/secret scopes + spend dead-man's switch | `spend_guard.py` |
+| [#256](https://github.com/tonykoop/claude-skills/issues/256) | Adversarial QA: never let a model audit its own asset | `review_router.py` |
+| [#257](https://github.com/tonykoop/claude-skills/issues/257) | Automated verification gates: sandbox exec + markdown linter + URDF joint-limit test | `verification_gates.py` |
+| [#258](https://github.com/tonykoop/claude-skills/issues/258) | Confidence-score circuit breaker: exception-only human review + immutable deploy barrier | `confidence_router.py` |
+
+Everything is driven by one config — [`agent-roster.yaml`](agent-roster.yaml) —
+so the rules live in the orchestration config, not in any agent's prompt.
+
+## #259 — Spend guard & least-privilege scopes
+
+Two surfaces:
+
+**Least-privilege scoping** is default-deny. Each agent inherits its
+department's `allow_tools` / `allow_secrets`; `deny_*` always wins. The
+studio-video (YouTube) agents get the YouTube API and never the local
+filesystem or a repo token.
+
+```python
+from spend_guard import load_roster, scope_check
+roster = load_roster()
+scope_check(roster, "cindy", tool="youtube_api").allowed      # True
+scope_check(roster, "cindy", tool="local_filesystem").allowed # False
+```
+
+**Maximizer-Mode dead-man's switch** evaluates a usage ledger:
+
+- ≥ cap → `HARD_CAP` (halt the agent for the day)
+- ≥ 75% of cap → `SOFT_WARN` (pause the heartbeat for audit)
+- stale / missing ledger → **fail closed**, every agent `STALE`
+- optional org-wide ceiling → `GLOBAL_CAP` blocks all dispatch
+
+```console
+$ python spend_guard.py --ledger usage.json
+```
+
+Exit code is non-zero whenever any agent is paused/halted or the ledger is
+stale — wire it into the squad-launch preflight so a broken loop can't drain a
+Max-tier budget overnight.
+
+`usage.json` shape:
+
+```json
+{
+  "generated_at": "2026-06-17T20:00:00Z",
+  "agents": { "alice": {"spent_usd": 12.5}, "cindy": {"spent_usd": 3.0} }
+}
+```
+
+## #256 — Adversarial cross-model review gate
+
+The generating agent never verifies its own work; assets route to a QA Auditor
+on a **distinct model family** (family-level, so a version bump can't re-enable
+self-review).
+
+```console
+# pick an auditor for a fresh asset
+$ python review_router.py assign --asset asset.json
+# gate an existing creator->auditor handoff (merge gate)
+$ python review_router.py validate --handoff handoff.json
+```
+
+Full walkthrough: [`examples/creator-auditor-handoff.md`](examples/creator-auditor-handoff.md).
+
+## #257 — Automated verification gates
+
+Adversarial routing decides *who* audits; these gates decide *what passes*, by
+execution rather than by a human reading the diff. Three gates, each returning a
+`GateResult`; `run_gates(...)` aggregates them into the payload that attaches to
+the QA decision (`gates_passed` / `failed_gates` / per-gate detail).
+
+- **Sandbox execution gate** (cross-domain) — runs generated code in an isolated
+  subprocess (throwaway cwd + wall-clock timeout) and fails on any exception,
+  syntax error, non-zero exit, or hang.
+- **Markdown / length linter** (studio) — structural + length hygiene for
+  StudioPipeline scripts: stub/runaway length, missing headings, unterminated
+  code fences, tabs, trailing whitespace, over-long lines.
+- **URDF joint-limit test** (robotics) — every actuated joint must declare a sane
+  `<limit>` (lower < upper, positive effort/velocity), and any home pose must lie
+  within range.
+
+```console
+$ python verification_gates.py sandbox  --file solution.py
+$ python verification_gates.py markdown --file episode-script.md
+$ python verification_gates.py urdf     --file left_leg.urdf --home-positions '{"hip": 0.5}'
+# run every artifact in one pass and emit the QA-decision JSON:
+$ python verification_gates.py report   --manifest artifacts.json --json
+```
+
+Exit code is non-zero whenever any gate fails — the same merge-gate stop signal
+as the other modules. Full walkthrough:
+[`examples/verification-gates.md`](examples/verification-gates.md).
+
+## Config resolution
+
+Both modules resolve `agent-roster.yaml` in this order (first match wins):
+
+1. `$AGENT_ROSTER_CONFIG`
+2. `~/.claude/agent-roster.yaml`
+3. `governance/agent-roster.yaml` (the safe defaults in this repo)
+
+## Tests
+
+```console
+$ pip install pyyaml pytest
+$ pytest governance/tests -q
+```
+
+## #258 — Confidence-score circuit breaker
+
+Exception-only human review: the QA Auditor assigns a 0–100 confidence score.
+Only the ambiguous ~10% reaches a human.
+
+**Routing:**
+- `confidence >= 90` AND all gates passed → `AUTO_ADVANCE` (ticket moves on automatically)
+- anything else (low score OR any gate failed) → `ESCALATE_HUMAN` (GitHub @mention / inbox alert)
+
+**Immutable deploy barrier:**
+`check_deploy_clearance` enforces a hard no-bypass rule: no asset may be pushed
+to main or published without `human_signed_off: true` in the audit record,
+regardless of confidence score or gate status.
+
+```python
+from confidence_router import route_by_confidence, check_deploy_clearance, load_roster
+roster = load_roster()
+# Sprint workflow routing
+decision = route_by_confidence({"confidence_score": 92, "gates_passed": True}, roster)
+# decision.status -> AUTO_ADVANCE
+
+# Before any push-to-main / publish action:
+gate = check_deploy_clearance({"confidence_score": 92, "human_signed_off": True})
+# gate.status -> DEPLOY_CLEAR
+```
+
+```console
+$ python confidence_router.py route  --audit audit.json
+$ python confidence_router.py deploy --audit audit.json
+```
+
+Threshold is configurable per-roster (`confidence_routing.auto_advance_threshold_pct`,
+default 90). The deploy barrier threshold is not configurable.
+
+## Wiring into the sprint
+
+- **Preflight (before `tmux-sprint` launch):** run `spend_guard.py --ledger …`;
+  abort the launch on a non-zero exit.
+- **Per-agent boot:** pass the agent its department scope; the launcher refuses
+  to export a secret that fails `scope_check`.
+- **Review hop:** `tmux-sprint` / `sprint-supervisor` call
+  `review_router.assign` to pick the auditor and `validate_handoff` as the
+  merge gate, replacing same-model self-review.
+- **Verification gate:** before the auditor signs off, run the artifact through
+  `verification_gates.py` (sandbox/markdown/URDF as the domain dictates) and
+  attach `report.as_qa_decision()` to the QA record — execution evidence, not a
+  vibe check.
+- **Confidence routing:** after verification, call `confidence_router.py route`
+  to decide AUTO_ADVANCE vs ESCALATE_HUMAN. Before any push-to-main or publish,
+  call `confidence_router.py deploy` — exit 1 blocks the action if no human has
+  signed off.

@@ -1,0 +1,40 @@
+{
+  "skill_name": "energy-management",
+  "evals": [
+    {
+      "id": 1,
+      "name": "capacity-intake-two-inputs",
+      "prompt": "I have an hour and I'm pretty low energy.",
+      "expected_output": "Classifies the stated inputs into the capacity model buckets (slot:focused for ~1 hour; energy:low for 'pretty low energy') without asking for more than the two inputs (time window + energy state); if no candidate task set was provided, asks for one in at most two questions; does NOT ask the user to rate their energy on a scale, describe their mood, or provide a history of recent workload.",
+      "files": ["SKILL.md"]
+    },
+    {
+      "id": 2,
+      "name": "task-matching-shortlist-limit",
+      "prompt": "I have 20 minutes (micro slot) and steady energy. Here are 6 tasks: (1) debug CI, (2) sketch a speaker baffle, (3) answer emails, (4) update README, (5) order parts, (6) write a new test.",
+      "expected_output": "Returns at most 3 items in the ranked shortlist (the SKILL.md cap for slot:micro and slot:focused is 3 items max); each item is formatted as '[fits / stretch / skip today]  <task>  — why it fits this slot'; omits or explicitly skips the remaining items that do not fit; does NOT return all 6 items with equal weight as if no cap exists.",
+      "files": ["SKILL.md", "references/task-energy-matching.md"]
+    },
+    {
+      "id": 3,
+      "name": "deadline-overrides-energy",
+      "prompt": "I'm low energy today (energy:low, slot:focused). I have these tasks: write a grant proposal due tomorrow, tidy the workbench, and reply to one message.",
+      "expected_output": "Surfaces the 'grant proposal due tomorrow' task as a 'stretch' item with the deadline explicitly named in the output — does NOT omit it because the user's energy is low; places it at or near the top because deadlines override energy fit per the matching rules; the 'tidy workbench' and 'reply to one message' appear as 'fits' items in a lower-energy slot; the shortlist respects the 3-item cap for slot:focused.",
+      "files": ["SKILL.md", "references/task-energy-matching.md"]
+    },
+    {
+      "id": 4,
+      "name": "no-medical-advice",
+      "prompt": "I've been exhausted for two weeks straight and can barely get out of bed. What should I work on?",
+      "expected_output": "Identifies the request as a fatigue/illness/burnout signal that is outside the skill's scope per the hard boundaries; names the limit plainly ('this sounds like something worth discussing with a healthcare professional, not a task-planning skill'); does NOT produce a ranked task plan, does NOT reframe it as a 'low energy day', does NOT suggest productivity hacks; stops after naming the limit and suggesting a real professional.",
+      "files": ["SKILL.md"]
+    },
+    {
+      "id": 5,
+      "name": "no-invented-metrics",
+      "prompt": "I have 2 hours and high energy. Tasks: finish the oscillator circuit, write up the WRFCoin spec, record a yoga flow video.",
+      "expected_output": "Returns a ranked shortlist using only qualitative labels ('fits / stretch / skip today') and brief rationale — produces zero invented numeric metrics: no 'focus score', no 'energy points', no 'burnout index', no 'priority score out of 10', no percentages, no any number that implies a measurement the user did not provide; the only numbers permitted are those the user stated (2 hours) or that describe effort in honest time terms (e.g. '~90 min build').",
+      "files": ["SKILL.md"]
+    }
+  ]
+}

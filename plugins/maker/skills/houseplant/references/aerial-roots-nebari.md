@@ -42,6 +42,8 @@ In those cases, log the promising tip, keep humidity stable, and **wait** for ac
 
 Thickening tracks the species growth-speed class from [`chrono-engine.md`](chrono-engine.md): vigorous ficus thicken noticeably over a warm season; slow/woody species take far longer. Give ranges, not promises, and confirm by **measuring girth over time** (log it). A root only counts as `fused` when it visibly merges into trunk wood — confirm visually, do not assume from age.
 
+The lifecycle, the health/warmth intervention gate, and the remaining time-to-fused **window** are computed deterministically by [`../scripts/aerial_root_tracker.py`](../scripts/aerial_root_tracker.py) (pure Python, no Blender — `aerial_root_trace.py` only draws the geometry): `track(state, growth_class, condition, species, healthy, warm)` validates the state transition, returns the gated intervention (or HOLD when the plant is unhealthy/cool), and forecasts the remaining tip→fused range with explicit confidence. Use it to turn an observed state into the Aerial-Root Plan output below.
+
 ## Digital-twin tracing
 
 Use the marker for tips and the trace script for the guided path:
