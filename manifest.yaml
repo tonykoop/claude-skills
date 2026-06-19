@@ -45,10 +45,10 @@ skills:
       backups under ~/.skill-cleanup-backups/.
 
   tmux-sprint:
-    canonical_version: 2.7.0
+    canonical_version: 2.8.0
     runtime: claude
     repo_path: plugins/coding/skills/tmux-sprint
-    last_updated: 2026-06-15
+    last_updated: 2026-06-18
     status: active
     notes: >-
       Claude-side tmux sprint counterpart with TwinGrid blind A/B, Partner
@@ -58,7 +58,10 @@ skills:
       submission, ~/.gemini permission routing, agy -p vs interactive, quota
       warning) and a tmux 3.2+/bash-3.2/BSD-date Compatibility section. v2.6.0
       adds Codex /goal lane integration (dispatch.sh --goal, codex-goal-contract
-      reference, goal test) resolving issue #117.
+      reference, goal test) resolving issue #117. v2.8.0 implements the
+      provider-failover detection/state slice (provider_failover.py: exhaustion
+      detection, round-state record, morning-summary table; no keystrokes) for
+      issue #166.
 
   merge-review:
     canonical_version: 1.0.0

@@ -1,7 +1,7 @@
 ---
 name: tmux-sprint
-version: 2.7.0
-last-updated: 2026-06-15
+version: 2.8.0
+last-updated: 2026-06-18
 description: >-
   Transactional sprint-round dispatch, liveness probing, and codex-session
   revival for persona agents running in a tmux grid. Use whenever the user
@@ -312,6 +312,20 @@ The failover path deliberately reuses the existing `preflight`, `dispatch`,
 and `restart` boundaries. Provider migration is a manager-owned recovery
 operation; sprint-supervisor should only approve safe prompts by prompt shape
 and escalate anything outside its rubric.
+
+The detection/state slice is implemented in
+[`scripts/provider_failover.py`](scripts/provider_failover.py) (no keystrokes):
+classify a pane capture into a `failure_reason`, build the round-state failover
+record with the next provider to try, and render the morning-summary table.
+
+```bash
+python3 scripts/provider_failover.py detect \
+  --capture pane.txt --pane sprint:0.3 --persona dan --provider codex
+# exit 1 = FAILOVER_CANDIDATE, exit 0 = healthy (transient noise is not failover)
+```
+
+The same-pane CLI swap (interrupt/exit/launch/probe/resume) lands as a follow-up
+on top of this validated detection layer.
 
 ## Codex /goal lanes
 
