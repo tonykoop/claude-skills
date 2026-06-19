@@ -1,0 +1,33 @@
+{
+  "skill_name": "scaffold-hygiene",
+  "evals": [
+    {
+      "id": 1,
+      "name": "four-agent-parallel-launch",
+      "prompt": "Run a scaffold hygiene sweep.",
+      "expected_output": "Launches exactly 4 parallel sub-agents in a single message (Agent A: Workspace/Build/CI, Agent B: Env vars and Docker configs, Agent C: cross-repo API contracts, Agent D: Docs and operator guides); each agent receives the workspace path (/home/tony/wrfcoin/), the list of active repos (core4, backend, frontend, smart-contracts, infra, security-testing, mobile, storage-providers), and a read-only constraint; collects findings from all 4 agents before filing any issues; writes a timestamped report to /home/tony/wrfcoin/docs/scaffolding-hygiene/YYYY-MM-DD-scaffold-hygiene.md.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "name": "launch-blocker-stops-broad-pass",
+      "prompt": "Run scaffold hygiene — the infra CI is broken.",
+      "expected_output": "If a sub-agent uncovers a launch blocker (e.g., broken CI gate, missing env var that prevents testnet startup, or a cross-repo contract break that would cause a runtime failure), stops the broad sweep for that section, files a GitHub issue immediately with the finding, and reports back to the user before continuing the remaining sections; does NOT silently continue gathering low-priority drift when a blocking issue is found.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "name": "dedup-before-filing-issues",
+      "prompt": "The hygiene sweep is done. File the issues.",
+      "expected_output": "Before filing each issue, searches existing open AND closed issues in the target repo using the finding's keywords and repo name; skips exact duplicates (links to existing issue instead); files new issues only for distinct drift with concrete evidence (file path, script name, config key, expected vs actual value); includes repo, section, severity, and a suggested fix in the issue body; reports total filed vs skipped as duplicates.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "name": "trigger-threshold-check",
+      "prompt": "Should I run scaffold hygiene now?",
+      "expected_output": "Checks the trigger conditions: (1) reads the current sprint doc for merged PR count since the last hygiene pass; (2) reports whether the ~25 merged PR threshold has been met; (3) checks whether this is sprint closeout or pre-testnet-relaunch context; (4) recommends running or waiting based on the threshold check, rather than always saying yes; timebox reminder is included (30-45 minutes).",
+      "files": []
+    }
+  ]
+}
