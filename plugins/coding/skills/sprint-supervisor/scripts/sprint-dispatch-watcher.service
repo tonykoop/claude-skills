@@ -1,0 +1,29 @@
+# systemd user unit for sprint-dispatch-watcher.sh
+#
+# Install:
+#   cp sprint-dispatch-watcher.service ~/.config/systemd/user/
+#   systemctl --user daemon-reload
+#   systemctl --user enable --now sprint-dispatch-watcher
+#
+# Logs:
+#   journalctl --user -u sprint-dispatch-watcher -f
+#
+# The dispatch directory defaults to ~/sprint-dispatch.
+# Drop dispatch JSON files there from a synced folder or a webhook handler;
+# the watcher claims each file atomically and launches the sprint manager.
+
+[Unit]
+Description=Sprint dispatch watcher — mobile cold-start receiver
+After=default.target
+
+[Service]
+Type=simple
+ExecStart=%h/.local/bin/sprint-dispatch-watcher.sh
+Restart=on-failure
+RestartSec=15
+# Pass the dispatch directory via environment if the default is not suitable:
+# Environment="SPRINT_DISPATCH_DIR=%h/Dropbox/sprint-dispatch"
+# Environment="POLL_INTERVAL=30"
+
+[Install]
+WantedBy=default.target
