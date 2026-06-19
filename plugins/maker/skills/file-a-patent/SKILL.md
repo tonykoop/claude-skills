@@ -1,8 +1,8 @@
 ---
 name: file-a-patent
-description: Prepare private, attorney-ready invention packets and provisional-patent preparation materials from local repo evidence. Use when Codex is asked to file-a-patent, file an invention, prepare a provisional patent packet, triage patent versus trade-secret candidates, document inventorship/provenance/disclosure history, build USPTO-ready prep checklists, or assemble private IP handoff materials for inventions, musical instruments, manufacturing workflows, empirical tuning methods, AI-assisted design systems, or reverse-engineering workflows. This skill does not provide legal advice, file anything, publish anything, change licenses, or conclude that an invention is patentable.
 version: 0.1.0
 last-updated: 2026-05-25
+description: Prepare private, attorney-ready invention packets and provisional-patent preparation materials from local repo evidence. Use when Codex is asked to file-a-patent, file an invention, prepare a provisional patent packet, triage patent versus trade-secret candidates, document inventorship/provenance/disclosure history, build USPTO-ready prep checklists, or assemble private IP handoff materials for inventions, musical instruments, manufacturing workflows, empirical tuning methods, AI-assisted design systems, or reverse-engineering workflows. This skill does not provide legal advice, file anything, publish anything, change licenses, or conclude that an invention is patentable.
 ---
 
 # File A Patent
