@@ -10,6 +10,7 @@ Back-end guardrails for the multi-agent sprint system (Epic
 | [#259](https://github.com/tonykoop/claude-skills/issues/259) | Least-privilege tool/secret scopes + spend dead-man's switch | `spend_guard.py` |
 | [#256](https://github.com/tonykoop/claude-skills/issues/256) | Adversarial QA: never let a model audit its own asset | `review_router.py` |
 | [#257](https://github.com/tonykoop/claude-skills/issues/257) | Automated verification gates: sandbox exec + markdown linter + URDF joint-limit test | `verification_gates.py` |
+| [#258](https://github.com/tonykoop/claude-skills/issues/258) | Confidence-score circuit breaker: exception-only human review + immutable deploy barrier | `confidence_router.py` |
 
 Everything is driven by one config — [`agent-roster.yaml`](agent-roster.yaml) —
 so the rules live in the orchestration config, not in any agent's prompt.
@@ -113,6 +114,40 @@ $ pip install pyyaml pytest
 $ pytest governance/tests -q
 ```
 
+## #258 — Confidence-score circuit breaker
+
+Exception-only human review: the QA Auditor assigns a 0–100 confidence score.
+Only the ambiguous ~10% reaches a human.
+
+**Routing:**
+- `confidence >= 90` AND all gates passed → `AUTO_ADVANCE` (ticket moves on automatically)
+- anything else (low score OR any gate failed) → `ESCALATE_HUMAN` (GitHub @mention / inbox alert)
+
+**Immutable deploy barrier:**
+`check_deploy_clearance` enforces a hard no-bypass rule: no asset may be pushed
+to main or published without `human_signed_off: true` in the audit record,
+regardless of confidence score or gate status.
+
+```python
+from confidence_router import route_by_confidence, check_deploy_clearance, load_roster
+roster = load_roster()
+# Sprint workflow routing
+decision = route_by_confidence({"confidence_score": 92, "gates_passed": True}, roster)
+# decision.status -> AUTO_ADVANCE
+
+# Before any push-to-main / publish action:
+gate = check_deploy_clearance({"confidence_score": 92, "human_signed_off": True})
+# gate.status -> DEPLOY_CLEAR
+```
+
+```console
+$ python confidence_router.py route  --audit audit.json
+$ python confidence_router.py deploy --audit audit.json
+```
+
+Threshold is configurable per-roster (`confidence_routing.auto_advance_threshold_pct`,
+default 90). The deploy barrier threshold is not configurable.
+
 ## Wiring into the sprint
 
 - **Preflight (before `tmux-sprint` launch):** run `spend_guard.py --ledger …`;
@@ -126,3 +161,7 @@ $ pytest governance/tests -q
   `verification_gates.py` (sandbox/markdown/URDF as the domain dictates) and
   attach `report.as_qa_decision()` to the QA record — execution evidence, not a
   vibe check.
+- **Confidence routing:** after verification, call `confidence_router.py route`
+  to decide AUTO_ADVANCE vs ESCALATE_HUMAN. Before any push-to-main or publish,
+  call `confidence_router.py deploy` — exit 1 blocks the action if no human has
+  signed off.

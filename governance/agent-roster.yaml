@@ -3,8 +3,9 @@
 # -----------------------------------------------------------------------------
 # Single source of truth for the autonomous-sprint governance layer (Epic #254).
 # Consumed by:
-#   - spend_guard.py    (claude-skills#259) least-privilege scopes + spend caps
-#   - review_router.py  (claude-skills#256) cross-model adversarial QA routing
+#   - spend_guard.py       (claude-skills#259) least-privilege scopes + spend caps
+#   - review_router.py     (claude-skills#256) cross-model adversarial QA routing
+#   - confidence_router.py (claude-skills#258) confidence-score circuit breaker
 #
 # Two orthogonal axes:
 #   * DEPARTMENT  -> what an agent may touch  (tools + secrets, least-privilege)
@@ -21,7 +22,7 @@
 # =============================================================================
 
 schema_version: 1
-last_updated: 2026-06-17
+last_updated: 2026-06-19
 
 # -----------------------------------------------------------------------------
 # Model families. Maps a concrete model string -> its family. The audit router
@@ -53,6 +54,18 @@ model_families:
 # An agent inherits its department's allow/deny lists. `deny` always wins over
 # `allow`; a tool or secret must be explicitly in `allow_tools` / `allow_secrets`
 # to be usable. Everything unlisted is implicitly denied (default-deny).
+# -----------------------------------------------------------------------------
+# Confidence-score routing policy (claude-skills#258).
+# confidence_router.py uses `auto_advance_threshold_pct` to decide whether a
+# reviewed asset auto-advances the sprint ticket or escalates to human review.
+# The immutable deploy barrier (check_deploy_clearance) is enforced separately
+# and has no configurable bypass: human_signed_off MUST be true for any
+# push-to-main or publish action, regardless of confidence score.
+# -----------------------------------------------------------------------------
+confidence_routing:
+  auto_advance_threshold_pct: 90   # score >= 90 + all gates passed -> AUTO_ADVANCE
+  on_escalate: github_mention      # escalation channel: post @mention on the issue/PR
+
 # -----------------------------------------------------------------------------
 departments:
 
