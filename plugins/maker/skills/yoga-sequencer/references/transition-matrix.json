@@ -1,0 +1,75 @@
+{
+  "schema_version": "1.0",
+  "description": "Public starter Transition Matrix for yoga-sequencer shorthand. Each vector models the in-between as origin shape -> pathway modifier -> target shape, with teacher cue text and pacing metadata. Private live-class transcript spans and learned transition weights are not stored in this public repo.",
+  "pacing_to_crossfade": {
+    "fast": {
+      "crossfade_seconds": 4.0,
+      "handoff_note": "Breath-to-movement transition; DJ layer should crossfade quickly."
+    },
+    "medium": {
+      "crossfade_seconds": 8.0,
+      "handoff_note": "Standard vinyasa pathway; keep musical energy continuous."
+    },
+    "slow": {
+      "crossfade_seconds": 14.0,
+      "handoff_note": "Teaching-heavy transition; give the cue room before the next musical lift."
+    }
+  },
+  "transitions": [
+    {
+      "id": "dd-step-through-cl-r",
+      "origin": "DD",
+      "pathway": "step_through_r",
+      "target": "CL",
+      "side": "right",
+      "pacing": "medium",
+      "transcript_cue": "From down dog, step your right foot forward between your hands. Rise up into crescent with enough time to arrive before you deepen.",
+      "somatic_focus": ["hamstring-to-hip-flexor", "balance-arrival"],
+      "shorthand": "DD > RLH_r > CL_r"
+    },
+    {
+      "id": "dd-step-through-cl-l",
+      "origin": "DD",
+      "pathway": "step_through_l",
+      "target": "CL",
+      "side": "left",
+      "pacing": "medium",
+      "transcript_cue": "From down dog, step your left foot forward between your hands. Rise up into crescent and let the stance settle before adding effort.",
+      "somatic_focus": ["hamstring-to-hip-flexor", "balance-arrival"],
+      "shorthand": "DD > RLH_l > CL_l"
+    },
+    {
+      "id": "rlh-rise-cl-r",
+      "origin": "RLH",
+      "pathway": "rise_from_runner_lunge_r",
+      "target": "CL",
+      "side": "right",
+      "pacing": "slow",
+      "transcript_cue": "Keep the right knee tracking forward, press the back thigh up, and rise into crescent one vertebra at a time.",
+      "somatic_focus": ["front-knee-tracking", "back-leg-strength"],
+      "shorthand": "RLH_r // 3B > CL_r"
+    },
+    {
+      "id": "ff-step-back-cl-r",
+      "origin": "FF",
+      "pathway": "step_back_to_lunge_r",
+      "target": "CL",
+      "side": "right",
+      "pacing": "fast",
+      "transcript_cue": "Plant your hands, step the right foot back, and sweep up into crescent on the next inhale.",
+      "somatic_focus": ["direction-change", "breath-lift"],
+      "shorthand": "FF > RLH_r + CL_r"
+    },
+    {
+      "id": "pt-unwind-cl-r",
+      "origin": "PT",
+      "pathway": "unwind_to_crescent_r",
+      "target": "CL",
+      "side": "right",
+      "pacing": "slow",
+      "transcript_cue": "Unwind from the prayer twist without rushing the spine, then re-stack the ribs over the pelvis in crescent.",
+      "somatic_focus": ["de-rotation", "midline-reset"],
+      "shorthand": "PT_r > CL_r"
+    }
+  ]
+}

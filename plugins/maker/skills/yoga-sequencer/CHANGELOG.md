@@ -1,5 +1,12 @@
 # Changelog — yoga-sequencer
 
+## v1.5.0 — 2026-06-20
+
+- Added `references/transition-matrix.json` with a public starter transition-vector model, multiple pathways into Crescent Lunge, transcript cue templates, and pacing-to-crossfade handoff settings.
+- Added `scripts/transition_matrix.py` for deterministic target/pathway lookup and playlist/DJ crossfade handoff data.
+- Added pytest coverage for Crescent Lunge multi-entry pathways, transcript cue mapping, and fast/medium/slow crossfade ordering.
+- Source: Epic #368 story #370.
+
 ## v1.4.0 — 2026-06-20
 
 - Added `references/shorthand-protocol.md` with the starter token table, side/orientation modifiers, breath operators, macro definition syntax, and a five-line sample class.

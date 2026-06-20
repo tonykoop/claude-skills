@@ -1,8 +1,8 @@
 ---
 name: yoga-sequencer
-version: 1.4.0
+version: 1.5.0
 last-updated: 2026-06-20
-description: Design vinyasa-first yoga class sequences, peak-pose progressions, anatomical prep, counter-poses, heated-room safety adjustments, shorthand protocol parsing, and full class plans with phase timing plus playlist-builder handoff data. Use when planning a yoga class, sequencing for hips, shoulders, twists, or backbends, choosing prep for a peak pose, adapting a hot-room class, defining shorthand tokens or macros, parsing a five-line shorthand class, or turning a class arc into music-ready phases.
+description: Design vinyasa-first yoga class sequences, peak-pose progressions, anatomical prep, counter-poses, heated-room safety adjustments, shorthand protocol parsing, transition-matrix lookup, and full class plans with phase timing plus playlist-builder handoff data. Use when planning a yoga class, sequencing for hips, shoulders, twists, or backbends, choosing prep for a peak pose, adapting a hot-room class, defining shorthand tokens or macros, parsing a five-line shorthand class, inspecting transitions between poses, or turning a class arc into music-ready phases.
 ---
 
 # Yoga Sequencer
@@ -49,6 +49,8 @@ These references are bundled but not all are needed every time. Pull only what t
   Use when the user asks about shorthand tokens, starter vocabulary, parser configuration, or audio-sync settings. The thesaurus maps public shorthand tokens to pose names and metadata; `config.toml` exposes `current_phase`, `syntax_strictness`, and audio LUFS; the script loads both at runtime.
 - `references/shorthand-protocol.md`
   Open when the user asks how to write shorthand, define macros, use breath operators, or check whether a compact class sketch is parseable.
+- `references/transition-matrix.json` and `scripts/transition_matrix.py`
+  Use when the user asks about the "space between" poses, pathways into a target pose, transcript cue text for a transition, or pacing-to-crossfade handoff.
 
 ### Staple pose cheat-sheet (two tiers)
 
@@ -122,6 +124,21 @@ For a multiline shorthand sketch, put one macro or sequence per line and run:
 
 ```bash
 python3 plugins/maker/skills/yoga-sequencer/scripts/engine_config.py --program-file shorthand.txt --json
+```
+
+## Transition matrix support
+
+Treat transitions as vectors: `origin shape -> pathway modifier -> target shape`. Use `references/transition-matrix.json` for the public starter matrix and `scripts/transition_matrix.py` for deterministic lookup.
+
+- Crescent Lunge (`CL`) is the first documented multi-entry target.
+- Each transition carries `origin`, `pathway`, `target`, `pacing`, `transcript_cue`, and `shorthand`.
+- `pacing` maps to playlist/DJ handoff crossfade seconds: `fast`, `medium`, or `slow`.
+- The public `transcript_cue` field is a teacher-facing cue template, not private live-class transcript data.
+
+To inspect pathways into Crescent Lunge:
+
+```bash
+python3 plugins/maker/skills/yoga-sequencer/scripts/transition_matrix.py --target CL
 ```
 
 ## Mode guide
