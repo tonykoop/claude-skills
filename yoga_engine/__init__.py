@@ -22,6 +22,10 @@ from .transitions import (
     get_transitions, get_exits, get_entries,
     suggest_transition, annotate_sequence_transitions,
 )
+from .reverse_engine import (
+    ReverseSequenceEngine, ScriptOutput, ScriptLine,
+    PlaylistHandoff, PlaylistPhase, ThemeInfusion,
+)
 from .config import (
     EngineConfig, AudioSyncConfig, ValidationConfig, ArcConfig,
     PoseThesaurus, ThesaurusEntry,
