@@ -1,8 +1,8 @@
 ---
 name: yoga-sequencer
-version: 2.0.0
+version: 2.1.0
 last-updated: 2026-06-20
-description: Design vinyasa-first yoga class sequences, peak-pose progressions, anatomical prep, counter-poses, heated-room safety adjustments, shorthand protocol parsing, transition-matrix lookup, Rosetta shorthand-transcript alignment, phase-gated class ingest, Reverse Sequence Engine scaffolds, DJI Mic capture QA, full class plans with phase timing plus playlist-builder handoff data, and transitions-only classes where poses are never named and the connective tissue between shapes is the unit of instruction. Use when planning a yoga class, sequencing for hips, shoulders, twists, or backbends, choosing prep for a peak pose, adapting a hot-room class, defining shorthand tokens or macros, parsing a five-line shorthand class, inspecting transitions between poses, aligning shorthand to transcript spans, phase-gating captured class JSON, splitting DJI Mic captures into transcript/audio paths, expanding shorthand into a 60-minute reviewed script scaffold, turning a class arc into music-ready phases, or teaching movement without ever naming a pose.
+description: Design vinyasa-first yoga class sequences, peak-pose progressions, anatomical prep, counter-poses, heated-room safety adjustments, shorthand protocol parsing, transition-matrix lookup, Rosetta shorthand-transcript alignment, phase-gated class ingest, Reverse Sequence Engine scaffolds, DJI Mic capture QA, full class plans with phase timing plus playlist-builder handoff data, transitions-only classes where poses are never named and the connective tissue between shapes is the unit of instruction, and savasana-backward classes designed from final rest toward the minimum disturbance required to earn it. Use when planning a yoga class, sequencing for hips, shoulders, twists, or backbends, choosing prep for a peak pose, adapting a hot-room class, defining shorthand tokens or macros, parsing a five-line shorthand class, inspecting transitions between poses, aligning shorthand to transcript spans, phase-gating captured class JSON, splitting DJI Mic captures into transcript/audio paths, expanding shorthand into a 60-minute reviewed script scaffold, turning a class arc into music-ready phases, teaching movement without ever naming a pose, or designing stillness-first classes from a SavasanaSpec.
 ---
 
 # Yoga Sequencer
@@ -57,6 +57,8 @@ These references are bundled but not all are needed every time. Pull only what t
   Use when the user asks to ingest one or more captured classes, produce the four-array parse target, or run anchor / triangulation / micro-batch / bulk go/no-go gates.
 - `references/reverse-sequence-engine.md` and `scripts/reverse_sequence_engine.py`
   Use when the user asks to expand compact shorthand into a 60-minute class script scaffold with transitions, phases, thematic slots, playlist timing, and human-review gating.
+- `references/savasana-backward.md` and `scripts/savasana_backward.py`
+  Use when the user wants to design a class backward from final rest — define the somatic quality of savasana first, then derive the minimum disturbance required to earn it. See "Savasana-backward" under Mode guide.
 - `references/dji-mic-capture.md` and `scripts/dji_mic_ingest.py`
   Use when the user asks to validate a DJI Mic class capture, split it into transcript/thematic and audio/playlist paths, or check whether capture quality is safe for Rosetta ingest.
 
@@ -299,6 +301,37 @@ For heated-room or hot power requests, also include a short teacher-usable safet
 - heat-distress signs such as dizziness, tunnel vision, nausea, chills, goosebumps, confusion, unusual shortness of breath, glassy eyes, loss of coordination, or the sense that the room suddenly got hotter
 - pregnancy, heat-avoidance, and non-heated substitution path: open twists, supported balance, less compression, and rest options
 - cue-volume arc: teacher voice gets quieter as repetition and heat rise; the peak is focused, not loud
+
+### Savasana-backward
+
+Start from the somatic quality of rest you want students to land in, then
+derive the minimum disturbance — the fewest movements whose absence would
+leave the stillness unearned.
+
+1. Elicit the **SavasanaSpec**: what does the rest need to feel like? Name at
+   least one `target_release` (body area that must have worked and released)
+   and one `rest_quality` descriptor (e.g. `"symmetric_weight"`), plus an
+   `emotional_landing` phrase (e.g. `"earned ease"`).
+2. Derive the **minimum disturbance set** using the economy pass in
+   `scripts/savasana_backward.py`: prefer movements that address multiple
+   releases in a single shape.
+3. Apply the **justification filter**: for every movement, confirm that its
+   absence would leave the rest unearned. If you cannot write that sentence,
+   remove the movement.
+4. Assign to the four-phase arc: `arrival_warm_up → release_work →
+   integration_cooldown → savasana`. Cue density eases to `minimal` well
+   before the floor.
+5. Output the disturbance set with justifications, phases, and playlist
+   phase-map YAML.
+
+Run deterministically:
+
+```bash
+python3 plugins/maker/skills/yoga-sequencer/scripts/savasana_backward.py spec.json --reviewer tk
+```
+
+See `references/savasana-backward.md` for the SavasanaSpec contract,
+available release keys, and the comparison with peak-pose-first.
 
 ### Playlist handoff
 
