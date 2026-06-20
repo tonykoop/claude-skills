@@ -1,8 +1,8 @@
 ---
 name: yoga-sequencer
-version: 1.6.0
+version: 1.7.0
 last-updated: 2026-06-20
-description: Design vinyasa-first yoga class sequences, peak-pose progressions, anatomical prep, counter-poses, heated-room safety adjustments, shorthand protocol parsing, transition-matrix lookup, Rosetta shorthand-transcript alignment, and full class plans with phase timing plus playlist-builder handoff data. Use when planning a yoga class, sequencing for hips, shoulders, twists, or backbends, choosing prep for a peak pose, adapting a hot-room class, defining shorthand tokens or macros, parsing a five-line shorthand class, inspecting transitions between poses, aligning shorthand to transcript spans, or turning a class arc into music-ready phases.
+description: Design vinyasa-first yoga class sequences, peak-pose progressions, anatomical prep, counter-poses, heated-room safety adjustments, shorthand protocol parsing, transition-matrix lookup, Rosetta shorthand-transcript alignment, phase-gated class ingest, and full class plans with phase timing plus playlist-builder handoff data. Use when planning a yoga class, sequencing for hips, shoulders, twists, or backbends, choosing prep for a peak pose, adapting a hot-room class, defining shorthand tokens or macros, parsing a five-line shorthand class, inspecting transitions between poses, aligning shorthand to transcript spans, phase-gating captured class JSON, or turning a class arc into music-ready phases.
 ---
 
 # Yoga Sequencer
@@ -53,6 +53,8 @@ These references are bundled but not all are needed every time. Pull only what t
   Use when the user asks about the "space between" poses, pathways into a target pose, transcript cue text for a transition, or pacing-to-crossfade handoff.
 - `references/rosetta-trainer.md` and `scripts/rosetta_trainer.py`
   Use when the user asks to pair shorthand with transcript spans, extract somatic spacing, label structural transitions, find thematic-infusion points, or check whether paired data is trusted for training.
+- `references/phase-gate-ingest.md` and `scripts/phase_gate_ingest.py`
+  Use when the user asks to ingest one or more captured classes, produce the four-array parse target, or run anchor / triangulation / micro-batch / bulk go/no-go gates.
 
 ### Staple pose cheat-sheet (two tiers)
 
@@ -156,6 +158,22 @@ Run:
 
 ```bash
 python3 plugins/maker/skills/yoga-sequencer/scripts/rosetta_trainer.py rosetta-class.json
+```
+
+## Phase-gate ingest support
+
+Use the phase-gate ingest layer before feeding class captures into Rosetta training.
+
+- Input is class JSON with `metadata` fields and timed `segments`.
+- Output always uses the four-array target: `metadata`, `audio_timeline`, `choreography_raw`, and `thematic_drops`.
+- Gates are `anchor` (1 class), `triangulation` (3+ classes), `micro_batch` (3-5 classes), and `bulk` (35+ classes).
+- Gates fail closed on malformed timing, missing segments, missing shorthand, or an absent output array.
+- Keep private corpus files outside this repo; pass local/private JSON paths at runtime.
+
+Run:
+
+```bash
+python3 plugins/maker/skills/yoga-sequencer/scripts/phase_gate_ingest.py anchor class.json
 ```
 
 ## Mode guide

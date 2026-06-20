@@ -1,5 +1,12 @@
 # Changelog — yoga-sequencer
 
+## v1.7.0 — 2026-06-20
+
+- Added `references/phase-gate-ingest.md` defining the captured-class JSON shape, four-array parse target, and anchor / triangulation / micro-batch / bulk go/no-go gates.
+- Added `scripts/phase_gate_ingest.py` to parse class JSON into `metadata`, `audio_timeline`, `choreography_raw`, and `thematic_drops`, with fail-closed phase gates up through 35+ class bulk runs.
+- Added pytest coverage for anchor parsing, micro-batch count gates, 35-class bulk acceptance, and malformed timing rejection.
+- Source: Epic #368 story #372.
+
 ## v1.6.0 — 2026-06-20
 
 - Added `references/rosetta-trainer.md` defining the shorthand-to-transcript parallel pair format, extracted labels, and explicit human-review quality bar.
