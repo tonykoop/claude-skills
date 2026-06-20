@@ -1,5 +1,12 @@
 # Changelog — yoga-sequencer
 
+## v1.6.0 — 2026-06-20
+
+- Added `references/rosetta-trainer.md` defining the shorthand-to-transcript parallel pair format, extracted labels, and explicit human-review quality bar.
+- Added `scripts/rosetta_trainer.py` to parse shorthand/transcript pairs, extract somatic spacing, structural transitions, thematic-infusion terms, and return `trusted_for_training = false` until quality gates pass.
+- Added pytest coverage for alignment labels, somatic spacing, thematic detection, and human-review blocking.
+- Source: Epic #368 story #371.
+
 ## v1.5.0 — 2026-06-20
 
 - Added `references/transition-matrix.json` with a public starter transition-vector model, multiple pathways into Crescent Lunge, transcript cue templates, and pacing-to-crossfade handoff settings.

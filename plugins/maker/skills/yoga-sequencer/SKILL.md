@@ -1,8 +1,8 @@
 ---
 name: yoga-sequencer
-version: 1.5.0
+version: 1.6.0
 last-updated: 2026-06-20
-description: Design vinyasa-first yoga class sequences, peak-pose progressions, anatomical prep, counter-poses, heated-room safety adjustments, shorthand protocol parsing, transition-matrix lookup, and full class plans with phase timing plus playlist-builder handoff data. Use when planning a yoga class, sequencing for hips, shoulders, twists, or backbends, choosing prep for a peak pose, adapting a hot-room class, defining shorthand tokens or macros, parsing a five-line shorthand class, inspecting transitions between poses, or turning a class arc into music-ready phases.
+description: Design vinyasa-first yoga class sequences, peak-pose progressions, anatomical prep, counter-poses, heated-room safety adjustments, shorthand protocol parsing, transition-matrix lookup, Rosetta shorthand-transcript alignment, and full class plans with phase timing plus playlist-builder handoff data. Use when planning a yoga class, sequencing for hips, shoulders, twists, or backbends, choosing prep for a peak pose, adapting a hot-room class, defining shorthand tokens or macros, parsing a five-line shorthand class, inspecting transitions between poses, aligning shorthand to transcript spans, or turning a class arc into music-ready phases.
 ---
 
 # Yoga Sequencer
@@ -51,6 +51,8 @@ These references are bundled but not all are needed every time. Pull only what t
   Open when the user asks how to write shorthand, define macros, use breath operators, or check whether a compact class sketch is parseable.
 - `references/transition-matrix.json` and `scripts/transition_matrix.py`
   Use when the user asks about the "space between" poses, pathways into a target pose, transcript cue text for a transition, or pacing-to-crossfade handoff.
+- `references/rosetta-trainer.md` and `scripts/rosetta_trainer.py`
+  Use when the user asks to pair shorthand with transcript spans, extract somatic spacing, label structural transitions, find thematic-infusion points, or check whether paired data is trusted for training.
 
 ### Staple pose cheat-sheet (two tiers)
 
@@ -139,6 +141,21 @@ To inspect pathways into Crescent Lunge:
 
 ```bash
 python3 plugins/maker/skills/yoga-sequencer/scripts/transition_matrix.py --target CL
+```
+
+## Rosetta trainer support
+
+Treat the Rosetta trainer as a deterministic labeling and quality-gate layer, not a private voice model. It aligns shorthand rows to transcript spans and returns labels that a future private trainer can consume after human review.
+
+- Input is JSON with `pairs[]`, where each pair has `shorthand`, `transcript.start_sec`, `transcript.end_sec`, `transcript.text`, and `human_review.status`.
+- The trainer extracts somatic spacing, structural transitions, thematic-infusion terms, draft token flags, and a quality gate.
+- Output is trusted only when every pair has positive transcript duration, no draft tokens, at least one structural transition, at least one thematic-infusion point, and approved human review.
+- Keep private class transcripts and learned voice data out of this public repo.
+
+Run:
+
+```bash
+python3 plugins/maker/skills/yoga-sequencer/scripts/rosetta_trainer.py rosetta-class.json
 ```
 
 ## Mode guide
