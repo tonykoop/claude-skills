@@ -1,5 +1,12 @@
 # Changelog — reverse-engineer
 
+## v1.3.0 — 2026-06-20
+
+- Added `references/cadfit-feature-extractor.md` defining the mesh-only Feature Extractor input/output contract and degraded behavior.
+- Added `scripts/cadfit_feature_extractor.py` to return candidate sketch profiles, slicing planes, and revolution axes from local mesh metadata while gracefully degrading when no usable mesh is supplied.
+- Added pytest coverage for structured candidate output, missing mesh degradation, non-watertight metadata, and unsupported extensions.
+- Source: Epic #362 story #363.
+
 ## v1.2.0 — 2026-06-20
 
 - Added `references/cadfit-setup-license.md` documenting CADFit setup, native dependencies, runtime availability, attribution, CC BY-NC 4.0 status, upstream patent notice, and the no-vendoring license gate.

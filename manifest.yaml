@@ -283,12 +283,12 @@ skills:
       repo_path from skills/ to plugins/maker/skills/.
 
   reverse-engineer:
-    canonical_version: 1.2.0
+    canonical_version: 1.3.0
     runtime: shared
     repo_path: skills/reverse-engineer
     last_updated: 2026-06-20
     status: active
-    notes: Portable snapshot from reverse-engineering/skills/v1/reverse-engineer for cross-platform review. v1.1.0 adds image-access preflight and degraded-mode banner (#70). v1.2.0 adds the CADFit setup, attribution, runtime matrix, and license gate for Epic #362 story #367.
+    notes: Portable snapshot from reverse-engineering/skills/v1/reverse-engineer for cross-platform review. v1.1.0 adds image-access preflight and degraded-mode banner (#70). v1.2.0 adds the CADFit setup, attribution, runtime matrix, and license gate for Epic #362 story #367. v1.3.0 adds the CADFit-style mesh feature extractor adapter for Epic #362 story #363.
 
   habitat-maker:
     canonical_version: 0.5.0
