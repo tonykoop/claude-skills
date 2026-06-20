@@ -1,5 +1,12 @@
 # Changelog — yoga-sequencer
 
+## v1.8.0 — 2026-06-20
+
+- Added `references/reverse-sequence-engine.md` documenting the public Reverse Sequence Engine input, output, and human-review gate.
+- Added `scripts/reverse_sequence_engine.py` to expand shorthand into a 60-minute class scaffold with phases, transition handoffs, script lines, playlist phase-map data, and review-gated trust status.
+- Added pytest coverage for five-line shorthand expansion, macro expansion, transition handoffs, reviewer gating, and playlist phase metadata.
+- Source: Epic #368 story #373.
+
 ## v1.7.0 — 2026-06-20
 
 - Added `references/phase-gate-ingest.md` defining the captured-class JSON shape, four-array parse target, and anchor / triangulation / micro-batch / bulk go/no-go gates.
