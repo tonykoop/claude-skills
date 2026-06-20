@@ -14,6 +14,8 @@ from bigthink.registry import CaptureRegistry
 from bigthink.maturity import MaturityModel
 from bigthink.connections import ConnectionFinder
 from bigthink.validator import CaptureValidator
+from bigthink.graph_export import to_dot, to_json, to_mermaid
+from bigthink.seed_corpus import build_seed_registry
 
 __all__ = [
     "ManufacturingTheoryCapture",
@@ -23,4 +25,8 @@ __all__ = [
     "MaturityModel",
     "ConnectionFinder",
     "CaptureValidator",
+    "to_dot",
+    "to_json",
+    "to_mermaid",
+    "build_seed_registry",
 ]

@@ -13,6 +13,10 @@ Usage examples::
     python -m bigthink.cli promote koops-law
     python -m bigthink.cli dump registry.json
     python -m bigthink.cli load registry.json
+    python -m bigthink.cli export --format dot > graph.dot
+    python -m bigthink.cli export --format json > graph.json
+    python -m bigthink.cli export --format mermaid
+    python -m bigthink.cli seed
 """
 from __future__ import annotations
 
@@ -22,6 +26,7 @@ import sys
 from pathlib import Path
 
 from bigthink.connections import ConnectionFinder
+from bigthink.graph_export import EXPORT_FORMATS
 from bigthink.maturity import MaturityModel
 from bigthink.registry import CaptureRegistry, RegistryError
 from bigthink.schema import (
@@ -31,6 +36,7 @@ from bigthink.schema import (
     ManufacturingTheoryCapture,
     MaturityLevel,
 )
+from bigthink.seed_corpus import build_seed_registry
 from bigthink.validator import CaptureValidator
 
 
@@ -218,6 +224,33 @@ def cmd_load(args: argparse.Namespace) -> None:
     print(f"Loaded {len(reg)} captures from {args.input} → {args.registry}")
 
 
+def cmd_export(args: argparse.Namespace) -> None:
+    reg = _load_registry(Path(args.registry))
+    fmt = args.format
+    fn = EXPORT_FORMATS.get(fmt)
+    if fn is None:
+        print(f"Unknown format: {fmt!r}. Choose from: {', '.join(EXPORT_FORMATS)}", file=sys.stderr)
+        sys.exit(1)
+    print(fn(reg))
+
+
+def cmd_seed(args: argparse.Namespace) -> None:
+    """Populate registry with the canonical seed captures from Epic #213."""
+    path = Path(args.registry)
+    if path.exists():
+        existing = CaptureRegistry.load(path)
+        if len(existing) > 0:
+            print(
+                f"Registry {path} already has {len(existing)} capture(s). "
+                "Seed not applied to avoid overwriting. Delete the file to re-seed.",
+                file=sys.stderr,
+            )
+            sys.exit(1)
+    reg = build_seed_registry()
+    _save_registry(reg, path)
+    print(f"Seeded {len(reg)} captures from Epic #213 stories into {path}")
+
+
 def cmd_summary(args: argparse.Namespace) -> None:
     reg = _load_registry(Path(args.registry))
     print(reg.summary())
@@ -304,6 +337,13 @@ def build_parser() -> argparse.ArgumentParser:
     # summary
     sub.add_parser("summary", help="Print registry summary statistics")
 
+    # export
+    ex = sub.add_parser("export", help="Export knowledge graph (dot/json/mermaid)")
+    ex.add_argument("--format", default="json", choices=list(EXPORT_FORMATS.keys()))
+
+    # seed
+    sub.add_parser("seed", help="Populate registry with Epic #213 seed captures")
+
     return p
 
 
@@ -320,6 +360,8 @@ COMMAND_MAP = {
     "dump":        cmd_dump,
     "load":        cmd_load,
     "summary":     cmd_summary,
+    "export":      cmd_export,
+    "seed":        cmd_seed,
 }
 
 
