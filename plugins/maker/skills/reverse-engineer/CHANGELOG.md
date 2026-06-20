@@ -1,5 +1,11 @@
 # Changelog — reverse-engineer
 
+## v1.2.0 — 2026-06-20
+
+- Added `references/cadfit-setup-license.md` documenting CADFit setup, native dependencies, runtime availability, attribution, CC BY-NC 4.0 status, upstream patent notice, and the no-vendoring license gate.
+- Added `scripts/check_cadfit_license_gate.py` plus pytest coverage so the CADFit license/runtime caveats stay explicit before tool wrapping proceeds.
+- Source: Epic #362 story #367.
+
 ## v1.1.0 — 2026-05-10
 
 - Add mandatory image-access preflight (workflow step 0) with five `image_access_mode` values: `direct`, `file-path`, `description-only`, `missing`, `partial` (plus `named-object` for prose-only object identification).

@@ -1,7 +1,7 @@
 ---
 name: reverse-engineer
-version: 1.1.0
-last-updated: 2026-05-10
+version: 1.2.0
+last-updated: 2026-06-20
 description: >-
   Analyze objects, photos, video, sketches, descriptions, and
   named-but-unseen artifacts into disciplined reverse-engineering notes:
@@ -164,3 +164,4 @@ If a user asks to reproduce a proprietary product for commercial use, pause and 
 - `references/confidence-language.md`: Approved confidence terms and phrases to avoid. Includes the dimensional-confidence cap for degraded-intake modes.
 - `references/builder-handoff-template.md`: Compact handoff format for `maker-engineering`, `makerspace`, and `instrument-maker`. Includes the provisional-by-default rule for degraded intake.
 - `references/image-access-recovery.md`: Per-runtime recovery prompts when an image arrived but cannot be rendered (Claude Code, Codex CLI, web vision, Gemini CLI text mode, mobile zip-upload).
+- `references/cadfit-setup-license.md`: CADFit optional external setup, attribution, runtime availability matrix, and license gate. Open before any CADFit mesh/scan workflow. CADFit is not bundled in this skill; the license gate currently flags redistribution/commercial-use risk.
