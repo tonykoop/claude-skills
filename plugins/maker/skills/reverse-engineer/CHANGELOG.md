@@ -1,5 +1,39 @@
 # Changelog — reverse-engineer
 
+## v1.6.0 — 2026-06-20
+
+- Wired the CADFit tools into SKILL.md as a dedicated mesh/scan branch that triggers only for real local mesh or point-cloud inputs.
+- Documented the CADFit branch workflow: license gate, feature extraction, candidate scoring, correction/pruning, graceful fallback, and builder-handoff alignment.
+- Added pytest drift coverage proving photo/sketch/description modes remain separate from the CADFit mesh branch and the fallback message stays present.
+- Source: Epic #362 story #366.
+
+## v1.5.0 — 2026-06-20
+
+- Added `references/cadfit-correction-loop.md` documenting error-guided cut/union actions, termination criteria, backward pruning, and the IoU-is-not-correctness manufacturing guardrail.
+- Added `scripts/cadfit_correction_loop.py` to map over/under-reconstruction residuals to correction actions, terminate on IoU/max-iteration/kernel/review gates, and prune redundant non-critical operations.
+- Added pytest coverage for cut/union action mapping, kernel-failure simplification, pruning behavior, and manufacturing-review termination.
+- Source: Epic #362 story #365.
+
+## v1.4.0 — 2026-06-20
+
+- Added `references/cadfit-test-cad-program.md` documenting the `test_cad_program()` scoring contract, runtime requirements, and safe public behavior.
+- Added `scripts/cadfit_test_cad_program.py` to return CADFit-shaped Invalid-Ratio / Volumetric IoU feedback, catch syntax and kernel failure as normal score signals, and report unavailable CadQuery/OpenCascade environments gracefully.
+- Added pytest coverage for deterministic mock IoU scoring, syntax failures, kernel-failure signals, and missing native kernel behavior.
+- Source: Epic #362 story #364.
+
+## v1.3.0 — 2026-06-20
+
+- Added `references/cadfit-feature-extractor.md` defining the mesh-only Feature Extractor input/output contract and degraded behavior.
+- Added `scripts/cadfit_feature_extractor.py` to return candidate sketch profiles, slicing planes, and revolution axes from local mesh metadata while gracefully degrading when no usable mesh is supplied.
+- Added pytest coverage for structured candidate output, missing mesh degradation, non-watertight metadata, and unsupported extensions.
+- Source: Epic #362 story #363.
+
+## v1.2.0 — 2026-06-20
+
+- Added `references/cadfit-setup-license.md` documenting CADFit setup, native dependencies, runtime availability, attribution, CC BY-NC 4.0 status, upstream patent notice, and the no-vendoring license gate.
+- Added `scripts/check_cadfit_license_gate.py` plus pytest coverage so the CADFit license/runtime caveats stay explicit before tool wrapping proceeds.
+- Source: Epic #362 story #367.
+
 ## v1.1.0 — 2026-05-10
 
 - Add mandatory image-access preflight (workflow step 0) with five `image_access_mode` values: `direct`, `file-path`, `description-only`, `missing`, `partial` (plus `named-object` for prose-only object identification).
