@@ -1,6 +1,6 @@
 ---
 name: reverse-engineer
-version: 1.5.0
+version: 1.6.0
 last-updated: 2026-06-20
 description: >-
   Analyze objects, photos, video, sketches, descriptions, and
@@ -85,6 +85,29 @@ Never present inferred dimensions, materials, mechanisms, internal structure, or
    - `maker-engineering`: turn verified analysis into engineered design choices, tolerances, simulations, or trade studies.
    - `makerspace`: fabricate fixtures, shop plans, cut lists, toolpaths, or physical parts.
    - `instrument-maker`: create instrument design/build packets after critical acoustic and dimensional data is validated.
+
+## CADFit Mesh/Scan Branch
+
+Use the CADFit branch only when the user supplies a real local mesh, scan, or point-cloud artifact such as `.stl`, `.obj`, `.ply`, `.off`, `.step`, or `.stp`. Do not trigger CADFit for photo-only, sketch-only, named-object, dictated-description, or missing-image intake. Those stay in the normal observation-led workflow above.
+
+Before using CADFit tooling:
+
+1. Open `references/cadfit-setup-license.md` and honor the license gate. CADFit is optional external research code and is not bundled in this skill.
+2. Confirm the input is a mesh/scan path and record whether it appears watertight or repaired enough for kernel scoring.
+3. Run the mesh branch:
+   - Feature Extractor: `scripts/cadfit_feature_extractor.py`
+   - Candidate scoring: `scripts/cadfit_test_cad_program.py`
+   - Correction/pruning: `scripts/cadfit_correction_loop.py`
+4. Treat kernel failures and missing native dependencies as normal data signals, not crashes.
+5. Use `references/builder-handoff-template.md` for any builder handoff. Mark the handoff `provisional` unless dimensions, interfaces, material/process assumptions, and manufacturing review are all satisfied.
+
+Graceful fallback message when CADFit cannot run:
+
+```text
+CADFit mesh/scan branch unavailable: this runtime does not have a usable watertight mesh plus local CadQuery/OpenCascade/CADFit tooling. I will continue with the standard reverse-engineering ledger and list the exact mesh/kernel setup needed before CADFit scoring can run.
+```
+
+Never present CADFit IoU as builder readiness by itself. High overlap can still be a manufacturing-wrong CAD tree.
 
 ## Degraded-Mode Banner
 

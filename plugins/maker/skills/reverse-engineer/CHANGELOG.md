@@ -1,5 +1,12 @@
 # Changelog — reverse-engineer
 
+## v1.6.0 — 2026-06-20
+
+- Wired the CADFit tools into SKILL.md as a dedicated mesh/scan branch that triggers only for real local mesh or point-cloud inputs.
+- Documented the CADFit branch workflow: license gate, feature extraction, candidate scoring, correction/pruning, graceful fallback, and builder-handoff alignment.
+- Added pytest drift coverage proving photo/sketch/description modes remain separate from the CADFit mesh branch and the fallback message stays present.
+- Source: Epic #362 story #366.
+
 ## v1.5.0 — 2026-06-20
 
 - Added `references/cadfit-correction-loop.md` documenting error-guided cut/union actions, termination criteria, backward pruning, and the IoU-is-not-correctness manufacturing guardrail.
