@@ -16,6 +16,18 @@ from .pose_db import POSE_DB, MACROS
 from .parser import parse_shorthand, expand_macros
 from .validator import validate_sequence
 from .arc import analyze_arc
+from .transitions import (
+    TransitionVector, Pathway, Pacing,
+    TRANSITION_DB,
+    get_transitions, get_exits, get_entries,
+    suggest_transition, annotate_sequence_transitions,
+)
+from .config import (
+    EngineConfig, AudioSyncConfig, ValidationConfig, ArcConfig,
+    PoseThesaurus, ThesaurusEntry,
+    load_config, load_thesaurus,
+    get_config, get_thesaurus, reset_singletons,
+)
 
 __version__ = "0.1.0"
 __all__ = [

@@ -1,0 +1,43 @@
+# yoga_engine configuration dashboard
+# Story #374 — operator-tunable settings
+# Change a value here; the engine reads it at runtime via yoga_engine.config.
+
+[engine]
+# current_phase: the phase the engine considers "active" for partial-sequence mode.
+# Used by the Reverse Sequence Engine to know where to drop in.
+# Values: "arrival" | "warmup" | "build" | "peak" | "cooldown" | "savasana"
+current_phase = "warmup"
+
+# syntax_strictness: how strictly the parser enforces the shorthand grammar.
+# "strict"  — unknown tokens raise ParseError immediately.
+# "lenient" — unknown tokens emit a warning and are silently skipped.
+# "debug"   — like strict but also prints the token stream before parsing.
+syntax_strictness = "strict"
+
+[audio_sync]
+# LUFS target for the class playlist, passed to the playlist-builder skill.
+# -16 LUFS is a comfortable loudness for movement practice (EBU R128 broadcast = -23).
+# Typical yoga range: -18 to -14. Hot-power classes may go to -12.
+lufs_target = -16.0
+
+# DJ crossfade speed modifiers per pacing class (multiplier on base crossfade_bars).
+# 1.0 = no change; > 1.0 = slower; < 1.0 = faster.
+crossfade_slow_multiplier   = 1.5
+crossfade_medium_multiplier = 1.0
+crossfade_fast_multiplier   = 0.5
+
+[validation]
+# Which rule codes to suppress (disable specific checks).
+# Example: suppress_codes = ["BILATERAL_MISSING_SIDE"]
+suppress_codes = []
+
+# Minimum warmup poses required before a peak-classified pose appears.
+# Set to 0 to disable this heuristic.
+min_warmup_poses_before_peak = 3
+
+[arc]
+# Flat-arc threshold: if population stdev of intensity curve < this, arc = "flat".
+flat_stdev_threshold = 1.2
+
+# Spike detection: if peak > mean * (1 + ratio) it may be a spike.
+spike_ratio = 0.60
