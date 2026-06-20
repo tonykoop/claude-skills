@@ -1,8 +1,8 @@
 ---
 name: yoga-sequencer
-version: 1.9.0
+version: 2.0.0
 last-updated: 2026-06-20
-description: Design vinyasa-first yoga class sequences, peak-pose progressions, anatomical prep, counter-poses, heated-room safety adjustments, shorthand protocol parsing, transition-matrix lookup, Rosetta shorthand-transcript alignment, phase-gated class ingest, Reverse Sequence Engine scaffolds, DJI Mic capture QA, and full class plans with phase timing plus playlist-builder handoff data. Use when planning a yoga class, sequencing for hips, shoulders, twists, or backbends, choosing prep for a peak pose, adapting a hot-room class, defining shorthand tokens or macros, parsing a five-line shorthand class, inspecting transitions between poses, aligning shorthand to transcript spans, phase-gating captured class JSON, splitting DJI Mic captures into transcript/audio paths, expanding shorthand into a 60-minute reviewed script scaffold, or turning a class arc into music-ready phases.
+description: Design vinyasa-first yoga class sequences, peak-pose progressions, anatomical prep, counter-poses, heated-room safety adjustments, shorthand protocol parsing, transition-matrix lookup, Rosetta shorthand-transcript alignment, phase-gated class ingest, Reverse Sequence Engine scaffolds, DJI Mic capture QA, full class plans with phase timing plus playlist-builder handoff data, and transitions-only classes where poses are never named and the connective tissue between shapes is the unit of instruction. Use when planning a yoga class, sequencing for hips, shoulders, twists, or backbends, choosing prep for a peak pose, adapting a hot-room class, defining shorthand tokens or macros, parsing a five-line shorthand class, inspecting transitions between poses, aligning shorthand to transcript spans, phase-gating captured class JSON, splitting DJI Mic captures into transcript/audio paths, expanding shorthand into a 60-minute reviewed script scaffold, turning a class arc into music-ready phases, or teaching movement without ever naming a pose.
 ---
 
 # Yoga Sequencer
@@ -109,6 +109,33 @@ Collect what matters, but do not over-interview. If details are missing, choose 
 4. Mirror unilateral work or explain a deliberate asymmetry.
 5. Include a downshift: counterpose, cooldown, and savasana.
 6. End any full class plan with the playlist phase-map YAML block. Skip it for pure lookup requests. See "When to include the playlist phase-map YAML" under Output shape.
+
+## Transitions-only mode
+
+Transitions-only is an inverted teaching mode where the unit of instruction is the **transition** — the connective tissue between shapes — and poses are never named. The "shapes" are merely where a transition momentarily slows down; they are incidental waypoints, not the thing being taught.
+
+Use this mode when the user asks for:
+- "teach the space between the poses"
+- "never name the poses"
+- "transitions-only class"
+- a class framed around movement, unfolding, or breath-led travel rather than pose lists
+
+### Constraint
+Every cue must describe **how the body moves**, not **where it arrives**. Pose names (Sanskrit, English, or shorthand tokens) must not appear in any cue text. The `TransitionCue` dataclass enforces this at construction time — it raises `TransitionsClassError` if a forbidden token is detected.
+
+### Reference template
+`references/transitions-class-template.json` is a 60-minute starter template. Load it with:
+
+```bash
+python3 plugins/maker/skills/yoga-sequencer/scripts/transitions_class.py --template references/transitions-class-template.json
+python3 plugins/maker/skills/yoga-sequencer/scripts/transitions_class.py --template references/transitions-class-template.json --json
+```
+
+### Arc
+The 60-minute arc uses six phases: `arrival`, `warm_up`, `standing_flow`, `peak_work`, `cooldown`, `stillness`. Each phase label avoids Sanskrit so no pose vocabulary bleeds through even in section headers.
+
+### Extending the template
+To build a custom transitions-only class, load `TransitionsOnlyClass.from_template()` or construct one directly via `TransitionsOnlyClass.add_cue()`. Call `.validate()` before emitting — it checks total duration (±90 s), bilateral symmetry, and non-empty arc.
 
 ## Shorthand engine support
 
