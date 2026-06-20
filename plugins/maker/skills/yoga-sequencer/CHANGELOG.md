@@ -1,5 +1,12 @@
 # Changelog — yoga-sequencer
 
+## v1.4.0 — 2026-06-20
+
+- Added `references/shorthand-protocol.md` with the starter token table, side/orientation modifiers, breath operators, macro definition syntax, and a five-line sample class.
+- Extended `scripts/engine_config.py` with full-coverage tokenization, inline macro definitions, and multiline shorthand program parsing so malformed shorthand fails loudly instead of dropping characters.
+- Added pytest coverage for the documented five-line shorthand sample and unparsed-character rejection.
+- Source: Epic #368 story #369.
+
 ## v1.3.0 — 2026-06-20
 
 - Added `references/pose_thesaurus.json` with starter shorthand pose tokens, aliases, modifiers, operators, and the `Viny` macro expansion.

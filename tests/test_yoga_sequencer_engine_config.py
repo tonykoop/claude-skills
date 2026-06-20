@@ -62,6 +62,35 @@ class YogaEngineConfigTests(unittest.TestCase):
         self.assertEqual(tokens[0].label, "Plank")
         self.assertEqual(tokens[-1].kind, "operator")
 
+    def test_five_line_shorthand_program_parses_without_ambiguity(self) -> None:
+        engine = engine_config.YogaEngineConfig.load(SKILL_ROOT)
+        program = [
+            "Viny = PL>CH+UD>DD",
+            "DD // 5B",
+            "RLH_r > CL_r // 5B > PT_r",
+            "RLH_l > CL_l // 5B > PT_l",
+            "FF > HL + FF > Viny",
+        ]
+
+        parsed = engine.parse_program(program)
+        self.assertEqual([line.kind for line in parsed], ["macro_definition", "sequence", "sequence", "sequence", "sequence"])
+        self.assertEqual(parsed[0].macro_name, "Viny")
+        self.assertEqual([token.raw for token in parsed[-1].tokens], ["FF", ">", "HL", "+", "FF", ">", "PL", ">", "CH", "+", "UD", ">", "DD"])
+        self.assertEqual({token.modifier for line in parsed for token in line.tokens if token.modifier}, {"_r", "_l"})
+        self.assertFalse(any(token.draft for line in parsed for token in line.tokens))
+
+    def test_tokenizer_rejects_unparsed_characters(self) -> None:
+        engine = engine_config.YogaEngineConfig.load(SKILL_ROOT)
+        with self.assertRaises(engine_config.ConfigError):
+            engine.tokenize("DD @ CL")
+
+    def test_protocol_reference_documents_starter_vocabulary_and_sample(self) -> None:
+        doc = (SKILL_ROOT / "references" / "shorthand-protocol.md").read_text(encoding="utf-8")
+        for token in ("DD", "HL", "FF", "RLH", "CL", "PT"):
+            self.assertIn(f"`{token}`", doc)
+        self.assertIn("Viny = PL>CH+UD>DD", doc)
+        self.assertIn("Five-Line Starter Class", doc)
+
     def test_strictness_controls_unknown_token_behavior(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             draft_config = write_config(Path(tmp), strictness="draft")

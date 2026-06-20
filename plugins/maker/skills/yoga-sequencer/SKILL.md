@@ -1,8 +1,8 @@
 ---
 name: yoga-sequencer
-version: 1.3.0
+version: 1.4.0
 last-updated: 2026-06-20
-description: Design vinyasa-first yoga class sequences, peak-pose progressions, anatomical prep, counter-poses, heated-room safety adjustments, shorthand-token setup, and full class plans with phase timing plus playlist-builder handoff data. Use when planning a yoga class, sequencing for hips, shoulders, twists, or backbends, choosing prep for a peak pose, adapting a hot-room class, defining shorthand tokens, or turning a class arc into music-ready phases.
+description: Design vinyasa-first yoga class sequences, peak-pose progressions, anatomical prep, counter-poses, heated-room safety adjustments, shorthand protocol parsing, and full class plans with phase timing plus playlist-builder handoff data. Use when planning a yoga class, sequencing for hips, shoulders, twists, or backbends, choosing prep for a peak pose, adapting a hot-room class, defining shorthand tokens or macros, parsing a five-line shorthand class, or turning a class arc into music-ready phases.
 ---
 
 # Yoga Sequencer
@@ -47,6 +47,8 @@ These references are bundled but not all are needed every time. Pull only what t
   Open when the user wants music or a phase-timing export.
 - `references/pose_thesaurus.json`, `config.toml`, and `scripts/engine_config.py`
   Use when the user asks about shorthand tokens, starter vocabulary, parser configuration, or audio-sync settings. The thesaurus maps public shorthand tokens to pose names and metadata; `config.toml` exposes `current_phase`, `syntax_strictness`, and audio LUFS; the script loads both at runtime.
+- `references/shorthand-protocol.md`
+  Open when the user asks how to write shorthand, define macros, use breath operators, or check whether a compact class sketch is parseable.
 
 ### Staple pose cheat-sheet (two tiers)
 
@@ -106,6 +108,7 @@ Treat shorthand support as a public interface layer, not a promise that the priv
 - The starter `Viny` macro expands to `PL > CH + UD > DD`.
 - Directional and placement suffixes use `_r`, `_l`, `_f`, `_b`, `_open`, and `_cl`.
 - Breath and pacing operators include `+`, `>`, `//`, and integer breath counts such as `5B`.
+- Macro definitions use `Name = expression`, for example `Viny = PL>CH+UD>DD`.
 - `syntax_strictness = "strict"` rejects unknown pose tokens; `syntax_strictness = "draft"` allows placeholder tokens for authoring experiments; `starter` is the packaged default.
 - `audio_sync.lufs_target` is the public audio handoff target for downstream playlist or DJ tooling. Do not infer private mastering, sampler, or corpus logic from this value.
 
@@ -113,6 +116,12 @@ When a task needs deterministic token inspection, run:
 
 ```bash
 python3 plugins/maker/skills/yoga-sequencer/scripts/engine_config.py "Viny // 5B" --json
+```
+
+For a multiline shorthand sketch, put one macro or sequence per line and run:
+
+```bash
+python3 plugins/maker/skills/yoga-sequencer/scripts/engine_config.py --program-file shorthand.txt --json
 ```
 
 ## Mode guide
