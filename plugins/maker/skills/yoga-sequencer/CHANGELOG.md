@@ -1,5 +1,12 @@
 # Changelog — yoga-sequencer
 
+## v1.3.0 — 2026-06-20
+
+- Added `references/pose_thesaurus.json` with starter shorthand pose tokens, aliases, modifiers, operators, and the `Viny` macro expansion.
+- Added `config.toml` as the public operator dashboard for `current_phase`, `syntax_strictness`, and `audio_sync.lufs_target`.
+- Added `scripts/engine_config.py` so the engine can load the thesaurus and config at runtime, expand macros, and change behavior when strictness or LUFS settings change.
+- Source: Epic #368 story #374.
+
 ## v1.2.2 — 2026-06-13
 
 - `references/playlist-builder-handoff.md`: added worked 45-minute and 30-minute vinyasa phase-map YAML examples with contiguous timing, preserved warm-up/build/peak/cooldown/savasana phases, and required `energy` plus `cue_density` fields.

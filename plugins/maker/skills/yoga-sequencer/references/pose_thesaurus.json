@@ -1,0 +1,107 @@
+{
+  "schema_version": "1.0",
+  "description": "Starter token thesaurus for the yoga-sequencer shorthand engine. This public artifact maps shorthand pose tokens to canonical pose names and metadata; private corpus, voice, and transition-model data live outside this repo.",
+  "tokens": {
+    "DD": {
+      "canonical_name": "Downward Facing Dog",
+      "sanskrit": "Adho Mukha Svanasana",
+      "aliases": ["down dog", "downward dog"],
+      "families": ["inversion", "hamstring", "shoulder"],
+      "default_duration_breaths": 5,
+      "tier": "tier1",
+      "tags": ["starter", "resting-transition"]
+    },
+    "HL": {
+      "canonical_name": "Half Lift",
+      "sanskrit": "Ardha Uttanasana",
+      "aliases": ["halfway lift", "flat back"],
+      "families": ["forward-fold", "spinal-extension"],
+      "default_duration_breaths": 1,
+      "tier": "tier1",
+      "tags": ["starter", "transition"]
+    },
+    "FF": {
+      "canonical_name": "Standing Forward Fold",
+      "sanskrit": "Uttanasana",
+      "aliases": ["forward fold", "ragdoll"],
+      "families": ["forward-fold", "hamstring"],
+      "default_duration_breaths": 3,
+      "tier": "tier1",
+      "tags": ["starter", "transition"]
+    },
+    "RLH": {
+      "canonical_name": "Runner's Lunge",
+      "sanskrit": "Ardha Hanumanasana preparation",
+      "aliases": ["runner lunge", "low runner's lunge"],
+      "families": ["lunge", "hip-flexor"],
+      "default_duration_breaths": 5,
+      "tier": "tier1",
+      "tags": ["starter", "unilateral"]
+    },
+    "CL": {
+      "canonical_name": "Crescent Lunge",
+      "sanskrit": "Ashta Chandrasana",
+      "aliases": ["high lunge", "crescent"],
+      "families": ["lunge", "balance", "standing"],
+      "default_duration_breaths": 5,
+      "tier": "tier1",
+      "tags": ["starter", "unilateral", "transition-target"]
+    },
+    "PT": {
+      "canonical_name": "Prayer Twist",
+      "sanskrit": "Parivrtta Anjaneyasana preparation",
+      "aliases": ["revolved lunge prayer", "lunge prayer twist"],
+      "families": ["twist", "lunge"],
+      "default_duration_breaths": 5,
+      "tier": "tier2",
+      "tags": ["starter", "unilateral", "constraint-sensitive"]
+    },
+    "PL": {
+      "canonical_name": "Plank",
+      "sanskrit": "Phalakasana",
+      "aliases": ["high plank"],
+      "families": ["core", "wrist-load", "shoulder"],
+      "default_duration_breaths": 1,
+      "tier": "tier1",
+      "tags": ["macro-support", "transition"]
+    },
+    "CH": {
+      "canonical_name": "Chaturanga",
+      "sanskrit": "Chaturanga Dandasana",
+      "aliases": ["low plank", "four-limbed staff"],
+      "families": ["core", "wrist-load", "shoulder"],
+      "default_duration_breaths": 1,
+      "tier": "tier2",
+      "tags": ["macro-support", "constraint-sensitive"]
+    },
+    "UD": {
+      "canonical_name": "Upward Facing Dog",
+      "sanskrit": "Urdhva Mukha Svanasana",
+      "aliases": ["up dog", "upward dog"],
+      "families": ["backbend", "wrist-load"],
+      "default_duration_breaths": 1,
+      "tier": "tier2",
+      "tags": ["macro-support", "constraint-sensitive"]
+    }
+  },
+  "modifiers": {
+    "_r": "right side",
+    "_l": "left side",
+    "_f": "facing front",
+    "_b": "facing back",
+    "_open": "open hip or open twist orientation",
+    "_cl": "closed hip or closed twist orientation"
+  },
+  "operators": {
+    "+": "inhale into the next shape",
+    ">": "exhale or transition into the next shape",
+    "//": "hold in place",
+    "5B": "hold for five breaths; any positive integer followed by B is a breath count"
+  },
+  "macros": {
+    "Viny": {
+      "description": "Starter vinyasa macro used by the shorthand protocol.",
+      "expands_to": ["PL", ">", "CH", "+", "UD", ">", "DD"]
+    }
+  }
+}

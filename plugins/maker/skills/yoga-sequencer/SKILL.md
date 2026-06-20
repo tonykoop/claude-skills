@@ -1,8 +1,8 @@
 ---
 name: yoga-sequencer
-version: 1.2.2
-last-updated: 2026-06-13
-description: Design vinyasa-first yoga class sequences, peak-pose progressions, anatomical prep, counter-poses, heated-room safety adjustments, and full class plans with phase timing plus playlist-builder handoff data. Use when planning a yoga class, sequencing for hips, shoulders, twists, or backbends, choosing prep for a peak pose, adapting a hot-room class, or turning a class arc into music-ready phases.
+version: 1.3.0
+last-updated: 2026-06-20
+description: Design vinyasa-first yoga class sequences, peak-pose progressions, anatomical prep, counter-poses, heated-room safety adjustments, shorthand-token setup, and full class plans with phase timing plus playlist-builder handoff data. Use when planning a yoga class, sequencing for hips, shoulders, twists, or backbends, choosing prep for a peak pose, adapting a hot-room class, defining shorthand tokens, or turning a class arc into music-ready phases.
 ---
 
 # Yoga Sequencer
@@ -45,6 +45,8 @@ These references are bundled but not all are needed every time. Pull only what t
   Open for any heated-room, hot power, sculpt, C3-style, or sweaty public-class request. Use it for the standard safety checklist, heat-distress signs, hydration and breath-quality gates, pregnancy/non-heated substitutions, and cue-volume guidance as heat rises.
 - `references/playlist-builder-handoff.md`
   Open when the user wants music or a phase-timing export.
+- `references/pose_thesaurus.json`, `config.toml`, and `scripts/engine_config.py`
+  Use when the user asks about shorthand tokens, starter vocabulary, parser configuration, or audio-sync settings. The thesaurus maps public shorthand tokens to pose names and metadata; `config.toml` exposes `current_phase`, `syntax_strictness`, and audio LUFS; the script loads both at runtime.
 
 ### Staple pose cheat-sheet (two tiers)
 
@@ -95,6 +97,23 @@ Collect what matters, but do not over-interview. If details are missing, choose 
 4. Mirror unilateral work or explain a deliberate asymmetry.
 5. Include a downshift: counterpose, cooldown, and savasana.
 6. End any full class plan with the playlist phase-map YAML block. Skip it for pure lookup requests. See "When to include the playlist phase-map YAML" under Output shape.
+
+## Shorthand engine support
+
+Treat shorthand support as a public interface layer, not a promise that the private corpus or voice model is installed. For shorthand-token setup, use `references/pose_thesaurus.json` as the starter token source of truth and `config.toml` as the operator-tunable dashboard.
+
+- Starter pose tokens include `DD`, `HL`, `FF`, `RLH`, `CL`, and `PT`.
+- The starter `Viny` macro expands to `PL > CH + UD > DD`.
+- Directional and placement suffixes use `_r`, `_l`, `_f`, `_b`, `_open`, and `_cl`.
+- Breath and pacing operators include `+`, `>`, `//`, and integer breath counts such as `5B`.
+- `syntax_strictness = "strict"` rejects unknown pose tokens; `syntax_strictness = "draft"` allows placeholder tokens for authoring experiments; `starter` is the packaged default.
+- `audio_sync.lufs_target` is the public audio handoff target for downstream playlist or DJ tooling. Do not infer private mastering, sampler, or corpus logic from this value.
+
+When a task needs deterministic token inspection, run:
+
+```bash
+python3 plugins/maker/skills/yoga-sequencer/scripts/engine_config.py "Viny // 5B" --json
+```
 
 ## Mode guide
 

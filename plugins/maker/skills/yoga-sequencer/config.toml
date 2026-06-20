@@ -1,0 +1,9 @@
+current_phase = "draft"
+syntax_strictness = "starter"
+
+[audio_sync]
+lufs_target = -14.0
+default_crossfade_seconds = 8.0
+
+[engine]
+allow_unknown_tokens_in_draft = true
