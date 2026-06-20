@@ -1,5 +1,12 @@
 # Changelog — yoga-sequencer
 
+## v1.9.0 — 2026-06-20
+
+- Added `references/dji-mic-capture.md` defining the public DJI Mic capture manifest, Path A transcript/thematic split, Path B audio/playlist handoff, and capture-quality gate.
+- Added `scripts/dji_mic_ingest.py` to validate capture manifests, extract thematic transcript spans, emit playlist-ready audio timelines, and block Rosetta readiness on loud music beds, high movement noise, dropouts, or clipping.
+- Added pytest coverage for language/audio path splitting, music-bed blocking, movement/dropout findings, and empty transcript rejection.
+- Source: Epic #368 story #375.
+
 ## v1.8.0 — 2026-06-20
 
 - Added `references/reverse-sequence-engine.md` documenting the public Reverse Sequence Engine input, output, and human-review gate.

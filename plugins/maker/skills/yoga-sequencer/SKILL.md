@@ -1,8 +1,8 @@
 ---
 name: yoga-sequencer
-version: 1.8.0
+version: 1.9.0
 last-updated: 2026-06-20
-description: Design vinyasa-first yoga class sequences, peak-pose progressions, anatomical prep, counter-poses, heated-room safety adjustments, shorthand protocol parsing, transition-matrix lookup, Rosetta shorthand-transcript alignment, phase-gated class ingest, Reverse Sequence Engine scaffolds, and full class plans with phase timing plus playlist-builder handoff data. Use when planning a yoga class, sequencing for hips, shoulders, twists, or backbends, choosing prep for a peak pose, adapting a hot-room class, defining shorthand tokens or macros, parsing a five-line shorthand class, inspecting transitions between poses, aligning shorthand to transcript spans, phase-gating captured class JSON, expanding shorthand into a 60-minute reviewed script scaffold, or turning a class arc into music-ready phases.
+description: Design vinyasa-first yoga class sequences, peak-pose progressions, anatomical prep, counter-poses, heated-room safety adjustments, shorthand protocol parsing, transition-matrix lookup, Rosetta shorthand-transcript alignment, phase-gated class ingest, Reverse Sequence Engine scaffolds, DJI Mic capture QA, and full class plans with phase timing plus playlist-builder handoff data. Use when planning a yoga class, sequencing for hips, shoulders, twists, or backbends, choosing prep for a peak pose, adapting a hot-room class, defining shorthand tokens or macros, parsing a five-line shorthand class, inspecting transitions between poses, aligning shorthand to transcript spans, phase-gating captured class JSON, splitting DJI Mic captures into transcript/audio paths, expanding shorthand into a 60-minute reviewed script scaffold, or turning a class arc into music-ready phases.
 ---
 
 # Yoga Sequencer
@@ -57,6 +57,8 @@ These references are bundled but not all are needed every time. Pull only what t
   Use when the user asks to ingest one or more captured classes, produce the four-array parse target, or run anchor / triangulation / micro-batch / bulk go/no-go gates.
 - `references/reverse-sequence-engine.md` and `scripts/reverse_sequence_engine.py`
   Use when the user asks to expand compact shorthand into a 60-minute class script scaffold with transitions, phases, thematic slots, playlist timing, and human-review gating.
+- `references/dji-mic-capture.md` and `scripts/dji_mic_ingest.py`
+  Use when the user asks to validate a DJI Mic class capture, split it into transcript/thematic and audio/playlist paths, or check whether capture quality is safe for Rosetta ingest.
 
 ### Staple pose cheat-sheet (two tiers)
 
@@ -191,6 +193,22 @@ Run:
 
 ```bash
 python3 plugins/maker/skills/yoga-sequencer/scripts/reverse_sequence_engine.py shorthand.txt --reviewer tk
+```
+
+## DJI Mic capture support
+
+Use the DJI Mic ingest layer when a live class capture needs to feed both Rosetta and playlist/DJ tooling.
+
+- Input is a capture manifest, not raw audio.
+- Path A emits transcript spans, thematic script extraction, and `rosetta_ready`.
+- Path B emits an audio timeline handoff with phase, energy, and cue-density fields.
+- Capture quality fails closed for loud music beds, high movement noise, dropouts, clipping, empty transcript text, or malformed timing.
+- Keep raw audio and private ASR output outside this repo.
+
+Run:
+
+```bash
+python3 plugins/maker/skills/yoga-sequencer/scripts/dji_mic_ingest.py capture.json
 ```
 
 ## Mode guide

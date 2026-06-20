@@ -243,12 +243,12 @@ skills:
       See skills/instrument-maker/SKILL.md for the skill contract.
 
   yoga-sequencer:
-    canonical_version: 1.8.0
+    canonical_version: 1.9.0
     runtime: shared
     repo_path: skills/yoga-sequencer
     last_updated: 2026-06-20
     status: active
-    notes: Vinyasa-first shared class-sequencing skill with playlist-builder handoff output. v1.2.0 adds heated-room safety checklist and hot-room cue-volume guidance; v1.2.1 mirrors the staple-pose safety boundary into mixed-level defaults (issue #26); v1.2.2 adds worked 45/30-minute playlist handoff examples (issue #27); v1.3.0 adds the public shorthand pose thesaurus, config dashboard, and runtime loader for Epic #368 story #374; v1.4.0 adds the documented shorthand protocol and parseable five-line sample for Epic #368 story #369; v1.5.0 adds the public Transition Matrix starter model for Epic #368 story #370; v1.6.0 adds the deterministic Rosetta parallel-pair trainer and human-review quality gate for Epic #368 story #371; v1.7.0 adds phase-gated class ingest with four-array output for Epic #368 story #372; v1.8.0 adds the review-gated public Reverse Sequence Engine scaffold for Epic #368 story #373.
+    notes: Vinyasa-first shared class-sequencing skill with playlist-builder handoff output. v1.2.0 adds heated-room safety checklist and hot-room cue-volume guidance; v1.2.1 mirrors the staple-pose safety boundary into mixed-level defaults (issue #26); v1.2.2 adds worked 45/30-minute playlist handoff examples (issue #27); v1.3.0 adds the public shorthand pose thesaurus, config dashboard, and runtime loader for Epic #368 story #374; v1.4.0 adds the documented shorthand protocol and parseable five-line sample for Epic #368 story #369; v1.5.0 adds the public Transition Matrix starter model for Epic #368 story #370; v1.6.0 adds the deterministic Rosetta parallel-pair trainer and human-review quality gate for Epic #368 story #371; v1.7.0 adds phase-gated class ingest with four-array output for Epic #368 story #372; v1.8.0 adds the review-gated public Reverse Sequence Engine scaffold for Epic #368 story #373; v1.9.0 adds DJI Mic capture manifest splitting and quality gating for Epic #368 story #375.
 
   makerspace:
     canonical_version: 1.2.0
