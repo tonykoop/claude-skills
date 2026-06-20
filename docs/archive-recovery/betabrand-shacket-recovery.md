@@ -10,6 +10,16 @@ umbrella.
 
 ## Archive Evidence
 
+The committed archive inventory records the packet at:
+
+- `to organize\Shacket Photos and Video`
+- `to organize\Shacket Photos and Video\Cordaround` — 19 JPG files, 67.92 MB
+- `to organize\Shacket Photos and Video\Herringbone` — 20 JPG files, 79.42 MB
+
+This gives the packet a repo-local evidence trail in
+`data/archive-inventory-2026-05-09.csv` without requiring future agents to
+touch the external `D:\` archive.
+
 The archive recovery copy plan identifies the source as:
 
 `D:\External Hard Drive Consolidation\Lacie Share with photos from 2014\Document Archive 3-3-18\to organize\Shacket Photos and Video`
@@ -71,9 +81,8 @@ rights, third-party marks, and portfolio-safe image selection.
 
 ```bash
 gh issue view 54 -R tonykoop/claude-skills --json number,title,body,labels
-qmd search "Betabrand shacket sewing repo organization"
-qmd search "shacket Betabrand"
-rg -n "betabrand|shacket|Cordaround|Herringbone" /mnt/c/Users/Tony/Documents/GitHub/_meta/archive-inventory-tools/archive-recovery-copy-plan-2026-05-09.csv
+python3 scripts/validate_archive_inventory.py
+rg -n "Shacket Photos and Video|Cordaround|Herringbone" data/archive-inventory-2026-05-09.csv
 gh repo view tonykoop/sewing --json nameWithOwner,visibility,url,defaultBranchRef,description
 sed -n '1,120p' /mnt/c/Users/Tony/Documents/GitHub/_meta/archive-inventory-tools/logs/betabrand-shacket.robocopy.log
 find /mnt/c/Users/Tony/Documents/GitHub -maxdepth 5 -type d -iname '*shacket*'
