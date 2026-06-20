@@ -1,5 +1,23 @@
 # Changelog — playlist-builder
 
+## 0.3.0 — 2026-06-20 (mastering backend handoff)
+
+Adds a thin public client for the private mastering / MIR-critique / album-builder backend.
+All mastering logic stays in `tonykoop/StudioPipeline-Selecta`; this release only adds the
+handoff contract and a gracefully-degrading client stub.
+
+- **`scripts/mastering_backend.py`** — `call_mastering_backend()` + typed dataclasses
+  (`MasteringHandoff`, `MasteringTrack`, `MasteringIntent`, `MasteringBackendResult`).
+  Reads `PLAYLIST_MASTERING_BACKEND_URL` / `PLAYLIST_MASTERING_BACKEND_TOKEN` from env;
+  returns `available=False` silently when unconfigured or on any network error.
+  No third-party dependencies — stdlib only (`urllib`, `dataclasses`, `json`).
+- **`references/MASTERING_BACKEND_CONTRACT.md`** — documents the public/private boundary,
+  backend discovery, `mastering-handoff-v1` payload schema, response schema, and graceful
+  degradation behaviour.
+- **`SKILL.md` Step 6 (optional) — mastering backend handoff** — added between Step 5
+  (platform creation) and Step 7 (exclusion recording). Existing Step 6 renumbered to Step 7.
+- Version bump: 0.2.0 → 0.3.0.
+
 ## 0.2.0 — 2026-06-19 (eval suite)
 
 Adds the first machine-runnable eval suite (5 evals) and bumps SKILL.md to v0.2.0.
