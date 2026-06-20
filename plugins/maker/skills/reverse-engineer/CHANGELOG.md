@@ -1,5 +1,12 @@
 # Changelog — reverse-engineer
 
+## v1.4.0 — 2026-06-20
+
+- Added `references/cadfit-test-cad-program.md` documenting the `test_cad_program()` scoring contract, runtime requirements, and safe public behavior.
+- Added `scripts/cadfit_test_cad_program.py` to return CADFit-shaped Invalid-Ratio / Volumetric IoU feedback, catch syntax and kernel failure as normal score signals, and report unavailable CadQuery/OpenCascade environments gracefully.
+- Added pytest coverage for deterministic mock IoU scoring, syntax failures, kernel-failure signals, and missing native kernel behavior.
+- Source: Epic #362 story #364.
+
 ## v1.3.0 — 2026-06-20
 
 - Added `references/cadfit-feature-extractor.md` defining the mesh-only Feature Extractor input/output contract and degraded behavior.
