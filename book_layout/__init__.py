@@ -47,6 +47,16 @@ from .yearbook import (
     GateStatus, GateError,
     build_instrument_chapter, build_yearbook, gate_check,
 )
+from .spreads import (
+    Spread, SpreadConfig, SpreadSummary,
+    pair_into_spreads, spreads_for_chapter, spreads_for_book,
+    plan_spread_chapter, plan_spread_book, spread_summary, chapter_spread_summary,
+)
+from .audit import (
+    AuditFinding, EditorialAuditResult,
+    audit_book, audit_chapter,
+    CHAPTER_BALANCE_TOLERANCE, TEMPLATE_VARIETY_THRESHOLD,
+)
 
 __all__ = [
     # schema
@@ -75,4 +85,12 @@ __all__ = [
     "InstrumentChapterSpec", "InstrumentContentSpec", "YearbookConfig",
     "GateStatus", "GateError",
     "build_instrument_chapter", "build_yearbook", "gate_check",
+    # spreads
+    "Spread", "SpreadConfig", "SpreadSummary",
+    "pair_into_spreads", "spreads_for_chapter", "spreads_for_book",
+    "plan_spread_chapter", "plan_spread_book", "spread_summary", "chapter_spread_summary",
+    # audit
+    "AuditFinding", "EditorialAuditResult",
+    "audit_book", "audit_chapter",
+    "CHAPTER_BALANCE_TOLERANCE", "TEMPLATE_VARIETY_THRESHOLD",
 ]
