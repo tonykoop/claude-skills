@@ -1,5 +1,12 @@
 # Changelog — reverse-engineer
 
+## v1.5.0 — 2026-06-20
+
+- Added `references/cadfit-correction-loop.md` documenting error-guided cut/union actions, termination criteria, backward pruning, and the IoU-is-not-correctness manufacturing guardrail.
+- Added `scripts/cadfit_correction_loop.py` to map over/under-reconstruction residuals to correction actions, terminate on IoU/max-iteration/kernel/review gates, and prune redundant non-critical operations.
+- Added pytest coverage for cut/union action mapping, kernel-failure simplification, pruning behavior, and manufacturing-review termination.
+- Source: Epic #362 story #365.
+
 ## v1.4.0 — 2026-06-20
 
 - Added `references/cadfit-test-cad-program.md` documenting the `test_cad_program()` scoring contract, runtime requirements, and safe public behavior.

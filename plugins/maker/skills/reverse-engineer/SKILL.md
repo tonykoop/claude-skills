@@ -1,6 +1,6 @@
 ---
 name: reverse-engineer
-version: 1.4.0
+version: 1.5.0
 last-updated: 2026-06-20
 description: >-
   Analyze objects, photos, video, sketches, descriptions, and
@@ -167,3 +167,4 @@ If a user asks to reproduce a proprietary product for commercial use, pause and 
 - `references/cadfit-setup-license.md`: CADFit optional external setup, attribution, runtime availability matrix, and license gate. Open before any CADFit mesh/scan workflow. CADFit is not bundled in this skill; the license gate currently flags redistribution/commercial-use risk.
 - `references/cadfit-feature-extractor.md`: CADFit-style mesh/scan feature extractor adapter. Use only when a real mesh or point-cloud path exists; it returns candidate sketch profiles, slicing planes, revolution axes, or a degraded result asking for usable mesh input.
 - `references/cadfit-test-cad-program.md`: CADFit-shaped `test_cad_program()` scoring adapter. Use for candidate CadQuery program feedback; returns Invalid-Ratio, Volumetric IoU, and kernel failure/unavailable signals as data.
+- `references/cadfit-correction-loop.md`: Error-guided correction and backward-pruning loop. Use after score payloads to map over-reconstruction to `cut()`, under-reconstruction to `union()`, define termination, and preserve manufacturing-critical operations.
