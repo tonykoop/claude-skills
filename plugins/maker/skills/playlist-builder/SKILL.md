@@ -1,7 +1,7 @@
 ---
 name: playlist-builder
-version: 0.2.0
-last-updated: 2026-06-19
+version: 0.3.0
+last-updated: 2026-06-20
 description: "Build energy-arc-mapped playlists for any context where music carries an emotional or physical arc — power vinyasa yoga (heated, sustained, restorative, sculpt), spa, spin, party, group fitness. Use this skill when the user wants to: create a class playlist, generate a workout playlist, build a flow-mapped tracklist, curate music for a yoga or fitness class, build a spa/massage soundtrack, or create a Spotify or SoundCloud playlist organized around an energy arc. Also trigger when the user mentions energy phases, song banks, class themes, intentions, or wants the skill to read from their own Spotify or SoundCloud library. Works with three catalog modes: the user's own library (auto-categorized via audio features), curated seed banks bundled with the skill (for users with no library), or Tony Koop's hand-curated public catalog. IMPORTANT: also use this skill when the user wants the playlist created on Spotify or SoundCloud — it includes the platform automation."
 ---
 
@@ -150,7 +150,38 @@ The MCP connector's `create_playlist` doesn't honor exact track lists, so the pa
 ### Both platforms
 Run SoundCloud first via browser automation. Then provide the Spotify URI block for paste.
 
-## Step 6 — record the exclusion
+## Step 6 (optional) — mastering backend handoff
+
+If `PLAYLIST_MASTERING_BACKEND_URL` is set in the environment, the skill can hand the finished playlist off to the private mastering / MIR-critique / album-builder backend in `tonykoop/StudioPipeline-Selecta` for loudness normalisation and sequence refinement.
+
+```bash
+python <skill-path>/scripts/mastering_backend.py   # imported as a library, not run directly
+```
+
+Import and call from the generator or any downstream script:
+
+```python
+from scripts.mastering_backend import (
+    MasteringHandoff, MasteringIntent, MasteringTrack, call_mastering_backend
+)
+
+handoff = MasteringHandoff(
+    playlist_id="my-power-class-2026-06-20",
+    context="yoga-power",
+    tracks=[MasteringTrack(**row) for row in playlist_rows],
+    mastering_intent=MasteringIntent(target_lufs=-14.0, true_peak_dbfs=-1.0, format="class"),
+)
+result = call_mastering_backend(handoff)
+if result.succeeded:
+    print(f"mastering job queued: {result.job_id} — {result.output_url}")
+# if result.available is False, the skill continues normally — mastering is additive
+```
+
+When the backend is absent or returns an error the call returns `MasteringBackendResult(available=False)` without raising. The playlist output is unaffected — mastering is always additive, never blocking.
+
+**IP boundary:** all mastering chain parameters, MIR-critique scores, and album-segmentation logic live exclusively in the private backend. This public skill only emits the handoff payload and surfaces `status`, `job_id`, and `output_url` to the user. See `references/MASTERING_BACKEND_CONTRACT.md` for the full schema.
+
+## Step 7 — record the exclusion
 
 Append the used track URIs to the user's exclusion file:
 
