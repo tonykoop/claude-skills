@@ -1,0 +1,11 @@
+id: min_video_resolution
+name: Minimum Video Resolution 720p
+applies_to:
+  - alpha
+  - beta
+  - rc
+  - stable
+severity: warning
+rule:
+  type: min_resolution
+  min_height: 720

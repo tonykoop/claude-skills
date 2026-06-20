@@ -1,0 +1,8 @@
+id: require_captions_stable
+name: Require Captions for Stable Releases
+applies_to:
+  - stable
+severity: error
+rule:
+  type: artifact_required
+  artifact_type: caption

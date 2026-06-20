@@ -1,0 +1,9 @@
+id: require_audio_rc_stable
+name: Require Audio for RC and Stable Releases
+applies_to:
+  - rc
+  - stable
+severity: error
+rule:
+  type: artifact_required
+  artifact_type: audio

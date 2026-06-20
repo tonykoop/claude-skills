@@ -1,0 +1,13 @@
+id: required_metadata_fields
+name: Required Metadata Fields
+applies_to:
+  - alpha
+  - beta
+  - rc
+  - stable
+severity: warning
+rule:
+  type: required_metadata_fields
+  fields:
+    - project
+    - episode

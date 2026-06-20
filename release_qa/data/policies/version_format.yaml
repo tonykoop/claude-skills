@@ -1,0 +1,11 @@
+id: version_format
+name: Version Must Be Semver
+applies_to:
+  - alpha
+  - beta
+  - rc
+  - stable
+severity: error
+rule:
+  type: version_format
+  pattern: "^\\d+\\.\\d+\\.\\d+(?:[-.].+)?$"

@@ -1,0 +1,12 @@
+id: artifact_size_limit_video
+name: Video Artifact Size Limit 10GB
+applies_to:
+  - alpha
+  - beta
+  - rc
+  - stable
+severity: error
+rule:
+  type: artifact_size_limit
+  artifact_type: video
+  max_bytes: 10737418240

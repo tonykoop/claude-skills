@@ -1,0 +1,11 @@
+id: min_artifact_count
+name: Minimum One Artifact Required
+applies_to:
+  - alpha
+  - beta
+  - rc
+  - stable
+severity: error
+rule:
+  type: min_artifact_count
+  min_count: 1

@@ -1,0 +1,15 @@
+id: prohibited_tags
+name: Prohibited Tag Keywords
+applies_to:
+  - alpha
+  - beta
+  - rc
+  - stable
+severity: blocker
+rule:
+  type: prohibited_tags
+  keywords:
+    - explicit
+    - nsfw
+    - violence
+    - adult
