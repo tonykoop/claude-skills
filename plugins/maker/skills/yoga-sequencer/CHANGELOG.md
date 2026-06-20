@@ -1,5 +1,54 @@
 # Changelog — yoga-sequencer
 
+## v1.9.0 — 2026-06-20
+
+- Added `references/dji-mic-capture.md` defining the public DJI Mic capture manifest, Path A transcript/thematic split, Path B audio/playlist handoff, and capture-quality gate.
+- Added `scripts/dji_mic_ingest.py` to validate capture manifests, extract thematic transcript spans, emit playlist-ready audio timelines, and block Rosetta readiness on loud music beds, high movement noise, dropouts, or clipping.
+- Added pytest coverage for language/audio path splitting, music-bed blocking, movement/dropout findings, and empty transcript rejection.
+- Source: Epic #368 story #375.
+
+## v1.8.0 — 2026-06-20
+
+- Added `references/reverse-sequence-engine.md` documenting the public Reverse Sequence Engine input, output, and human-review gate.
+- Added `scripts/reverse_sequence_engine.py` to expand shorthand into a 60-minute class scaffold with phases, transition handoffs, script lines, playlist phase-map data, and review-gated trust status.
+- Added pytest coverage for five-line shorthand expansion, macro expansion, transition handoffs, reviewer gating, and playlist phase metadata.
+- Source: Epic #368 story #373.
+
+## v1.7.0 — 2026-06-20
+
+- Added `references/phase-gate-ingest.md` defining the captured-class JSON shape, four-array parse target, and anchor / triangulation / micro-batch / bulk go/no-go gates.
+- Added `scripts/phase_gate_ingest.py` to parse class JSON into `metadata`, `audio_timeline`, `choreography_raw`, and `thematic_drops`, with fail-closed phase gates up through 35+ class bulk runs.
+- Added pytest coverage for anchor parsing, micro-batch count gates, 35-class bulk acceptance, and malformed timing rejection.
+- Source: Epic #368 story #372.
+
+## v1.6.0 — 2026-06-20
+
+- Added `references/rosetta-trainer.md` defining the shorthand-to-transcript parallel pair format, extracted labels, and explicit human-review quality bar.
+- Added `scripts/rosetta_trainer.py` to parse shorthand/transcript pairs, extract somatic spacing, structural transitions, thematic-infusion terms, and return `trusted_for_training = false` until quality gates pass.
+- Added pytest coverage for alignment labels, somatic spacing, thematic detection, and human-review blocking.
+- Source: Epic #368 story #371.
+
+## v1.5.0 — 2026-06-20
+
+- Added `references/transition-matrix.json` with a public starter transition-vector model, multiple pathways into Crescent Lunge, transcript cue templates, and pacing-to-crossfade handoff settings.
+- Added `scripts/transition_matrix.py` for deterministic target/pathway lookup and playlist/DJ crossfade handoff data.
+- Added pytest coverage for Crescent Lunge multi-entry pathways, transcript cue mapping, and fast/medium/slow crossfade ordering.
+- Source: Epic #368 story #370.
+
+## v1.4.0 — 2026-06-20
+
+- Added `references/shorthand-protocol.md` with the starter token table, side/orientation modifiers, breath operators, macro definition syntax, and a five-line sample class.
+- Extended `scripts/engine_config.py` with full-coverage tokenization, inline macro definitions, and multiline shorthand program parsing so malformed shorthand fails loudly instead of dropping characters.
+- Added pytest coverage for the documented five-line shorthand sample and unparsed-character rejection.
+- Source: Epic #368 story #369.
+
+## v1.3.0 — 2026-06-20
+
+- Added `references/pose_thesaurus.json` with starter shorthand pose tokens, aliases, modifiers, operators, and the `Viny` macro expansion.
+- Added `config.toml` as the public operator dashboard for `current_phase`, `syntax_strictness`, and `audio_sync.lufs_target`.
+- Added `scripts/engine_config.py` so the engine can load the thesaurus and config at runtime, expand macros, and change behavior when strictness or LUFS settings change.
+- Source: Epic #368 story #374.
+
 ## v1.2.2 — 2026-06-13
 
 - `references/playlist-builder-handoff.md`: added worked 45-minute and 30-minute vinyasa phase-map YAML examples with contiguous timing, preserved warm-up/build/peak/cooldown/savasana phases, and required `energy` plus `cue_density` fields.

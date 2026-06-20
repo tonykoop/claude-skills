@@ -1,8 +1,8 @@
 ---
 name: yoga-sequencer
-version: 1.2.2
-last-updated: 2026-06-13
-description: Design vinyasa-first yoga class sequences, peak-pose progressions, anatomical prep, counter-poses, heated-room safety adjustments, and full class plans with phase timing plus playlist-builder handoff data. Use when planning a yoga class, sequencing for hips, shoulders, twists, or backbends, choosing prep for a peak pose, adapting a hot-room class, or turning a class arc into music-ready phases.
+version: 1.9.0
+last-updated: 2026-06-20
+description: Design vinyasa-first yoga class sequences, peak-pose progressions, anatomical prep, counter-poses, heated-room safety adjustments, shorthand protocol parsing, transition-matrix lookup, Rosetta shorthand-transcript alignment, phase-gated class ingest, Reverse Sequence Engine scaffolds, DJI Mic capture QA, and full class plans with phase timing plus playlist-builder handoff data. Use when planning a yoga class, sequencing for hips, shoulders, twists, or backbends, choosing prep for a peak pose, adapting a hot-room class, defining shorthand tokens or macros, parsing a five-line shorthand class, inspecting transitions between poses, aligning shorthand to transcript spans, phase-gating captured class JSON, splitting DJI Mic captures into transcript/audio paths, expanding shorthand into a 60-minute reviewed script scaffold, or turning a class arc into music-ready phases.
 ---
 
 # Yoga Sequencer
@@ -45,6 +45,20 @@ These references are bundled but not all are needed every time. Pull only what t
   Open for any heated-room, hot power, sculpt, C3-style, or sweaty public-class request. Use it for the standard safety checklist, heat-distress signs, hydration and breath-quality gates, pregnancy/non-heated substitutions, and cue-volume guidance as heat rises.
 - `references/playlist-builder-handoff.md`
   Open when the user wants music or a phase-timing export.
+- `references/pose_thesaurus.json`, `config.toml`, and `scripts/engine_config.py`
+  Use when the user asks about shorthand tokens, starter vocabulary, parser configuration, or audio-sync settings. The thesaurus maps public shorthand tokens to pose names and metadata; `config.toml` exposes `current_phase`, `syntax_strictness`, and audio LUFS; the script loads both at runtime.
+- `references/shorthand-protocol.md`
+  Open when the user asks how to write shorthand, define macros, use breath operators, or check whether a compact class sketch is parseable.
+- `references/transition-matrix.json` and `scripts/transition_matrix.py`
+  Use when the user asks about the "space between" poses, pathways into a target pose, transcript cue text for a transition, or pacing-to-crossfade handoff.
+- `references/rosetta-trainer.md` and `scripts/rosetta_trainer.py`
+  Use when the user asks to pair shorthand with transcript spans, extract somatic spacing, label structural transitions, find thematic-infusion points, or check whether paired data is trusted for training.
+- `references/phase-gate-ingest.md` and `scripts/phase_gate_ingest.py`
+  Use when the user asks to ingest one or more captured classes, produce the four-array parse target, or run anchor / triangulation / micro-batch / bulk go/no-go gates.
+- `references/reverse-sequence-engine.md` and `scripts/reverse_sequence_engine.py`
+  Use when the user asks to expand compact shorthand into a 60-minute class script scaffold with transitions, phases, thematic slots, playlist timing, and human-review gating.
+- `references/dji-mic-capture.md` and `scripts/dji_mic_ingest.py`
+  Use when the user asks to validate a DJI Mic class capture, split it into transcript/thematic and audio/playlist paths, or check whether capture quality is safe for Rosetta ingest.
 
 ### Staple pose cheat-sheet (two tiers)
 
@@ -95,6 +109,107 @@ Collect what matters, but do not over-interview. If details are missing, choose 
 4. Mirror unilateral work or explain a deliberate asymmetry.
 5. Include a downshift: counterpose, cooldown, and savasana.
 6. End any full class plan with the playlist phase-map YAML block. Skip it for pure lookup requests. See "When to include the playlist phase-map YAML" under Output shape.
+
+## Shorthand engine support
+
+Treat shorthand support as a public interface layer, not a promise that the private corpus or voice model is installed. For shorthand-token setup, use `references/pose_thesaurus.json` as the starter token source of truth and `config.toml` as the operator-tunable dashboard.
+
+- Starter pose tokens include `DD`, `HL`, `FF`, `RLH`, `CL`, and `PT`.
+- The starter `Viny` macro expands to `PL > CH + UD > DD`.
+- Directional and placement suffixes use `_r`, `_l`, `_f`, `_b`, `_open`, and `_cl`.
+- Breath and pacing operators include `+`, `>`, `//`, and integer breath counts such as `5B`.
+- Macro definitions use `Name = expression`, for example `Viny = PL>CH+UD>DD`.
+- `syntax_strictness = "strict"` rejects unknown pose tokens; `syntax_strictness = "draft"` allows placeholder tokens for authoring experiments; `starter` is the packaged default.
+- `audio_sync.lufs_target` is the public audio handoff target for downstream playlist or DJ tooling. Do not infer private mastering, sampler, or corpus logic from this value.
+
+When a task needs deterministic token inspection, run:
+
+```bash
+python3 plugins/maker/skills/yoga-sequencer/scripts/engine_config.py "Viny // 5B" --json
+```
+
+For a multiline shorthand sketch, put one macro or sequence per line and run:
+
+```bash
+python3 plugins/maker/skills/yoga-sequencer/scripts/engine_config.py --program-file shorthand.txt --json
+```
+
+## Transition matrix support
+
+Treat transitions as vectors: `origin shape -> pathway modifier -> target shape`. Use `references/transition-matrix.json` for the public starter matrix and `scripts/transition_matrix.py` for deterministic lookup.
+
+- Crescent Lunge (`CL`) is the first documented multi-entry target.
+- Each transition carries `origin`, `pathway`, `target`, `pacing`, `transcript_cue`, and `shorthand`.
+- `pacing` maps to playlist/DJ handoff crossfade seconds: `fast`, `medium`, or `slow`.
+- The public `transcript_cue` field is a teacher-facing cue template, not private live-class transcript data.
+
+To inspect pathways into Crescent Lunge:
+
+```bash
+python3 plugins/maker/skills/yoga-sequencer/scripts/transition_matrix.py --target CL
+```
+
+## Rosetta trainer support
+
+Treat the Rosetta trainer as a deterministic labeling and quality-gate layer, not a private voice model. It aligns shorthand rows to transcript spans and returns labels that a future private trainer can consume after human review.
+
+- Input is JSON with `pairs[]`, where each pair has `shorthand`, `transcript.start_sec`, `transcript.end_sec`, `transcript.text`, and `human_review.status`.
+- The trainer extracts somatic spacing, structural transitions, thematic-infusion terms, draft token flags, and a quality gate.
+- Output is trusted only when every pair has positive transcript duration, no draft tokens, at least one structural transition, at least one thematic-infusion point, and approved human review.
+- Keep private class transcripts and learned voice data out of this public repo.
+
+Run:
+
+```bash
+python3 plugins/maker/skills/yoga-sequencer/scripts/rosetta_trainer.py rosetta-class.json
+```
+
+## Phase-gate ingest support
+
+Use the phase-gate ingest layer before feeding class captures into Rosetta training.
+
+- Input is class JSON with `metadata` fields and timed `segments`.
+- Output always uses the four-array target: `metadata`, `audio_timeline`, `choreography_raw`, and `thematic_drops`.
+- Gates are `anchor` (1 class), `triangulation` (3+ classes), `micro_batch` (3-5 classes), and `bulk` (35+ classes).
+- Gates fail closed on malformed timing, missing segments, missing shorthand, or an absent output array.
+- Keep private corpus files outside this repo; pass local/private JSON paths at runtime.
+
+Run:
+
+```bash
+python3 plugins/maker/skills/yoga-sequencer/scripts/phase_gate_ingest.py anchor class.json
+```
+
+## Reverse sequence engine support
+
+Use the Reverse Sequence Engine to expand shorthand into a reviewed 60-minute class scaffold.
+
+- Input is one macro or shorthand sequence per line.
+- Output includes expanded tokens, transition handoffs, six timed phases, script lines, and playlist phase-map data.
+- The public engine emits `voice_mode: public_teacher_style_scaffold`; it does not claim the private Tony voice model is present.
+- `trusted_for_teaching` stays false until a named human reviewer approves the draft.
+
+Run:
+
+```bash
+python3 plugins/maker/skills/yoga-sequencer/scripts/reverse_sequence_engine.py shorthand.txt --reviewer tk
+```
+
+## DJI Mic capture support
+
+Use the DJI Mic ingest layer when a live class capture needs to feed both Rosetta and playlist/DJ tooling.
+
+- Input is a capture manifest, not raw audio.
+- Path A emits transcript spans, thematic script extraction, and `rosetta_ready`.
+- Path B emits an audio timeline handoff with phase, energy, and cue-density fields.
+- Capture quality fails closed for loud music beds, high movement noise, dropouts, clipping, empty transcript text, or malformed timing.
+- Keep raw audio and private ASR output outside this repo.
+
+Run:
+
+```bash
+python3 plugins/maker/skills/yoga-sequencer/scripts/dji_mic_ingest.py capture.json
+```
 
 ## Mode guide
 
