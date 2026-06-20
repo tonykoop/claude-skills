@@ -1,0 +1,216 @@
+{
+  "schema_version": "1.0",
+  "description": "60-minute transitions-only class template. Poses are never named — the unit of teaching is the movement between shapes. Each cue describes what the body does in transit: the breath, the weight shift, the lengthening or compression. The waypoint where a transition slows down is incidental and unnamed.",
+  "class_length_mins": 60,
+  "theme": "the space between effort and ease",
+  "level": "mixed-level",
+  "mode": "transitions-only",
+  "constraints": [
+    "No pose names may appear in any cue field.",
+    "Each cue describes a pathway: how the body gets from one position to another.",
+    "Waypoints (where the body momentarily slows) are described by their felt experience, not their label.",
+    "Bilateral cues must appear for both left and right sides."
+  ],
+  "cues": [
+    {
+      "id": "arrival-breath-settle",
+      "phase": "arrival",
+      "cue": "Arrive. Let your weight shift until you find the lowest point of your sit bones. Feel the floor receive you without you having to hold yourself up.",
+      "somatic_focus": ["ground-contact", "breath-awareness"],
+      "breath_instruction": "Three slow exhales, twice as long as each inhale.",
+      "duration_secs": 180,
+      "pacing": "slow",
+      "side": null
+    },
+    {
+      "id": "arrival-spinal-wake",
+      "phase": "arrival",
+      "cue": "On an inhale, let the spine lengthen as though the crown were being drawn upward by something light. On the exhale, let it soften without collapsing — finding the difference between held and alive.",
+      "somatic_focus": ["axial-extension", "breath-led-movement"],
+      "breath_instruction": "Match movement to breath; don't move faster than your exhale allows.",
+      "duration_secs": 120,
+      "pacing": "slow",
+      "side": null
+    },
+    {
+      "id": "warmup-hands-earth",
+      "phase": "warm_up",
+      "cue": "Shift your weight forward until your hands find the floor. Don't arrive quickly — notice the moment when your arms begin to take load and let the weight transfer gradually, like water filling a container.",
+      "somatic_focus": ["wrist-loading", "weight-transfer", "shoulder-engagement"],
+      "breath_instruction": "Exhale as weight moves into the hands.",
+      "duration_secs": 150,
+      "pacing": "medium",
+      "side": null
+    },
+    {
+      "id": "warmup-spine-wave",
+      "phase": "warm_up",
+      "cue": "From your hands and knees, breathe into the back of the ribs and let the spine respond — rounding without forcing, extending without clenching. Find the difference between collapsing into a shape and being drawn through one.",
+      "somatic_focus": ["spinal-articulation", "rib-breath", "core-softness"],
+      "breath_instruction": "Exhale to round, inhale to extend. Follow the breath rather than the shape.",
+      "duration_secs": 150,
+      "pacing": "medium",
+      "side": null
+    },
+    {
+      "id": "warmup-hip-shift-right",
+      "phase": "warm_up",
+      "cue": "Step one foot forward until you feel the front hip flexor begin to lengthen. Don't rush to stand. Breathe into the space between the front knee and back hip — the territory the practice lives in.",
+      "somatic_focus": ["hip-flexor-length", "hip-crease-awareness", "back-knee-weight"],
+      "breath_instruction": "Three slow breaths into the front body. Let the exhale do the deepening.",
+      "duration_secs": 150,
+      "pacing": "slow",
+      "side": "right"
+    },
+    {
+      "id": "warmup-hip-shift-left",
+      "phase": "warm_up",
+      "cue": "Step the other foot forward until you feel the front hip flexor begin to lengthen. Don't rush to stand. Breathe into the space between the front knee and back hip.",
+      "somatic_focus": ["hip-flexor-length", "hip-crease-awareness", "back-knee-weight"],
+      "breath_instruction": "Three slow breaths into the front body. Let the exhale do the deepening.",
+      "duration_secs": 150,
+      "pacing": "slow",
+      "side": "left"
+    },
+    {
+      "id": "flow-rise-from-earth-right",
+      "phase": "standing_flow",
+      "cue": "Press the floor away from you and let the body rise. Feel the back leg straighten before the torso arrives upright — the legs lead, the spine follows, the arms come last. Notice the moment of becoming vertical.",
+      "somatic_focus": ["leg-drive", "spinal-stacking", "arrival-awareness"],
+      "breath_instruction": "Inhale to rise. One full breath at the top before moving again.",
+      "duration_secs": 120,
+      "pacing": "medium",
+      "side": "right"
+    },
+    {
+      "id": "flow-rise-from-earth-left",
+      "phase": "standing_flow",
+      "cue": "Press the floor away from you and let the body rise. Feel the back leg straighten before the torso arrives upright — the legs lead, the spine follows, the arms come last. Notice the moment of becoming vertical.",
+      "somatic_focus": ["leg-drive", "spinal-stacking", "arrival-awareness"],
+      "breath_instruction": "Inhale to rise. One full breath at the top before moving again.",
+      "duration_secs": 120,
+      "pacing": "medium",
+      "side": "left"
+    },
+    {
+      "id": "flow-spiral-right",
+      "phase": "standing_flow",
+      "cue": "From standing, let the torso begin to spiral — not by twisting the shoulders, but by letting the belly turn first, then the ribs, then the chest. The arms trail the rotation like ribbons in a slow wind.",
+      "somatic_focus": ["rotational-sequence", "belly-leads", "thoracic-opening"],
+      "breath_instruction": "Exhale to deepen the rotation. Inhale to lengthen before adding torque.",
+      "duration_secs": 240,
+      "pacing": "slow",
+      "side": "right"
+    },
+    {
+      "id": "flow-spiral-left",
+      "phase": "standing_flow",
+      "cue": "From standing, let the torso begin to spiral — belly first, ribs, then chest. The arms trail the rotation like ribbons in a slow wind.",
+      "somatic_focus": ["rotational-sequence", "belly-leads", "thoracic-opening"],
+      "breath_instruction": "Exhale to deepen the rotation. Inhale to lengthen before adding torque.",
+      "duration_secs": 240,
+      "pacing": "slow",
+      "side": "left"
+    },
+    {
+      "id": "flow-lower-to-earth",
+      "phase": "standing_flow",
+      "cue": "Let the weight shift forward until the hands find the floor. Move slowly enough to feel each vertebra participate in the descent — not a collapse, but a controlled lowering, as if you are placing yourself down.",
+      "somatic_focus": ["eccentric-control", "hamstring-length", "shoulder-arrival"],
+      "breath_instruction": "Exhale the whole way down. If the exhale runs out, pause until you can inhale, then continue.",
+      "duration_secs": 240,
+      "pacing": "slow",
+      "side": null
+    },
+    {
+      "id": "flow-forward-propulsion",
+      "phase": "standing_flow",
+      "cue": "Step forward until the front foot finds the floor. Feel the weight shift from the back foot to the front in a long, even press — a rolling transfer that ends with the front heel grounded and the back hip trailing.",
+      "somatic_focus": ["weight-transfer", "heel-contact", "hip-trajectory"],
+      "breath_instruction": "Inhale as the foot steps through. Exhale to settle into the landing.",
+      "duration_secs": 240,
+      "pacing": "fast",
+      "side": null
+    },
+    {
+      "id": "peak-approach-right",
+      "phase": "peak_work",
+      "cue": "From your base position on the right side, begin to unwind the front leg — not by forcing, but by letting the inner thigh roll away and the outer hip draw back. The transition takes longer than you think it should. Stay in the unfolding.",
+      "somatic_focus": ["external-rotation", "hip-unwinding", "inner-thigh-release"],
+      "breath_instruction": "Three breaths in the approach. Let each exhale soften one more layer of resistance.",
+      "duration_secs": 210,
+      "pacing": "slow",
+      "side": "right"
+    },
+    {
+      "id": "peak-approach-left",
+      "phase": "peak_work",
+      "cue": "From your base position on the left side, begin to unwind the front leg — letting the inner thigh roll away and the outer hip draw back. Stay in the unfolding.",
+      "somatic_focus": ["external-rotation", "hip-unwinding", "inner-thigh-release"],
+      "breath_instruction": "Three breaths in the approach. Let each exhale soften one more layer of resistance.",
+      "duration_secs": 210,
+      "pacing": "slow",
+      "side": "left"
+    },
+    {
+      "id": "peak-reversal",
+      "phase": "peak_work",
+      "cue": "Now reverse the direction. Let gravity begin the return — the hips descend, the spine rounds gently, the hands reach toward the earth. The re-landing is as important as the approach. Feel the floor come up to meet you.",
+      "somatic_focus": ["gravity-assisted-descent", "spinal-rounding", "landing-awareness"],
+      "breath_instruction": "Long exhale through the reversal. Arrive on the mat before you breathe in again.",
+      "duration_secs": 180,
+      "pacing": "slow",
+      "side": null
+    },
+    {
+      "id": "cooldown-hip-release",
+      "phase": "cooldown",
+      "cue": "Let one leg cross over the other until you feel the outer hip begin to open. Don't pull — let the weight of the top leg do the work. The body knows how to soften if you stop helping.",
+      "somatic_focus": ["passive-hip-release", "weight-led-opening", "outer-hip-length"],
+      "breath_instruction": "Five long breaths. On each exhale, permission to soften further.",
+      "duration_secs": 180,
+      "pacing": "slow",
+      "side": null
+    },
+    {
+      "id": "cooldown-spinal-unload",
+      "phase": "cooldown",
+      "cue": "Slowly roll onto your back. Let the spine meet the floor one segment at a time — not all at once, but in a sequence that starts at the tailbone and travels upward. The floor catches each vertebra as it arrives.",
+      "somatic_focus": ["sequential-spinal-contact", "floor-support", "nervous-system-settling"],
+      "breath_instruction": "Natural breath. No technique, no count. Let the breath find its own pace.",
+      "duration_secs": 120,
+      "pacing": "slow",
+      "side": null
+    },
+    {
+      "id": "cooldown-reclined-twist-right",
+      "phase": "cooldown",
+      "cue": "Draw one knee toward the chest and let it fall across the body. Don't manage the rotation — let it travel as far as the weight of the leg will carry it. The shoulder opposite the knee stays in contact with the floor.",
+      "somatic_focus": ["thoracic-rotation", "shoulder-anchor", "gravity-led-twist"],
+      "breath_instruction": "Six slow breaths. Let the exhale draw the shoulder down, not your effort.",
+      "duration_secs": 150,
+      "pacing": "slow",
+      "side": "right"
+    },
+    {
+      "id": "cooldown-reclined-twist-left",
+      "phase": "cooldown",
+      "cue": "Draw the other knee toward the chest and let it fall across the body. Let the weight of the leg carry the rotation. The shoulder opposite the knee stays in contact with the floor.",
+      "somatic_focus": ["thoracic-rotation", "shoulder-anchor", "gravity-led-twist"],
+      "breath_instruction": "Six slow breaths. Let the exhale draw the shoulder down, not your effort.",
+      "duration_secs": 150,
+      "pacing": "slow",
+      "side": "left"
+    },
+    {
+      "id": "savasana-surrender",
+      "phase": "stillness",
+      "cue": "Let the body come to stillness the way the surface of water stills after the last ripple — not forced, but arrived at. Feel the last transition: from doing to being. The practice ends here, in the space after the last movement.",
+      "somatic_focus": ["full-body-release", "nervous-system-reset", "breath-normalization"],
+      "breath_instruction": "No instruction. The breath finds its own way.",
+      "duration_secs": 300,
+      "pacing": "slow",
+      "side": null
+    }
+  ]
+}
