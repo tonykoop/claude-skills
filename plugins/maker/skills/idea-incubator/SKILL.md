@@ -1,7 +1,7 @@
 ---
 name: idea-incubator
-version: 1.14.0
-last-updated: 2026-06-19
+version: 1.15.0
+last-updated: 2026-06-21
 description: >-
   Capture, classify, connect, review, and promote speculative ideas into a
   searchable GitHub issue inbox. Use when the user says "new idea", "incubate
