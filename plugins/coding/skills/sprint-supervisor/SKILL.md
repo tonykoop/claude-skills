@@ -307,6 +307,40 @@ The reason these are hard-stop is that the cost of approving one wrong is catast
 5. **Dependency order for a new foundation repo.** Merge the schema/CI story first, then rebase each dependent branch onto the new `main` (they carry stale shared files — `pyproject.toml`, `__init__.py` — resolve those to main's version). Re-check mergeability after each merge; expect rebase cascades on shared trees.
 6. **Conflict resolution on overlapping inserts — beware the coincidental-context trap.** When two branches both insert new code at the same location and share trailing lines (`}`, `</section>`, dict/registry boilerplate), do NOT just strip the 3 conflict markers — that mis-joins one block's header to another's body. Reconstruct from main + the branch's *named* additions, or duplicate the shared closing per side. Validate (`python -c "import ast; ast.parse(...)"` / balanced-tag count) and run tests before continuing the rebase.
 
+## GitHub access — route writes across app-scoped MCP rate buckets
+
+The supervisor's merge / comment / close / issue-file throughput is capped by GitHub's
+**secondary content-creation limit (~500/hr) — which is per ACCOUNT, not per token.** A
+shared PAT on `tonykoop` means every agent + the supervisor share one bucket; past
+~10 panes it throttles (the cause of the merged-but-open re-drain churn). Org-owned
+**GitHub Apps** are distinct actors with their **own** ~500/hr buckets, and they're wired
+into the GitHub MCP so the supervisor can spread writes across them.
+
+**Buckets (user-scope MCP servers, 2026-06-21):**
+- `github` — PAT → **tonykoop** personal repos (HWE-Pipeline, claude-skills, offtheshelf, etc.)
+- `gh-sp-claude2` (app 4087430), `gh-sp-codex2` (app 4087412) → **StudioPipeline** org
+- `gh-wrf-claude` (app 4087363), `gh-wrf-codex` (app 4087389) → **wrfcoin** org
+
+**Routing rule:** send each GitHub write to the bucket that owns the repo's org — tonykoop →
+`github`; StudioPipeline repos → a `gh-sp-*`; wrfcoin repos → a `gh-wrf-*`. During
+high-throughput fan-out, **alternate an org's two app buckets** (round-robin) to roughly
+double that org's secondary budget. Treat buckets as a fungible pool, not per-model (the
+claude/codex labels are cosmetic).
+
+**Token-expiry caveat (the one operational gotcha):** each app bucket mints a **1-hour**
+installation token *at MCP-server launch* (wrapper `~/sp-spark/gh-app-mcp.sh <app_id> <pem>
+<org>` → `gh_app.py token`). On a marathon running **>1h**, the token expires and that
+app's MCP calls start failing with **401/403** while the PAT `github` keeps working.
+**Detect:** app-bucket writes suddenly 401/403 → **restart that MCP server** (or the host)
+to re-mint. Build a periodic MCP restart into long marathons, or fall back to `github` +
+paced `gh` CLI for the rest of the run.
+
+**Fallback / portability:** if the app MCP buckets aren't available (cold host, PEMs not
+present — keys live at `/mnt/c/.../Downloads/<slug>.private-key.pem`), use the PAT `github`
+server or plain `gh`, and pace writes (close merged issues with no comment to dodge the
+write-throttle; list-first, fetch PR comments only for CLEAN/UNSTABLE non-draft). Full
+setup + app→key→org map: see the `github-app-installation-tokens` reference memory.
+
 ## Manager-acting-on-an-agent's-behalf safety
 
 The supervisor sometimes finishes an agent's work for it (push a stalled-but-done agent's commit, fix a trivial lint, open a codex PR). Guardrails:

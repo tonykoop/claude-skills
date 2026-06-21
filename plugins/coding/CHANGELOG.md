@@ -1,5 +1,14 @@
 # coding plugin — Changelog
 
+## 2.3.0 — 2026-06-21
+
+`sprint-supervisor` (v1.4.0): add **GitHub access — app-scoped MCP rate buckets** section.
+Route GitHub writes by org across per-app MCP buckets (`github` PAT for tonykoop;
+`gh-sp-claude2`/`gh-sp-codex2` for StudioPipeline; `gh-wrf-claude`/`gh-wrf-codex` for
+wrfcoin) to beat the ~500/hr per-account secondary limit; alternate an org's two apps
+during fan-out. Documents the 1h app-token expiry (restart the MCP server to re-mint on
+401/403) and the PAT/`gh` fallback. Wrapper: `~/sp-spark/gh-app-mcp.sh`.
+
 ## 2.2.0 — 2026-06-21
 
 Add the `sweep` skill — the cross-repo verdict loop that fans `review`'s logic across a set
