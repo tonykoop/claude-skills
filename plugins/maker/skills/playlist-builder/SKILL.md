@@ -1,7 +1,7 @@
 ---
 name: playlist-builder
-version: 0.3.0
-last-updated: 2026-06-20
+version: 0.4.0
+last-updated: 2026-06-21
 description: "Build energy-arc-mapped playlists for any context where music carries an emotional or physical arc — power vinyasa yoga (heated, sustained, restorative, sculpt), spa, spin, party, group fitness. Use this skill when the user wants to: create a class playlist, generate a workout playlist, build a flow-mapped tracklist, curate music for a yoga or fitness class, build a spa/massage soundtrack, or create a Spotify or SoundCloud playlist organized around an energy arc. Also trigger when the user mentions energy phases, song banks, class themes, intentions, or wants the skill to read from their own Spotify or SoundCloud library. Works with three catalog modes: the user's own library (auto-categorized via audio features), curated seed banks bundled with the skill (for users with no library), or Tony Koop's hand-curated public catalog. IMPORTANT: also use this skill when the user wants the playlist created on Spotify or SoundCloud — it includes the platform automation."
 ---
 
@@ -219,6 +219,40 @@ It is NOT paste-ready because:
 
 Tony's `yoga-playlist-builder` v1 still works as before — his catalog is in `references/TonyKoop_Yoga_Playlists.xlsx` (gitignored, lives on his machine). Tony can keep using v1 or migrate to v2 by passing `--context contexts/yoga-vinyasa.json`. His public playlists are also offered to trainees as Mode B.
 
+## 4-Week Series Generation (v0.4.0)
+
+A "series" is four linked hour-long mixes that form a thematic arc across one month. Use `generate_series.py` instead of `generate_playlist.py` when the user asks for a multi-week progression.
+
+```bash
+python <skill-path>/scripts/generate_series.py \
+    --series <skill-path>/contexts/series/4week-yoga-progression.json \
+    --catalog <path-to-categorized-catalog.json> \
+    --output-dir ./series-output/ \
+    --seed 42
+```
+
+The series generator:
+1. Loads the multi-episode context (week themes, BPM scale factors, energy ceilings, anchor rules).
+2. Builds episodes in order with a **shared `series_excludes` set** so no track repeats across all four weeks.
+3. Writes `week-01-rooting.md` … `week-04-integrating.md` and `series-summary.md` to `--output-dir`.
+
+### Source mode toggle (`source_mode`)
+
+| Mode | Behavior |
+|---|---|
+| `library` (default) | Draws tracks from local `seed-banks/*.json` — same as single-mix mode |
+| `api` | Skips local bank lookup; emits copy-paste Spotify/SoundCloud search strings via `source_toggle.emit_api_search_block()` |
+
+Use `source_toggle.validate_source_mode(mode)` to coerce and validate user input.
+
+### Anchor artists (Lane 8 + Tinlicker)
+
+`anchor.py` injects exactly one Lane 8 and one Tinlicker track per episode.  
+`placement.py` resolves which phase each anchor lands in (episode `anchor_rules` → artist defaults → first phase).  
+`blueprint.py` scales BPM bounds per week (×1.00 / ×1.02 / ×1.03 / ×0.98) and applies energy ceilings (7/9/9/8).
+
+See `references/SERIES_BLUEPRINT.md` and `references/ANCHOR_PLACEMENT_RULES.md`.
+
 ## TODOs
 
 - [ ] Spotify Web API OAuth flow (full library pull + `audio-features`)
@@ -227,5 +261,6 @@ Tony's `yoga-playlist-builder` v1 still works as before — his catalog is in `r
 - [ ] Lyric-based theme matching for C bank (Genius/Musixmatch)
 - [ ] Helper script that adds URI list to a Spotify playlist via user's Web API token
 - [ ] Port v1 duration-enforcement loop to v2 generator
+- [ ] Wire source_mode="api" path into generate_series.py runtime
 
 See `../../DESIGN.md` for the full design doc.
