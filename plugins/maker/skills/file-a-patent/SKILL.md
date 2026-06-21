@@ -52,6 +52,25 @@ Section mapping: `technical_field` → Background (Field of Invention) · `probl
 
 Full field spec and section-mapping table: `references/ip-disclosure-summary-schema.md`. After emitting the block, offer to write it into `INVENTION-SUMMARY.md` and `DISCLOSURE-TIMELINE.md`. Use cautious phrasing for `novel_elements` — never assert patentability.
 
+## IP Capture
+
+When the inventor uses a trigger phrase such as **"capture IP timestamp"**, **"log this as IP"**, **"timestamp this invention"**, or **"record IP moment"**, immediately emit an `ip_capture` block:
+
+```json
+{
+  "ip_capture": {
+    "utc": "<ISO-8601 UTC>",
+    "local": "<ISO-8601 local with offset>",
+    "timezone": "<IANA timezone>",
+    "origin": "<session or clipping source>",
+    "provenance_class": "soft",
+    "provenance_note": "Model-asserted times are NOT reliable legal provenance. Real provenance = clipping file date + git commit timestamps."
+  }
+}
+```
+
+`provenance_class` is always `"soft"` for model-asserted times. See `references/ip-capture-schema.md` for the full field spec and provenance-class table. After emitting the block, offer to append it to `DISCLOSURE-TIMELINE.md` in the active invention packet. Do not claim the timestamp is legally authoritative.
+
 ## Core Workflow
 
 1. **Define scope.** Identify the repo, invention slug, candidate name, and intended packet type: `provisional-prep`, `strategy-hold`, `trade-secret-review`, or `copyright-docs`.
