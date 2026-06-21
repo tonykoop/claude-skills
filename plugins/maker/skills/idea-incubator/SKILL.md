@@ -65,6 +65,10 @@ This skill works best with these MCP connectors. Claude will suggest connecting 
 - `retro this epic`
 - `lessons learned`
 - `process my inbox`
+- `capture from mobile`
+- `obsidian clip`
+- `set up mobile capture`
+- `mobile shortcut`
 
 The phrases are kept punctuation-free so substring-matching agents (Codex,
 Gemini CLI) hit them as reliably as Claude does.
