@@ -1,7 +1,7 @@
 ---
 name: file-a-patent
-version: 0.2.0
-last-updated: 2026-06-19
+version: 0.3.0
+last-updated: 2026-06-20
 description: Prepare private, attorney-ready invention packets and provisional-patent preparation materials from local repo evidence. Use when Codex is asked to file-a-patent, file an invention, prepare a provisional patent packet, triage patent versus trade-secret candidates, document inventorship/provenance/disclosure history, build USPTO-ready prep checklists, or assemble private IP handoff materials for inventions, musical instruments, manufacturing workflows, empirical tuning methods, AI-assisted design systems, or reverse-engineering workflows. This skill does not provide legal advice, file anything, publish anything, change licenses, or conclude that an invention is patentable.
 ---
 
@@ -27,6 +27,25 @@ Default output location:
 - Treat public disclosure risk conservatively; log evidence and uncertainty.
 - If current fees, legal deadlines, or rules matter, verify against official sources first. Read `references/official-sources.md`.
 - For legal decisions, recommend a registered patent attorney or agent.
+
+## IP Capture
+
+When the inventor uses a trigger phrase such as **"capture IP timestamp"**, **"log this as IP"**, **"timestamp this invention"**, or **"record IP moment"**, immediately emit an `ip_capture` block:
+
+```json
+{
+  "ip_capture": {
+    "utc": "<ISO-8601 UTC>",
+    "local": "<ISO-8601 local with offset>",
+    "timezone": "<IANA timezone>",
+    "origin": "<session or clipping source>",
+    "provenance_class": "soft",
+    "provenance_note": "Model-asserted times are NOT reliable legal provenance. Real provenance = clipping file date + git commit timestamps."
+  }
+}
+```
+
+`provenance_class` is always `"soft"` for model-asserted times. See `references/ip-capture-schema.md` for the full field spec and provenance-class table. After emitting the block, offer to append it to `DISCLOSURE-TIMELINE.md` in the active invention packet. Do not claim the timestamp is legally authoritative.
 
 ## Core Workflow
 
