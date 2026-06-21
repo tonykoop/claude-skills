@@ -32,6 +32,13 @@ corrupts the Obsidian inbox at stage [2], and a re-run never double-files.
 
 ### Stage 1 - Gemini export
 
+> **Mobile path:** on iOS or Android, a one-tap share action (iOS Shortcuts /
+> Android Tasker) clips the Gemini chat URL and writes a stub `.md` file directly
+> into the vault inbox via Obsidian Advanced URI, bypassing manual desktop steps.
+> See [`mobile-capture-bridge.md`](mobile-capture-bridge.md) for setup and
+> [`scripts/url_upsert.py`](../scripts/url_upsert.py) for the filename-stability
+> contract.
+
 Two supported intake forms:
 
 1. **API export** (preferred, automatable): pull the conversation transcript
