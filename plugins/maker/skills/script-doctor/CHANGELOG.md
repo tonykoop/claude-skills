@@ -1,5 +1,11 @@
 # script-doctor changelog
 
+## v1.0.0 — 2026-06-21
+- Greenlight gate: PASS/FAIL verdict with BLOCKER / POLISH / OPTIONAL tiered fix list and human-override note. Hard-constraint violations and BLOCK-level missing assets auto-escalate to FAIL.
+- `evals/evals.json`: 5 machine-runnable evals (step order, on-the-nose detection, BLOCK propagation, yoga hard constraint, human-override disclosure).
+- SKILL.md promoted to v1.0.0 — feature-complete.
+- Refs tonykoop/claude-skills#431
+
 ## v0.5.0 — 2026-06-21
 - Channel profiles YAML: yoga, instrument_maker, ai_agentic, consciousness, wrfcoin, unknown archetypes with hard constraints, pace targets, CTA language.
 - `scripts/channel_profiles.py`: load profiles, resolve aliases, check hard constraints.
