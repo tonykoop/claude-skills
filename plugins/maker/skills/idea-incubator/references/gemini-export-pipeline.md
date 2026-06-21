@@ -49,6 +49,14 @@ Two supported intake forms:
    `*.md` / `*.json` brainstorm file into the inbox folder. The downstream
    parser does not care which form produced the file.
 
+> **Stage 1b — NotebookLM variant:** Clips originating from a Google NotebookLM
+> (Gemini Notebooks) session require extra scrutiny — the transcript may contain
+> AI-synthesized summaries of grounding sources, not just the user's own ideas.
+> These clips MUST carry `gemini_variant: notebooklm` in their front-matter and
+> are routed to `needs-clarification` on ingestion. See
+> [gemini-notebooks-grounding.md](gemini-notebooks-grounding.md) for the full
+> design, limitations, and operating rules.
+
 Every exported file MUST carry provenance front-matter so later stages can dedup
 and attribute:
 

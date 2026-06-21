@@ -69,6 +69,10 @@ This skill works best with these MCP connectors. Claude will suggest connecting 
 - `obsidian clip`
 - `set up mobile capture`
 - `mobile shortcut`
+- `gemini notebooks`
+- `notebooklm grounding`
+- `notebook clip`
+- `clip from notebook`
 
 The phrases are kept punctuation-free so substring-matching agents (Codex,
 Gemini CLI) hit them as reliably as Claude does.
