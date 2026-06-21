@@ -87,6 +87,17 @@ Key rules:
 - **Do not duplicate the funnel.** This is the skill-side record; the patent-funnel dossier is the funnel-side record. Cross-link, don't fork.
 - Do not write the ledger to any public location.
 
+## Verbatim Quote Capture
+
+When the inventor requests quote capture (trigger phrases: "capture that quote", "log this verbatim", "capture inventor quote", "record what I just said", "quote capture"), use `agents/quote-capture.md` to:
+
+1. Copy the text **verbatim** — no edits, no paraphrasing, never.
+2. Record `speaker` (`"inventor"` or `"model"`), `source_doc`, and `captured_at`.
+3. Route to the correct draft section using the routing table in `agents/quote-capture.md`.
+4. Set `attorney_flag: true` for any model-generated quote, admission of prior knowledge, or public-disclosure reference.
+
+Model quotes (`speaker: "model"`) must NOT be auto-included as inventor disclosure — flag for attorney review. Original phrasing + provenance is what gives the filing legal weight; never substitute a paraphrase.
+
 ## Core Workflow
 
 1. **Define scope.** Identify the repo, invention slug, candidate name, and intended packet type: `provisional-prep`, `strategy-hold`, `trade-secret-review`, or `copyright-docs`.

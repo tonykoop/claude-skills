@@ -45,6 +45,20 @@ Ask for:
 
 Mark inventorship as attorney review, never settled.
 
+### Inventor Quotes
+
+Include a `## Inventor Quotes` subsection populated by the quote-capture agent (`agents/quote-capture.md`). Each entry must be verbatim — no paraphrasing. Format:
+
+```
+## Inventor Quotes
+
+| # | Quote (verbatim) | Speaker | Source doc | Captured at | Attorney flag |
+|---|---|---|---|---|---|
+| 1 | "exact text" | inventor | filename.md | 2026-06-20T14:32:00Z | false |
+```
+
+Model-generated quotes go in a separate `## Assisting-Model Quotes (attorney review)` subsection with `attorney_flag: true`. These must NOT be included as inventor disclosure without attorney review.
+
 ## DISCLOSURE-TIMELINE.md
 
 Log:
@@ -58,6 +72,10 @@ Log:
 Use absolute dates. Avoid relative terms like "recently" without a date.
 
 If an `ip_capture` or `ip_disclosure_summary` block was captured in a brainstorm session, append it here under a `## Brainstorm Session Captures` subsection. Label model-asserted timestamps as `provenance_class: soft`. Verbatim inventor quotes from `verbatim_inventor_quotes[]` belong in the `## Inventor Quotes` subsection alongside their `source_doc` and `captured_at` fields.
+
+### Inventor Quotes
+
+Include a `## Inventor Quotes` subsection with verbatim quotes routed here by the quote-capture agent. Each quote carries `source_doc`, `captured_at`, and `speaker`. See `agents/quote-capture.md` for the routing table and capture rules. Never paraphrase quoted text.
 
 ## RIGHTS-PROVENANCE.md
 
