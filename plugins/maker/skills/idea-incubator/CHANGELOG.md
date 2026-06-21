@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.15.0 - 2026-06-21
+
+- **Tailscale webhook dispatch (#412).** Added `scripts/tailscale_dispatch.py`
+  — HMAC-SHA256 signed HTTP webhook (stdlib only). Server role: validates
+  signature + timestamp (±5 min) + nonce (replay guard) then runs pipeline_cmd
+  asynchronously. Client role: signs payload and POSTs via `urllib.request`. 23
+  tests in `tests/test_tailscale_dispatch.py`. Setup guide in
+  `references/tailscale-dispatch.md`.
+
 ## 1.14.0 - 2026-06-19
 
 - **image-gen-2 chapter asset-contract validator (#210).** Added
