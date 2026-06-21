@@ -292,6 +292,11 @@ conveyor belt into a semantic web. Its pieces compose:
   - Skeletal hardware/software/firmware hybrid issue template with an Expected
     PDM Artifacts checklist. GitHub-native form lives at
     `.github/ISSUE_TEMPLATE/hybrid-idea.md`.
+- [`references/templates/loop-build.md`](references/templates/loop-build.md)
+  - Canonical autonomous build-loop contract an agent-grid session Reads first.
+    Resolves branch naming, `Refs #N` PR convention, never-self-merge,
+    no-sub-agents, fast-test, and `DOMAIN DRAINED` termination rules so an epic
+    drains in one sitting. Copy to the target repo root as `loop-build.md`.
 - [`references/gemini-export-pipeline.md`](references/gemini-export-pipeline.md)
   - Design doc for the Gemini -> Obsidian -> GitHub export pipeline, including
     data contract, idempotency/dedup, failure handling, and coordination with
