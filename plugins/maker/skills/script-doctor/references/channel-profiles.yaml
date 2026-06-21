@@ -1,0 +1,130 @@
+# Channel production-template profiles for script-doctor
+# Each profile constrains pacing, required assets, visual cadence, and CTA rhythm.
+# Add profiles as new channels launch. The `archetype` key maps to SKILL.md Step 1.
+
+profiles:
+
+  yoga:
+    archetype: yoga
+    description: "CorePower-style heated power flow or restorative class. Slow-medium pacing. Breath-driven rhythm."
+    visual_switch_interval_sec: 10  # don't cut faster than this; holds are the content
+    required_assets:
+      - type: A-roll
+        note: "On-mat teacher presence; minimum 30s unbroken for transitions"
+      - type: MUSIC
+        note: "Continuous ambient or flow music; no jarring cuts"
+    proofreading_filter:
+      - flag: "Direct commands without breath cue"
+        rule: "Every directional cue (inhale/exhale/hold) must be explicit"
+      - flag: "On-the-nose emotional labels"
+        rule: "Avoid 'feel the energy' — show through movement and breath, not narration"
+    cta_rhythm:
+      placement: "After savasana / final rest — never mid-flow"
+      max_asks: 1
+    pacing_profile:
+      intro_sec: 30
+      peak_hold_sec: 45
+      transition_beats: "breath-based (4-count in, 4-count out)"
+    hard_constraints:
+      - "Do not cut mid-transition (e.g., during Warrior 1 → Warrior 2)"
+      - "Music must not drop to silence mid-segment"
+
+  instrument_maker:
+    archetype: instrument_maker
+    description: "Build process, acoustic design, or fabrication walkthrough. Medium pacing. Hands-on, educational."
+    visual_switch_interval_sec: 5  # show the hands / material / tool in action
+    required_assets:
+      - type: B-roll
+        note: "Close-up of material, tool contact, or measurement — at least 1 per major step"
+      - type: TEXT
+        note: "Spec overlay (dimension, material, frequency) for any measurement claim"
+    proofreading_filter:
+      - flag: "Unverified spec claim in narration"
+        rule: "Every number in narration must appear as a TEXT overlay sourced from a document or measurement"
+      - flag: "Tool name without visual"
+        rule: "Name a tool only if B-roll shows it in use"
+    cta_rhythm:
+      placement: "Final 20 seconds after summary"
+      max_asks: 2
+    pacing_profile:
+      intro_sec: 15
+      peak_demo_sec: 30
+      transition_beats: "cut on action (tool movement, material change)"
+    hard_constraints:
+      - "No unsubstantiated fabrication claims — pending_measurement authority must be declared"
+      - "CAD screenshots require a version/revision label"
+
+  ai_agentic:
+    archetype: ai_agentic
+    description: "Sprint demos, agent workflow walkthroughs, coding process. Punchy. Dense information. Fast cuts."
+    visual_switch_interval_sec: 3  # terminal / IDE / tmux screencasts cut fast
+    required_assets:
+      - type: B-roll
+        note: "Screen recording of the actual command / output — no stock footage for technical claims"
+      - type: TEXT
+        note: "Code callouts, command snippets as on-screen captions"
+    proofreading_filter:
+      - flag: "Capability claim without demo"
+        rule: "Every 'it can do X' must be backed by a screen recording or PR link"
+      - flag: "Jargon without definition on first use"
+        rule: "First use of any tool or framework name requires a one-line caption definition"
+    cta_rhythm:
+      placement: "After the final demo reveal — before credits"
+      max_asks: 1
+    pacing_profile:
+      intro_sec: 10
+      peak_demo_sec: 20
+      transition_beats: "cold cuts on output changes; dissolve on topic shifts"
+    hard_constraints:
+      - "Do not claim model outputs are deterministic"
+      - "All agent actions must be shown, not described"
+
+  consciousness:
+    archetype: consciousness
+    description: "Philosophy, meditation, altered-states essays. Slow. Contemplative. Visually poetic."
+    visual_switch_interval_sec: 8
+    required_assets:
+      - type: B-roll
+        note: "Abstract or nature footage; AI-gen visuals acceptable if clearly labeled as illustrative"
+      - type: MUSIC
+        note: "Ambient or minimal; must not compete with narration"
+    proofreading_filter:
+      - flag: "Empirical claim about consciousness science"
+        rule: "Add 'current research suggests' or similar hedge; no hard claims about mechanism"
+      - flag: "Second-person imperative in essay sections"
+        rule: "Philosophy essays use first/third person; second person reserved for direct practices"
+    cta_rhythm:
+      placement: "Fade-out after the closing meditation or reflection"
+      max_asks: 1
+    pacing_profile:
+      intro_sec: 20
+      peak_reflection_sec: 60
+      transition_beats: "dissolve or L-cut; silence is acceptable between sections"
+    hard_constraints:
+      - "Do not make medical or therapeutic claims"
+      - "Psychedelic references require harm-reduction framing"
+
+  wrfcoin:
+    archetype: wrfcoin
+    description: "Crypto-weather market updates, data insights, or explainers. Fast. Data-dense. Authoritative but hedged."
+    visual_switch_interval_sec: 4
+    required_assets:
+      - type: TEXT
+        note: "Price / metric overlays with timestamp and source"
+      - type: B-roll
+        note: "Chart or map animation for any trend claim"
+    proofreading_filter:
+      - flag: "Financial advice language"
+        rule: "No 'buy', 'sell', 'should invest' — replace with 'shows', 'suggests', 'historical pattern'"
+      - flag: "Prediction without confidence interval"
+        rule: "Any forward-looking statement requires a confidence range or scenario label"
+    cta_rhythm:
+      placement: "Final 15 seconds; one ask only"
+      max_asks: 1
+    pacing_profile:
+      intro_sec: 10
+      peak_data_sec: 20
+      transition_beats: "cold cuts on data reveals; dissolve on topic changes"
+    hard_constraints:
+      - "All price/metric data must carry a timestamp"
+      - "No investment advice — educational framing only"
