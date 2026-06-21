@@ -331,12 +331,12 @@ skills:
     notes: "v0.2.0 adds machine-runnable eval suite (5 evals: preflight-required, no-fabrication-when-sparse, content-propriety-filter, teach-friendliness-weighting, unknown-context-fallback)."
 
   script-doctor:
-    canonical_version: 0.1.0
+    canonical_version: 0.2.0
     runtime: shared
     repo_path: plugins/maker/skills/script-doctor
     last_updated: 2026-06-21
     status: active
-    notes: "v0.1.0 initial scaffold: 6-step Hollywood pre-production review workflow (table-read, structural-polish, logistical breakdown, channel-profile alignment, greenlight verdict). Refs tonykoop/claude-skills#426."
+    notes: "v0.1.0 initial scaffold: 6-step Hollywood pre-production review workflow. v0.2.0 adds table-read pass reference (spoken-rhythm scan, breath-break insertion, pacing scoring, archetype rhythm check). Refs tonykoop/claude-skills#427."
 
   sprint-supervisor:
     canonical_version: 1.8.0
