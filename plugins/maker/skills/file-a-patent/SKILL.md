@@ -71,6 +71,22 @@ When the inventor uses a trigger phrase such as **"capture IP timestamp"**, **"l
 
 `provenance_class` is always `"soft"` for model-asserted times. See `references/ip-capture-schema.md` for the full field spec and provenance-class table. After emitting the block, offer to append it to `DISCLOSURE-TIMELINE.md` in the active invention packet. Do not claim the timestamp is legally authoritative.
 
+## Provenance Ledger
+
+After capturing `ip_capture` and/or `ip_disclosure_summary` blocks, write a `PROVENANCE-LEDGER.json` to the active invention packet:
+
+```
+_invention-packets/<slug>/PROVENANCE-LEDGER.json
+```
+
+The ledger aggregates: `ip_captures[]`, `ip_disclosure_summaries[]`, `quote_refs[]`, `source_issues[]`, `key_commits[]`, `output_folder`, and `linked_patent_funnel_issue`. Full schema: `references/provenance-ledger-schema.md`.
+
+Key rules:
+- `created_at` must be a real timestamp (file mtime or git commit) — **not model-asserted**.
+- `linked_patent_funnel_issue`: set to the patent-funnel dossier issue URL if one exists; `null` otherwise — note as TODO in `ATTORNEY-HANDOFF.md`.
+- **Do not duplicate the funnel.** This is the skill-side record; the patent-funnel dossier is the funnel-side record. Cross-link, don't fork.
+- Do not write the ledger to any public location.
+
 ## Core Workflow
 
 1. **Define scope.** Identify the repo, invention slug, candidate name, and intended packet type: `provisional-prep`, `strategy-hold`, `trade-secret-review`, or `copyright-docs`.
