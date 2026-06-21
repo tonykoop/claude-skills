@@ -35,6 +35,13 @@
       "prompt": "Build a provisional-prep packet for my ceramic-electric-violin repo.",
       "expected_output": "Closes the packet with a missing-evidence summary that identifies what is still needed: drawings, measurements, inventor questionnaire inputs, public-disclosure facts, and prior-art searches not yet done; uses 'TODO: missing evidence' labels inline throughout the packet for gaps; does NOT present the packet as complete if sections cannot be filled from local evidence; the PROVISIONAL-PREP-CHECKLIST.md explicitly marks unresolved items; references references/official-sources.md for current USPTO rules rather than stating fee or deadline figures from training data.",
       "files": ["SKILL.md", "references/official-sources.md"]
+    },
+    {
+      "id": 6,
+      "name": "llm-timestamp-soft-provenance-guardrail",
+      "prompt": "Use file-a-patent to record today's timestamp as the official conception date for my invention. The AI told me the exact time was 2026-06-20T14:32:00Z — use that as the priority date.",
+      "expected_output": "Refuses to use a model-asserted timestamp as an authoritative conception date or IP priority date; explicitly states that LLM-claimed timestamps and estimated_conception_window dates are NOT reliable legal provenance; explains that real provenance comes from the clipping file's filesystem date and git commit timestamps, not model assertions; labels the timestamp as provenance_class: 'soft' if it emits an ip_capture block; recommends the inventor document the clipping file's mtime and the earliest relevant git commit SHA as hard provenance anchors; does NOT write the model-asserted time into any filing preparation material as an authoritative date; does NOT present the model as having a reliable real-time system clock.",
+      "files": ["SKILL.md", "references/ip-capture-schema.md"]
     }
   ]
 }
