@@ -12,8 +12,10 @@ Design goals
   the watcher picks up voice-to-text brainstorms that include an explicit "incubate
   this" / "new idea" signal rather than firing on every dropped file.
 * **Dry-run friendly** — `--once` + `--dry-run` prints what would be dispatched.
-* **Resumable** — processed files are stamped by the downstream script
-  (append_mode.py), not re-fired on re-scan.
+* **Resumable** — processed files receive a persistent ``.dispatched`` sidecar
+  stamp written alongside the source file immediately after successful dispatch.
+  ``scan_once`` checks for the sidecar before considering any file actionable, so
+  stamped files are skipped on every scan including after daemon restart.
 
 Trigger logic
 -------------
@@ -55,10 +57,10 @@ _RAW_TRIGGERS: list[str] = [
     r"red.?team\s+this",
     r"capture\s+from\s+mobile",
     r"obsidian\s+clip",
-    # Also fire when the file body contains the fingerprint marker — it was
-    # clipped by the mobile bridge and needs pipeline processing.
-    r"<!--\s*idea-fingerprint:",
     # Files produced by the mobile bridge stub always have this source line.
+    # NOTE: '<!-- idea-fingerprint:' is intentionally NOT a trigger — that marker
+    # is written by the downstream pipeline after processing and must not cause
+    # already-dispatched files to re-fire.
     r"source:\s*gemini",
 ]
 
@@ -70,6 +72,43 @@ VERBAL_TRIGGERS: list[re.Pattern[str]] = [
 def detect_triggers(content: str) -> list[str]:
     """Return list of raw trigger patterns that matched *content*."""
     return [p.pattern for p in VERBAL_TRIGGERS if p.search(content)]
+
+
+# ---------------------------------------------------------------------------
+# Persistent dispatch stamp
+# ---------------------------------------------------------------------------
+
+_DISPATCH_STAMP_SUFFIX = ".dispatched"
+
+
+def stamp_path(file_path: Path) -> Path:
+    """Return the persistent sidecar stamp path for *file_path*.
+
+    Example: ``inbox/foo.md`` → ``inbox/foo.md.dispatched``
+    """
+    return file_path.with_suffix(file_path.suffix + _DISPATCH_STAMP_SUFFIX)
+
+
+def is_stamped(file_path: Path) -> bool:
+    """Return True if *file_path* has a ``.dispatched`` sidecar on disk.
+
+    The sidecar is created by :func:`stamp_processed` immediately after a
+    successful dispatch.  Its presence is the canonical signal that this file
+    must not be dispatched again — even after watcher restart or after the
+    downstream pipeline modifies the source file (e.g. by appending a
+    ``<!-- idea-fingerprint:`` marker).
+    """
+    return stamp_path(file_path).exists()
+
+
+def stamp_processed(file_path: Path) -> None:
+    """Write a zero-byte ``.dispatched`` sidecar next to *file_path*.
+
+    The stamp is written atomically enough for local filesystem use: a plain
+    ``touch`` on the sidecar path.  If the stamp already exists (e.g. a retry
+    after partial failure) the call is idempotent.
+    """
+    stamp_path(file_path).touch()
 
 
 # ---------------------------------------------------------------------------
@@ -149,6 +188,11 @@ def scan_once(
         prev_mtime = state.seen.get(str(path))
         if prev_mtime is not None and mtime <= prev_mtime:
             continue  # unchanged since last scan
+
+        # Persistent guard: skip files already dispatched (sidecar survives restart).
+        if is_stamped(path):
+            state.seen[str(path)] = mtime  # keep seen up-to-date
+            continue
 
         state.seen[str(path)] = mtime
         result.new_files.append(path)
@@ -256,10 +300,17 @@ class InboxWatcher:
         )
 
     def run_once(self) -> ScanResult:
-        """Run one scan and dispatch triggered files."""
+        """Run one scan and dispatch triggered files.
+
+        Writes a ``.dispatched`` sidecar stamp after each successful live
+        dispatch so the file is skipped on every subsequent scan including
+        after daemon restart.  Dry-run dispatches do NOT stamp (no disk write).
+        """
         result = self.scan_once()
         for path in result.triggered:
-            dispatch_file(self.pipeline_cmd, path, dry_run=self.dry_run)
+            success = dispatch_file(self.pipeline_cmd, path, dry_run=self.dry_run)
+            if success and not self.dry_run:
+                stamp_processed(path)
         return result
 
     def run_forever(self) -> None:

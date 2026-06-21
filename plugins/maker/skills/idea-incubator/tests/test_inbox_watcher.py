@@ -9,11 +9,14 @@ from unittest.mock import patch
 sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 from inbox_watcher import (
     detect_triggers,
-    scan_once,
     dispatch_file,
+    is_stamped,
     InboxWatcher,
-    WatcherState,
+    scan_once,
+    stamp_path,
+    stamp_processed,
     VERBAL_TRIGGERS,
+    WatcherState,
 )
 
 
@@ -39,8 +42,11 @@ class TestDetectTriggers(unittest.TestCase):
     def test_source_gemini_front_matter(self):
         self.assertTrue(detect_triggers("---\nsource: gemini\nchat_url: ...\n---"))
 
-    def test_fingerprint_comment(self):
-        self.assertTrue(detect_triggers("<!-- idea-fingerprint: abc123def -->"))
+    def test_fingerprint_not_a_trigger(self):
+        # '<!-- idea-fingerprint:' is the downstream stamp marker.  It must NOT
+        # be a trigger — if it were, every already-processed file would re-fire
+        # after the pipeline appends it.
+        self.assertEqual(detect_triggers("<!-- idea-fingerprint: abc123def -->"), [])
 
     def test_capture_from_mobile(self):
         self.assertTrue(detect_triggers("capture from mobile shortcut"))
@@ -241,6 +247,150 @@ class TestInboxWatcher(unittest.TestCase):
         r2 = watcher.run_once()
         self.assertEqual(len(r1.triggered), 1)
         self.assertEqual(len(r2.triggered), 0)
+
+
+class TestDispatchStamp(unittest.TestCase):
+    """Persistent .dispatched sidecar guard — survives restart + file modification."""
+
+    def setUp(self):
+        self._tmp = tempfile.TemporaryDirectory()
+        self.inbox = Path(self._tmp.name)
+
+    def tearDown(self):
+        self._tmp.cleanup()
+
+    def _write(self, name: str, content: str) -> Path:
+        p = self.inbox / name
+        p.write_text(content, encoding="utf-8")
+        return p
+
+    # --- stamp helpers ---
+
+    def test_stamp_path_naming(self):
+        p = Path("/inbox/foo.md")
+        self.assertEqual(stamp_path(p), Path("/inbox/foo.md.dispatched"))
+
+    def test_is_stamped_false_before_stamp(self):
+        p = self._write("a.md", "incubate this")
+        self.assertFalse(is_stamped(p))
+
+    def test_stamp_processed_creates_sidecar(self):
+        p = self._write("a.md", "incubate this")
+        stamp_processed(p)
+        self.assertTrue(is_stamped(p))
+        self.assertTrue(stamp_path(p).exists())
+
+    def test_stamp_processed_idempotent(self):
+        p = self._write("a.md", "incubate this")
+        stamp_processed(p)
+        stamp_processed(p)  # must not raise
+        self.assertTrue(is_stamped(p))
+
+    # --- scan_once skips stamped files ---
+
+    def test_scan_skips_stamped_file(self):
+        """A file with a .dispatched sidecar must never appear in new_files."""
+        p = self._write("stamped.md", "source: gemini")
+        stamp_processed(p)
+        state = WatcherState()
+        result = scan_once(self.inbox, state)
+        self.assertNotIn(p, result.new_files)
+        self.assertNotIn(p, result.triggered)
+
+    def test_scan_skips_stamped_after_content_change(self):
+        """After downstream adds a fingerprint the mtime changes; stamp must block re-fire."""
+        p = self._write("fp.md", "source: gemini")
+        stamp_processed(p)
+        # Simulate downstream appending the fingerprint marker
+        time.sleep(0.01)
+        p.write_text("source: gemini\n<!-- idea-fingerprint: abc123 -->", encoding="utf-8")
+        state = WatcherState()
+        result = scan_once(self.inbox, state)
+        self.assertNotIn(p, result.triggered)
+
+    # --- restart guard ---
+
+    def test_restart_guard_new_state_still_skips_stamped(self):
+        """Watcher restart (fresh WatcherState) must not re-dispatch stamped files."""
+        p = self._write("restarted.md", "source: gemini")
+        stamp_processed(p)
+        # First watcher run — brand new state, as if daemon just restarted
+        state = WatcherState()
+        result = scan_once(self.inbox, state)
+        self.assertNotIn(p, result.triggered)
+
+    def test_unstamped_file_still_triggered_after_restart(self):
+        """An unstamped file MUST be picked up on every watcher start."""
+        p = self._write("fresh.md", "source: gemini")
+        state = WatcherState()  # fresh state simulates restart
+        result = scan_once(self.inbox, state)
+        self.assertIn(p, result.triggered)
+
+    # --- InboxWatcher integration: stamp written after live dispatch ---
+
+    def test_run_once_stamps_after_live_dispatch(self):
+        p = self._write("live.md", "source: gemini")
+
+        def fake_dispatch(cmd, path, **kw):
+            return True
+
+        with patch("inbox_watcher.dispatch_file", side_effect=fake_dispatch):
+            watcher = InboxWatcher(self.inbox, ["echo"], dry_run=False)
+            watcher.run_once()
+
+        self.assertTrue(is_stamped(p))
+
+    def test_run_once_dry_run_does_not_stamp(self):
+        """Dry-run dispatches must leave no .dispatched sidecar."""
+        p = self._write("dry.md", "source: gemini")
+        watcher = InboxWatcher(self.inbox, ["echo"], dry_run=True)
+        watcher.run_once()
+        self.assertFalse(is_stamped(p))
+
+    def test_run_once_failed_dispatch_does_not_stamp(self):
+        """A failed dispatch (non-zero exit) must NOT stamp — file stays retriable."""
+        p = self._write("fail.md", "source: gemini")
+
+        def fake_fail(cmd, path, **kw):
+            return False
+
+        with patch("inbox_watcher.dispatch_file", side_effect=fake_fail):
+            watcher = InboxWatcher(self.inbox, ["false"], dry_run=False)
+            watcher.run_once()
+
+        self.assertFalse(is_stamped(p))
+
+    def test_second_run_once_skips_stamped(self):
+        """After stamp is written, a second run_once on same watcher skips the file."""
+        p = self._write("second.md", "source: gemini")
+
+        with patch("subprocess.run") as mock_run:
+            mock_run.return_value = type("R", (), {"returncode": 0})()
+            watcher = InboxWatcher(self.inbox, ["echo"], dry_run=False)
+            r1 = watcher.run_once()
+            r2 = watcher.run_once()
+
+        self.assertEqual(len(r1.triggered), 1)
+        self.assertEqual(len(r2.triggered), 0)
+
+    def test_restart_after_stamp_no_redispatch(self):
+        """New watcher instance (simulates daemon restart) must not re-dispatch stamped file."""
+        p = self._write("persisted.md", "source: gemini")
+
+        with patch("subprocess.run") as mock_run:
+            mock_run.return_value = type("R", (), {"returncode": 0})()
+            watcher1 = InboxWatcher(self.inbox, ["echo"], dry_run=False)
+            watcher1.run_once()
+
+        self.assertTrue(is_stamped(p))
+
+        # Simulate restart: brand-new InboxWatcher, no shared state
+        with patch("subprocess.run") as mock_run2:
+            watcher2 = InboxWatcher(self.inbox, ["echo"], dry_run=False)
+            r = watcher2.run_once()
+            mock_run2.assert_not_called()
+
+        self.assertEqual(len(r.triggered), 0)
 
 
 if __name__ == "__main__":
