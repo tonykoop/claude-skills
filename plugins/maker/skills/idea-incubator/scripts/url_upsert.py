@@ -187,7 +187,8 @@ def main(argv: list[str]) -> int:
         return 0
 
     # Dry-run is the default. --write (or --overwrite) opts in to disk writes.
-    do_write = args.write or args.overwrite
+    # Explicit --dry-run always wins even if --write is also passed.
+    do_write = (args.write or args.overwrite) and not args.dry_run
     if not do_write:
         stem = sanitize_chat_url(args.url)
         path = args.inbox / f"{stem}.md"
