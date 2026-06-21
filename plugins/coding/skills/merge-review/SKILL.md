@@ -194,37 +194,32 @@ Don't blindly trust or reject red checks.
    review comment's CI row.
 3. If the job shows a real code failure, do not merge until resolved.
 
-## Parallel review for 3+ PRs
+## Reviewing multiple PRs — review DIRECTLY, never fan out sub-agents
 
-When the queue has three or more open PRs across repos, fan out one
-`general-purpose` Agent per PR (single message, all calls in parallel) rather
-than reviewing serially.
+When the queue has several open PRs, review each one **directly in this
+session**: read the diff with `gh pr diff`, check CI, and post the verdict
+yourself. Work through the queue **serially** (or a few within the same turn) —
+one PR at a time, gathering facts inline.
 
-Each sub-agent gets a prompt that names the repo + PR number, instructs it to
-follow steps 1-4 of the workflow above (gather, notify, codex wait-gate,
-review checklist) **read-only** — no merging, no edits, no posting — and
-return a structured verdict block:
+> **Do NOT fan out one Agent / Task sub-agent per PR.** This was the old
+> guidance and it fails badly at grid scale. Under a busy multi-pane sprint
+> (many panes all calling `api.github.com`), the per-PR review sub-agents hit
+> GitHub **secondary rate-limits and hang indefinitely** (observed 16–44 min,
+> never completing). A stalled sub-agent surfaces no prompt to clear, so the
+> parent pane becomes an unrecoverable **zombie** — Esc / `/clear` / re-task all
+> fail; only `tmux respawn-pane -k` recovers it. In one 2026-06-20 twin-grid
+> sprint this zombied **5 of 10 review panes**. Direct inline review never
+> hangs. (If you ever do need concurrency, cap it hard and keep it in-session;
+> do not spawn `review-<repo>-<pr>` sub-agents.)
 
-```
-VERDICT: APPROVE | CHANGES_REQUESTED | BLOCKED
-REPO: wrfcoin/<repo>
-PR: #<number>
-ISSUE: #<issue-num>
-BLOCKERS: <comma-separated list, or "none">
-WARNINGS: <comma-separated list, or "none">
-REVIEW_COMMENT: |
-  ## Merge-Review — PR #<number>
-  <full review comment body following step 5's template>
-```
+For each PR follow steps 1–8 of the workflow above directly. When acting as a
+two-model **gate reviewer** (verdict-only, not the merger), post exactly one
+comment — `Model: <model> — APPROVE: <reason>` or `CHANGES: <reason>` — and do
+not merge; the supervisor merges on your posted verdict.
 
-Sub-agent config: `subagent_type: general-purpose`, `model: sonnet` (Opus is
-3× slower with no quality lift for review-only work), `name:
-review-<repo>-<pr-number>`.
-
-After all sub-agents return, the main session aggregates into a results table
-and then processes the actual merges **sequentially in dependency order**
-(steps 5-8 per PR — never parallelize the merge step, because dependency order
-matters).
+**Never parallelize the merge step** regardless: process merges **sequentially
+in dependency order** (below), because each merge can re-conflict siblings
+(especially in greenfield repos where PRs share scaffold files).
 
 ## Merge order (dependency-first)
 
