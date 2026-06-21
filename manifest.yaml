@@ -331,12 +331,12 @@ skills:
     notes: "v0.2.0 adds machine-runnable eval suite (5 evals: preflight-required, no-fabrication-when-sparse, content-propriety-filter, teach-friendliness-weighting, unknown-context-fallback)."
 
   script-doctor:
-    canonical_version: 0.3.0
+    canonical_version: 0.4.0
     runtime: shared
     repo_path: plugins/maker/skills/script-doctor
     last_updated: 2026-06-21
     status: active
-    notes: "v0.1.0 scaffold. v0.2.0 table-read pass reference. v0.3.0 structural-polish pass reference (hook strength, on-the-nose detection, retention drag, transition audit, CTA check). Refs tonykoop/claude-skills#428."
+    notes: "v0.1.0 scaffold. v0.2.0 table-read. v0.3.0 structural-polish. v0.4.0 logistical-breakdown reference + breakdown_parser.py (10 tests). Refs tonykoop/claude-skills#429."
 
   sprint-supervisor:
     canonical_version: 1.8.0

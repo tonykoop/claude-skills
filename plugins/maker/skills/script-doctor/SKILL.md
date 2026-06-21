@@ -1,6 +1,6 @@
 ---
 name: script-doctor
-version: 0.3.0
+version: 0.4.0
 last-updated: 2026-06-21
 description: "Hollywood-style pre-production script review: table-read pass, structural-polish pass, logistical breakdown, channel-profile alignment, and a binary greenlight verdict. Use this skill when the user wants to: run a script-doctor pass on a script, review a video script before production, generate a shot/segment breakdown, apply a channel tone profile, or gate a script through a greenlight checklist. Outputs one review document per script with tiered fix list (BLOCKER / POLISH / OPTIONAL) and PASS/FAIL verdict."
 ---
