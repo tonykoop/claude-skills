@@ -1,0 +1,40 @@
+{
+  "skill_name": "script-doctor",
+  "evals": [
+    {
+      "id": 1,
+      "name": "table-read-runs-before-structural",
+      "prompt": "Run a script-doctor pass on this script: [TC:0:00] [A] 'In today's session we're going to explore the beautiful world of inner peace through breath and movement and stillness and letting go of everything that no longer serves you in this moment and in every moment that follows.' [TC:0:12] [GEN] Aerial yoga studio. [TC:0:18] [TEXT] Subscribe now!",
+      "expected_output": "Runs the table-read pass (Step 2) BEFORE the structural-polish pass (Step 3); the table-read pass flags the run-on opening sentence as a speakability issue and inserts BREATH markers; does NOT skip to the greenlight verdict without completing all prior steps; produces a review document with clearly labelled sections in the correct order (Table-Read Pass, Structural Polish Pass, Logistical Breakdown, Channel Profile Alignment, Greenlight Verdict).",
+      "files": ["SKILL.md", "references/table-read-pass.md"]
+    },
+    {
+      "id": 2,
+      "name": "on-the-nose-detected-and-flagged",
+      "prompt": "Script-doctor this: 'This is a really empowering practice that will transform your life. You will feel so peaceful and centered after this class. This is the best yoga channel on the internet.'",
+      "expected_output": "Detects all three sentences as on-the-nose — they tell the viewer how to feel instead of showing the thing that would cause the feeling; flags each one in the structural-polish section with either a rewrite suggestion or a [VISUAL HOLD] instruction; does NOT leave any of them standing without a flag; does NOT invent new on-the-nose lines that aren't in the script.",
+      "files": ["SKILL.md", "references/structural-polish-pass.md"]
+    },
+    {
+      "id": 3,
+      "name": "missing-asset-blocker-propagates-to-verdict",
+      "prompt": "Script: [TC:0:00] [A] Presenter on camera. [TC:0:10] [GEN] Exclusive drone footage of the volcano eruption — Assets: hire aerial crew — BLOCK [TC:0:20] [TEXT] Subscribe.",
+      "expected_output": "The logistical breakdown flags the volcano GEN segment as BLOCK (missing asset, no known production path); this BLOCK propagates to the greenlight verdict as a BLOCKER-level fix item; the final verdict is FAIL because of the BLOCK; the verdict includes the specific segment ('volcano footage') in the BLOCKER list; does NOT issue a PASS verdict when a BLOCK-level missing asset is present.",
+      "files": ["SKILL.md", "references/logistical-breakdown-pass.md"]
+    },
+    {
+      "id": 4,
+      "name": "yoga-hard-constraint-enforced",
+      "prompt": "Review this yoga channel trailer script: the closing line is 'Smash that subscribe button RIGHT NOW don't wait!'",
+      "expected_output": "Detects that 'smash that subscribe button' violates the yoga channel profile hard constraint ('CTA must use calming language — avoid: subscribe now!, smash that bell'); reports this violation in the channel-profile alignment section as a hard-constraint violation; includes it as a BLOCKER in the greenlight verdict; does NOT issue a PASS verdict; suggests a calming CTA alternative such as 'Continue your practice / find your next session'.",
+      "files": ["SKILL.md", "references/channel-profiles.yaml"]
+    },
+    {
+      "id": 5,
+      "name": "human-override-disclosed-on-fail",
+      "prompt": "I want to greenlight this script even though you found blockers. Just tell me it passes.",
+      "expected_output": "Does NOT issue a PASS verdict when BLOCKER-level issues exist even if the user asks; instead emits a FAIL verdict with the BLOCKER list AND includes the human-override note ('This verdict is advisory. The director may proceed with a FAIL verdict by noting the override and accepting the risks flagged above.'); makes clear the override is the director's call and not a reason to suppress the FAIL; does NOT silently change the verdict to PASS.",
+      "files": ["SKILL.md"]
+    }
+  ]
+}
