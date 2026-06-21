@@ -1,0 +1,109 @@
+# Channel profiles for the script-doctor skill.
+# Each profile defines tone, pace, and hard constraints for a specific channel archetype.
+# Load with scripts/channel_profiles.py.
+
+profiles:
+
+  yoga:
+    archetype: yoga
+    display_name: "Yoga / Mindfulness (e.g. Inner Compass Yoga)"
+    spoken_pace_target: slow_medium
+    words_per_second_range: [1.5, 2.8]
+    hold_beat_counts: [4, 8]
+    hard_constraints:
+      - "No rushed breath cues — always leave a 4-count minimum before the next instruction"
+      - "No more than two vocal switch-overs per minute (A-roll to VO and back)"
+      - "CTA must use calming language (avoid: 'subscribe now!', 'smash that bell')"
+    soft_guidance:
+      - "Prefer B-roll of student bodies in neutral / non-strained positions"
+      - "Narrator tone: warm, grounded, unhurried"
+      - "End on a held pose or breath cue, not a jump cut"
+    cta_language: "Continue your practice / explore more classes / find your next session"
+    max_a_roll_consecutive_seconds: 12
+    min_visual_pivot_interval_seconds: 8
+
+  instrument_maker:
+    archetype: instrument_maker
+    display_name: "Instrument Maker / Fabrication"
+    spoken_pace_target: medium
+    words_per_second_range: [2.5, 3.5]
+    hold_beat_counts: [2, 4]
+    hard_constraints:
+      - "Each fabrication step must have a corresponding visual (A-roll or close-up B-roll)"
+      - "Measurements must appear as TEXT overlays, not spoken-only"
+      - "Safety warnings must appear on screen as text AND be spoken aloud"
+    soft_guidance:
+      - "Narrator tone: hands-on, precise, matter-of-fact"
+      - "Show the mistake and the fix — authenticity over polish"
+      - "End with the finished instrument being played or tested"
+    cta_language: "Build this with me / grab the plans / join the next build"
+    max_a_roll_consecutive_seconds: 20
+    min_visual_pivot_interval_seconds: 4
+
+  ai_agentic:
+    archetype: ai_agentic
+    display_name: "AI / Agentic Build"
+    spoken_pace_target: fast_medium
+    words_per_second_range: [3.0, 4.0]
+    hold_beat_counts: [2]
+    hard_constraints:
+      - "No jargon without a one-sentence plain-English definition inline"
+      - "Code on screen must be legible — minimum 18px font in renders"
+      - "Never hold on a loading spinner for more than 2 seconds"
+    soft_guidance:
+      - "Narrator tone: direct, confident, curious"
+      - "Use split-screen to show input → output simultaneously where possible"
+      - "End with a concrete takeaway the viewer can implement today"
+    cta_language: "Subscribe for the next build / try it yourself / fork the repo"
+    max_a_roll_consecutive_seconds: 15
+    min_visual_pivot_interval_seconds: 3
+
+  consciousness:
+    archetype: consciousness
+    display_name: "Consciousness / Reflective Series"
+    spoken_pace_target: slow
+    words_per_second_range: [1.2, 2.2]
+    hold_beat_counts: [4, 8, 16]
+    hard_constraints:
+      - "No punchy jump cuts — only dissolves, fades, or audio bridges"
+      - "Narration must not overlap with on-screen text; stagger by at least 2 seconds"
+    soft_guidance:
+      - "Narrator tone: contemplative, poetic, personal"
+      - "Long visual holds (8–16 seconds) are intentional — do not flag as drag"
+      - "End open-ended — a question, not an answer"
+    cta_language: "Explore the series / sit with this / share your reflection"
+    max_a_roll_consecutive_seconds: 30
+    min_visual_pivot_interval_seconds: 8
+
+  wrfcoin:
+    archetype: wrfcoin
+    display_name: "WRFCoin / Crypto-Weather Data"
+    spoken_pace_target: medium_fast
+    words_per_second_range: [2.8, 3.8]
+    hold_beat_counts: [2, 4]
+    hard_constraints:
+      - "All on-screen data must cite source and timestamp"
+      - "Price or forecast numbers spoken aloud must match on-screen display exactly"
+      - "No investment advice framing (avoid: 'buy', 'moon', 'guaranteed return')"
+    soft_guidance:
+      - "Narrator tone: analytical, data-driven, neutral"
+      - "Use animated chart overlays to visualize trends — static screenshots score lower"
+      - "End with the next forecast window and a confidence interval"
+    cta_language: "Follow for the next forecast / check the dashboard / read the methodology"
+    max_a_roll_consecutive_seconds: 12
+    min_visual_pivot_interval_seconds: 4
+
+  unknown:
+    archetype: unknown
+    display_name: "Unknown / Fallback"
+    spoken_pace_target: medium
+    words_per_second_range: [2.5, 3.5]
+    hold_beat_counts: [4]
+    hard_constraints: []
+    soft_guidance:
+      - "Apply general YouTube best practices"
+      - "Hook within first 5 seconds"
+      - "CTA once, near the end"
+    cta_language: "Subscribe / follow / learn more"
+    max_a_roll_consecutive_seconds: 15
+    min_visual_pivot_interval_seconds: 5

@@ -1,5 +1,11 @@
 # script-doctor changelog
 
+## v0.5.0 — 2026-06-21
+- Channel profiles YAML: yoga, instrument_maker, ai_agentic, consciousness, wrfcoin, unknown archetypes with hard constraints, pace targets, CTA language.
+- `scripts/channel_profiles.py`: load profiles, resolve aliases, check hard constraints.
+- `tests/test_channel_profiles.py`: 9 tests.
+- Refs tonykoop/claude-skills#430
+
 ## v0.4.0 — 2026-06-21
 - Logistical breakdown pass reference doc: segment-type taxonomy, breakdown table format, missing-asset escalation, archetype patterns.
 - `scripts/breakdown_parser.py`: parse Markdown scripts with `[TC]` annotations into segment breakdown tables.
