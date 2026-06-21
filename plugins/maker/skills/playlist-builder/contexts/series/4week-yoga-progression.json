@@ -1,0 +1,87 @@
+{
+  "id": "4week-yoga-progression",
+  "name": "4-Week Yoga Progression Series",
+  "description": "Four linked hour-long mixes that form a thematic arc across one month of yoga practice. Each episode deepens the energy and intention from the previous week.",
+  "episodes": [
+    {
+      "week": 1,
+      "theme": "Rooting",
+      "intention": "Ground into earth energy. Establish foundation, breath, and presence.",
+      "base_context": "yoga-power",
+      "bpm_scale": 1.00,
+      "energy_ceiling": 7,
+      "phases": [
+        { "name": "Opening / Centering", "bank": "A", "min_tracks": 1, "max_tracks": 2, "window_min": [0, 5],   "energy": 1 },
+        { "name": "Sun A (Rising)",      "bank": "B", "min_tracks": 2, "max_tracks": 3, "window_min": [5, 18],  "energy": 4 },
+        { "name": "Sun B (Peak)",        "bank": "D", "min_tracks": 3, "max_tracks": 4, "window_min": [18, 40], "energy": 7 },
+        { "name": "Heart Opener",        "bank": "C", "min_tracks": 1, "max_tracks": 2, "window_min": [40, 48], "energy": 5 },
+        { "name": "Cool Down (Descent)", "bank": "E", "min_tracks": 2, "max_tracks": 3, "window_min": [48, 55], "energy": 3 },
+        { "name": "Savasana",            "bank": "A", "min_tracks": 1, "max_tracks": 2, "window_min": [55, 65], "energy": 1 }
+      ],
+      "anchor_rules": {
+        "lane_8": ["Sun A (Rising)", "Sun B (Peak)", "Heart Opener"],
+        "tinlicker": ["Cool Down (Descent)", "Savasana"]
+      }
+    },
+    {
+      "week": 2,
+      "theme": "Expanding",
+      "intention": "Open into possibility. Heart openers, side-body stretches, expansive arm balances.",
+      "base_context": "yoga-power",
+      "bpm_scale": 1.02,
+      "energy_ceiling": 9,
+      "phases": [
+        { "name": "Opening / Centering", "bank": "A", "min_tracks": 1, "max_tracks": 2, "window_min": [0, 5],   "energy": 1 },
+        { "name": "Sun A (Rising)",      "bank": "B", "min_tracks": 2, "max_tracks": 3, "window_min": [5, 18],  "energy": 5 },
+        { "name": "Sun B (Peak)",        "bank": "D", "min_tracks": 4, "max_tracks": 5, "window_min": [18, 42], "energy": 9 },
+        { "name": "Heart Opener",        "bank": "C", "min_tracks": 1, "max_tracks": 2, "window_min": [42, 50], "energy": 6 },
+        { "name": "Cool Down (Descent)", "bank": "E", "min_tracks": 2, "max_tracks": 3, "window_min": [50, 58], "energy": 3 },
+        { "name": "Savasana",            "bank": "A", "min_tracks": 1, "max_tracks": 2, "window_min": [58, 65], "energy": 1 }
+      ],
+      "anchor_rules": {
+        "lane_8": ["Sun B (Peak)", "Heart Opener"],
+        "tinlicker": ["Sun B (Peak)", "Cool Down (Descent)"]
+      }
+    },
+    {
+      "week": 3,
+      "theme": "Refining",
+      "intention": "Deepen into precision and alignment. Balance postures, detailed cuing, skill refinement.",
+      "base_context": "yoga-power",
+      "bpm_scale": 1.03,
+      "energy_ceiling": 9,
+      "phases": [
+        { "name": "Opening / Centering", "bank": "A", "min_tracks": 1, "max_tracks": 2, "window_min": [0, 5],   "energy": 1 },
+        { "name": "Sun A (Rising)",      "bank": "B", "min_tracks": 2, "max_tracks": 3, "window_min": [5, 18],  "energy": 5 },
+        { "name": "Sun B (Peak)",        "bank": "D", "min_tracks": 4, "max_tracks": 5, "window_min": [18, 42], "energy": 9 },
+        { "name": "Balance Series",      "bank": "D", "min_tracks": 1, "max_tracks": 2, "window_min": [38, 46], "energy": 8 },
+        { "name": "Cool Down (Descent)", "bank": "E", "min_tracks": 2, "max_tracks": 3, "window_min": [46, 56], "energy": 3 },
+        { "name": "Savasana",            "bank": "A", "min_tracks": 1, "max_tracks": 2, "window_min": [56, 65], "energy": 1 }
+      ],
+      "anchor_rules": {
+        "lane_8": ["Sun B (Peak)", "Balance Series"],
+        "tinlicker": ["Cool Down (Descent)", "Savasana"]
+      }
+    },
+    {
+      "week": 4,
+      "theme": "Integrating",
+      "intention": "Synthesis. Weave together everything from weeks 1-3. Longer holds, deeper transitions, extended savasana.",
+      "base_context": "yoga-power",
+      "bpm_scale": 0.98,
+      "energy_ceiling": 8,
+      "phases": [
+        { "name": "Opening / Centering", "bank": "A", "min_tracks": 1, "max_tracks": 2, "window_min": [0, 7],   "energy": 1 },
+        { "name": "Sun A (Rising)",      "bank": "B", "min_tracks": 2, "max_tracks": 3, "window_min": [7, 20],  "energy": 4 },
+        { "name": "Sun B (Peak)",        "bank": "D", "min_tracks": 3, "max_tracks": 4, "window_min": [20, 40], "energy": 8 },
+        { "name": "Heart Opener",        "bank": "C", "min_tracks": 1, "max_tracks": 2, "window_min": [40, 48], "energy": 5 },
+        { "name": "Cool Down (Descent)", "bank": "E", "min_tracks": 3, "max_tracks": 4, "window_min": [48, 58], "energy": 2 },
+        { "name": "Savasana (Extended)", "bank": "A", "min_tracks": 2, "max_tracks": 3, "window_min": [58, 68], "energy": 1 }
+      ],
+      "anchor_rules": {
+        "lane_8": ["Sun A (Rising)", "Sun B (Peak)"],
+        "tinlicker": ["Cool Down (Descent)", "Savasana (Extended)"]
+      }
+    }
+  ]
+}
