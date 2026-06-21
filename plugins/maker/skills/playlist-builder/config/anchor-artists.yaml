@@ -1,0 +1,28 @@
+# Anchor-artist configuration for 4-week yoga series
+# Edit this file to change which artists serve as weekly series anchors.
+# See references/anchor-injection.md for usage and no-repeat rules.
+
+anchor_artists:
+  - slot: A
+    name: "Lane 8"
+    spotify_artist_id: "0XNa1vTidXlvJ2gHSsRi4A"
+    preferred_phases:
+      - warm_up
+      - peak
+      - heart_opener
+    bpm_range:
+      min: 118
+      max: 130
+    library_tag: lane8
+
+  - slot: B
+    name: "Tinlicker"
+    spotify_artist_id: "6bIbLEHj0CjHKjxv9t2Ohu"
+    preferred_phases:
+      - warm_up
+      - heart_opener
+      - savasana
+    bpm_range:
+      min: 116
+      max: 126
+    library_tag: tinlicker
