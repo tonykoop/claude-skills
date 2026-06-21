@@ -1,7 +1,7 @@
 ---
 name: file-a-patent
-version: 0.2.0
-last-updated: 2026-06-19
+version: 0.3.0
+last-updated: 2026-06-20
 description: Prepare private, attorney-ready invention packets and provisional-patent preparation materials from local repo evidence. Use when Codex is asked to file-a-patent, file an invention, prepare a provisional patent packet, triage patent versus trade-secret candidates, document inventorship/provenance/disclosure history, build USPTO-ready prep checklists, or assemble private IP handoff materials for inventions, musical instruments, manufacturing workflows, empirical tuning methods, AI-assisted design systems, or reverse-engineering workflows. This skill does not provide legal advice, file anything, publish anything, change licenses, or conclude that an invention is patentable.
 ---
 
@@ -27,6 +27,29 @@ Default output location:
 - Treat public disclosure risk conservatively; log evidence and uncertainty.
 - If current fees, legal deadlines, or rules matter, verify against official sources first. Read `references/official-sources.md`.
 - For legal decisions, recommend a registered patent attorney or agent.
+
+## IP Disclosure Summary
+
+When a brainstorm session yields a breakthrough, emit an `ip_disclosure_summary` block that maps directly into provisional-patent sections:
+
+```json
+{
+  "ip_disclosure_summary": {
+    "technical_field": "<one-sentence field>",
+    "invention_title": "<working title>",
+    "problem_solved": "<concrete problem>",
+    "novel_elements": ["<possible point of novelty — cautious phrasing>"],
+    "technical_dependencies": ["<what this builds on>"],
+    "verbatim_inventor_quotes": [
+      {"text": "<exact quote>", "speaker": "inventor", "source_doc": "<doc>", "captured_at": "<ISO-8601>"}
+    ]
+  }
+}
+```
+
+Section mapping: `technical_field` → Background (Field of Invention) · `problem_solved` → Background (Problem) · `technical_dependencies` → Background (Prior Art) · `novel_elements` → Detailed Description · `verbatim_inventor_quotes` → Specification notes + INVENTOR-QUESTIONNAIRE.
+
+Full field spec and section-mapping table: `references/ip-disclosure-summary-schema.md`. After emitting the block, offer to write it into `INVENTION-SUMMARY.md` and `DISCLOSURE-TIMELINE.md`. Use cautious phrasing for `novel_elements` — never assert patentability.
 
 ## Core Workflow
 
