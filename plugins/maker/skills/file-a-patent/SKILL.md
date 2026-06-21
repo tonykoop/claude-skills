@@ -27,6 +27,7 @@ Default output location:
 - Treat public disclosure risk conservatively; log evidence and uncertainty.
 - If current fees, legal deadlines, or rules matter, verify against official sources first. Read `references/official-sources.md`.
 - For legal decisions, recommend a registered patent attorney or agent.
+- **LLM-asserted timestamps and `estimated_conception_window` dates are NOT reliable legal provenance.** Models may assert a real-time clock or fabricate precise conception dates — these claims are unreliable and must not be used as IP priority evidence. Label all model-asserted times `provenance_class: "soft"`. Real provenance = the clipping file's filesystem date + git commit timestamps. Never present a model-asserted timestamp as an authoritative conception date in any filing preparation material.
 
 ## IP Disclosure Summary
 
