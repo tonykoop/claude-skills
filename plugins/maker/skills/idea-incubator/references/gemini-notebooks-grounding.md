@@ -133,5 +133,4 @@ The following phrases route to NotebookLM-aware Intake mode:
 ## See also
 
 - [gemini-export-pipeline.md](gemini-export-pipeline.md) — main pipeline design
-- [mobile-capture-bridge.md](mobile-capture-bridge.md) — iOS/Android clip bridge
 - [domain-label-routing.md](domain-label-routing.md) — label routing table
