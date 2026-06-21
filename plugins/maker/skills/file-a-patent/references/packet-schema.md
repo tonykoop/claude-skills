@@ -17,6 +17,14 @@ Capture:
 - Key evidence paths
 - Missing evidence
 
+If an `ip_disclosure_summary` block was captured during a brainstorm session, map its fields here:
+
+- `technical_field` → Field of the Invention subsection
+- `invention_title` → working title header
+- `problem_solved` → Problem Statement subsection
+- `novel_elements[]` → Summary of the Invention (label each: "possible point of novelty for attorney review")
+- `technical_dependencies[]` → Background / Prior Art subsection
+
 Avoid:
 
 - "This is patentable"
@@ -48,6 +56,8 @@ Log:
 - Any AI/tool/service upload that may matter
 
 Use absolute dates. Avoid relative terms like "recently" without a date.
+
+If an `ip_capture` or `ip_disclosure_summary` block was captured in a brainstorm session, append it here under a `## Brainstorm Session Captures` subsection. Label model-asserted timestamps as `provenance_class: soft`. Verbatim inventor quotes from `verbatim_inventor_quotes[]` belong in the `## Inventor Quotes` subsection alongside their `source_doc` and `captured_at` fields.
 
 ## RIGHTS-PROVENANCE.md
 
