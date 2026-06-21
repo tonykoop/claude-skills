@@ -1,5 +1,16 @@
 # coding plugin — Changelog
 
+## 2.1.0 — 2026-06-21
+
+Add the `review` skill — a focused, VERIFY-FIRST single-PR verdict pass: gather current
+PR/CI state on HEAD, re-check whether a prior CHANGES verdict is now resolved, post one
+structured APPROVE/CHANGES comment, **never merge**. Complements `merge-review` (which
+owns the broader review→merge queue). Invoke with `/review <PR#>`.
+
+| Skill | Description |
+|---|---|
+| `review` | Single-PR verdict pass — VERIFY-FIRST gather (state/CI/HEAD), flip stale CHANGES→APPROVE when the fix landed, post one structured APPROVE/CHANGES comment, never merge (v1.0.0) |
+
 ## 2.0.0 — 2026-06-19
 
 First-class v2.0.0 release. The coding skill set is mature and stable across 12 skills:

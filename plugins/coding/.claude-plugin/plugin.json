@@ -1,8 +1,8 @@
 {
   "$schema": "https://claude.com/schemas/plugin.json",
   "name": "coding",
-  "version": "2.0.0",
-  "description": "Engineering operations: tmux multi-pane sprint orchestration, PR review, sprint supervision, GitHub-Queue sync, swarm dispatch, end-to-end AI-benchmark contribution (run-benchmark), CI triage, failing-check fixing, source-citation registries, scaffold hygiene, disk cleanup, and the skills-meta drift auditor.",
+  "version": "2.1.0",
+  "description": "Engineering operations: tmux multi-pane sprint orchestration, PR review (merge-review queue + single-PR verdict via review), sprint supervision, GitHub-Queue sync, swarm dispatch, end-to-end AI-benchmark contribution (run-benchmark), CI triage, failing-check fixing, source-citation registries, scaffold hygiene, disk cleanup, and the skills-meta drift auditor.",
   "author": {
     "name": "Tony Koop",
     "email": "tonykoop@gmail.com",
