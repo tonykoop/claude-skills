@@ -1,5 +1,17 @@
 # coding plugin — Changelog
 
+## 2.2.0 — 2026-06-21
+
+Add the `sweep` skill — the cross-repo verdict loop that fans `review`'s logic across a set
+of repos: list open PRs (branch-filtered), **skip** ones already reviewed at their current
+HEAD (re-review when HEAD moved past a CHANGES verdict — VERIFY-FIRST), check CI, post one
+verdict comment each, and report the **queue count**. Never merges; reviews inline (no
+sub-agent fan-out). Invoke with `/sweep [repos | branch-filter]`.
+
+| Skill | Description |
+|---|---|
+| `sweep` | Cross-repo PR verdict sweep — list/filter open PRs, skip already-current, VERIFY-FIRST CI, post verdicts inline, report queue count, never merge (v1.0.0) |
+
 ## 2.1.0 — 2026-06-21
 
 Add the `review` skill — a focused, VERIFY-FIRST single-PR verdict pass: gather current
