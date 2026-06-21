@@ -1,10 +1,13 @@
 """Tests for url_upsert.py (Story #408 — URL-stable upsert clipping)."""
+import io
 import sys
+import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
-from url_upsert import normalize_url, sanitize_chat_url, upsert_clip
+from url_upsert import main, normalize_url, sanitize_chat_url, upsert_clip
 
 
 class TestNormalizeUrl(unittest.TestCase):
@@ -168,6 +171,75 @@ class TestUpsertClip(unittest.TestCase):
         path_a, _ = upsert_clip(self.inbox, url_a)
         path_b, _ = upsert_clip(self.inbox, url_b)
         self.assertNotEqual(path_a, path_b)
+
+
+class TestCLI(unittest.TestCase):
+    """CLI contract: dry-run is the default; --write opts in to disk writes."""
+
+    def setUp(self):
+        self._tmp = tempfile.TemporaryDirectory()
+        self.inbox = Path(self._tmp.name) / "00-inbox"
+
+    def tearDown(self):
+        self._tmp.cleanup()
+
+    def _run(self, *extra_args):
+        """Run main() with a fresh stdout capture; return (exit_code, stdout)."""
+        buf = io.StringIO()
+        with patch("sys.stdout", buf):
+            code = main(
+                ["url_upsert.py", "https://gemini.google.com/app/cli-test",
+                 "--inbox", str(self.inbox), *extra_args]
+            )
+        return code, buf.getvalue()
+
+    def test_default_is_dry_run_no_file_created(self):
+        """Calling the CLI without --write must NOT create any file."""
+        code, out = self._run()
+        self.assertEqual(code, 0)
+        self.assertIn("[dry-run]", out)
+        self.assertFalse(self.inbox.exists(), "inbox dir must not be created in dry-run")
+
+    def test_default_dry_run_shows_would_be_path(self):
+        code, out = self._run()
+        self.assertIn("would write", out)
+        self.assertIn(".md", out)
+
+    def test_explicit_dry_run_flag_no_file(self):
+        """--dry-run is kept as an explicit alias; behavior matches default."""
+        code, out = self._run("--dry-run")
+        self.assertEqual(code, 0)
+        self.assertIn("[dry-run]", out)
+        self.assertFalse(self.inbox.exists())
+
+    def test_write_flag_creates_file(self):
+        """--write is required to actually create the clip file."""
+        code, out = self._run("--write")
+        self.assertEqual(code, 0)
+        self.assertNotIn("[dry-run]", out)
+        self.assertTrue(self.inbox.exists())
+        md_files = list(self.inbox.glob("*.md"))
+        self.assertEqual(len(md_files), 1)
+
+    def test_overwrite_implies_write(self):
+        """--overwrite should also write to disk (no --write needed)."""
+        self._run("--write")  # create first
+        code, out = self._run("--overwrite")
+        self.assertEqual(code, 0)
+        self.assertNotIn("[dry-run]", out)
+
+    def test_show_stem_exits_without_write(self):
+        code, out = self._run("--show-stem")
+        self.assertEqual(code, 0)
+        self.assertFalse(self.inbox.exists())
+        # Output should be just the stem string
+        self.assertRegex(out.strip(), r"^gemini-[0-9a-f]{8}-")
+
+    def test_dry_run_output_stable_across_calls(self):
+        """Same URL produces same would-be path in every dry-run."""
+        _, out1 = self._run()
+        _, out2 = self._run()
+        self.assertEqual(out1, out2)
 
 
 if __name__ == "__main__":

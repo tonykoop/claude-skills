@@ -11,7 +11,8 @@ Design goals
   (utm_*, session IDs) that change each share while preserving the stable chat
   path component.
 * **Offline-first / stdlib-only**: no network calls, no external deps.
-* **Dry-run by default**: CLI prints the would-be path without writing.
+* **Dry-run by default**: CLI prints the would-be path without writing; pass
+  ``--write`` to actually create the file.
 
 Filename convention
 -------------------
@@ -160,14 +161,19 @@ def main(argv: list[str]) -> int:
         help="Clip body as a string (overrides --content-file).",
     )
     parser.add_argument(
+        "--write",
+        action="store_true",
+        help="Actually write the clip file to disk (default: dry-run).",
+    )
+    parser.add_argument(
         "--overwrite",
         action="store_true",
-        help="Overwrite an existing clip file (default: skip).",
+        help="Overwrite an existing clip file (default: skip). Implies --write.",
     )
     parser.add_argument(
         "--dry-run",
         action="store_true",
-        help="Print the would-be path without writing.",
+        help="Print the would-be path without writing (the default; kept for explicitness).",
     )
     parser.add_argument(
         "--show-stem",
@@ -180,7 +186,9 @@ def main(argv: list[str]) -> int:
         print(sanitize_chat_url(args.url))
         return 0
 
-    if args.dry_run:
+    # Dry-run is the default. --write (or --overwrite) opts in to disk writes.
+    do_write = args.write or args.overwrite
+    if not do_write:
         stem = sanitize_chat_url(args.url)
         path = args.inbox / f"{stem}.md"
         sys.stdout.write(f"[dry-run] would write: {path}\n")
