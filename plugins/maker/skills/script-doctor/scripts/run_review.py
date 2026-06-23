@@ -23,6 +23,7 @@ if str(_SCRIPTS_DIR) not in sys.path:
     sys.path.insert(0, str(_SCRIPTS_DIR))
 
 from table_read import run_table_read  # noqa: E402
+from structural_polish import run_structural_polish  # noqa: E402
 
 VALID_CHANNELS = ("yoga", "instrument_maker", "ai_agentic", "consciousness", "wrfcoin",
                   "mrbeast", "coding", "generic")
@@ -42,27 +43,8 @@ def _result(pass_name: str, score: float, flags: list[dict], **extra) -> dict:
 
 
 # ---------------------------------------------------------------------------
-# Pass stubs (replaced by real implementations in stories #428 and #429)
+# Pass stub (replaced by real implementation in story #429)
 # ---------------------------------------------------------------------------
-
-def run_structural_polish(script: str, channel: str) -> dict:
-    """Stub: Phase 2 — structural polish pass.
-
-    Full implementation: scripts/structural_polish.py (story #428).
-    """
-    return _result(
-        "structural_polish",
-        score=7.0,
-        flags=[],
-        hook_score=7.0,
-        closing_score=7.0,
-        on_the_nose=[],
-        retention_dips=[],
-        transition_gaps=[],
-        overall_summary="(stub — full analysis in story #428)",
-        stub=True,
-    )
-
 
 def run_logistical_breakdown(script: str, channel: str) -> dict:
     """Stub: Phase 3 — logistical breakdown pass.

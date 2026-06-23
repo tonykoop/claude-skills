@@ -1,5 +1,9 @@
 # script-doctor changelog
 
+## v0.1.3 — 2026-06-22
+- Add scripts/structural_polish.py: real heuristic structural polish pass (hook/closing scoring, on-the-nose detection, retention dips, transition audit). Wire into run_review.py.
+- Refs tonykoop/claude-skills#428
+
 ## v0.1.2 — 2026-06-22
 - Add scripts/table_read.py: real heuristic table-read pass (hard-to-speak, breath breaks, pacing, archetype alignment). Wire into run_review.py.
 - Refs tonykoop/claude-skills#427
