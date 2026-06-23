@@ -1,6 +1,7 @@
 # DJ / Playlist-Builder Handoff Contract
 
 **Epic:** #478 — Cross-skill orchestration: Sheet Music × Music Teacher × DJ  
+**Story:** #485 — DJ / playlist-builder handoff contract  
 **Version:** v0  
 **Date:** 2026-06-22  
 **Related epics:** tonykoop/claude-skills#471, tonykoop/claude-skills#419

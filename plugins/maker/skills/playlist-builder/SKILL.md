@@ -1,7 +1,7 @@
 ---
 name: playlist-builder
-version: 0.4.0
-last-updated: 2026-06-21
+version: 0.5.0
+last-updated: 2026-06-22
 description: "Build energy-arc-mapped playlists for any context where music carries an emotional or physical arc — power vinyasa yoga (heated, sustained, restorative, sculpt), spa, spin, party, group fitness. Use this skill when the user wants to: create a class playlist, generate a workout playlist, build a flow-mapped tracklist, curate music for a yoga or fitness class, build a spa/massage soundtrack, or create a Spotify or SoundCloud playlist organized around an energy arc. Also trigger when the user mentions energy phases, song banks, class themes, intentions, or wants the skill to read from their own Spotify or SoundCloud library. Works with three catalog modes: the user's own library (auto-categorized via audio features), curated seed banks bundled with the skill (for users with no library), or Tony Koop's hand-curated public catalog. IMPORTANT: also use this skill when the user wants the playlist created on Spotify or SoundCloud — it includes the platform automation."
 ---
 
@@ -264,3 +264,61 @@ See `references/SERIES_BLUEPRINT.md` and `references/ANCHOR_PLACEMENT_RULES.md`.
 - [ ] Wire source_mode="api" path into generate_series.py runtime
 
 See `../../DESIGN.md` for the full design doc.
+
+---
+
+## Audio-Dynamic (Epic #471)
+
+Extends playlist-builder with a movement→music sync engine. Trigger this section when the user
+has a dance or movement routine and wants a synchronized soundtrack — not just a playlist for a
+class, but a mix that aligns musical events (drops, breakdowns) to choreographic peaks.
+
+### New capabilities
+
+- **Kinetic-texture mapping** (`scripts/texture_map.py`, `references/KINETIC_TEXTURE_MAP.md`) —
+  translates movement vocabulary (staccato/fluid/tutting/explosive/grounded/suspended) into
+  genre + tag constraints for catalog filtering. Composite textures via `+`
+  (e.g. `"fluid+grounded"`).
+
+- **BPM matching to choreography blocks** (`scripts/bpm_match.py`) — ranks catalog tracks against
+  per-block tempo targets with optional energy proximity weighting (70 % BPM / 30 % energy).
+  `bpm_candidates()` for single-block lookup; `match_blocks()` for a full routine pass.
+
+- **Sonic anchors** (`scripts/sonic_anchor.py`, `references/AUDIO_TRIGGER_ANCHORS.md`) — tag
+  tracks with drop/breakdown/build/pause/peak timestamps; `align_timeline()` shifts the routine
+  timeline so the choreographic peak lands on the nearest high-confidence anchor. Manual-tag
+  fallback when auto-detection confidence < 0.5.
+
+- **Movement bridge** (`scripts/movement_bridge.py`, `references/MOVEMENT_BRIDGE_CONTRACT.md`) —
+  accepts a `MovementRoutinePayload` (BPM + energy + texture per block, see
+  `schemas/agent_packets/MovementRoutinePayload.schema.json`) and returns a `MixPlan`. Composes
+  texture filter → BPM match → anchor alignment in one call:
+  ```python
+  from scripts.movement_bridge import build_mix_plan, validate_payload
+  validate_payload(payload_dict)
+  mix_plan = build_mix_plan(payload_dict, catalog)
+  ```
+
+- **Release hook** (`scripts/release_hook.py`, `references/RELEASE_HOOK_CONTRACT.md`) — compiles
+  choreography script + MixPlan into a timestamped `release_bundle/` directory
+  (`choreo_script.md`, `audio_mix_plan.json`, `provenance_block.json` with SHA-256 fingerprints).
+  Hands off to StudioPipeline when `STUDIOPIPELINE_HOOK_URL` is set (non-blocking):
+  ```python
+  from scripts.release_hook import compile_release
+  bundle = compile_release(mix_plan, "choreo.md", "releases/routine-001/")
+  ```
+
+### Worked example
+
+See `examples/interpretive-dance-release.md` — hip-hop routine, 4 blocks, 95–100 BPM sweet spot,
+tutting peak at 1:15 aligns to a drop at 62.5 s with +12.5 s offset.
+
+### DJ handoff (cross-link)
+
+See `docs/dj_handoff.md` (story #485) for the `AlbumSequencePacket → playlist-builder catalog`
+field mapping when consuming tracks produced by the music-teacher composition loop.
+
+### Dependency note
+
+Full round-trip with the movement_arts engine requires `tonykoop/claude-skills#463` (merged).
+The bridge can run standalone with a hand-authored `MovementRoutinePayload` JSON for testing.
