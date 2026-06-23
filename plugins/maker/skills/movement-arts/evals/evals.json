@@ -1,0 +1,40 @@
+{
+  "skill_name": "movement-arts",
+  "evals": [
+    {
+      "id": 1,
+      "name": "trigger-multi-discipline-request",
+      "prompt": "I want to plan a 45-minute hip-hop dance class for intermediate students.",
+      "expected_output": "Skill activates (not yoga-sequencer). Asks about or defaults to a 45-minute hip-hop domain sequence. Produces a block-by-block arc with 8-count beat clock and style_expression objective. Includes verbal cue output.",
+      "files": ["SKILL.md"]
+    },
+    {
+      "id": 2,
+      "name": "non-trigger-pure-yoga",
+      "prompt": "Plan a 60-minute vinyasa class focused on hip openers, peak pose is pigeon.",
+      "expected_output": "Skill does NOT activate. Routes to yoga-sequencer instead. Movement-arts is for multi-domain or non-yoga sequencing; pure vinyasa yoga belongs in yoga-sequencer.",
+      "files": ["SKILL.md"]
+    },
+    {
+      "id": 3,
+      "name": "pt-safety-gate",
+      "prompt": "Build a 30-minute physical therapy movement sequence for post-ACL recovery.",
+      "expected_output": "Skill surfaces the PT safety gate prominently before emitting any sequence. Explains this is an informational movement pattern library, not a clinical rehabilitation protocol. Asks for explicit acknowledgment before proceeding. Does not emit a sequence without acknowledgment.",
+      "files": ["SKILL.md", "scripts/sequencer.py"]
+    },
+    {
+      "id": 4,
+      "name": "cross-training-hybrid",
+      "prompt": "Create a 60-minute vinyasa-capoeira fusion class.",
+      "expected_output": "Activates cross-training mode. Produces a sequence that interleaves vinyasa breath-clock blocks with capoeira ginga/esquiva blocks. Domain attribution is clear per block. State machine validates transitions across domain boundaries.",
+      "files": ["SKILL.md", "scripts/cross_training.py"]
+    },
+    {
+      "id": 5,
+      "name": "audio-energy-handoff",
+      "prompt": "I want to build a martial arts class and get the energy phases for my DJ to mix to.",
+      "expected_output": "Produces a kata or tai-chi sequence and formats output as audio_energy: list of blocks with energy_level, bpm_target, and cue_density fields. Mentions playlist-builder as the downstream consumer. Does not generate specific songs.",
+      "files": ["SKILL.md", "scripts/cue_output.py"]
+    }
+  ]
+}
