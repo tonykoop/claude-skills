@@ -8,6 +8,7 @@ from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 from inbox_watcher import (
+    _validate_chat_url_stem,
     detect_triggers,
     dispatch_file,
     is_stamped,
@@ -391,6 +392,45 @@ class TestDispatchStamp(unittest.TestCase):
             mock_run2.assert_not_called()
 
         self.assertEqual(len(r.triggered), 0)
+
+
+class TestValidateChatUrlStem(unittest.TestCase):
+    """Story #408 — validate chat_url front-matter stem against filename."""
+
+    def setUp(self):
+        self._tmp = tempfile.TemporaryDirectory()
+        self.inbox = Path(self._tmp.name)
+
+    def tearDown(self):
+        self._tmp.cleanup()
+
+    def test_matching_stem_returns_true(self):
+        sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
+        from url_upsert import upsert_clip
+        url = "https://gemini.google.com/app/abc123"
+        path, _ = upsert_clip(self.inbox, url, overwrite=True)
+        self.assertTrue(_validate_chat_url_stem(path))
+
+    def test_mismatched_stem_returns_false_and_warns(self):
+        sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
+        from url_upsert import sanitize_chat_url
+        url = "https://gemini.google.com/app/abc123"
+        expected_stem = sanitize_chat_url(url)
+        p = self.inbox / "wrong-stem.md"
+        p.write_text(
+            "---\nsource: gemini\nchat_url: https://gemini.google.com/app/abc123\n---\n",
+            encoding="utf-8",
+        )
+        import io
+        with patch("sys.stderr", new_callable=io.StringIO) as mock_err:
+            result = _validate_chat_url_stem(p)
+        self.assertFalse(result)
+        self.assertIn(expected_stem, mock_err.getvalue())
+
+    def test_no_chat_url_returns_none(self):
+        p = self.inbox / "random.md"
+        p.write_text("---\nsource: gemini\n---\nNo chat_url front-matter.", encoding="utf-8")
+        self.assertIsNone(_validate_chat_url_stem(p))
 
 
 if __name__ == "__main__":

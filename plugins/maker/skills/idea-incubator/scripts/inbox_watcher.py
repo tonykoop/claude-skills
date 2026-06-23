@@ -40,6 +40,11 @@ import time
 from dataclasses import dataclass, field
 from pathlib import Path
 
+try:  # absolute import when run as a loose script
+    from url_upsert import sanitize_chat_url as _sanitize_chat_url
+except ImportError:  # package-relative import when imported as a module
+    from .url_upsert import sanitize_chat_url as _sanitize_chat_url
+
 # ---------------------------------------------------------------------------
 # Verbal trigger patterns — mirrors the trigger phrases in SKILL.md
 # ---------------------------------------------------------------------------
@@ -72,6 +77,50 @@ VERBAL_TRIGGERS: list[re.Pattern[str]] = [
 def detect_triggers(content: str) -> list[str]:
     """Return list of raw trigger patterns that matched *content*."""
     return [p.pattern for p in VERBAL_TRIGGERS if p.search(content)]
+
+
+# ---------------------------------------------------------------------------
+# Chat-URL stem validation (Story #408 integration)
+# ---------------------------------------------------------------------------
+
+_FM_CHAT_URL_RE: re.Pattern[str] = re.compile(r"^chat_url:\s*(\S+)", re.MULTILINE)
+
+
+def _validate_chat_url_stem(path: Path) -> "bool | None":
+    """Return True/False/None for stable-filename validation against front-matter chat_url.
+
+    Reads the ``chat_url`` field from YAML front-matter and compares the
+    expected stable stem (via ``sanitize_chat_url``) against the file's
+    actual stem.  Emits a warning to stderr when they differ — dispatch is
+    NOT blocked, so callers can still process the file.
+
+    Returns
+    -------
+    True   — stem matches the expected stable name.
+    False  — stem differs (warning emitted); file was probably clipped manually.
+    None   — no ``chat_url`` in front-matter; nothing to validate.
+    """
+    try:
+        content = path.read_text(encoding="utf-8", errors="replace")
+    except OSError:
+        return None
+    if not content.startswith("---"):
+        return None
+    m = _FM_CHAT_URL_RE.search(content)
+    if not m:
+        return None
+    chat_url = m.group(1).strip()
+    try:
+        expected = _sanitize_chat_url(chat_url)
+    except Exception:
+        return None
+    if path.stem != expected:
+        sys.stderr.write(
+            f"[warn] {path.name}: filename stem mismatch — "
+            f"expected '{expected}' from chat_url, got '{path.stem}'\n"
+        )
+        return False
+    return True
 
 
 # ---------------------------------------------------------------------------
@@ -305,9 +354,12 @@ class InboxWatcher:
         Writes a ``.dispatched`` sidecar stamp after each successful live
         dispatch so the file is skipped on every subsequent scan including
         after daemon restart.  Dry-run dispatches do NOT stamp (no disk write).
+        Validates each triggered file's filename stem against its chat_url
+        front-matter (Story #408); warns on mismatch but never blocks dispatch.
         """
         result = self.scan_once()
         for path in result.triggered:
+            _validate_chat_url_stem(path)
             success = dispatch_file(self.pipeline_cmd, path, dry_run=self.dry_run)
             if success and not self.dry_run:
                 stamp_processed(path)
