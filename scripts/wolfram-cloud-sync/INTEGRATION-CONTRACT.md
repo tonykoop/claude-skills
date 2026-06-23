@@ -92,6 +92,34 @@ Files with a domain descriptor follow `{slug}-{descriptor}-starter.wl`
 names carry through to the flat-inbox cloud name unchanged:
 `sambuca__wolfram__sambuca-acoustics-starter.wl`.
 
+## Additive explorer regeneration + keeping models deployed (2026-06-23)
+
+Two standing guarantees so a re-run never regresses a live explorer:
+
+1. **`generate_explorer.py` is additive — it patches, it does not clobber.**
+   - If `explorer.html` already exists, the generator only **patches the live
+     Wolfram URL in place**: the `data-cloud-url` slot, the iframe `src`, and the
+     "open" anchor `href`. Everything else (concept-image gallery, an alternate
+     V5/hero layout, hand edits) is preserved byte-for-byte.
+   - If there is **no fresh URL** for an existing explorer, the current embed is
+     **kept** — a live embed is never downgraded back to a "pending" note.
+   - A full template render happens **only** for a greenfield repo (no
+     `explorer.html` yet) or when you pass `--force` (which discards non-template
+     content — use deliberately).
+   - The patch keys on `data-cloud-url="…"` (any element — both the
+     `wolfram-embed-wrap` div above and the `<section id="wolfram">` slot the
+     static generator emits) and on any `wolframcloud.com/obj/…` URL, so it works
+     across every explorer layout in the wild.
+
+2. **Keep the models deployed (Public-Execute).** The cloud objects the embeds
+   point at must stay public. Re-running the deploy step re-asserts that
+   idempotently — `deploy_interactive.sh` does `CloudDeploy[…, Permissions ->
+   "Public"]` (live Manipulate → `manifest/wolfram_interactive_urls.json`), and
+   `wolfram_publish.wls` sets `Public-Execute` on uploaded source. Run the deploy
+   step **before** `generate_explorer.py` each pass; because the generator is now
+   additive, a skipped/failed deploy leaves the existing live embed intact rather
+   than wiping it.
+
 ## What changed when (provenance)
 
 - **v4.4.5 rename (2026-05-17):** `wolfram-starter.wl` → `{slug}-starter.wl`
