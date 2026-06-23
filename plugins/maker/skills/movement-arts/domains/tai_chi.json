@@ -1,0 +1,255 @@
+{
+  "schema_version": 1,
+  "domain": "tai_chi",
+  "clock": {
+    "type": "breath",
+    "bpm": 6,
+    "arc_style": "legato",
+    "inhale_beats": 8,
+    "exhale_beats": 8
+  },
+  "objective": "breath_alignment",
+  "requires_clinical_review": false,
+  "primitives": [
+    {
+      "id": "commencement",
+      "name": "Commencement (Qi Shi)",
+      "weight_shift": "bilateral",
+      "facing": "north",
+      "tempo_class": "slow",
+      "energy_delta": 0.02,
+      "duration_beats": 8,
+      "valid_next": ["wild_horse_mane_left", "wave_hands_like_clouds", "grasp_bird_tail_ward_off"]
+    },
+    {
+      "id": "wild_horse_mane_left",
+      "name": "Part Wild Horse Mane — Left (Ye Ma Fen Zong)",
+      "weight_shift": "left",
+      "facing": "north",
+      "tempo_class": "slow",
+      "energy_delta": 0.05,
+      "duration_beats": 16,
+      "valid_next": ["wild_horse_mane_right", "grasp_bird_tail_ward_off", "white_crane"]
+    },
+    {
+      "id": "wild_horse_mane_right",
+      "name": "Part Wild Horse Mane — Right",
+      "weight_shift": "right",
+      "facing": "south",
+      "tempo_class": "slow",
+      "energy_delta": 0.05,
+      "duration_beats": 16,
+      "valid_next": ["wild_horse_mane_left", "brush_knee_left", "grasp_bird_tail_ward_off"]
+    },
+    {
+      "id": "white_crane",
+      "name": "White Crane Spreads Wings (Bai He Liang Chi)",
+      "weight_shift": "left",
+      "facing": "north",
+      "tempo_class": "slow",
+      "energy_delta": 0.03,
+      "duration_beats": 12,
+      "valid_next": ["brush_knee_left", "grasp_bird_tail_ward_off", "high_pat_on_horse"]
+    },
+    {
+      "id": "brush_knee_left",
+      "name": "Brush Knee and Twist Step — Left (Lou Xi Ao Bu)",
+      "weight_shift": "left",
+      "facing": "north",
+      "tempo_class": "slow",
+      "energy_delta": 0.06,
+      "duration_beats": 16,
+      "valid_next": ["brush_knee_right", "repulse_monkey_left", "grasp_bird_tail_ward_off"]
+    },
+    {
+      "id": "brush_knee_right",
+      "name": "Brush Knee and Twist Step — Right",
+      "weight_shift": "right",
+      "facing": "north",
+      "tempo_class": "slow",
+      "energy_delta": 0.06,
+      "duration_beats": 16,
+      "valid_next": ["brush_knee_left", "needle_at_sea_bottom", "grasp_bird_tail_ward_off"]
+    },
+    {
+      "id": "repulse_monkey_left",
+      "name": "Step Back and Repulse Monkey — Left (Dao Nian Hou)",
+      "weight_shift": "left",
+      "facing": "south",
+      "tempo_class": "slow",
+      "energy_delta": 0.04,
+      "duration_beats": 16,
+      "valid_next": ["repulse_monkey_right", "grasp_bird_tail_ward_off", "wave_hands_like_clouds"]
+    },
+    {
+      "id": "repulse_monkey_right",
+      "name": "Step Back and Repulse Monkey — Right",
+      "weight_shift": "right",
+      "facing": "south",
+      "tempo_class": "slow",
+      "energy_delta": 0.04,
+      "duration_beats": 16,
+      "valid_next": ["repulse_monkey_left", "grasp_bird_tail_ward_off"]
+    },
+    {
+      "id": "grasp_bird_tail_ward_off",
+      "name": "Grasp Bird's Tail — Ward Off (Peng)",
+      "weight_shift": "left",
+      "facing": "north",
+      "tempo_class": "slow",
+      "energy_delta": 0.05,
+      "duration_beats": 12,
+      "valid_next": ["grasp_bird_tail_rollback", "single_whip", "wave_hands_like_clouds"]
+    },
+    {
+      "id": "grasp_bird_tail_rollback",
+      "name": "Grasp Bird's Tail — Rollback (Lu)",
+      "weight_shift": "right",
+      "facing": "south",
+      "tempo_class": "slow",
+      "energy_delta": 0.04,
+      "duration_beats": 8,
+      "valid_next": ["grasp_bird_tail_press"]
+    },
+    {
+      "id": "grasp_bird_tail_press",
+      "name": "Grasp Bird's Tail — Press (Ji)",
+      "weight_shift": "bilateral",
+      "facing": "north",
+      "tempo_class": "slow",
+      "energy_delta": 0.05,
+      "duration_beats": 8,
+      "valid_next": ["grasp_bird_tail_push"]
+    },
+    {
+      "id": "grasp_bird_tail_push",
+      "name": "Grasp Bird's Tail — Push (An)",
+      "weight_shift": "bilateral",
+      "facing": "north",
+      "tempo_class": "slow",
+      "energy_delta": 0.06,
+      "duration_beats": 8,
+      "valid_next": ["single_whip", "grasp_bird_tail_ward_off", "cross_hands"]
+    },
+    {
+      "id": "single_whip",
+      "name": "Single Whip (Dan Bian)",
+      "weight_shift": "left",
+      "facing": "west",
+      "tempo_class": "slow",
+      "energy_delta": 0.05,
+      "duration_beats": 16,
+      "valid_next": ["wave_hands_like_clouds", "cloud_hands_left", "high_pat_on_horse"]
+    },
+    {
+      "id": "cloud_hands_left",
+      "name": "Cloud Hands — Left (Yun Shou)",
+      "weight_shift": "left",
+      "facing": "north",
+      "tempo_class": "slow",
+      "energy_delta": 0.04,
+      "duration_beats": 12,
+      "valid_next": ["cloud_hands_right"]
+    },
+    {
+      "id": "cloud_hands_right",
+      "name": "Cloud Hands — Right",
+      "weight_shift": "right",
+      "facing": "north",
+      "tempo_class": "slow",
+      "energy_delta": 0.04,
+      "duration_beats": 12,
+      "valid_next": ["cloud_hands_left", "single_whip", "wave_hands_like_clouds"]
+    },
+    {
+      "id": "wave_hands_like_clouds",
+      "name": "Wave Hands Like Clouds (transition)",
+      "weight_shift": "bilateral",
+      "facing": "north",
+      "tempo_class": "slow",
+      "energy_delta": 0.03,
+      "duration_beats": 8,
+      "valid_next": ["cloud_hands_left", "grasp_bird_tail_ward_off", "single_whip"]
+    },
+    {
+      "id": "high_pat_on_horse",
+      "name": "High Pat on Horse (Gao Tan Ma)",
+      "weight_shift": "left",
+      "facing": "north",
+      "tempo_class": "slow",
+      "energy_delta": 0.04,
+      "duration_beats": 12,
+      "valid_next": ["right_heel_kick", "kick_with_right_heel", "grasp_bird_tail_ward_off"]
+    },
+    {
+      "id": "right_heel_kick",
+      "name": "Right Heel Kick (You Deng Jiao)",
+      "weight_shift": "left",
+      "facing": "east",
+      "tempo_class": "medium",
+      "energy_delta": 0.08,
+      "duration_beats": 8,
+      "valid_next": ["brush_knee_left", "embrace_tiger", "grasp_bird_tail_ward_off"]
+    },
+    {
+      "id": "kick_with_right_heel",
+      "name": "Kick with Right Heel (Deng Jiao — variant)",
+      "weight_shift": "left",
+      "facing": "north",
+      "tempo_class": "medium",
+      "energy_delta": 0.07,
+      "duration_beats": 8,
+      "valid_next": ["brush_knee_left", "grasp_bird_tail_ward_off"]
+    },
+    {
+      "id": "embrace_tiger",
+      "name": "Embrace Tiger, Return to Mountain (Bao Hu Gui Shan)",
+      "weight_shift": "bilateral",
+      "facing": "north",
+      "tempo_class": "slow",
+      "energy_delta": 0.04,
+      "duration_beats": 16,
+      "valid_next": ["grasp_bird_tail_ward_off", "cross_hands"]
+    },
+    {
+      "id": "needle_at_sea_bottom",
+      "name": "Needle at Sea Bottom (Hai Di Zhen)",
+      "weight_shift": "left",
+      "facing": "north",
+      "tempo_class": "slow",
+      "energy_delta": 0.05,
+      "duration_beats": 8,
+      "valid_next": ["fan_through_back", "grasp_bird_tail_ward_off"]
+    },
+    {
+      "id": "fan_through_back",
+      "name": "Fan Through the Back (Shan Tong Bei)",
+      "weight_shift": "bilateral",
+      "facing": "north",
+      "tempo_class": "slow",
+      "energy_delta": 0.07,
+      "duration_beats": 8,
+      "valid_next": ["grasp_bird_tail_ward_off", "cross_hands"]
+    },
+    {
+      "id": "cross_hands",
+      "name": "Cross Hands (Shi Zi Shou)",
+      "weight_shift": "bilateral",
+      "facing": "north",
+      "tempo_class": "slow",
+      "energy_delta": 0.02,
+      "duration_beats": 8,
+      "valid_next": ["closing_form", "grasp_bird_tail_ward_off"]
+    },
+    {
+      "id": "closing_form",
+      "name": "Closing Form (Shou Shi)",
+      "weight_shift": "bilateral",
+      "facing": "north",
+      "tempo_class": "slow",
+      "energy_delta": -0.1,
+      "duration_beats": 16,
+      "valid_next": ["commencement"]
+    }
+  ]
+}
