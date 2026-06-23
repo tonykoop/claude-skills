@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/tonykoop/claude-skills/schemas/agent_packets/MovementRoutinePayload.schema.json",
+  "title": "MovementRoutinePayload",
+  "description": "Constraint payload emitted by the movement_arts engine (#463) and consumed by the playlist-builder audio-dynamic bridge (#475). Defines per-block BPM, energy, and kinetic-texture requirements so the bridge can select and align tracks.",
+  "type": "object",
+  "required": ["routine_id", "style", "total_duration_s", "blocks"],
+  "additionalProperties": false,
+  "properties": {
+    "routine_id": {
+      "type": "string",
+      "description": "Unique identifier for this routine (UUID or slug).",
+      "examples": ["hip-hop-interpretive-2026-06-22", "vinyasa-flow-001"]
+    },
+    "style": {
+      "type": "string",
+      "description": "Movement style / domain (e.g. hip-hop, vinyasa, ballet, tai-chi).",
+      "examples": ["hip-hop", "vinyasa", "ballet", "salsa"]
+    },
+    "total_duration_s": {
+      "type": "number",
+      "minimum": 1,
+      "description": "Total routine duration in seconds."
+    },
+    "bpm_global": {
+      "type": "number",
+      "minimum": 1,
+      "description": "Optional global default BPM (overridden by per-block bpm_target)."
+    },
+    "blocks": {
+      "type": "array",
+      "minItems": 1,
+      "description": "Ordered list of choreography blocks.",
+      "items": {
+        "$ref": "#/$defs/RoutineBlock"
+      }
+    },
+    "source_engine": {
+      "type": "string",
+      "description": "Identifier of the movement engine that produced this payload.",
+      "examples": ["movement_arts@1.0.0", "yoga-sequencer@0.3.0"]
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO-8601 timestamp when the payload was generated."
+    }
+  },
+  "$defs": {
+    "RoutineBlock": {
+      "type": "object",
+      "required": ["name", "bpm_target", "duration_s"],
+      "additionalProperties": true,
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Human-readable block name (e.g. 'Warm-up', 'Hip-hop peak')."
+        },
+        "bpm_target": {
+          "type": "number",
+          "minimum": 1,
+          "description": "Ideal BPM for this block."
+        },
+        "bpm_range": {
+          "type": "array",
+          "items": {"type": "number"},
+          "minItems": 2,
+          "maxItems": 2,
+          "description": "[min_bpm, max_bpm] inclusive range. Defaults to bpm_target ±10."
+        },
+        "duration_s": {
+          "type": "number",
+          "minimum": 1,
+          "description": "Block duration in seconds."
+        },
+        "energy": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Target energy level (0=minimal, 1=maximum). Used as a secondary ranking signal alongside BPM."
+        },
+        "kinetic_texture": {
+          "type": "string",
+          "description": "Movement quality for this block. Single texture (e.g. 'staccato') or composite joined by '+' (e.g. 'fluid+grounded'). See KINETIC_TEXTURE_MAP.md for valid values.",
+          "examples": ["staccato", "fluid", "tutting", "explosive", "grounded", "suspended", "fluid+grounded"]
+        },
+        "peak_count_s": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Seconds into the block when the choreographic peak occurs. Used by sonic_anchor.py to align audio drop/peak timestamps."
+        },
+        "notes": {
+          "type": "string",
+          "description": "Optional human-readable notes for this block."
+        }
+      }
+    }
+  }
+}
