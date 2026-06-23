@@ -37,9 +37,13 @@ from typing import Any
 try:  # absolute import when run as a loose script
     from domain_router import NEEDS_TRIAGE_LABEL  # noqa: F401 (re-exported for callers)
     from domain_router import route_labels as _route_labels
+    from github_dedup import decide_mode as _decide_mode
+    from github_dedup import chat_id_label as _chat_id_label
 except ImportError:  # package-relative import when imported as a module
     from .domain_router import NEEDS_TRIAGE_LABEL  # noqa: F401 (re-exported for callers)
     from .domain_router import route_labels as _route_labels
+    from .github_dedup import decide_mode as _decide_mode
+    from .github_dedup import chat_id_label as _chat_id_label
 
 
 @dataclass
@@ -205,10 +209,27 @@ def main(argv: list[str]) -> int:
         type=Path,
         help="Write payloads that failed to create here for later replay.",
     )
+    parser.add_argument(
+        "--dedup-repo",
+        metavar="OWNER/REPO",
+        help=(
+            "Check this repo for an existing open issue labelled chat-id:<sha8> "
+            "before filing. Prints CREATE or APPEND to stderr. No-op in dry-run mode."
+        ),
+    )
     args = parser.parse_args(argv[1:])
 
     conversation_id, text = read_export(args.export)
     payloads = build_payloads(conversation_id, text)
+
+    if args.dedup_repo and args.create:
+        mode = _decide_mode(args.dedup_repo, conversation_id)
+        sys.stderr.write(
+            f"[dedup] conversation {conversation_id[:16]}… → {mode} "
+            f"(label: {_chat_id_label(conversation_id)}, repo: {args.dedup_repo})\n"
+        )
+        for p in payloads:
+            p["dedup_mode"] = mode
 
     if not args.create:
         # Dry-run: emit a JSON array of draft payloads to stdout.
