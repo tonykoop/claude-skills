@@ -92,3 +92,34 @@ pre-read has something to load on day one. Retros append more over time.
   the ambiguity rather than guessing into two wrong issues.
 - **Applies-to:** intake, capture, general
 - **Source:** seeded from idea-incubator Intake mode, 2026-06-16
+
+### Write stories as implementation plans, not feature requests
+- **Context:** Filing stories for the autonomous Alice–Iris agent grid to drain.
+- **Lesson:** The single biggest throughput multiplier (5–10x) is a story that
+  names the file(s) to create/extend, the interface/class/function signatures,
+  the key methods/schema fields, and what the tests should cover — so the agent
+  transcribes a finished design instead of designing while it builds. If the
+  brainstorm is too vague to name files/interfaces honestly, mark
+  `needs-clarification` rather than inventing false precision.
+- **Applies-to:** software, firmware, electronics, general, estimation
+- **Source:** wrfcoin/autoresearch 40-PR session retro, 2026-06-21
+
+### Ship a loop contract and keep tests fast for autonomous epics
+- **Context:** An epic intended to be drained by one autonomous session.
+- **Lesson:** Resolve every recurring decision upfront in a `loop-build.md` the
+  session Reads first — next-issue order, branch naming (`feat/N-name`), PR body
+  (`Refs #N`, never `Closes`), never self-merge, no sub-agents, and an explicit
+  termination signal (`DOMAIN DRAINED`). Keep the repo's test suite under ~10s:
+  the verify-and-move-on loop, not model speed, is the real throughput ceiling.
+- **Applies-to:** software, firmware, general, dependencies
+- **Source:** wrfcoin/autoresearch 40-PR session retro, 2026-06-21
+
+### Sequence stories additive-only with no runtime cross-dependencies
+- **Context:** Stories that sibling agents implement in parallel off clean main.
+- **Lesson:** Prefer adding new files/sections over refactoring shared code
+  (zero merge-conflict surface), and sequence so no story has a runtime
+  dependency on a prior story's PR being merged — each branch recreates what it
+  needs from main. Flag any unavoidable hard dependency with `blocked-by #N` and
+  note same-file collisions in the epic's Technical Risks section.
+- **Applies-to:** software, firmware, dependencies, general
+- **Source:** wrfcoin/autoresearch 40-PR session retro, 2026-06-21
