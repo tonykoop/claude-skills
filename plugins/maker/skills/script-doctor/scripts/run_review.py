@@ -1,11 +1,8 @@
 #!/usr/bin/env python3
 """
-Script Doctor — main entrypoint (story #426 scaffold).
+Script Doctor — main entrypoint.
 
 Runs a script through the three-pass review pipeline and emits a greenlight verdict.
-Individual pass logic lives in the per-pass scripts (stories #427–#429).
-This scaffold contains stub implementations that emit structured output in the
-correct schema so downstream tests and the greenlight gate can be wired up.
 
 Usage:
     python run_review.py --script path/to/script.md [--channel yoga] [--all-passes]
@@ -21,7 +18,14 @@ import sys
 from pathlib import Path
 from typing import Any
 
-VALID_CHANNELS = ("yoga", "instrument_maker", "ai_agentic", "consciousness", "wrfcoin", "generic")
+_SCRIPTS_DIR = Path(__file__).resolve().parent
+if str(_SCRIPTS_DIR) not in sys.path:
+    sys.path.insert(0, str(_SCRIPTS_DIR))
+
+from table_read import run_table_read  # noqa: E402
+
+VALID_CHANNELS = ("yoga", "instrument_maker", "ai_agentic", "consciousness", "wrfcoin",
+                  "mrbeast", "coding", "generic")
 VALID_PASSES = ("table-read", "structural-polish", "logistical-breakdown", "greenlight")
 
 
@@ -38,33 +42,8 @@ def _result(pass_name: str, score: float, flags: list[dict], **extra) -> dict:
 
 
 # ---------------------------------------------------------------------------
-# Pass stubs (replaced by full implementations in stories #427–#429)
+# Pass stubs (replaced by real implementations in stories #428 and #429)
 # ---------------------------------------------------------------------------
-
-def run_table_read(script: str, channel: str) -> dict:
-    """Stub: Phase 1 — table-read pass.
-
-    Full implementation: scripts/table_read.py (story #427).
-    Returns the canonical pass schema with placeholder scores and no flags,
-    so the greenlight gate and downstream tests have a stable contract.
-    """
-    word_count = len(script.split())
-    estimated_runtime_sec = word_count / 2.5  # ~150wpm spoken
-
-    return _result(
-        "table_read",
-        score=7.0,
-        flags=[],
-        archetype=channel,
-        readability_score=7.0,
-        estimated_runtime_sec=round(estimated_runtime_sec),
-        breath_breaks=[],
-        hard_to_speak=[],
-        pacing_by_section=[],
-        archetype_alignment="MATCH",
-        stub=True,
-    )
-
 
 def run_structural_polish(script: str, channel: str) -> dict:
     """Stub: Phase 2 — structural polish pass.
