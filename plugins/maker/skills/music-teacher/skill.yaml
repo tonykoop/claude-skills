@@ -1,0 +1,12 @@
+name: music-teacher
+version: 0.1.0
+skills:
+  - translator
+  - coach
+  - curator
+epic: 1
+repo: https://github.com/tonykoop/music-teacher
+description: >
+  Agentic music-teacher skill: profile learners, track mastery on a 0.0-1.0
+  competency scale, and run the closed learning loop that emits personalized
+  multi-month plans of interleaved daily micro-drills.

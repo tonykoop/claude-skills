@@ -1,5 +1,16 @@
 # maker plugin — Changelog
 
+## 2.1.0 — 2026-06-22
+
+Add the `music-teacher` skill to the maker set (now 15 skills). Agentic learner
+profiling, per-skill mastery tracking on a 0.0–1.0 competency scale, and
+personalized multi-month practice plans via the closed Coach loop
+(Profile → Curate → Calibrate → Mutate), plus Curator (graded repertoire + drill
+catalog) and Translator (cross-instrument/notation conversion) sub-roles.
+Kora-first, extensible to wind/percussion/dulcimer. Canonical source is the
+`tonykoop/music-teacher` repo; wired in via `SKILL.md` (frontmatter) + `skill.yaml`.
+Pairs with `sheet-music` and `instrument-maker`.
+
 ## 2.0.0 — 2026-06-19
 
 First-class v2.0.0 release. The maker skill set is mature and stable across 14 skills:
