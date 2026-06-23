@@ -128,3 +128,59 @@ profiles:
     hard_constraints:
       - "All price/metric data must carry a timestamp"
       - "No investment advice — educational framing only"
+
+  mrbeast:
+    archetype: mrbeast
+    description: "High-production challenge/stunt channel. Extreme pacing. Stakes or prize revealed immediately. No talking head > 10s without B-roll."
+    visual_switch_interval_sec: 2  # cut every 1-2 seconds during action sequences
+    required_assets:
+      - type: B-roll
+        note: "High-energy cutaway every 2s during action; no sustained talking-head segments"
+      - type: A-roll
+        note: "Presenter must be energetic on-camera; big reactions, expressive gestures required"
+    proofreading_filter:
+      - flag: "Delayed stakes reveal"
+        rule: "Prize, challenge, or stakes must be stated within the first 30 seconds; never buried in Act 2"
+      - flag: "Understated language"
+        rule: "MrBeast channel uses superlatives and scale — 'we spent $100k', 'last one standing'; hedge words weaken the hook"
+      - flag: "Talking head without B-roll"
+        rule: "No presenter segment longer than 10 seconds without a cutaway or reaction shot"
+    cta_rhythm:
+      placement: "Before the final reveal — never after; the reveal IS the payoff, CTA comes before it"
+      max_asks: 1
+    pacing_profile:
+      intro_sec: 10
+      peak_action_sec: 5
+      transition_beats: "cold cut every 2s during action; no dissolves"
+    hard_constraints:
+      - "Stakes or prize must be revealed before 0:30"
+      - "Hook must contain a challenge, extreme claim, or superlative amount"
+      - "No talking-head segment longer than 10 seconds without a B-roll cutaway"
+
+  coding:
+    archetype: coding
+    description: "Coding tutorial / walkthrough channel (VS Code, terminal, browser screencasts). Medium pacing. Every technical step shown on-screen."
+    visual_switch_interval_sec: 5  # switch on new terminal command or code change
+    required_assets:
+      - type: B-roll
+        note: "Screen recording per every technical step — no describing code without showing it"
+      - type: TEXT
+        note: "Command callouts as on-screen captions with exact syntax"
+    proofreading_filter:
+      - flag: "Code described but not shown"
+        rule: "Every code snippet or command must have a companion screen recording; description-only is a BLOCKER"
+      - flag: "Unrun code claimed as working"
+        rule: "All demos must show the command running and output appearing; screenshots of 'final state' without execution are RISK"
+      - flag: "AI-generated footage for technical claims"
+        rule: "No AI-generated visual for code demos — screen recording only; AI visuals allowed only for concept illustration labeled as such"
+    cta_rhythm:
+      placement: "After the working demo reveal — the viewer just saw it work, now ask them to follow"
+      max_asks: 2
+    pacing_profile:
+      intro_sec: 15
+      peak_demo_sec: 45
+      transition_beats: "cut on command execution or result appearance; dissolve on topic change"
+    hard_constraints:
+      - "Every terminal command must be shown running with visible output"
+      - "No AI-generated footage for any technical demonstration"
+      - "All code shown must be runnable as-is (no pseudocode presented as real)"

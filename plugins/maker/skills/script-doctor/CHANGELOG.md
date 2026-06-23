@@ -1,5 +1,9 @@
 # script-doctor changelog
 
+## v0.2.0 — 2026-06-22
+- Add mrbeast and coding channel profiles to references/channel-profiles.yaml. Channel count: 7. VALID_CHANNELS in run_review.py updated to include mrbeast and coding.
+- Refs tonykoop/claude-skills#430
+
 ## v0.1.5 — 2026-06-22
 - Add scripts/logistical_breakdown.py: segment parser (stage direction regex → type/TC/assets/props/location/risk classification). Wire into run_review.py; last stub removed.
 - Refs tonykoop/claude-skills#429
