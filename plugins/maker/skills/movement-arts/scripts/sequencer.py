@@ -22,6 +22,11 @@ sys.path.insert(0, _HERE)
 
 from tracker import MovementTracker, BreathClock, BeatClock, clock_for_domain
 
+try:
+    from objective import load_objective as _load_objective
+except ImportError:
+    _load_objective = None
+
 
 # ---------------------------------------------------------------------------
 # Data structures
@@ -121,7 +126,16 @@ class MovementSequencer:
         self._clock = clock or (
             clock_for_domain(self._domain) if self._domain else BreathClock()
         )
-        self._objective_fn = objective_fn or self._default_select
+
+        if objective_fn is not None:
+            self._objective_fn = objective_fn
+        elif _load_objective and self._objective_name not in ("none", ""):
+            try:
+                self._objective_fn = _load_objective(self._objective_name)
+            except ValueError:
+                self._objective_fn = self._default_select
+        else:
+            self._objective_fn = self._default_select
 
         self._tracker = MovementTracker()
         self._cursor = 0
