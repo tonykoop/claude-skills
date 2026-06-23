@@ -44,7 +44,7 @@ Raw audio / score / melody
 **What sheet-music does:**
 1. Runs `render_pipeline.py` on each source; outputs ABC notation + MusicXML + MIDI per track.
 2. Detects the tonal center and meter for each track.
-3. Assigns a provisional Camelot key code (e.g., `8A` for D minor) to each track.
+3. Assigns a provisional Camelot key code (e.g., `12A` for D minor) to each track.
 4. Emits one `AcousticIngestPacket` per track (schema: `schemas/agent_packets/AcousticIngestPacket.schema.json`).
 
 **Example packet (Track 1):**
@@ -58,7 +58,7 @@ Raw audio / score / melody
   "source_files": ["kora_dawn.wav"],
   "tonal_center": "D",
   "mode": "minor",
-  "camelot_code": "8A",
+  "camelot_code": "12A",
   "bpm": 76.0,
   "meter": "6/8",
   "formats_rendered": ["abc", "musicxml", "midi"],
@@ -125,7 +125,7 @@ Raw audio / score / melody
   "packet_id": "asp-01J3XL5P4F000000000000000",
   "album_title": "Kora & Flute EP",
   "sequence": [
-    {"position": 1, "track_id": "track-001", "camelot_code": "8A", "bpm": 76.0, "arc_role": "opener"},
+    {"position": 1, "track_id": "track-001", "camelot_code": "12A", "bpm": 76.0, "arc_role": "opener"},
     {"position": 2, "track_id": "track-003", "camelot_code": "9A", "bpm": 82.0, "arc_role": "build"},
     {"position": 3, "track_id": "track-002", "camelot_code": "8A", "bpm": 76.0, "arc_role": "peak"},
     {"position": 4, "track_id": "track-004", "camelot_code": "8B", "bpm": 70.0, "arc_role": "cool-down"}
