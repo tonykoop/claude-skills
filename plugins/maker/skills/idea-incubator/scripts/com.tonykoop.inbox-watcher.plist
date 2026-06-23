@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- Unique reverse-DNS label for launchd -->
+    <key>Label</key>
+    <string>com.tonykoop.inbox-watcher</string>
+
+    <!-- Run inbox_watcher.py using the system python3 (adjust path if using pyenv/venv) -->
+    <key>ProgramArguments</key>
+    <array>
+        <string>/usr/bin/python3</string>
+        <string>-m</string>
+        <string>inbox_watcher</string>
+        <string>/Users/tony/Inbound_Brainstorms</string>
+        <string>--interval</string>
+        <string>10</string>
+    </array>
+
+    <!-- Working directory: idea-incubator scripts folder -->
+    <key>WorkingDirectory</key>
+    <string>/Users/tony/code/claude-skills/plugins/maker/skills/idea-incubator/scripts</string>
+
+    <!-- Start at user login and keep alive if it exits -->
+    <key>RunAtLoad</key>
+    <true/>
+    <key>KeepAlive</key>
+    <true/>
+
+    <!-- Throttle restart to avoid tight crash loops -->
+    <key>ThrottleInterval</key>
+    <integer>30</integer>
+
+    <!-- Log files — launchd creates them if absent -->
+    <key>StandardOutPath</key>
+    <string>/tmp/com.tonykoop.inbox-watcher.log</string>
+    <key>StandardErrorPath</key>
+    <string>/tmp/com.tonykoop.inbox-watcher.err</string>
+
+    <!-- Inherit the user's full PATH so `gh` and other CLIs are reachable -->
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/usr/local/bin:/usr/bin:/bin:/opt/homebrew/bin</string>
+    </dict>
+</dict>
+</plist>

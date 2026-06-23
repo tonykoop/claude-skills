@@ -1,0 +1,22 @@
+[Unit]
+Description=Idea-Incubator inbox watcher daemon
+Documentation=https://github.com/tonykoop/claude-skills
+# Wait for the network (Tailscale) before starting so gh CLI can reach GitHub
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+# Adjust WorkingDirectory to match your local checkout
+WorkingDirectory=%h/code/claude-skills/plugins/maker/skills/idea-incubator/scripts
+ExecStart=/usr/bin/python3 -m inbox_watcher %h/Inbound_Brainstorms --interval 10
+Restart=on-failure
+RestartSec=30s
+
+# Keep logs tidy — journalctl --user -u inbox-watcher.service -f
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=inbox-watcher
+
+[Install]
+WantedBy=default.target
