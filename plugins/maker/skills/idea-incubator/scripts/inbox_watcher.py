@@ -342,8 +342,8 @@ def main(argv: list[str]) -> int:
         "inbox_dir",
         type=Path,
         nargs="?",
-        default=Path("00-inbox"),
-        help="Obsidian vault inbox folder to watch (default: 00-inbox).",
+        default=Path("Inbound_Brainstorms"),
+        help="Obsidian vault inbox folder to watch (default: Inbound_Brainstorms).",
     )
     parser.add_argument(
         "--once",
