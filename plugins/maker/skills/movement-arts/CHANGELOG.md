@@ -20,3 +20,13 @@ Valid-transition state machine.
 - Rule-based weight-shift and facing-continuity constraints (not hand-enumerated per style)
 - 180° pivot gated behind bilateral or unweighted base
 - Jump/unweighted transitions require bilateral base
+
+## 0.3.0 — 2026-06-22 (Refs #466)
+
+Domain registry: vinyasa / hip-hop / salsa / ballet.
+
+- `domains/vinyasa.json` — 31 primitives, breath clock, breath_alignment objective; reuses yoga flow structure
+- `domains/hip_hop.json` — 19 primitives, 8-count beat clock, tutting/isolation/cypher-step
+- `domains/salsa.json` — 14 primitives, linear-slot geometry, on1/on2 timing
+- `domains/ballet.json` — 23 primitives, musical-phrase clock, plié/tendu/pirouette/jeté
+- `references/domain-registry.md` — how domains load; schema reference

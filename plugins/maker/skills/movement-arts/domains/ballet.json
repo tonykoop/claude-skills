@@ -1,0 +1,244 @@
+{
+  "schema_version": 1,
+  "domain": "ballet",
+  "clock": {
+    "type": "beat",
+    "bpm_range": [60, 100],
+    "count_unit": 8,
+    "phrase_length": 8
+  },
+  "objective": "style_expression",
+  "requires_clinical_review": false,
+  "primitives": [
+    {
+      "id": "fifth_position",
+      "name": "Fifth Position",
+      "weight_shift": "bilateral",
+      "facing": "north",
+      "tempo_class": "slow",
+      "energy_delta": 0.01,
+      "duration_beats": 4,
+      "valid_next": ["plie_demi", "tendu_front", "battement_degage", "releve"]
+    },
+    {
+      "id": "first_position",
+      "name": "First Position",
+      "weight_shift": "bilateral",
+      "facing": "north",
+      "tempo_class": "slow",
+      "energy_delta": 0.01,
+      "duration_beats": 4,
+      "valid_next": ["plie_demi", "tendu_front", "fifth_position"]
+    },
+    {
+      "id": "plie_demi",
+      "name": "Demi Plié",
+      "weight_shift": "bilateral",
+      "facing": "north",
+      "tempo_class": "slow",
+      "energy_delta": 0.04,
+      "duration_beats": 4,
+      "valid_next": ["plie_grand", "releve", "fifth_position", "tendu_front"]
+    },
+    {
+      "id": "plie_grand",
+      "name": "Grand Plié",
+      "weight_shift": "bilateral",
+      "facing": "north",
+      "tempo_class": "slow",
+      "energy_delta": 0.08,
+      "duration_beats": 8,
+      "valid_next": ["plie_demi", "fifth_position", "battement_degage"]
+    },
+    {
+      "id": "tendu_front",
+      "name": "Tendu Front (Battement Tendu devant)",
+      "weight_shift": "left",
+      "facing": "north",
+      "tempo_class": "medium",
+      "energy_delta": 0.05,
+      "duration_beats": 4,
+      "valid_next": ["tendu_side", "tendu_back", "degage_front", "fifth_position"]
+    },
+    {
+      "id": "tendu_side",
+      "name": "Tendu Side (à la seconde)",
+      "weight_shift": "left",
+      "facing": "east",
+      "tempo_class": "medium",
+      "energy_delta": 0.05,
+      "duration_beats": 4,
+      "valid_next": ["tendu_back", "tendu_front", "degage_side", "fifth_position"]
+    },
+    {
+      "id": "tendu_back",
+      "name": "Tendu Back (derrière)",
+      "weight_shift": "left",
+      "facing": "south",
+      "tempo_class": "medium",
+      "energy_delta": 0.05,
+      "duration_beats": 4,
+      "valid_next": ["tendu_front", "degage_back", "fifth_position"]
+    },
+    {
+      "id": "degage_front",
+      "name": "Dégagé Front",
+      "weight_shift": "left",
+      "facing": "north",
+      "tempo_class": "medium",
+      "energy_delta": 0.07,
+      "duration_beats": 2,
+      "valid_next": ["degage_side", "battement_degage", "fifth_position"]
+    },
+    {
+      "id": "degage_side",
+      "name": "Dégagé Side",
+      "weight_shift": "left",
+      "facing": "east",
+      "tempo_class": "medium",
+      "energy_delta": 0.07,
+      "duration_beats": 2,
+      "valid_next": ["degage_front", "degage_back", "fifth_position"]
+    },
+    {
+      "id": "degage_back",
+      "name": "Dégagé Back",
+      "weight_shift": "left",
+      "facing": "south",
+      "tempo_class": "medium",
+      "energy_delta": 0.07,
+      "duration_beats": 2,
+      "valid_next": ["degage_side", "fifth_position"]
+    },
+    {
+      "id": "battement_degage",
+      "name": "Grand Battement Dégagé",
+      "weight_shift": "left",
+      "facing": "north",
+      "tempo_class": "fast",
+      "energy_delta": 0.12,
+      "duration_beats": 4,
+      "valid_next": ["fifth_position", "plie_demi", "tendu_front"]
+    },
+    {
+      "id": "releve",
+      "name": "Relevé",
+      "weight_shift": "bilateral",
+      "facing": "north",
+      "tempo_class": "slow",
+      "energy_delta": 0.06,
+      "duration_beats": 4,
+      "valid_next": ["plie_demi", "fifth_position", "retire_passé"]
+    },
+    {
+      "id": "retire_passé",
+      "name": "Retiré / Passé",
+      "weight_shift": "left",
+      "facing": "north",
+      "tempo_class": "slow",
+      "energy_delta": 0.08,
+      "duration_beats": 4,
+      "valid_next": ["pirouette_prep", "fifth_position", "plie_demi"]
+    },
+    {
+      "id": "pirouette_prep",
+      "name": "Pirouette Preparation (4th position)",
+      "weight_shift": "right",
+      "facing": "north",
+      "tempo_class": "slow",
+      "energy_delta": 0.05,
+      "duration_beats": 4,
+      "valid_next": ["pirouette_en_dehors", "plie_demi", "fifth_position"]
+    },
+    {
+      "id": "pirouette_en_dehors",
+      "name": "Pirouette en Dehors",
+      "weight_shift": "left",
+      "facing": "any",
+      "tempo_class": "fast",
+      "energy_delta": 0.18,
+      "duration_beats": 4,
+      "valid_next": ["fifth_position", "plie_demi", "arabesque_prep"]
+    },
+    {
+      "id": "arabesque_prep",
+      "name": "Arabesque Preparation",
+      "weight_shift": "left",
+      "facing": "north",
+      "tempo_class": "slow",
+      "energy_delta": 0.07,
+      "duration_beats": 4,
+      "valid_next": ["arabesque", "fifth_position"]
+    },
+    {
+      "id": "arabesque",
+      "name": "Arabesque",
+      "weight_shift": "left",
+      "facing": "north",
+      "tempo_class": "slow",
+      "energy_delta": 0.1,
+      "duration_beats": 8,
+      "valid_next": ["fifth_position", "plie_demi", "attitude"]
+    },
+    {
+      "id": "attitude",
+      "name": "Attitude Derrière",
+      "weight_shift": "left",
+      "facing": "north",
+      "tempo_class": "slow",
+      "energy_delta": 0.09,
+      "duration_beats": 8,
+      "valid_next": ["fifth_position", "arabesque", "plie_demi"]
+    },
+    {
+      "id": "jete_petit",
+      "name": "Petit Jeté",
+      "weight_shift": "right",
+      "facing": "north",
+      "tempo_class": "fast",
+      "energy_delta": 0.14,
+      "duration_beats": 4,
+      "valid_next": ["jete_petit_left", "glissade", "fifth_position"]
+    },
+    {
+      "id": "jete_petit_left",
+      "name": "Petit Jeté Left",
+      "weight_shift": "left",
+      "facing": "north",
+      "tempo_class": "fast",
+      "energy_delta": 0.14,
+      "duration_beats": 4,
+      "valid_next": ["jete_petit", "glissade", "fifth_position"]
+    },
+    {
+      "id": "glissade",
+      "name": "Glissade",
+      "weight_shift": "bilateral",
+      "facing": "north",
+      "tempo_class": "medium",
+      "energy_delta": 0.08,
+      "duration_beats": 4,
+      "valid_next": ["jete_petit", "assemble", "fifth_position"]
+    },
+    {
+      "id": "assemble",
+      "name": "Assemblé",
+      "weight_shift": "bilateral",
+      "facing": "north",
+      "tempo_class": "fast",
+      "energy_delta": 0.12,
+      "duration_beats": 4,
+      "valid_next": ["fifth_position", "glissade", "plie_demi"]
+    },
+    {
+      "id": "reverence",
+      "name": "Révérence (bow/curtsy)",
+      "weight_shift": "bilateral",
+      "facing": "north",
+      "tempo_class": "slow",
+      "energy_delta": -0.15,
+      "duration_beats": 8,
+      "valid_next": ["first_position", "fifth_position"]
+    }
+  ]
+}

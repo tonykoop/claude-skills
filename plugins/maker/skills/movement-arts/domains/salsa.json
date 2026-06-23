@@ -1,0 +1,154 @@
+{
+  "schema_version": 1,
+  "domain": "salsa",
+  "clock": {
+    "type": "beat",
+    "bpm_range": [160, 180],
+    "count_unit": 8,
+    "timing_style": "on1"
+  },
+  "objective": "style_expression",
+  "requires_clinical_review": false,
+  "primitives": [
+    {
+      "id": "basic_step_leader",
+      "name": "Basic Step (Leader, On1)",
+      "weight_shift": "left",
+      "facing": "north",
+      "tempo_class": "medium",
+      "energy_delta": 0.04,
+      "duration_beats": 8,
+      "valid_next": ["right_turn_leader", "cross_body_lead", "open_break", "cumbia_step"]
+    },
+    {
+      "id": "basic_step_follower",
+      "name": "Basic Step (Follower, On1)",
+      "weight_shift": "right",
+      "facing": "south",
+      "tempo_class": "medium",
+      "energy_delta": 0.04,
+      "duration_beats": 8,
+      "valid_next": ["right_turn_follower", "cross_body_lead", "open_break"]
+    },
+    {
+      "id": "right_turn_leader",
+      "name": "Right Turn (Leader)",
+      "weight_shift": "right",
+      "facing": "east",
+      "tempo_class": "fast",
+      "energy_delta": 0.1,
+      "duration_beats": 8,
+      "valid_next": ["basic_step_leader", "cross_body_lead", "copa"]
+    },
+    {
+      "id": "right_turn_follower",
+      "name": "Right Turn (Follower)",
+      "weight_shift": "left",
+      "facing": "west",
+      "tempo_class": "fast",
+      "energy_delta": 0.1,
+      "duration_beats": 8,
+      "valid_next": ["basic_step_follower", "cross_body_lead"]
+    },
+    {
+      "id": "cross_body_lead",
+      "name": "Cross Body Lead",
+      "weight_shift": "bilateral",
+      "facing": "north",
+      "tempo_class": "medium",
+      "energy_delta": 0.08,
+      "duration_beats": 8,
+      "valid_next": ["basic_step_leader", "copa", "dile_que_no"]
+    },
+    {
+      "id": "open_break",
+      "name": "Open Break",
+      "weight_shift": "right",
+      "facing": "north",
+      "tempo_class": "medium",
+      "energy_delta": 0.06,
+      "duration_beats": 8,
+      "valid_next": ["basic_step_leader", "cross_body_lead", "side_step"]
+    },
+    {
+      "id": "side_step",
+      "name": "Side Step (linear slot)",
+      "weight_shift": "left",
+      "facing": "north",
+      "tempo_class": "medium",
+      "energy_delta": 0.05,
+      "duration_beats": 8,
+      "valid_next": ["side_step_right", "basic_step_leader", "open_break"]
+    },
+    {
+      "id": "side_step_right",
+      "name": "Side Step Right",
+      "weight_shift": "right",
+      "facing": "north",
+      "tempo_class": "medium",
+      "energy_delta": 0.05,
+      "duration_beats": 8,
+      "valid_next": ["side_step", "basic_step_leader", "copa"]
+    },
+    {
+      "id": "copa",
+      "name": "Copa",
+      "weight_shift": "right",
+      "facing": "east",
+      "tempo_class": "medium",
+      "energy_delta": 0.07,
+      "duration_beats": 8,
+      "valid_next": ["basic_step_leader", "cross_body_lead", "dile_que_no"]
+    },
+    {
+      "id": "dile_que_no",
+      "name": "Dile Que No (turn to closed position)",
+      "weight_shift": "bilateral",
+      "facing": "north",
+      "tempo_class": "fast",
+      "energy_delta": 0.09,
+      "duration_beats": 6,
+      "valid_next": ["basic_step_leader", "cross_body_lead"]
+    },
+    {
+      "id": "cumbia_step",
+      "name": "Cumbia Step",
+      "weight_shift": "left",
+      "facing": "north",
+      "tempo_class": "slow",
+      "energy_delta": 0.04,
+      "duration_beats": 8,
+      "valid_next": ["basic_step_leader", "side_step", "open_break"]
+    },
+    {
+      "id": "shine_suzy_q",
+      "name": "Shine: Suzy Q",
+      "weight_shift": "bilateral",
+      "facing": "north",
+      "tempo_class": "medium",
+      "energy_delta": 0.07,
+      "duration_beats": 8,
+      "valid_next": ["shine_cha_cha", "basic_step_leader", "cross_body_lead"]
+    },
+    {
+      "id": "shine_cha_cha",
+      "name": "Shine: Cha Cha",
+      "weight_shift": "bilateral",
+      "facing": "north",
+      "tempo_class": "fast",
+      "energy_delta": 0.12,
+      "duration_beats": 8,
+      "valid_next": ["shine_suzy_q", "basic_step_leader", "cross_body_lead"]
+    },
+    {
+      "id": "slot_reset",
+      "name": "Slot Reset (walk to closed)",
+      "weight_shift": "bilateral",
+      "facing": "north",
+      "tempo_class": "slow",
+      "energy_delta": -0.08,
+      "duration_beats": 8,
+      "valid_next": ["basic_step_leader", "cross_body_lead"]
+    }
+  ]
+}

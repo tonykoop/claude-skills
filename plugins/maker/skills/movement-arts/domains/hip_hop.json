@@ -1,0 +1,203 @@
+{
+  "schema_version": 1,
+  "domain": "hip_hop",
+  "clock": {
+    "type": "beat",
+    "bpm_range": [90, 110],
+    "count_unit": 8
+  },
+  "objective": "style_expression",
+  "requires_clinical_review": false,
+  "primitives": [
+    {
+      "id": "neutral_bounce",
+      "name": "Neutral Bounce",
+      "weight_shift": "bilateral",
+      "facing": "north",
+      "tempo_class": "medium",
+      "energy_delta": 0.03,
+      "duration_beats": 8,
+      "valid_next": ["step_touch", "two_step", "body_roll", "dap_reach"]
+    },
+    {
+      "id": "step_touch",
+      "name": "Step Touch",
+      "weight_shift": "left",
+      "facing": "north",
+      "tempo_class": "medium",
+      "energy_delta": 0.06,
+      "duration_beats": 8,
+      "valid_next": ["step_touch_right", "neutral_bounce", "two_step", "isolation_head"]
+    },
+    {
+      "id": "step_touch_right",
+      "name": "Step Touch Right",
+      "weight_shift": "right",
+      "facing": "north",
+      "tempo_class": "medium",
+      "energy_delta": 0.06,
+      "duration_beats": 8,
+      "valid_next": ["step_touch", "neutral_bounce", "grapevine_left"]
+    },
+    {
+      "id": "two_step",
+      "name": "Two Step",
+      "weight_shift": "bilateral",
+      "facing": "north",
+      "tempo_class": "medium",
+      "energy_delta": 0.08,
+      "duration_beats": 8,
+      "valid_next": ["step_touch", "neutral_bounce", "pivot_turn", "grapevine_left"]
+    },
+    {
+      "id": "grapevine_left",
+      "name": "Grapevine Left",
+      "weight_shift": "left",
+      "facing": "north",
+      "tempo_class": "medium",
+      "energy_delta": 0.07,
+      "duration_beats": 8,
+      "valid_next": ["grapevine_right", "step_touch", "neutral_bounce"]
+    },
+    {
+      "id": "grapevine_right",
+      "name": "Grapevine Right",
+      "weight_shift": "right",
+      "facing": "north",
+      "tempo_class": "medium",
+      "energy_delta": 0.07,
+      "duration_beats": 8,
+      "valid_next": ["grapevine_left", "step_touch_right", "pivot_turn"]
+    },
+    {
+      "id": "body_roll",
+      "name": "Body Roll",
+      "weight_shift": "bilateral",
+      "facing": "north",
+      "tempo_class": "slow",
+      "energy_delta": 0.05,
+      "duration_beats": 8,
+      "valid_next": ["neutral_bounce", "isolation_hips", "two_step", "dap_reach"]
+    },
+    {
+      "id": "isolation_head",
+      "name": "Head Isolation",
+      "weight_shift": "bilateral",
+      "facing": "north",
+      "tempo_class": "slow",
+      "energy_delta": 0.04,
+      "duration_beats": 4,
+      "valid_next": ["isolation_shoulders", "body_roll", "neutral_bounce"]
+    },
+    {
+      "id": "isolation_shoulders",
+      "name": "Shoulder Isolation",
+      "weight_shift": "bilateral",
+      "facing": "north",
+      "tempo_class": "slow",
+      "energy_delta": 0.05,
+      "duration_beats": 8,
+      "valid_next": ["body_roll", "isolation_hips", "neutral_bounce", "popping"]
+    },
+    {
+      "id": "isolation_hips",
+      "name": "Hip Isolation",
+      "weight_shift": "bilateral",
+      "facing": "north",
+      "tempo_class": "medium",
+      "energy_delta": 0.07,
+      "duration_beats": 8,
+      "valid_next": ["two_step", "body_roll", "neutral_bounce", "wind_down"]
+    },
+    {
+      "id": "popping",
+      "name": "Popping",
+      "weight_shift": "bilateral",
+      "facing": "north",
+      "tempo_class": "fast",
+      "energy_delta": 0.1,
+      "duration_beats": 8,
+      "valid_next": ["locking", "neutral_bounce", "isolation_shoulders"]
+    },
+    {
+      "id": "locking",
+      "name": "Locking",
+      "weight_shift": "bilateral",
+      "facing": "north",
+      "tempo_class": "fast",
+      "energy_delta": 0.12,
+      "duration_beats": 8,
+      "valid_next": ["popping", "dap_reach", "neutral_bounce"]
+    },
+    {
+      "id": "tutting",
+      "name": "Tutting (arm geometric formations)",
+      "weight_shift": "bilateral",
+      "facing": "north",
+      "tempo_class": "medium",
+      "energy_delta": 0.08,
+      "duration_beats": 8,
+      "valid_next": ["popping", "neutral_bounce", "locking"]
+    },
+    {
+      "id": "dap_reach",
+      "name": "Dap / Reach",
+      "weight_shift": "bilateral",
+      "facing": "north",
+      "tempo_class": "medium",
+      "energy_delta": 0.04,
+      "duration_beats": 4,
+      "valid_next": ["two_step", "body_roll", "neutral_bounce"]
+    },
+    {
+      "id": "pivot_turn",
+      "name": "Pivot Turn",
+      "weight_shift": "right",
+      "facing": "east",
+      "tempo_class": "fast",
+      "energy_delta": 0.1,
+      "duration_beats": 4,
+      "valid_next": ["neutral_bounce", "two_step", "grapevine_right"]
+    },
+    {
+      "id": "cypher_step",
+      "name": "Cypher Step (circle walk)",
+      "weight_shift": "left",
+      "facing": "east",
+      "tempo_class": "medium",
+      "energy_delta": 0.06,
+      "duration_beats": 8,
+      "valid_next": ["cypher_step_right", "neutral_bounce"]
+    },
+    {
+      "id": "cypher_step_right",
+      "name": "Cypher Step Right",
+      "weight_shift": "right",
+      "facing": "west",
+      "tempo_class": "medium",
+      "energy_delta": 0.06,
+      "duration_beats": 8,
+      "valid_next": ["cypher_step", "neutral_bounce", "pivot_turn"]
+    },
+    {
+      "id": "wide_squat_pulse",
+      "name": "Wide Squat Pulse",
+      "weight_shift": "bilateral",
+      "facing": "north",
+      "tempo_class": "medium",
+      "energy_delta": 0.1,
+      "duration_beats": 8,
+      "valid_next": ["neutral_bounce", "isolation_hips", "two_step"]
+    },
+    {
+      "id": "wind_down",
+      "name": "Wind Down (slow pulse)",
+      "weight_shift": "bilateral",
+      "facing": "north",
+      "tempo_class": "slow",
+      "energy_delta": -0.12,
+      "duration_beats": 8,
+      "valid_next": ["neutral_bounce", "body_roll"]
+    }
+  ]
+}
