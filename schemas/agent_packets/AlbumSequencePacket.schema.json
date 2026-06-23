@@ -1,0 +1,116 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://tonykoop.github.io/claude-skills/schemas/agent_packets/v0/AlbumSequencePacket.schema.json",
+  "title": "AlbumSequencePacket",
+  "description": "Stage-3 output from maker:playlist-builder (Curator-Performer). Captures the final track sequence with harmonic flow, energy-arc roles, and BPM/Camelot metadata ready for DJ handoff or mastering. Consumed by StudioPipeline / DJ skill (see docs/dj_handoff.md).",
+  "type": "object",
+  "required": [
+    "$schema",
+    "schema_version",
+    "packet_id",
+    "album_title",
+    "sequence",
+    "source_packet_ids",
+    "sequenced_at"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "JSON Schema identifier. Must reference this schema's $id."
+    },
+    "schema_version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "description": "Semantic version of this packet schema.",
+      "examples": ["0.1.0"]
+    },
+    "packet_id": {
+      "type": "string",
+      "description": "Globally unique ULID identifying this packet instance.",
+      "pattern": "^asp-[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "album_title": {
+      "type": "string",
+      "description": "Human-readable title for the album or playlist."
+    },
+    "sequence": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/SequenceEntry" },
+      "minItems": 1,
+      "description": "Ordered list of tracks in playback order (position 1 = first track)."
+    },
+    "source_packet_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^csp-[0-9A-HJKMNP-TV-Z]{26}$"
+      },
+      "minItems": 1,
+      "description": "packet_ids of all CompositionStatePackets consumed to produce this sequence."
+    },
+    "arc_type": {
+      "type": "string",
+      "enum": ["power", "sustained", "sculpt", "restorative", "dj-set", "album", "custom"],
+      "description": "Energy-arc template applied during sequencing (from playlist-builder v0.4.0 arc library).",
+      "default": "album"
+    },
+    "total_duration_seconds": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Estimated total playback duration in seconds, if known."
+    },
+    "sequenced_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO-8601 UTC timestamp when this sequence was finalized (see docs/data_integrity.md)."
+    },
+    "notes": {
+      "type": "string",
+      "description": "Optional Curator-Performer commentary on sequencing decisions, Camelot exceptions, or BPM bridge choices."
+    }
+  },
+  "definitions": {
+    "SequenceEntry": {
+      "type": "object",
+      "required": ["position", "track_id", "camelot_code", "bpm", "arc_role"],
+      "additionalProperties": false,
+      "properties": {
+        "position": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "1-based playback position in the album."
+        },
+        "track_id": {
+          "type": "string",
+          "description": "Stable track identifier, unchanged from AcousticIngestPacket and CompositionStatePacket."
+        },
+        "title": {
+          "type": "string",
+          "description": "Track title (copied from AcousticIngestPacket for convenience)."
+        },
+        "camelot_code": {
+          "type": "string",
+          "pattern": "^(1[0-2]|[1-9])[AB]$",
+          "description": "Final Camelot Wheel code assigned by Curator-Performer for harmonic sequencing.",
+          "examples": ["8A", "9A", "8B", "1B"]
+        },
+        "bpm": {
+          "type": "number",
+          "minimum": 20,
+          "maximum": 400,
+          "description": "Track tempo used for beatmatch decisions."
+        },
+        "arc_role": {
+          "type": "string",
+          "enum": ["opener", "build", "peak", "sustain", "cool-down", "closer", "interlude"],
+          "description": "Role of this track in the energy arc."
+        },
+        "transition_notes": {
+          "type": "string",
+          "description": "Optional Curator-Performer notes on the transition from the previous track (e.g. harmonic bridge, BPM ramp)."
+        }
+      }
+    }
+  }
+}

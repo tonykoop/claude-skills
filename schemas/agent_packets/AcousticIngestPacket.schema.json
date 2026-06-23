@@ -1,0 +1,114 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://tonykoop.github.io/claude-skills/schemas/agent_packets/v0/AcousticIngestPacket.schema.json",
+  "title": "AcousticIngestPacket",
+  "description": "Stage-1 output from maker:sheet-music (Translator). Captures all metadata produced during source ingestion and score rendering. Consumed by music-teacher (Coach-Producer) in Stage 2.",
+  "type": "object",
+  "required": [
+    "$schema",
+    "schema_version",
+    "packet_id",
+    "track_id",
+    "title",
+    "source_files",
+    "tonal_center",
+    "mode",
+    "camelot_code",
+    "bpm",
+    "meter",
+    "formats_rendered",
+    "ingested_at"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "JSON Schema identifier. Must reference this schema's $id."
+    },
+    "schema_version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "description": "Semantic version of this packet schema (e.g. \"0.1.0\").",
+      "examples": ["0.1.0"]
+    },
+    "packet_id": {
+      "type": "string",
+      "description": "Globally unique ULID identifying this packet instance.",
+      "pattern": "^aip-[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "track_id": {
+      "type": "string",
+      "description": "Stable identifier for the track across all stages. Must not change between packets for the same track."
+    },
+    "title": {
+      "type": "string",
+      "description": "Human-readable track title."
+    },
+    "source_files": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1,
+      "description": "Original source filenames deposited by the user (audio, chord chart, etc.)."
+    },
+    "tonal_center": {
+      "type": "string",
+      "enum": ["C", "C#", "Db", "D", "D#", "Eb", "E", "F", "F#", "Gb", "G", "G#", "Ab", "A", "A#", "Bb", "B"],
+      "description": "Detected tonal center (root note)."
+    },
+    "mode": {
+      "type": "string",
+      "enum": ["major", "minor", "dorian", "phrygian", "lydian", "mixolydian", "locrian", "other"],
+      "description": "Scale mode of the tonal center."
+    },
+    "camelot_code": {
+      "type": "string",
+      "pattern": "^(1[0-2]|[1-9])[AB]$",
+      "description": "Camelot Wheel key code (e.g. \"8A\" for D minor, \"1B\" for C major). Used for harmonic sequencing in Stage 3.",
+      "examples": ["8A", "1B", "5A", "12B"]
+    },
+    "bpm": {
+      "type": "number",
+      "minimum": 20,
+      "maximum": 400,
+      "description": "Detected or user-confirmed tempo in beats per minute."
+    },
+    "meter": {
+      "type": "string",
+      "pattern": "^\\d+/\\d+$",
+      "description": "Time signature (e.g. \"4/4\", \"6/8\", \"3/4\").",
+      "examples": ["4/4", "6/8", "3/4"]
+    },
+    "formats_rendered": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["abc", "lilypond", "musicxml", "midi", "wav", "svg", "pdf"]
+      },
+      "minItems": 1,
+      "description": "List of output formats successfully rendered by maker:sheet-music."
+    },
+    "duration_seconds": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Total duration of the track in seconds, if known."
+    },
+    "sample_rate_hz": {
+      "type": "integer",
+      "description": "Sample rate of the rendered audio (e.g. 44100, 48000), if applicable."
+    },
+    "ingested_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO-8601 UTC timestamp of ingestion completion (see docs/data_integrity.md)."
+    },
+    "revision_token": {
+      "type": ["string", "null"],
+      "description": "Revision token issued by Coach-Producer on any subsequent edit. null on first emission from Translator.",
+      "default": null
+    },
+    "notes": {
+      "type": "string",
+      "description": "Optional free-text notes from the Translator about anomalies or assumptions made during ingestion."
+    }
+  }
+}
