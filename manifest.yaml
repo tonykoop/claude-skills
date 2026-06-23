@@ -195,16 +195,19 @@ skills:
     notes: "1.15.0: Tailscale webhook dispatch (#412) — HMAC-SHA256 signed HTTP webhook (stdlib-only) for autonomous home-PC dispatch from mobile via signed POST. 1.14.0: image-gen-2 chapter asset-contract validator (scripts/image_chapter_validator.py + 47 tests; first tests/ dir for idea-incubator) — enforces derivative, non_dimensional, kind, packet_ref, proof-reviewed threshold, two-source rule (#210). 1.13.0: offline Shared Subassemblies reporter — portable twin of the #244 Obsidian MOC dashboards (scripts/shared_subassemblies.py + 11 tests). 1.12.0: cross-pollination epic-level Opportunities Detected report + checker (#247). 1.11.0: tuned domain router (#242). 1.10.0: prior-lessons pre-read (#241). 1.9.0: retrospective sweep (#240). 1.8.0: red-team risks section (#238). 1.7.0: cross-pollination engine (epic #236); 1.6.0: workflow automation & agent roles (epic #235). 1.5.0: brainstorm-to-issues ingestion mode."
 
   file-a-patent:
-    canonical_version: 0.2.0
+    canonical_version: 0.3.0
     runtime: shared
     repo_path: plugins/maker/skills/file-a-patent
-    last_updated: 2026-06-19
+    last_updated: 2026-06-20
     status: active
     notes: >-
       Private, attorney-ready invention packet and provisional-patent
       preparation skill. Does not provide legal advice, file with any office,
       publish, change licenses, or conclude patentability. v0.2.0 adds
-      machine-runnable eval suite (5 evals).
+      machine-runnable eval suite (5 evals). v0.3.0 adds ingestion workflow:
+      ip_capture timestamp block, ip_disclosure_summary schema, verbatim
+      quote capture, provenance-ledger integration with patent-funnel dossiers,
+      and LLM-timestamp soft-provenance guardrail (Stories #414–#418).
 
   maker-engineering:
     canonical_version: 1.2.0
