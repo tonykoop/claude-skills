@@ -1,0 +1,42 @@
+name: issue-reconciliation
+
+# Weekly safety-net that closes open issues whose deliverable already merged
+# (the "Refs #N instead of Closes #N" backlog) across the software-epic repos in
+# scripts/issue-reconciliation/repos.txt. The root-cause fix is the closing
+# convention (software story PRs use `Closes #N`); this just mops up the residue.
+#
+# SETUP (one-time): add a repo/org secret RECON_TOKEN — a PAT (classic `repo`
+# scope, or fine-grained with Issues:write) that can close issues in every repo
+# listed in repos.txt. The default GITHUB_TOKEN only reaches THIS repo, so
+# cross-repo closing needs the PAT.
+
+on:
+  schedule:
+    - cron: "23 9 * * 1"   # Mondays ~09:23 UTC (off the :00 mark)
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "dry (report only) or exec (close issues)"
+        type: choice
+        default: dry
+        options: [dry, exec]
+
+permissions:
+  contents: read
+
+jobs:
+  reconcile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run reconciliation
+        env:
+          GH_TOKEN: ${{ secrets.RECON_TOKEN }}
+          # scheduled runs exec; manual runs honor the chosen mode (default dry)
+          MODE: ${{ github.event_name == 'schedule' && 'exec' || inputs.mode }}
+        run: |
+          if [ -z "${GH_TOKEN}" ]; then
+            echo "::error::RECON_TOKEN secret not set — see workflow header for setup."
+            exit 1
+          fi
+          bash scripts/issue-reconciliation/reconcile.sh "${MODE}"

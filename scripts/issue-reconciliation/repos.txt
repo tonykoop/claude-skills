@@ -1,0 +1,23 @@
+# Repos the weekly issue-reconciliation sweep is allowed to auto-close issues in.
+# One per line: <owner/repo>[ <protect-epic-numbers,comma-sep>]
+#
+# ⚠️  SOFTWARE-EPIC REPOS ONLY. Do NOT add instrument-maker / per-instrument
+# readiness-ladder repos (e.g. didgeridoo and the strings/woodwind/brass/etc.
+# packet repos): there a merged L2 build-packet PR legitimately leaves its issue
+# OPEN until L3/L4 build evidence lands, so auto-closing would be wrong.
+# See memory: sprint_pr_body_refs_not_closes (Refs-not-Closes is intentional there).
+#
+# The optional second field protects actively-building epics from being closed
+# even if their prior stories merged (leave blank when no sprint is live).
+
+tonykoop/music-teacher
+tonykoop/claude-skills
+tonykoop/the-backchannel
+tonykoop/hummingbird-personalmedia
+tonykoop/makerspace
+tonykoop/instrument-showcase
+tonykoop/openclaw
+tonykoop/HWE-Pipeline
+tonykoop/makerbench-hwe
+tonykoop/StudioPipeline-Selecta
+tonykoop/Advanced-HWE
