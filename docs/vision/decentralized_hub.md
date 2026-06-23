@@ -60,7 +60,7 @@ Forking is low-friction and always permitted (subject to the source blueprint's 
 3. The fork retains a `parent` pointer to the original: `parent: "ear-training-minor-intervals@1.2.0 by tonykoop"`
 4. The forked blueprint is immediately editable via conversation
 
-The fork is purely local. No server records the fork. Attribution is preserved in the blueprint's YAML, not in a database.
+The fork is purely local. No server records the fork. Attribution is preserved in the blueprint's YAML, not in a database. A fork owner may optionally publish a fork-registration record to the marketplace index, which is the only server call in the fork flow; this is what enables the "N forks" counts and opt-in fork links shown in the marketplace's remix graph.
 
 ### Fuse
 
