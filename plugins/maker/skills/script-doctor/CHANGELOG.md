@@ -1,5 +1,9 @@
 # script-doctor changelog
 
+## v0.1.4 — 2026-06-22
+- Update run_greenlight(): full BLOCKER/POLISH/OPTIONAL tier collection from all passes; closing_score < 4 auto-added as POLISH flag. Update _render_review() to emit tiered fix list + phone-friendly READY line.
+- Refs tonykoop/claude-skills#431
+
 ## v0.1.3 — 2026-06-22
 - Add scripts/structural_polish.py: real heuristic structural polish pass (hook/closing scoring, on-the-nose detection, retention dips, transition audit). Wire into run_review.py.
 - Refs tonykoop/claude-skills#428

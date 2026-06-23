@@ -67,33 +67,51 @@ def run_logistical_breakdown(script: str, channel: str) -> dict:
 def run_greenlight(passes: list[dict]) -> dict:
     """Compute greenlight verdict from pass results.
 
-    Collects all BLOCKER-severity flags from the three passes, computes the
-    composite score, and returns the verdict dict.
+    Collects flags from all three passes, classifies them into
+    BLOCKER / POLISH / OPTIONAL tiers per references/greenlight-gate.md,
+    and returns the full verdict dict.
     """
     scores = [p["score"] for p in passes if "score" in p]
     composite = round(sum(scores) / len(scores), 1) if scores else 0.0
 
-    blockers = [
-        f for p in passes for f in p.get("flags", []) if f.get("severity") == "blocker"
-    ]
+    blockers: list[dict] = []
+    polish: list[dict] = []
+    optional: list[dict] = []
 
-    if blockers:
-        verdict = "FAIL"
-    elif composite >= 8.0:
-        verdict = "PASS"
-    elif composite >= 6.0:
-        verdict = "PASS"  # CONDITIONAL maps to PASS with warnings when no blockers
-    else:
-        verdict = "FAIL"
+    for p in passes:
+        for f in p.get("flags", []):
+            sev = f.get("severity", "note").lower()
+            if sev == "blocker":
+                blockers.append(f)
+            elif sev == "polish":
+                polish.append(f)
+            else:
+                optional.append(f)
 
+    # Closing strength below 4 is a POLISH flag (not FAIL trigger)
+    for p in passes:
+        closing_score = p.get("closing_score")
+        if closing_score is not None and closing_score < 4:
+            polish.append({
+                "line": "closing",
+                "severity": "polish",
+                "message": f"Closing strength {closing_score}/10 — below 4; strengthen CTA and final image",
+            })
+
+    verdict = "FAIL" if (blockers or composite < 6.0) else "PASS"
+
+    all_flags = blockers + polish + optional
     return {
         "pass": "greenlight",
         "composite_score": composite,
         "greenlight": verdict,
         "blockers": blockers,
+        "polish": polish,
+        "optional": optional,
         "override": False,
-        "ready_line": f"READY: {'YES' if verdict == 'PASS' else 'NO'} — composite {composite}/10",
-        "flags": blockers,
+        "ready_line": f"READY: {'YES' if verdict == 'PASS' else 'NO'} — composite {composite}/10"
+        + (f"; {len(blockers)} BLOCKER(S)" if blockers else ""),
+        "flags": all_flags,
     }
 
 
@@ -131,11 +149,20 @@ def _render_review(passes: list[dict], greenlight: dict, fmt: str = "md") -> str
     lines.append(f"GREENLIGHT VERDICT: **{greenlight['greenlight']}**")
     lines.append(f"Composite score: {greenlight['composite_score']}/10")
     lines.append(_DIVIDER)
-    if greenlight["blockers"]:
-        for b in greenlight["blockers"]:
-            lines.append(f"BLOCKER  [ ] {b.get('message', '')}")
+
+    for b in greenlight.get("blockers", []):
+        lines.append(f"BLOCKER   [ ] {b.get('message', '')}")
+
+    for item in greenlight.get("polish", []):
+        lines.append(f"POLISH    [ ] {item.get('message', '')}")
+
+    for item in greenlight.get("optional", []):
+        lines.append(f"OPTIONAL  [ ] {item.get('message', '')}")
+
     lines.append("")
+    lines.append(_THIN)
     lines.append(greenlight["ready_line"])
+    lines.append(_THIN)
     lines.append("")
     lines.append(
         "_Human-override note: This verdict is advisory. The director may proceed "
