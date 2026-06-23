@@ -17,12 +17,26 @@ SWEEP="$HERE/issue-sweep.sh"
 
 [ -f "$REPOS_FILE" ] || { echo "missing $REPOS_FILE" >&2; exit 1; }
 
+failed=()
 while IFS= read -r line; do
   line="${line%%#*}"                      # strip comments
   line="$(echo "$line" | xargs)"          # trim
   [ -z "$line" ] && continue
   repo="$(echo "$line" | awk '{print $1}')"
   protect="$(echo "$line" | awk '{print $2}')"
-  PROTECT_EPICS="${protect:-}" bash "$SWEEP" "$repo" "$MODE" \
-    2>&1 | grep -E '=====|TO CLOSE|EPICS TO CLOSE|>>>|FAIL'
+  # Per-repo isolation: one repo erroring (e.g. PAT lacks access, rate limit) must
+  # NOT abort the whole sweep. Capture, print, and continue; track failures.
+  if ! out="$(PROTECT_EPICS="${protect:-}" bash "$SWEEP" "$repo" "$MODE" 2>&1)"; then
+    echo "  !! SKIPPED $repo — sweep error (check RECON_TOKEN access to this repo / rate limit)"
+    failed+=("$repo")
+    continue
+  fi
+  echo "$out" | grep -E '=====|TO CLOSE|EPICS TO CLOSE|>>>|FAIL'
 done < "$REPOS_FILE"
+
+if [ "${#failed[@]}" -gt 0 ]; then
+  echo "WARN: ${#failed[@]} repo(s) skipped due to errors: ${failed[*]}"
+fi
+# Best-effort cron: completing the sweep (closing what it can) is success, even if
+# some repos were skipped. Genuine script bugs still surface via set -u / earlier exits.
+exit 0
