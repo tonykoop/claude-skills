@@ -1,11 +1,8 @@
 #!/usr/bin/env python3
 """
-Script Doctor — main entrypoint (story #426 scaffold).
+Script Doctor — main entrypoint.
 
 Runs a script through the three-pass review pipeline and emits a greenlight verdict.
-Individual pass logic lives in the per-pass scripts (stories #427–#429).
-This scaffold contains stub implementations that emit structured output in the
-correct schema so downstream tests and the greenlight gate can be wired up.
 
 Usage:
     python run_review.py --script path/to/script.md [--channel yoga] [--all-passes]
@@ -21,7 +18,16 @@ import sys
 from pathlib import Path
 from typing import Any
 
-VALID_CHANNELS = ("yoga", "instrument_maker", "ai_agentic", "consciousness", "wrfcoin", "generic")
+_SCRIPTS_DIR = Path(__file__).resolve().parent
+if str(_SCRIPTS_DIR) not in sys.path:
+    sys.path.insert(0, str(_SCRIPTS_DIR))
+
+from table_read import run_table_read  # noqa: E402
+from structural_polish import run_structural_polish  # noqa: E402
+from logistical_breakdown import run_logistical_breakdown  # noqa: E402
+
+VALID_CHANNELS = ("yoga", "instrument_maker", "ai_agentic", "consciousness", "wrfcoin",
+                  "mrbeast", "coding", "generic")
 VALID_PASSES = ("table-read", "structural-polish", "logistical-breakdown", "greenlight")
 
 
@@ -37,102 +43,54 @@ def _result(pass_name: str, score: float, flags: list[dict], **extra) -> dict:
     return {"pass": pass_name, "score": score, "flags": flags, **extra}
 
 
-# ---------------------------------------------------------------------------
-# Pass stubs (replaced by full implementations in stories #427–#429)
-# ---------------------------------------------------------------------------
-
-def run_table_read(script: str, channel: str) -> dict:
-    """Stub: Phase 1 — table-read pass.
-
-    Full implementation: scripts/table_read.py (story #427).
-    Returns the canonical pass schema with placeholder scores and no flags,
-    so the greenlight gate and downstream tests have a stable contract.
-    """
-    word_count = len(script.split())
-    estimated_runtime_sec = word_count / 2.5  # ~150wpm spoken
-
-    return _result(
-        "table_read",
-        score=7.0,
-        flags=[],
-        archetype=channel,
-        readability_score=7.0,
-        estimated_runtime_sec=round(estimated_runtime_sec),
-        breath_breaks=[],
-        hard_to_speak=[],
-        pacing_by_section=[],
-        archetype_alignment="MATCH",
-        stub=True,
-    )
-
-
-def run_structural_polish(script: str, channel: str) -> dict:
-    """Stub: Phase 2 — structural polish pass.
-
-    Full implementation: scripts/structural_polish.py (story #428).
-    """
-    return _result(
-        "structural_polish",
-        score=7.0,
-        flags=[],
-        hook_score=7.0,
-        closing_score=7.0,
-        on_the_nose=[],
-        retention_dips=[],
-        transition_gaps=[],
-        overall_summary="(stub — full analysis in story #428)",
-        stub=True,
-    )
-
-
-def run_logistical_breakdown(script: str, channel: str) -> dict:
-    """Stub: Phase 3 — logistical breakdown pass.
-
-    Full implementation: scripts/logistical_breakdown.py (story #429).
-    """
-    return _result(
-        "logistical_breakdown",
-        score=7.0,
-        flags=[],
-        segments=[],
-        missing_assets=[],
-        props=[],
-        locations=[],
-        producibility_score=7.0,
-        stub=True,
-    )
-
-
 def run_greenlight(passes: list[dict]) -> dict:
     """Compute greenlight verdict from pass results.
 
-    Collects all BLOCKER-severity flags from the three passes, computes the
-    composite score, and returns the verdict dict.
+    Collects flags from all three passes, classifies them into
+    BLOCKER / POLISH / OPTIONAL tiers per references/greenlight-gate.md,
+    and returns the full verdict dict.
     """
     scores = [p["score"] for p in passes if "score" in p]
     composite = round(sum(scores) / len(scores), 1) if scores else 0.0
 
-    blockers = [
-        f for p in passes for f in p.get("flags", []) if f.get("severity") == "blocker"
-    ]
+    blockers: list[dict] = []
+    polish: list[dict] = []
+    optional: list[dict] = []
 
-    if blockers:
-        verdict = "FAIL"
-    elif composite >= 8.0:
-        verdict = "PASS"
-    elif composite >= 6.0:
-        verdict = "PASS"  # CONDITIONAL maps to PASS with warnings when no blockers
-    else:
-        verdict = "FAIL"
+    for p in passes:
+        for f in p.get("flags", []):
+            sev = f.get("severity", "note").lower()
+            if sev == "blocker":
+                blockers.append(f)
+            elif sev == "polish":
+                polish.append(f)
+            else:
+                optional.append(f)
 
+    # Closing strength below 4 is a POLISH flag (not FAIL trigger)
+    for p in passes:
+        closing_score = p.get("closing_score")
+        if closing_score is not None and closing_score < 4:
+            polish.append({
+                "line": "closing",
+                "severity": "polish",
+                "message": f"Closing strength {closing_score}/10 — below 4; strengthen CTA and final image",
+            })
+
+    verdict = "FAIL" if (blockers or composite < 6.0) else "PASS"
+
+    all_flags = blockers + polish + optional
     return {
         "pass": "greenlight",
         "composite_score": composite,
         "greenlight": verdict,
         "blockers": blockers,
+        "polish": polish,
+        "optional": optional,
         "override": False,
-        "ready_line": f"READY: {'YES' if verdict == 'PASS' else 'NO'} — composite {composite}/10",
-        "flags": blockers,
+        "ready_line": f"READY: {'YES' if verdict == 'PASS' else 'NO'} — composite {composite}/10"
+        + (f"; {len(blockers)} BLOCKER(S)" if blockers else ""),
+        "flags": all_flags,
     }
 
 
@@ -170,11 +128,20 @@ def _render_review(passes: list[dict], greenlight: dict, fmt: str = "md") -> str
     lines.append(f"GREENLIGHT VERDICT: **{greenlight['greenlight']}**")
     lines.append(f"Composite score: {greenlight['composite_score']}/10")
     lines.append(_DIVIDER)
-    if greenlight["blockers"]:
-        for b in greenlight["blockers"]:
-            lines.append(f"BLOCKER  [ ] {b.get('message', '')}")
+
+    for b in greenlight.get("blockers", []):
+        lines.append(f"BLOCKER   [ ] {b.get('message', '')}")
+
+    for item in greenlight.get("polish", []):
+        lines.append(f"POLISH    [ ] {item.get('message', '')}")
+
+    for item in greenlight.get("optional", []):
+        lines.append(f"OPTIONAL  [ ] {item.get('message', '')}")
+
     lines.append("")
+    lines.append(_THIN)
     lines.append(greenlight["ready_line"])
+    lines.append(_THIN)
     lines.append("")
     lines.append(
         "_Human-override note: This verdict is advisory. The director may proceed "
