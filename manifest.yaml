@@ -425,6 +425,22 @@ skills:
       instances via lockfile, and produces morning summaries. v0.2.0 adds first
       machine-runnable eval suite (4 evals) and this manifest entry.
 
+  movement-arts:
+    canonical_version: 0.1.0
+    runtime: shared
+    repo_path: plugins/maker/skills/movement-arts
+    last_updated: 2026-06-22
+    status: active
+    notes: >-
+      Universal movement sequencer (Epic #463). Domain-agnostic arc engine:
+      swap the domain JSON (vinyasa, hip-hop, salsa, ballet, tai chi,
+      capoeira, kata, physical_therapy) and objective function while keeping
+      the core sequencer, state tracker, and valid-transition state machine
+      intact. v0.1.0 ships core sequencer + tracker (story #464). Soft-dep
+      on offtheshelf#35 (motion_primitives ontology) — seam in
+      references/motion-primitives-import.md; inline domain files fill the
+      gap until #35 publishes.
+
 planned_skills:
   energy-management:
     status: issue-handoff
