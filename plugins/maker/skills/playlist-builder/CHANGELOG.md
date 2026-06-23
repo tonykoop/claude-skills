@@ -1,5 +1,30 @@
 # Changelog — playlist-builder
 
+## 0.5.0 — 2026-06-22 (audio-dynamic — movement→music sync engine, Epic #471)
+
+Five new scripts, five reference docs, five test modules, one JSON schema, one example:
+
+- **`scripts/texture_map.py`** — kinetic-texture → sonic mapping; `TEXTURE_SONIC_MAP` for 6
+  textures (staccato/fluid/tutting/explosive/grounded/suspended); composite textures via `+`.
+- **`scripts/bpm_match.py`** — BPM matching to choreography blocks; 70/30 BPM+energy ranking.
+- **`scripts/sonic_anchor.py`** — `AnchorTag` dataclass + `align_timeline()` to shift routine
+  timeline so choreographic peaks land on audio drop/breakdown timestamps.
+- **`scripts/movement_bridge.py`** — `build_mix_plan()` composes texture filter → BPM match →
+  anchor alignment; `MovementRoutinePayload` / `MixPlan` / `MixBlock` dataclasses;
+  `validate_payload()` with optional `jsonschema` pass.
+- **`scripts/release_hook.py`** — `compile_release()` writes
+  `choreo_script.md + audio_mix_plan.json + provenance_block.json` (SHA-256 + ISO-8601 stamp);
+  non-blocking StudioPipeline handoff via `STUDIOPIPELINE_HOOK_URL`.
+- **`schemas/agent_packets/MovementRoutinePayload.schema.json`** — JSON Schema 2020-12 for the
+  movement-engine constraint payload.
+- **`references/KINETIC_TEXTURE_MAP.md`**, **`AUDIO_TRIGGER_ANCHORS.md`**,
+  **`MOVEMENT_BRIDGE_CONTRACT.md`**, **`RELEASE_HOOK_CONTRACT.md`** — full spec docs.
+- **`examples/interpretive-dance-release.md`** — worked end-to-end hip-hop example.
+- **`SKILL.md` Audio-Dynamic section** — additive section documenting all new capabilities.
+- **`docs/dj_handoff.md`** (story #485) — tagged with `Story: #485` header; authored under
+  Epic #478 but satisfies all #485 acceptance criteria.
+- 57 new tests across 5 test modules, all passing.
+
 ## 0.3.0 — 2026-06-20 (mastering backend handoff)
 
 Adds a thin public client for the private mastering / MIR-critique / album-builder backend.
