@@ -21,6 +21,17 @@ Valid-transition state machine.
 - 180° pivot gated behind bilateral or unweighted base
 - Jump/unweighted transitions require bilateral base
 
+## 0.6.0 — 2026-06-22 (Refs #469)
+
+Multi-modal instructional cue output.
+
+- `scripts/cue_output.py` — `CueFormatter(compiled_routine, domain)` with three output formats
+- `"verbal"` — instructor script (count anchor + weight cue + facing cue per block)
+- `"audio_energy"` — playlist-builder handoff (`block_id`, `energy_level`, `bpm_target`, `cue_density`, `duration_s`)
+- `"pt_biomechanical"` — compensation cues per block (`velocity_cap_m_per_s`, `unilateral_load`, `ROM_target_deg`, `compensation_cues[]`)
+- Guard: verbal/audio_energy output never exposes PT biomechanical fields; pt_biomechanical on non-PT domains returns null velocity/ROM with empty compensation_cues
+- `references/cue-output-format.md` — format schemas, usage examples, extension guide
+
 ## 0.5.0 — 2026-06-22 (Refs #468)
 
 Polymorphic objective-function swap.
