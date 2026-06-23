@@ -21,6 +21,18 @@ Valid-transition state machine.
 - 180° pivot gated behind bilateral or unweighted base
 - Jump/unweighted transitions require bilateral base
 
+## 0.7.0 — 2026-06-22 (Refs #470)
+
+Hybrid cross-training generator.
+
+- `scripts/cross_training.py` — `CrossTrainingGenerator(domains, weights, duration_min)` interleaves blocks from 2+ domains under a shared `MovementTracker` and `ValidTransitionMachine`
+- `CrossTrainingRoutine` — output dataclass with `blocks[]` (each carrying `domain` field), `preset`, `weights`, `clock_type`, `objective`
+- Named presets: `"vinyasa-capoeira"` (50/50 breath clock, breath_alignment) and `"martial-beats"` (hip_hop + kata, beat clock, force_output)
+- `make_generator_from_preset(name, domain_lookup, duration_min)` convenience factory
+- PT safety gate propagated: compile raises `PermissionError` if any domain has `requires_clinical_review: true` without `safety_acknowledged=True`
+- Transitions across domain boundary filtered by shared state machine (weight + facing rules respected at all cross-domain switches)
+- `references/cross-training.md` — usage, preset table, output schema, extension guide
+
 ## 0.6.0 — 2026-06-22 (Refs #469)
 
 Multi-modal instructional cue output.
