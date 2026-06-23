@@ -1,5 +1,22 @@
 # Changelog — yoga-sequencer
 
+## v2.0.0 — 2026-06-20
+
+- Added transitions-only teaching mode: the unit of instruction is the
+  connective tissue between shapes; poses are waypoints and are never named.
+- Added `references/transitions-class-template.json` with a 60-minute starter
+  template covering six phases: `arrival`, `warm_up`, `standing_flow`,
+  `peak_work`, `cooldown`, `stillness`.
+- Added `scripts/transitions_class.py` with `TransitionCue` (frozen dataclass
+  that raises `TransitionsClassError` on any forbidden shorthand token or
+  pose-name phrase) and `TransitionsOnlyClass` (six-phase arc, bilateral
+  symmetry validation, ±90 s timing gate, teacher-script renderer).
+- SKILL.md v2.0.0: transitions-only mode section with constraint contract,
+  template path, `from_template()`/`add_cue()` API, and teacher-script output.
+- Added pytest coverage for pose-name rejection, shorthand-token rejection,
+  bilateral symmetry enforcement, timing gate, and full template load.
+- Source: Capture #383 (yoga-sequencer epic #368).
+
 ## v1.9.0 — 2026-06-20
 
 - Added `references/dji-mic-capture.md` defining the public DJI Mic capture manifest, Path A transcript/thematic split, Path B audio/playlist handoff, and capture-quality gate.
