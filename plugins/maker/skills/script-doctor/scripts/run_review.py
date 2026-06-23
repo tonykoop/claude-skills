@@ -24,6 +24,7 @@ if str(_SCRIPTS_DIR) not in sys.path:
 
 from table_read import run_table_read  # noqa: E402
 from structural_polish import run_structural_polish  # noqa: E402
+from logistical_breakdown import run_logistical_breakdown  # noqa: E402
 
 VALID_CHANNELS = ("yoga", "instrument_maker", "ai_agentic", "consciousness", "wrfcoin",
                   "mrbeast", "coding", "generic")
@@ -40,28 +41,6 @@ def _flag(line: int | str, severity: str, message: str) -> dict:
 
 def _result(pass_name: str, score: float, flags: list[dict], **extra) -> dict:
     return {"pass": pass_name, "score": score, "flags": flags, **extra}
-
-
-# ---------------------------------------------------------------------------
-# Pass stub (replaced by real implementation in story #429)
-# ---------------------------------------------------------------------------
-
-def run_logistical_breakdown(script: str, channel: str) -> dict:
-    """Stub: Phase 3 — logistical breakdown pass.
-
-    Full implementation: scripts/logistical_breakdown.py (story #429).
-    """
-    return _result(
-        "logistical_breakdown",
-        score=7.0,
-        flags=[],
-        segments=[],
-        missing_assets=[],
-        props=[],
-        locations=[],
-        producibility_score=7.0,
-        stub=True,
-    )
 
 
 def run_greenlight(passes: list[dict]) -> dict:
