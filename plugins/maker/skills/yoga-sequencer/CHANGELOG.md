@@ -1,5 +1,40 @@
 # Changelog — yoga-sequencer
 
+## v2.1.0 — 2026-06-20
+
+- Added savasana-backward planning mode: reverse-engineer a class from a
+  `SavasanaSpec` (somatic quality of final rest) toward the minimum
+  disturbance required to earn it.
+- Added `references/savasana-backward.md` documenting the `SavasanaSpec`
+  contract, eight `target_releases`, the greedy minimum-disturbance algorithm,
+  the justification filter, the four-phase arc, quality gates, and CLI.
+- Added `scripts/savasana_backward.py` with `SavasanaSpec`, `SavasanaBackwardEngine`
+  (greedy economy pass, warm-up prerequisite injection, phase assignment,
+  justification filter, quality-gate findings), and `SavasanaBackwardError`.
+- SKILL.md v2.1.0: savasana-backward mode section with five-step workflow,
+  `SavasanaSpec` elicitation, justification filter, four-phase arc, and
+  `savasana_backward.py` CLI.
+- Added pytest coverage for spec parsing, minimum-disturbance selection,
+  warm-up injection, phase timing, quality gate, and full-spec integration.
+- Source: Capture #384 (yoga-sequencer epic #368; StudioPipeline/yoga #790).
+
+## v2.0.0 — 2026-06-20
+
+- Added transitions-only teaching mode: the unit of instruction is the
+  connective tissue between shapes; poses are waypoints and are never named.
+- Added `references/transitions-class-template.json` with a 60-minute starter
+  template covering six phases: `arrival`, `warm_up`, `standing_flow`,
+  `peak_work`, `cooldown`, `stillness`.
+- Added `scripts/transitions_class.py` with `TransitionCue` (frozen dataclass
+  that raises `TransitionsClassError` on any forbidden shorthand token or
+  pose-name phrase) and `TransitionsOnlyClass` (six-phase arc, bilateral
+  symmetry validation, ±90 s timing gate, teacher-script renderer).
+- SKILL.md v2.0.0: transitions-only mode section with constraint contract,
+  template path, `from_template()`/`add_cue()` API, and teacher-script output.
+- Added pytest coverage for pose-name rejection, shorthand-token rejection,
+  bilateral symmetry enforcement, timing gate, and full template load.
+- Source: Capture #383 (yoga-sequencer epic #368).
+
 ## v1.9.0 — 2026-06-20
 
 - Added `references/dji-mic-capture.md` defining the public DJI Mic capture manifest, Path A transcript/thematic split, Path B audio/playlist handoff, and capture-quality gate.
