@@ -1,5 +1,9 @@
 # script-doctor changelog
 
+## v0.1.5 — 2026-06-22
+- Add scripts/logistical_breakdown.py: segment parser (stage direction regex → type/TC/assets/props/location/risk classification). Wire into run_review.py; last stub removed.
+- Refs tonykoop/claude-skills#429
+
 ## v0.1.4 — 2026-06-22
 - Update run_greenlight(): full BLOCKER/POLISH/OPTIONAL tier collection from all passes; closing_score < 4 auto-added as POLISH flag. Update _render_review() to emit tiered fix list + phone-friendly READY line.
 - Refs tonykoop/claude-skills#431
