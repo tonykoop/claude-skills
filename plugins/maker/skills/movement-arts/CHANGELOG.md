@@ -21,6 +21,17 @@ Valid-transition state machine.
 - 180° pivot gated behind bilateral or unweighted base
 - Jump/unweighted transitions require bilateral base
 
+## 0.5.0 — 2026-06-22 (Refs #468)
+
+Polymorphic objective-function swap.
+
+- `scripts/objective.py` — `ObjectiveFn` ABC + 4 implementations: `StyleObjective`, `ForceObjective`, `JointSafetyObjective`, `BreathAlignmentObjective`
+- `MovementSequencer` auto-loads the correct objective from `domain["objective"]` — no code change needed to swap disciplines
+- `StyleObjective` tracks `_last_id` internally to prevent consecutive repeats
+- `ForceObjective` weights `acceleration_curve` by live intensity (explosive preferred at peak)
+- `JointSafetyObjective` penalises `unilateral_load` moves when weight imbalance > 0.35
+- `references/objective-functions.md` — contract, auto-loading pattern, score() semantics, extension guide
+
 ## 0.4.0 — 2026-06-22 (Refs #467)
 
 Domain registry: tai chi / capoeira / kata / physical therapy.
