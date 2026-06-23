@@ -124,6 +124,29 @@ def _validate_chat_url_stem(path: Path) -> "bool | None":
 
 
 # ---------------------------------------------------------------------------
+# Gemini variant detection (Story #411 — NotebookLM grounding)
+# ---------------------------------------------------------------------------
+
+_FM_BLOCK_RE: re.Pattern[str] = re.compile(r"^---\s*\n(.*?)\n---\s*\n", re.DOTALL)
+_NOTEBOOKLM_RE: re.Pattern[str] = re.compile(
+    r"gemini_variant\s*:\s*notebooklm", re.IGNORECASE
+)
+
+
+def _detect_gemini_variant(content: str) -> str:
+    """Return the gemini_variant value from front-matter, or '' if absent.
+
+    Currently detects ``gemini_variant: notebooklm`` as defined in
+    references/gemini-notebooks-grounding.md.  Returns the raw variant
+    string so callers can branch on it without string-magic.
+    """
+    m = _FM_BLOCK_RE.match(content)
+    if not m:
+        return ""
+    return "notebooklm" if _NOTEBOOKLM_RE.search(m.group(1)) else ""
+
+
+# ---------------------------------------------------------------------------
 # Persistent dispatch stamp
 # ---------------------------------------------------------------------------
 
@@ -180,6 +203,9 @@ class ScanResult:
     new_files: list[Path] = field(default_factory=list)
     triggered: list[Path] = field(default_factory=list)
     skipped_no_trigger: list[Path] = field(default_factory=list)
+    # Maps triggered path → gemini_variant string (e.g. "notebooklm").
+    # Empty string / absent key means plain Gemini chat clip.
+    gemini_variant: dict[Path, str] = field(default_factory=dict)
 
 
 # ---------------------------------------------------------------------------
@@ -258,6 +284,9 @@ def scan_once(
 
         if detect_triggers(content):
             result.triggered.append(path)
+            variant = _detect_gemini_variant(content)
+            if variant:
+                result.gemini_variant[path] = variant
         else:
             result.skipped_no_trigger.append(path)
 
@@ -356,11 +385,20 @@ class InboxWatcher:
         after daemon restart.  Dry-run dispatches do NOT stamp (no disk write).
         Validates each triggered file's filename stem against its chat_url
         front-matter (Story #408); warns on mismatch but never blocks dispatch.
+
+        When a triggered file carries ``gemini_variant: notebooklm`` in its
+        front-matter, injects ``--gemini-variant notebooklm`` into the pipeline
+        command so downstream (gemini_to_github.py) can attach the
+        ``needs-clarification`` label (Story #411).
         """
         result = self.scan_once()
         for path in result.triggered:
             _validate_chat_url_stem(path)
-            success = dispatch_file(self.pipeline_cmd, path, dry_run=self.dry_run)
+            cmd = list(self.pipeline_cmd)
+            variant = result.gemini_variant.get(path, "")
+            if variant:
+                cmd += ["--gemini-variant", variant]
+            success = dispatch_file(cmd, path, dry_run=self.dry_run)
             if success and not self.dry_run:
                 stamp_processed(path)
         return result
