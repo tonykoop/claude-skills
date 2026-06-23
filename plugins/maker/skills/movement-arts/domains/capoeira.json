@@ -1,0 +1,194 @@
+{
+  "schema_version": 1,
+  "domain": "capoeira",
+  "clock": {
+    "type": "beat",
+    "bpm_range": [80, 140],
+    "count_unit": 3,
+    "rhythm_style": "berimbau_angola_to_regional"
+  },
+  "objective": "style_expression",
+  "requires_clinical_review": false,
+  "primitives": [
+    {
+      "id": "ginga_left",
+      "name": "Ginga — Step Left",
+      "weight_shift": "left",
+      "facing": "north",
+      "tempo_class": "medium",
+      "energy_delta": 0.04,
+      "duration_beats": 3,
+      "valid_next": ["ginga_right", "esquiva_diagonal", "negativa"]
+    },
+    {
+      "id": "ginga_right",
+      "name": "Ginga — Step Right",
+      "weight_shift": "right",
+      "facing": "north",
+      "tempo_class": "medium",
+      "energy_delta": 0.04,
+      "duration_beats": 3,
+      "valid_next": ["ginga_left", "esquiva_baixa", "meia_lua_de_frente"]
+    },
+    {
+      "id": "ginga_center",
+      "name": "Ginga — Center (parallel stance)",
+      "weight_shift": "bilateral",
+      "facing": "north",
+      "tempo_class": "medium",
+      "energy_delta": 0.02,
+      "duration_beats": 3,
+      "valid_next": ["ginga_left", "ginga_right", "bencao", "queixada"]
+    },
+    {
+      "id": "esquiva_diagonal",
+      "name": "Esquiva Diagonal (diagonal dodge)",
+      "weight_shift": "left",
+      "facing": "east",
+      "tempo_class": "slow",
+      "energy_delta": 0.05,
+      "duration_beats": 3,
+      "valid_next": ["ginga_right", "ginga_center", "meia_lua_de_compasso"]
+    },
+    {
+      "id": "esquiva_baixa",
+      "name": "Esquiva Baixa (low lateral dodge)",
+      "weight_shift": "bilateral",
+      "facing": "south",
+      "tempo_class": "slow",
+      "energy_delta": 0.06,
+      "duration_beats": 3,
+      "valid_next": ["ginga_left", "negativa", "role"]
+    },
+    {
+      "id": "esquiva_de_lado",
+      "name": "Esquiva de Lado (side dodge — lateral lean)",
+      "weight_shift": "left",
+      "facing": "north",
+      "tempo_class": "slow",
+      "energy_delta": 0.04,
+      "duration_beats": 3,
+      "valid_next": ["ginga_right", "ginga_center", "armada"]
+    },
+    {
+      "id": "negativa",
+      "name": "Negativa (ground-level lateral escape)",
+      "weight_shift": "bilateral",
+      "facing": "south",
+      "tempo_class": "slow",
+      "energy_delta": 0.07,
+      "duration_beats": 6,
+      "valid_next": ["role", "au", "ginga_left"]
+    },
+    {
+      "id": "role",
+      "name": "Rolê (floor roll to standing)",
+      "weight_shift": "bilateral",
+      "facing": "any",
+      "tempo_class": "medium",
+      "energy_delta": 0.08,
+      "duration_beats": 6,
+      "valid_next": ["ginga_center", "au", "meia_lua_de_frente"]
+    },
+    {
+      "id": "au",
+      "name": "Aú (cartwheel)",
+      "weight_shift": "unweighted",
+      "facing": "any",
+      "tempo_class": "fast",
+      "energy_delta": 0.15,
+      "duration_beats": 3,
+      "valid_next": ["ginga_center", "negativa", "ginga_left"]
+    },
+    {
+      "id": "au_batido",
+      "name": "Aú Batido (cartwheel with kick)",
+      "weight_shift": "unweighted",
+      "facing": "any",
+      "tempo_class": "fast",
+      "energy_delta": 0.18,
+      "duration_beats": 3,
+      "valid_next": ["ginga_center", "ginga_left"]
+    },
+    {
+      "id": "meia_lua_de_frente",
+      "name": "Meia Lua de Frente (front crescent kick)",
+      "weight_shift": "left",
+      "facing": "north",
+      "tempo_class": "fast",
+      "energy_delta": 0.12,
+      "duration_beats": 3,
+      "valid_next": ["ginga_right", "ginga_center", "queixada"]
+    },
+    {
+      "id": "meia_lua_de_compasso",
+      "name": "Meia Lua de Compasso (spinning heel kick)",
+      "weight_shift": "left",
+      "facing": "south",
+      "tempo_class": "fast",
+      "energy_delta": 0.2,
+      "duration_beats": 3,
+      "valid_next": ["ginga_center", "esquiva_diagonal"]
+    },
+    {
+      "id": "armada",
+      "name": "Armada (turning back kick)",
+      "weight_shift": "right",
+      "facing": "west",
+      "tempo_class": "fast",
+      "energy_delta": 0.16,
+      "duration_beats": 3,
+      "valid_next": ["ginga_center", "ginga_left", "meia_lua_de_compasso"]
+    },
+    {
+      "id": "martelo",
+      "name": "Martelo (hammer kick — roundhouse)",
+      "weight_shift": "left",
+      "facing": "north",
+      "tempo_class": "fast",
+      "energy_delta": 0.14,
+      "duration_beats": 3,
+      "valid_next": ["ginga_right", "ginga_center", "armada"]
+    },
+    {
+      "id": "bencao",
+      "name": "Bênção (front push kick)",
+      "weight_shift": "left",
+      "facing": "north",
+      "tempo_class": "fast",
+      "energy_delta": 0.12,
+      "duration_beats": 3,
+      "valid_next": ["ginga_right", "ginga_center", "queixada"]
+    },
+    {
+      "id": "queixada",
+      "name": "Queixada (outside crescent kick)",
+      "weight_shift": "right",
+      "facing": "east",
+      "tempo_class": "fast",
+      "energy_delta": 0.14,
+      "duration_beats": 3,
+      "valid_next": ["ginga_left", "ginga_center", "martelo"]
+    },
+    {
+      "id": "macaco",
+      "name": "Macaco (back-handspring / monkey jump)",
+      "weight_shift": "bilateral",
+      "facing": "south",
+      "tempo_class": "fast",
+      "energy_delta": 0.22,
+      "duration_beats": 6,
+      "valid_next": ["ginga_center", "au"]
+    },
+    {
+      "id": "rasteira",
+      "name": "Rasteira (floor sweep)",
+      "weight_shift": "bilateral",
+      "facing": "south",
+      "tempo_class": "medium",
+      "energy_delta": 0.1,
+      "duration_beats": 3,
+      "valid_next": ["ginga_center", "role", "ginga_left"]
+    }
+  ]
+}

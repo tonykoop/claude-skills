@@ -21,6 +21,15 @@ Valid-transition state machine.
 - 180° pivot gated behind bilateral or unweighted base
 - Jump/unweighted transitions require bilateral base
 
+## 0.4.0 — 2026-06-22 (Refs #467)
+
+Domain registry: tai chi / capoeira / kata / physical therapy.
+
+- `domains/tai_chi.json` — 24 primitives, legato breath clock 6bpm, breath_alignment objective; Yang-style 24-form moves (ward-off, rollback, press, push, single-whip, cloud-hands, closing form)
+- `domains/capoeira.json` — 18 primitives, 3-count beat clock, style_expression objective; ginga loop, esquivas, aú, meia-lua de frente/compasso, armada, macaco, rasteira
+- `domains/kata.json` — 18 primitives, kime-burst breath clock, force_output objective; per-primitive `acceleration_curve` and `embusen_direction` fields
+- `domains/physical_therapy.json` — 21 primitives, controlled breath clock, joint_safety objective; `requires_clinical_review: true` safety gate; per-primitive `velocity_cap_m_per_s`, `unilateral_load`, `ROM_target_deg`
+
 ## 0.3.0 — 2026-06-22 (Refs #466)
 
 Domain registry: vinyasa / hip-hop / salsa / ballet.
