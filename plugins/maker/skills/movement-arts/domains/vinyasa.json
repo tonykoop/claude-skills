@@ -1,0 +1,322 @@
+{
+  "schema_version": 1,
+  "domain": "vinyasa",
+  "clock": {
+    "type": "breath",
+    "breaths_per_minute": 12
+  },
+  "objective": "breath_alignment",
+  "requires_clinical_review": false,
+  "primitives": [
+    {
+      "id": "mountain",
+      "name": "Mountain (Tadasana)",
+      "weight_shift": "bilateral",
+      "facing": "north",
+      "tempo_class": "slow",
+      "energy_delta": 0.02,
+      "duration_beats": 4,
+      "valid_next": ["standing_forward_fold", "chair", "warrior_i", "sun_a_sweep"]
+    },
+    {
+      "id": "standing_forward_fold",
+      "name": "Standing Forward Fold",
+      "weight_shift": "bilateral",
+      "facing": "north",
+      "tempo_class": "slow",
+      "energy_delta": 0.03,
+      "duration_beats": 4,
+      "valid_next": ["halfway_lift", "downward_dog", "plank", "mountain"]
+    },
+    {
+      "id": "halfway_lift",
+      "name": "Halfway Lift",
+      "weight_shift": "bilateral",
+      "facing": "north",
+      "tempo_class": "medium",
+      "energy_delta": 0.02,
+      "duration_beats": 2,
+      "valid_next": ["standing_forward_fold", "plank", "chaturanga"]
+    },
+    {
+      "id": "plank",
+      "name": "Plank",
+      "weight_shift": "bilateral",
+      "facing": "north",
+      "tempo_class": "medium",
+      "energy_delta": 0.08,
+      "duration_beats": 4,
+      "valid_next": ["chaturanga", "downward_dog", "side_plank"]
+    },
+    {
+      "id": "chaturanga",
+      "name": "Chaturanga",
+      "weight_shift": "bilateral",
+      "facing": "north",
+      "tempo_class": "medium",
+      "energy_delta": 0.12,
+      "duration_beats": 2,
+      "valid_next": ["upward_dog", "cobra"]
+    },
+    {
+      "id": "upward_dog",
+      "name": "Upward Dog (Urdhva Mukha Svanasana)",
+      "weight_shift": "unweighted",
+      "facing": "north",
+      "tempo_class": "medium",
+      "energy_delta": 0.05,
+      "duration_beats": 4,
+      "valid_next": ["downward_dog"]
+    },
+    {
+      "id": "cobra",
+      "name": "Cobra (Bhujangasana)",
+      "weight_shift": "bilateral",
+      "facing": "north",
+      "tempo_class": "slow",
+      "energy_delta": 0.04,
+      "duration_beats": 4,
+      "valid_next": ["downward_dog", "child"]
+    },
+    {
+      "id": "downward_dog",
+      "name": "Downward Dog (Adho Mukha Svanasana)",
+      "weight_shift": "bilateral",
+      "facing": "any",
+      "tempo_class": "slow",
+      "energy_delta": -0.05,
+      "duration_beats": 8,
+      "valid_next": ["plank", "standing_forward_fold", "warrior_i", "warrior_ii", "child", "three_legged_dog"]
+    },
+    {
+      "id": "three_legged_dog",
+      "name": "Three-Legged Dog",
+      "weight_shift": "bilateral",
+      "facing": "any",
+      "tempo_class": "medium",
+      "energy_delta": 0.06,
+      "duration_beats": 4,
+      "valid_next": ["warrior_i", "crescent_lunge", "downward_dog"]
+    },
+    {
+      "id": "warrior_i",
+      "name": "Warrior I (Virabhadrasana I)",
+      "weight_shift": "left",
+      "facing": "north",
+      "tempo_class": "medium",
+      "energy_delta": 0.1,
+      "duration_beats": 8,
+      "valid_next": ["warrior_ii", "crescent_lunge", "downward_dog", "warrior_i_right"]
+    },
+    {
+      "id": "warrior_i_right",
+      "name": "Warrior I Right",
+      "weight_shift": "right",
+      "facing": "north",
+      "tempo_class": "medium",
+      "energy_delta": 0.1,
+      "duration_beats": 8,
+      "valid_next": ["warrior_ii_right", "downward_dog", "warrior_i"]
+    },
+    {
+      "id": "warrior_ii",
+      "name": "Warrior II (Virabhadrasana II)",
+      "weight_shift": "left",
+      "facing": "east",
+      "tempo_class": "medium",
+      "energy_delta": 0.1,
+      "duration_beats": 8,
+      "valid_next": ["side_angle", "reverse_warrior", "triangle", "downward_dog"]
+    },
+    {
+      "id": "warrior_ii_right",
+      "name": "Warrior II Right",
+      "weight_shift": "right",
+      "facing": "west",
+      "tempo_class": "medium",
+      "energy_delta": 0.1,
+      "duration_beats": 8,
+      "valid_next": ["side_angle_right", "triangle_right", "downward_dog"]
+    },
+    {
+      "id": "side_angle",
+      "name": "Side Angle (Utthita Parsvakonasana)",
+      "weight_shift": "left",
+      "facing": "east",
+      "tempo_class": "medium",
+      "energy_delta": 0.08,
+      "duration_beats": 8,
+      "valid_next": ["triangle", "warrior_ii", "downward_dog"]
+    },
+    {
+      "id": "side_angle_right",
+      "name": "Side Angle Right",
+      "weight_shift": "right",
+      "facing": "west",
+      "tempo_class": "medium",
+      "energy_delta": 0.08,
+      "duration_beats": 8,
+      "valid_next": ["triangle_right", "warrior_ii_right", "downward_dog"]
+    },
+    {
+      "id": "triangle",
+      "name": "Triangle (Trikonasana)",
+      "weight_shift": "left",
+      "facing": "east",
+      "tempo_class": "slow",
+      "energy_delta": 0.06,
+      "duration_beats": 8,
+      "valid_next": ["warrior_ii", "downward_dog", "mountain"]
+    },
+    {
+      "id": "triangle_right",
+      "name": "Triangle Right",
+      "weight_shift": "right",
+      "facing": "west",
+      "tempo_class": "slow",
+      "energy_delta": 0.06,
+      "duration_beats": 8,
+      "valid_next": ["warrior_ii_right", "downward_dog", "mountain"]
+    },
+    {
+      "id": "reverse_warrior",
+      "name": "Reverse Warrior",
+      "weight_shift": "left",
+      "facing": "east",
+      "tempo_class": "medium",
+      "energy_delta": 0.07,
+      "duration_beats": 4,
+      "valid_next": ["warrior_ii", "side_angle", "downward_dog"]
+    },
+    {
+      "id": "crescent_lunge",
+      "name": "Crescent Lunge (Anjaneyasana)",
+      "weight_shift": "left",
+      "facing": "north",
+      "tempo_class": "medium",
+      "energy_delta": 0.09,
+      "duration_beats": 8,
+      "valid_next": ["warrior_i", "downward_dog", "low_lunge", "warrior_ii"]
+    },
+    {
+      "id": "low_lunge",
+      "name": "Low Lunge",
+      "weight_shift": "left",
+      "facing": "north",
+      "tempo_class": "slow",
+      "energy_delta": 0.04,
+      "duration_beats": 8,
+      "valid_next": ["downward_dog", "pigeon", "crescent_lunge"]
+    },
+    {
+      "id": "chair",
+      "name": "Chair (Utkatasana)",
+      "weight_shift": "bilateral",
+      "facing": "north",
+      "tempo_class": "medium",
+      "energy_delta": 0.12,
+      "duration_beats": 8,
+      "valid_next": ["mountain", "standing_forward_fold", "warrior_i"]
+    },
+    {
+      "id": "tree",
+      "name": "Tree (Vrksasana)",
+      "weight_shift": "left",
+      "facing": "north",
+      "tempo_class": "slow",
+      "energy_delta": 0.06,
+      "duration_beats": 8,
+      "valid_next": ["mountain", "warrior_i", "downward_dog"]
+    },
+    {
+      "id": "pigeon",
+      "name": "Pigeon (Eka Pada Rajakapotasana prep)",
+      "weight_shift": "unweighted",
+      "facing": "north",
+      "tempo_class": "slow",
+      "energy_delta": -0.1,
+      "duration_beats": 16,
+      "valid_next": ["downward_dog", "child"]
+    },
+    {
+      "id": "child",
+      "name": "Child's Pose (Balasana)",
+      "weight_shift": "bilateral",
+      "facing": "any",
+      "tempo_class": "slow",
+      "energy_delta": -0.15,
+      "duration_beats": 8,
+      "valid_next": ["downward_dog", "mountain", "seated_twist"]
+    },
+    {
+      "id": "seated_twist",
+      "name": "Seated Twist",
+      "weight_shift": "bilateral",
+      "facing": "any",
+      "tempo_class": "slow",
+      "energy_delta": -0.05,
+      "duration_beats": 8,
+      "valid_next": ["supine_twist", "savasana", "child"]
+    },
+    {
+      "id": "supine_twist",
+      "name": "Supine Twist",
+      "weight_shift": "bilateral",
+      "facing": "any",
+      "tempo_class": "slow",
+      "energy_delta": -0.08,
+      "duration_beats": 8,
+      "valid_next": ["savasana", "bridge", "happy_baby"]
+    },
+    {
+      "id": "bridge",
+      "name": "Bridge (Setu Bandha Sarvangasana)",
+      "weight_shift": "bilateral",
+      "facing": "north",
+      "tempo_class": "medium",
+      "energy_delta": 0.06,
+      "duration_beats": 8,
+      "valid_next": ["supine_twist", "savasana"]
+    },
+    {
+      "id": "happy_baby",
+      "name": "Happy Baby (Ananda Balasana)",
+      "weight_shift": "bilateral",
+      "facing": "any",
+      "tempo_class": "slow",
+      "energy_delta": -0.1,
+      "duration_beats": 8,
+      "valid_next": ["savasana", "supine_twist"]
+    },
+    {
+      "id": "side_plank",
+      "name": "Side Plank (Vasisthasana)",
+      "weight_shift": "right",
+      "facing": "east",
+      "tempo_class": "fast",
+      "energy_delta": 0.14,
+      "duration_beats": 4,
+      "valid_next": ["plank", "downward_dog"]
+    },
+    {
+      "id": "sun_a_sweep",
+      "name": "Sun Salutation A (sweep)",
+      "weight_shift": "bilateral",
+      "facing": "north",
+      "tempo_class": "medium",
+      "energy_delta": 0.08,
+      "duration_beats": 8,
+      "valid_next": ["downward_dog", "warrior_i", "mountain"]
+    },
+    {
+      "id": "savasana",
+      "name": "Savasana (Final Rest)",
+      "weight_shift": "bilateral",
+      "facing": "any",
+      "tempo_class": "slow",
+      "energy_delta": -0.2,
+      "duration_beats": 16,
+      "valid_next": []
+    }
+  ]
+}
