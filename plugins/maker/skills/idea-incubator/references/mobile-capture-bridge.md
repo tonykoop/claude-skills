@@ -11,7 +11,7 @@ phone and into the Obsidian vault inbox with minimal friction.
       |                              |
       | share / copy URL             | Obsidian Advanced URI
       v                              v
-[Gemini chat URL]        [vault/00-inbox/<stable-filename>.md]
+[Gemini chat URL]        [vault/Inbound_Brainstorms/<stable-filename>.md]
                                      |
                           [inbox_watcher.py polls & triggers]
 ```
@@ -49,7 +49,7 @@ Tailscale in Story #412).
 
 ### Inbox folder
 
-Create `00-inbox/` in your vault root if it does not exist. The watcher
+Create `Inbound_Brainstorms/` in your vault root if it does not exist. The watcher
 (`inbox_watcher.py`) defaults to this folder.
 
 ---
@@ -117,7 +117,7 @@ Store as `EncodedContent`.
 **Action 7 — Build Obsidian URI**
 ```
 Action: Text
-obsidian://advanced-uri?vault=Tony&filepath=00-inbox%2Fgemini-[EncodedURL].md&data=[EncodedContent]&mode=new
+obsidian://advanced-uri?vault=Tony&filepath=Inbound_Brainstorms%2Fgemini-[EncodedURL].md&data=[EncodedContent]&mode=new
 ```
 Replace `Tony` with your vault name. Store as `ObsidianURI`.
 
@@ -135,7 +135,7 @@ While reading a Gemini conversation on iOS:
 1. Tap **Share** (the box-and-arrow icon).
 2. Select **Gemini → Obsidian Inbox**.
 3. Obsidian opens briefly, writes the file, and returns to Gemini.
-4. The file lands in `00-inbox/` in your vault.
+4. The file lands in `Inbound_Brainstorms/` in your vault.
 
 ---
 
@@ -201,7 +201,7 @@ Action: Variable Set
 **Action 5 — Launch Obsidian URI**
 ```
 Action: Launch App
-  URI: obsidian://advanced-uri?vault=Tony&filepath=00-inbox%2Fgemini-%ts.md&data=%enc_content&mode=new
+  URI: obsidian://advanced-uri?vault=Tony&filepath=Inbound_Brainstorms%2Fgemini-%ts.md&data=%enc_content&mode=new
 ```
 Replace `Tony` with your vault name.
 

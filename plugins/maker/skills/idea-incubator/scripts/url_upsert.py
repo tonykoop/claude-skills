@@ -148,8 +148,8 @@ def main(argv: list[str]) -> int:
     parser.add_argument(
         "--inbox",
         type=Path,
-        default=Path("00-inbox"),
-        help="Obsidian vault inbox folder (default: 00-inbox).",
+        default=Path("Inbound_Brainstorms"),
+        help="Obsidian vault inbox folder (default: Inbound_Brainstorms).",
     )
     parser.add_argument(
         "--content-file",
