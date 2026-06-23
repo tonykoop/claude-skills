@@ -9,6 +9,7 @@ from unittest.mock import patch
 sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 from inbox_watcher import (
     _validate_chat_url_stem,
+    _detect_gemini_variant,
     detect_triggers,
     dispatch_file,
     is_stamped,
@@ -431,6 +432,51 @@ class TestValidateChatUrlStem(unittest.TestCase):
         p = self.inbox / "random.md"
         p.write_text("---\nsource: gemini\n---\nNo chat_url front-matter.", encoding="utf-8")
         self.assertIsNone(_validate_chat_url_stem(p))
+
+
+class TestDetectGeminiVariant(unittest.TestCase):
+    """Story #411 — NotebookLM variant detection in front-matter."""
+
+    def test_notebooklm_clip_detected(self):
+        content = (
+            "---\n"
+            "source: gemini\n"
+            "gemini_variant: notebooklm\n"
+            "notebook_id: my-notebook\n"
+            "---\n\n"
+            "incubate this idea from a notebook session\n"
+        )
+        self.assertEqual(_detect_gemini_variant(content), "notebooklm")
+
+    def test_plain_gemini_clip_not_flagged(self):
+        content = "---\nsource: gemini\nchat_url: https://gemini.google.com/app/abc\n---\n\nincubate this"
+        self.assertEqual(_detect_gemini_variant(content), "")
+
+    def test_no_front_matter_returns_empty(self):
+        self.assertEqual(_detect_gemini_variant("incubate this idea"), "")
+
+    def test_scan_populates_gemini_variant(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            inbox = Path(tmp)
+            p = inbox / "notebook-clip.md"
+            p.write_text(
+                "---\nsource: gemini\ngemini_variant: notebooklm\n---\n\nincubate this",
+                encoding="utf-8",
+            )
+            state = WatcherState()
+            result = scan_once(inbox, state)
+        self.assertIn(p, result.triggered)
+        self.assertEqual(result.gemini_variant.get(p), "notebooklm")
+
+    def test_plain_clip_absent_from_gemini_variant_dict(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            inbox = Path(tmp)
+            p = inbox / "plain-clip.md"
+            p.write_text("source: gemini\nincubate this", encoding="utf-8")
+            state = WatcherState()
+            result = scan_once(inbox, state)
+        self.assertIn(p, result.triggered)
+        self.assertNotIn(p, result.gemini_variant)
 
 
 if __name__ == "__main__":

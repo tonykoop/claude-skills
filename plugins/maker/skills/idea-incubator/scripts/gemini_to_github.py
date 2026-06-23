@@ -157,18 +157,35 @@ def build_body(block: IdeaBlock, conversation_id: str) -> str:
     )
 
 
-def build_payloads(conversation_id: str, text: str) -> list[dict[str, Any]]:
+def build_payloads(
+    conversation_id: str,
+    text: str,
+    *,
+    gemini_variant: str = "",
+) -> list[dict[str, Any]]:
+    """Build issue payloads from a parsed brainstorm export.
+
+    Parameters
+    ----------
+    gemini_variant:
+        When ``"notebooklm"``, appends ``needs-clarification`` to every
+        block's label list so reviewers know the content came from a
+        NotebookLM grounded session (Story #411).
+    """
     payloads: list[dict[str, Any]] = []
     for index, raw_block in enumerate(split_blocks(text)):
         block = IdeaBlock(text=raw_block, index=index)
         block.title = derive_title(raw_block)
         block.labels = route_labels(raw_block)
+        if gemini_variant == "notebooklm" and "needs-clarification" not in block.labels:
+            block.labels = block.labels + ["needs-clarification"]
         block.fingerprint = fingerprint(conversation_id, raw_block)
         payloads.append(
             {
                 "fingerprint": block.fingerprint,
                 "conversation_id": conversation_id,
                 "source": "gemini",
+                "gemini_variant": gemini_variant,
                 "title": block.title,
                 "body": build_body(block, conversation_id),
                 "labels": block.labels,
@@ -217,10 +234,20 @@ def main(argv: list[str]) -> int:
             "before filing. Prints CREATE or APPEND to stderr. No-op in dry-run mode."
         ),
     )
+    parser.add_argument(
+        "--gemini-variant",
+        default="",
+        metavar="VARIANT",
+        help=(
+            "Gemini source variant for this export. Pass 'notebooklm' when the clip "
+            "originated from a NotebookLM session; adds 'needs-clarification' label to "
+            "all issues so reviewers know the content came from a grounded session."
+        ),
+    )
     args = parser.parse_args(argv[1:])
 
     conversation_id, text = read_export(args.export)
-    payloads = build_payloads(conversation_id, text)
+    payloads = build_payloads(conversation_id, text, gemini_variant=args.gemini_variant)
 
     if args.dedup_repo and args.create:
         mode = _decide_mode(args.dedup_repo, conversation_id)
