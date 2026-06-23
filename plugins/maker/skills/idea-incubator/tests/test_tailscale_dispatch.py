@@ -3,11 +3,13 @@ import hashlib
 import http.client
 import json
 import os
+import subprocess
 import sys
 import threading
 import time
 import unittest
 from pathlib import Path
+from unittest.mock import patch, MagicMock
 
 sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 from tailscale_dispatch import (
@@ -15,6 +17,8 @@ from tailscale_dispatch import (
     TailscaleWebhookServer,
     _NonceCache,
     _REPLAY_WINDOW_S,
+    _post_feedback_comment,
+    run_pipeline,
     send_dispatch,
     sign_payload,
     verify_signature,
@@ -286,6 +290,153 @@ class TestSendDispatch(unittest.TestCase):
         with _LiveServer() as srv:
             ok = send_dispatch("127.0.0.1", srv.port, "wrong-secret", PAYLOAD, timeout=5)
             self.assertFalse(ok)
+
+
+class TestDispatchPayloadFeedbackFields(unittest.TestCase):
+    """issue_num and repo fields on DispatchPayload (Story #412)."""
+
+    def test_default_fields_empty(self):
+        p = DispatchPayload(inbox_path="/x", mode="CREATE", trigger="t", conversation_id="c")
+        self.assertEqual(p.issue_num, "")
+        self.assertEqual(p.repo, "")
+
+    def test_roundtrip_with_feedback_fields(self):
+        p = DispatchPayload(
+            inbox_path="/x", mode="CREATE", trigger="t", conversation_id="c",
+            issue_num="42", repo="owner/repo",
+        )
+        p2 = DispatchPayload.from_json(p.to_json())
+        self.assertEqual(p2.issue_num, "42")
+        self.assertEqual(p2.repo, "owner/repo")
+
+    def test_from_json_missing_feedback_fields_defaults_to_empty(self):
+        j = json.dumps({"inbox_path": "/x", "mode": "APPEND"})
+        p = DispatchPayload.from_json(j)
+        self.assertEqual(p.issue_num, "")
+        self.assertEqual(p.repo, "")
+
+
+class TestPostFeedbackComment(unittest.TestCase):
+    """_post_feedback_comment() — gh issue comment after pipeline success."""
+
+    def _payload(self, issue_num: str = "99", repo: str = "owner/repo") -> DispatchPayload:
+        return DispatchPayload(
+            inbox_path="/tmp/test.md",
+            mode="CREATE",
+            trigger="incubate this",
+            conversation_id="conv-abc",
+            issue_num=issue_num,
+            repo=repo,
+        )
+
+    def test_comment_posted_when_fields_set(self):
+        captured: list = []
+
+        def fake_run(cmd, **kwargs):
+            captured.append(cmd)
+            r = MagicMock()
+            r.returncode = 0
+            r.stderr = ""
+            return r
+
+        with patch("subprocess.run", side_effect=fake_run):
+            _post_feedback_comment(self._payload())
+
+        self.assertEqual(len(captured), 1)
+        cmd = captured[0]
+        self.assertIn("gh", cmd)
+        self.assertIn("issue", cmd)
+        self.assertIn("comment", cmd)
+        self.assertIn("99", cmd)
+        self.assertIn("-R", cmd)
+        self.assertIn("owner/repo", cmd)
+
+    def test_comment_skipped_when_issue_num_empty(self):
+        with patch("subprocess.run") as mock_run:
+            _post_feedback_comment(self._payload(issue_num=""))
+            mock_run.assert_not_called()
+
+    def test_comment_skipped_when_repo_empty(self):
+        with patch("subprocess.run") as mock_run:
+            _post_feedback_comment(self._payload(repo=""))
+            mock_run.assert_not_called()
+
+    def test_gh_failure_does_not_raise(self):
+        def fake_run(cmd, **kwargs):
+            r = MagicMock()
+            r.returncode = 1
+            r.stderr = "some error"
+            return r
+
+        with patch("subprocess.run", side_effect=fake_run):
+            _post_feedback_comment(self._payload())  # must not raise
+
+    def test_gh_missing_does_not_raise(self):
+        with patch("subprocess.run", side_effect=FileNotFoundError("gh not found")):
+            _post_feedback_comment(self._payload())  # must not raise
+
+
+class TestRunPipelineFeedback(unittest.TestCase):
+    """run_pipeline() posts comment on success, not on failure."""
+
+    def _payload(self, issue_num: str = "7", repo: str = "org/repo") -> DispatchPayload:
+        return DispatchPayload(
+            inbox_path="/tmp/clip.md",
+            mode="CREATE",
+            trigger="incubate this",
+            conversation_id="conv-1",
+            issue_num=issue_num,
+            repo=repo,
+        )
+
+    def _make_pipeline_result(self, returncode: int):
+        r = MagicMock()
+        r.returncode = returncode
+        r.stdout = ""
+        r.stderr = ""
+        return r
+
+    def test_comment_posted_after_successful_pipeline(self):
+        comment_calls: list = []
+
+        def fake_run(cmd, **kwargs):
+            if "gh" in cmd:
+                comment_calls.append(cmd)
+                r = MagicMock(); r.returncode = 0; r.stderr = ""
+                return r
+            return self._make_pipeline_result(0)
+
+        with patch("subprocess.run", side_effect=fake_run):
+            run_pipeline("echo {inbox_path}", self._payload())
+
+        self.assertEqual(len(comment_calls), 1)
+
+    def test_comment_not_posted_after_failed_pipeline(self):
+        comment_calls: list = []
+
+        def fake_run(cmd, **kwargs):
+            if "gh" in cmd:
+                comment_calls.append(cmd)
+            return self._make_pipeline_result(1)
+
+        with patch("subprocess.run", side_effect=fake_run):
+            run_pipeline("false", self._payload())
+
+        self.assertEqual(len(comment_calls), 0)
+
+    def test_comment_not_posted_when_no_issue_num(self):
+        pipeline_ran = []
+
+        def fake_run(cmd, **kwargs):
+            pipeline_ran.append(cmd)
+            return self._make_pipeline_result(0)
+
+        with patch("subprocess.run", side_effect=fake_run):
+            run_pipeline("echo {inbox_path}", self._payload(issue_num=""))
+
+        # Only the pipeline itself ran — no gh comment
+        self.assertEqual(len(pipeline_ran), 1)
+        self.assertNotIn("gh", pipeline_ran[0])
 
 
 if __name__ == "__main__":

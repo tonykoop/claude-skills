@@ -66,6 +66,8 @@ class DispatchPayload:
     mode: str  # "CREATE" or "APPEND"
     trigger: str
     conversation_id: str
+    issue_num: str = ""  # GitHub issue number to comment on after pipeline success
+    repo: str = ""       # GitHub repo in OWNER/REPO form (required when issue_num set)
 
     def to_json(self) -> str:
         return json.dumps(dataclasses.asdict(self), sort_keys=True)
@@ -78,6 +80,8 @@ class DispatchPayload:
             mode=d["mode"],
             trigger=d.get("trigger", ""),
             conversation_id=d.get("conversation_id", ""),
+            issue_num=d.get("issue_num", ""),
+            repo=d.get("repo", ""),
         )
 
 
@@ -314,6 +318,44 @@ def run_pipeline(pipeline_cmd_template: str, payload: DispatchPayload) -> None:
         )
     else:
         sys.stderr.write("[tailscale-dispatch] pipeline succeeded\n")
+        _post_feedback_comment(payload)
+
+
+def _post_feedback_comment(payload: DispatchPayload) -> None:
+    """Post a completion comment on the originating GitHub issue (if configured).
+
+    Runs only when both `payload.issue_num` and `payload.repo` are non-empty.
+    Subprocess errors are logged but never raised — feedback is best-effort.
+    """
+    if not payload.issue_num or not payload.repo:
+        return
+    comment_body = (
+        f"Dispatch complete: `{payload.inbox_path}` processed "
+        f"(mode: {payload.mode}, conversation: {payload.conversation_id or 'n/a'})."
+    )
+    try:
+        result = subprocess.run(
+            [
+                "gh", "issue", "comment", payload.issue_num,
+                "-R", payload.repo,
+                "--body", comment_body,
+            ],
+            capture_output=True,
+            text=True,
+            timeout=30,
+        )
+        if result.returncode != 0:
+            sys.stderr.write(
+                f"[tailscale-dispatch] gh comment failed (exit {result.returncode}): "
+                f"{result.stderr.strip()}\n"
+            )
+        else:
+            sys.stderr.write(
+                f"[tailscale-dispatch] posted feedback comment on "
+                f"{payload.repo}#{payload.issue_num}\n"
+            )
+    except (FileNotFoundError, subprocess.TimeoutExpired) as exc:
+        sys.stderr.write(f"[tailscale-dispatch] could not post feedback comment: {exc}\n")
 
 
 # ---------------------------------------------------------------------------
