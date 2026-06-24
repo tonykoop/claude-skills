@@ -86,6 +86,8 @@ See `references/dispatch-patterns.md` for worked patterns including the mobile c
    tmux capture-pane -t 0:0 -p -S -20 | tail -20
    ```
 3. **Target sessions exist.** Run `tmux list-sessions` and verify your scope's targets are present.
+
+3a. **Do NOT pair this skill with a `/goal` stop-hook.** A goal bound to "finish the sprint" re-fires after every response and floods the loop with no-op "goal not satisfied" acks. Rely on ScheduleWakeup cadence + stuck-pane events. If the user sets `/goal` anyway, flag the noise once and proceed.
 4. **Watchdog hook is running** (recommended, not required). The watchdog defaults to `twingrid-a twingrid-b`, so always pass your scope's actual targets via `SPRINT_SESSIONS`. Start it after writing the lockfile in step 5 so you can pull targets straight from it. The watchdog script path is configurable (`watchdog_script` in the config; defaults to `~/.claude/skills/sprint-supervisor/scripts/sprint-watchdog.sh` or wherever the install placed it):
    ```bash
    SPRINT_SESSIONS="$(python3 -c "import json; print(' '.join(json.load(open('/tmp/sprint-supervisor/<scope>.lock'))['targets']))")" \
@@ -145,6 +147,8 @@ Cadence is driven by `current_phase` in the lockfile. Pick the next-wakeup delay
 Resume /sprint-supervisor for scope <scope>. State in /tmp/sprint-supervisor/<scope>.lock.
 ```
 This survives compact boundaries (the SKILL is re-loaded by the harness) and saves ~3KB of re-pasted rubric per cycle. Do NOT re-paste the rubric, target list, or per-iter status into the wakeup prompt — that drove ~30 wasted cycles' worth of cache bloat in the 2026-05-18 run.
+
+**Nothing wakes a paused supervisor** except a ScheduleWakeup firing, human input, or your own `PushNotification` — the watchdog/stophook only DROP marker files, they cannot resume your tool-loop. Your wake cadence is the hard latency floor; never trust a narrative that says "the hook will notify me."
 
 ### Pending-judgment short-circuit
 
@@ -274,6 +278,7 @@ Always re-schedule unless the user has returned or an escalation triggered. If e
 | `Would you like to run the following command?` for `ssh` read-only ops on a config-listed host (e.g. `<host>`: dashboard scripts, `docker ps`, `find`, `ls`, `git status`) — only if the host appears in the config's allowlist | `y Enter` |
 | `Approaching rate limits — Switch to gpt-5.4-mini?` | `2 Enter` (Keep current model). The reason is **not** that downshifting is always wrong — it's that the sprint-manager may have a better plan (e.g. migrate the pane to a different provider entirely: codex → claude → gemini). Preserving model choice keeps that path open. The manager owns the pivot; the supervisor just doesn't shortcut it. |
 | Provider availability test prompt (sprint-manager dispatching a brief "are you up?" probe to a freshly-launched `claude` or `gemini` in a previously-exhausted pane) | Same rules as the corresponding edit/command rubric row apply — judge by shape, not by which CLI is asking. |
+| Plan-mode modal: "Claude has written up a plan … Would you like to proceed?" (1. Yes, and use auto mode) | `1` then Enter after a quick skim (right repo/family, no fabricated data, nothing destructive). Escalate only genuinely destructive plans (rm -rf, history rewrite, force-push). |
 | Anything else, or a command you can't immediately classify | Capture the last 40 lines first (`tmux capture-pane -p -t <pane> -S -40`), then judge. Lean conservative — when in doubt, escalate, don't approve. |
 
 The reason this rubric is structured by prompt-pattern rather than by command-substring is that the agent CLI prompt UI is the stable surface — its options change rarely. Command shapes are not. Match the prompt, then sanity-check the command, then act.
@@ -296,6 +301,14 @@ If a prompt requests any of these, **do not approve and do not dismiss**. Captur
 
 The reason these are hard-stop is that the cost of approving one wrong is catastrophic (data loss, leaked secrets, broken production) while the cost of waking the user is merely annoying. The asymmetry argues for caution.
 
+## Auto-mode classifier limits
+
+The auto-mode classifier independently blocks a few write classes regardless of your rubric. Know its edges so you don't burn cycles fighting it:
+
+- **Closing PRs you did not create is blocked** by the classifier as an unauthorized external write — a generic "merge-review" instruction does not satisfy it. Ask the user once for blanket authorization to close gate-confirmed-superseded PRs; then post a one-line evidence comment citing the covering PR/commit before each `gh pr close`. Never close drafts/WIP or partial-judgment cases. Merges are NOT blocked this way — only closes.
+- **You cannot launch unattended approval-bypassed codex agents** (`codex exec --dangerously-bypass-approvals-and-sandbox`, or `--sandbox workspace-write` via send-keys), and you cannot self-grant that by editing settings.json — both flag as auto-mode bypass. Stage the panes, per-repo contracts, and a `launch.sh`, then hand the user the trigger (`! bash /tmp/.../launch.sh`) or ask them to add `Bash(codex exec:*)` / `Bash(tmux send-keys:*)` permission rules.
+- **The classifier blocks "permission laundering"** — relaying a peer agent's EXPLICITLY-denied write verbatim. It does NOT block your independent execution of a user-approved plan, nor a single focused agent owning rebase→resolve→push→merge end-to-end. Don't step into a chain mid-way right after a peer was blocked on that exact write.
+
 ## Pre-merge checklist (run before every PR merge)
 
 `mergeStateStatus == CLEAN` is necessary but **not sufficient**. Before squash-merging any agent PR, walk this list — each item is a real failure that bit a real sprint (2026-06-14):
@@ -306,6 +319,8 @@ The reason these are hard-stop is that the cost of approving one wrong is catast
 4. **Duplicate / superseded detection.** When agents self-extend into adjacent issues they create overlapping branches. Before merging, list the PR's files and check whether main already has that deliverable (a prior round/rework merged it). Close duplicates as superseded rather than merging a second copy.
 5. **Dependency order for a new foundation repo.** Merge the schema/CI story first, then rebase each dependent branch onto the new `main` (they carry stale shared files — `pyproject.toml`, `__init__.py` — resolve those to main's version). Re-check mergeability after each merge; expect rebase cascades on shared trees.
 6. **Conflict resolution on overlapping inserts — beware the coincidental-context trap.** When two branches both insert new code at the same location and share trailing lines (`}`, `</section>`, dict/registry boilerplate), do NOT just strip the 3 conflict markers — that mis-joins one block's header to another's body. Reconstruct from main + the branch's *named* additions, or duplicate the shared closing per side. Validate (`python -c "import ast; ast.parse(...)"` / balanced-tag count) and run tests before continuing the rebase.
+7. **Confirm a swept branch's diff actually touches the files/paths the task targeted** before merging — skill-equipped codex panes drift from narrow specs into generic packet work that touches none of the intended files. `gh pr diff <n> --name-only` (or `git diff --name-only`) and eyeball that the intended paths are present.
+8. **Admin-enforced branch protection cannot be force-merged and shouldn't be.** With `enforce_admins=true` + required status checks, a failing required check (e.g. `oracle-selftest`) means not-ready — leave it for a `gh-fix-ci` pass rather than admin-overriding it.
 
 ## GitHub access — route writes across app-scoped MCP rate buckets
 
@@ -348,14 +363,18 @@ The supervisor sometimes finishes an agent's work for it (push a stalled-but-don
 - **Committed vs staged before a manager-push.** If you push an idle agent's HEAD to unblock it, first confirm the intended change is *committed*, not merely staged/working-tree. Check `git show HEAD:<file> | grep <fix>` or `git diff --cached --quiet`. Pushing a pre-fix HEAD looks like progress but leaves CI red and wastes a cycle.
 - **Don't race a live agent on a shared `.git`.** Worktrees share one `.git`; operating in/near a worktree whose agent is still active causes `index.lock` collisions. Use a dedicated scratch worktree for manager rebases and wrap git in a short lock-retry loop (sleep 8s, retry ~5×).
 - **Open codex PRs from the host** (codex panes can't reach `api.github.com`); use `Refs #N`, never `Closes`.
+- **Don't race a live agent to its own final-phase steps** (tagging a release, adding a showcase/library card) — agents self-tag last; if you win the race the agent then fights a tag-already-exists conflict (~5 wasted min). Only do it yourself when the owning pane is dead, stuck on an unresolvable modal, or idle 2+ cycles with no PRs advancing.
 
 ## Pre-dispatch verification (when the supervisor also dispatches)
 
 If this supervisor instance also stands up worktrees and launches panes (warm hand-off, or a combined manager+supervisor role), verify before sending any task:
 
 1. **Worktree↔repo match.** For each worktree, assert `git -C <worktree> remote get-url origin` is the *intended* repo. A copy-paste slip (running `git worktree add` from the wrong clone dir after a `cd`) silently routes an agent's work to the wrong repo — caught too late, at PR time, in the wrong place. One cheap loop after setup prevents it.
-2. **Launch agents in true auto mode, not acceptEdits.** claude: `--permission-mode auto` (footer must read `⏵⏵ auto mode on`, not `accept edits on`). codex: `-a on-failure`. `acceptEdits` still prompts on every bash command and turns the supervisor into a full-time prompt-clearer.
+2. **Launch agents in true auto mode, not acceptEdits.** claude: `--permission-mode auto` (footer must read `⏵⏵ auto mode on`, not `accept edits on`). codex: `-a on-failure`. `acceptEdits` still prompts on every bash command and turns the supervisor into a full-time prompt-clearer. **Exception — ATTENDED initial dispatch:** when the user is present to review plans, launch panes in plan mode so each agent produces a reviewable plan, and the user transitions panes to accept-edits as they approve. The "true auto mode" rule is for UNATTENDED supervision only.
 3. **Clear the one-time "trust this folder" prompt** that fresh worktrees trigger on first agent launch (`1 Enter` for claude; codex usually auto-trusts).
+4. **De-dup cross-listed story issues before dispatch.** A story referenced by two epics gets built by both lanes in parallel (duplicate PRs, same-file collision). Assign it to one lane and write "DO NOT build #N — <other> owns it" in the other's contract.
+5. **Merge authority follows trust, with limits.** When the user grants trust, it extends to letting agents merge their OWN PRs after their review gate (≈2× the throughput of serial manager merges) — include explicit merge authority in carryover/triage handoffs, but NOT for new-content lanes (build packets, capstones), which still flow through the manager+verifier gate. Trust is per-session and covers merge-into-base only — never force-push main, delete tags, or close other agents' PRs.
+6. **Redirect a live auto-mode pane with `Esc` first.** Send `Esc` to interrupt the in-flight turn, THEN the correction — a message queued behind the current turn is ignored.
 
 ## AFK notifications
 
@@ -405,8 +424,16 @@ Even without a destructive prompt, surface to the user (in the next wakeup respo
 - A persona pane shows a **shell prompt or process death** instead of the expected codex/claude UI.
 - The watchdog log shows a tight loop on the same pane (>5 approvals per minute on one pane).
 - **A peer supervisor's lockfile heartbeat has gone stale** (>15 min) — its scope is now unowned. Note this in your response and ask whether to expand your scope or wake the peer.
+- **A zombie review pane** — detect it by a `review-*` sub-agent line with large elapsed time (>5m) in the tail. Keystrokes/Esc/`/clear` won't recover it; only `tmux respawn-pane -k` does (then relaunch the CLI, clear trust, set auto). Review lanes must review PRs DIRECTLY (`gh pr diff N` + one comment), never via spawned Task sub-agents — those hang under concurrent gh load and zombie the parent pane.
 
 When escalating: write a one-paragraph summary at the top of your next response, then list the affected panes/commands with their last 10 lines of context.
+
+## Re-nudging idle panes
+
+Agents complete one batch then idle at the ready prompt ("want me to continue?"). Re-nudging idle panes each cycle (the refill loop) is real supervisor work, not just clearing modals. Contracts should say "loop through ALL stories, don't stop until WAVE-EMPTY."
+
+- **Codex panes exhaust context after ~10–25 min** ("ran out of room"); recovery is `/clear` (on-disk commits persist) + a compact resume pointing at the remaining queue.
+- **After a session-limit reset, idle panes do NOT auto-resume** — they sit at a blank prompt with their task list still visible. On the user's restart signal, send one short continue-nudge per idle pane referencing its remaining tasks (text + Enter + Enter), once per pane per session (not per cycle). Expect a wave of permission modals after.
 
 ## Coordination with peer supervisors
 
@@ -423,6 +450,8 @@ Each supervisor:
 4. Reports on its scope only in the morning summary.
 
 If two supervisors accidentally claim overlapping panes (config drift, user typo), the supervisor with the **earlier `started` timestamp** keeps the overlap; the later one drops the conflicting panes and notes it in the next response. This is deterministic and doesn't require negotiation.
+
+**No persona pane is permanently off-limits.** The user may direct any persona directly AND it still receives your round handoffs — the two coexist. Don't generalize a one-time "I'm talking to X directly" into a standing skip rule. Only avoid racing a pane the user is ACTIVELY typing in.
 
 See `references/scaling-topology.md` for worked triplegrid/quadgrid examples and topic-specialization patterns.
 
@@ -511,6 +540,11 @@ A **marathon** is a grid run meant to stay productive through a full ~5-hour usa
 1. **Cap per-agent sub-fanout** — no 40-agent sub-swarms. On 2026-06-19 a single lane's 40-agent audit burned ~2.4M tokens and helped cap Sonnet in ~90 min. Bake "Task sub-swarms ≤3; go serial for breadth" into the dispatch contract; if you see a lane fan out massively, flag it (it's a budget bomb, not progress).
 2. **Lean Opus supervisor** — long cadence (20–30 min once past cold-start), minimal cycles, never worker-grade work. (The 2026-06-19 supervisor ran 56 cycles, many redundant.)
 3. **Useful burn, not raw burn** — cross-review rounds + loop-until-dry-with-caps + staggered waves beat one giant sub-swarm.
+
+**Marathon-only relaxations** (these loosen the default no-merge stance — apply ONLY when the user authorizes a marathon, never as standing behavior):
+- **Marathon merge mode** (relaxes the default "supervisor does not merge"): when authorized for a long-haul run, sonnet/codex panes REVIEW and produce vetted ready-lists, and you EXECUTE merges/closes from those lists. Also sweep a DEAD sub-manager's open PRs yourself (merge green/clean, rebase conflicts onto main, re-dispatch unreached stories) — they reliably build+open PRs but often terminate blocking on a CI monitor before merging. Hold a still-running manager's PRs.
+- **Consider running the SUPERVISOR on Sonnet rather than Opus** for a true marathon — if the Opus supervisor caps, all merging/coordination dies and the sprint is dead even with worker budget left. If you keep Opus, keep it extremely lean.
+- **Failover:** if a lane's model caps, migrate it to gpt-5.5 via same-pane provider swap (exit the CLI in-pane, launch codex, re-dispatch its assignment file). EXCEPTION: keep private/trade-secret IP lanes on Anthropic only — never move that content onto codex/OpenAI.
 
 ## What this skill does NOT do
 
