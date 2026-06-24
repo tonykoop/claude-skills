@@ -1,0 +1,10 @@
+# Stop WSL /mnt/c CRLF churn on edit-heavy script/template paths by pinning
+# them to LF (store LF, check out LF). These paths are already 100% LF in the
+# index, so this normalizes nothing now — it only prevents future churn.
+#
+# NOTE: a repo-wide `* text=auto eol=lf` is intentionally NOT used yet —
+# ~400 tracked files are still stored as CRLF, so a blanket rule would
+# mass-renormalize and collide with open feature branches. Do that as a
+# dedicated one-shot renormalize when branches are quiet.
+scripts/wolfram-cloud-sync/**                              text=auto eol=lf
+plugins/maker/skills/idea-incubator/references/templates/** text=auto eol=lf
