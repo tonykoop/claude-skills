@@ -1,7 +1,7 @@
 ---
 name: disk-cleanup
-version: 1.1.0
-last-updated: 2026-06-19
+version: 1.2.0
+last-updated: 2026-07-02
 description: >-
   Weekly-to-biweekly disk recovery for a multi-worktree development setup.
   Runs `cargo clean` per worktree, prunes merged remote branches, cleans
@@ -24,11 +24,19 @@ Cadence: weekly to biweekly, manually invoked. No scheduler.
 
 ## What it does
 
-1. **Worktree inventory.** Lists all `worktrees/*-<persona>` directories
-   under `<workspace>/worktrees/` and their disk usage.
+1. **Worktree inventory.** Enumerates every registered worktree via
+   `git worktree list` per repo — so worktrees under *any* root (not just
+   `<workspace>/worktrees/`, but also secondary roots like `hwe-wt`) are
+   covered — and their disk usage.
 2. **`cargo clean` per worktree.** The biggest space hog in a Rust-heavy
    workspace. Each worktree typically holds 2-8 GB of `target/` debug
    artifacts.
+2b. **Stale worktree removal** (opt-in, `--prune-worktrees`). Removes worktrees
+   that are clean AND fully merged into `origin/main`. **Never** removes: the
+   primary checkout, a canonical persona home (`<repo>-<persona>`), a dirty
+   worktree, or one with commits not in `origin/main`. `git worktree remove`
+   preserves branch refs, so no committed work is lost — only a redundant clean
+   checkout directory is freed. Dry-run by default; needs `--apply`.
 3. **Merged-branch cleanup.** Lists local + remote branches that have been
    merged to `origin/main`. **Never deletes** branches with unmerged
    commits. **Never deletes** branches with active worktrees.
@@ -51,6 +59,8 @@ Cadence: weekly to biweekly, manually invoked. No scheduler.
   deletion, npm/pnpm cache clean.
 - `--include-docker` adds `docker system prune --volumes` to the apply
   list (requires `--apply`).
+- `--prune-worktrees` enables the stale-worktree-removal step (clean + merged
+  only; persona homes always protected). Dry-run unless combined with `--apply`.
 
 ## Usage
 

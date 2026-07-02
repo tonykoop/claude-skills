@@ -11,6 +11,8 @@
 #   ./disk-cleanup.sh --apply --include-docker --confirm   # also docker prune
 #   ./disk-cleanup.sh --worktree core4-alice --apply       # one worktree only
 #   ./disk-cleanup.sh --apply --skip-branches              # skip branch cleanup
+#   ./disk-cleanup.sh --prune-worktrees                    # dry-run: list removable stale worktrees
+#   ./disk-cleanup.sh --apply --prune-worktrees            # remove clean+merged worktrees (persona homes kept)
 #   ./disk-cleanup.sh --json                   # JSON output
 
 set -uo pipefail
@@ -24,12 +26,18 @@ APPLY=0
 INCLUDE_DOCKER=0
 CONFIRM_DOCKER=0
 SKIP_BRANCHES=0
+PRUNE_WORKTREES=0
 TARGET_WORKTREE=""
 JSON_OUTPUT=0
 FORCE=0
 
 # Branch-naming patterns to treat as live (never delete)
 LIVE_PATTERNS=("lane*" "*/round*-current" "*/wip-*")
+
+# Canonical persona worktree homes are semi-permanent and must NEVER be removed
+# (they are reused via `git checkout -B` each round). A home is a worktree whose
+# BASENAME is exactly "<repo>-<persona>", e.g. core4-alice, backend-elsa.
+PERSONAS_RE='(alice|bob|cindy|dan|elsa|frank)'
 
 # ---- parse flags -----------------------------------------------------------
 
@@ -39,6 +47,7 @@ while [ $# -gt 0 ]; do
         --include-docker)   INCLUDE_DOCKER=1; shift ;;
         --confirm)          CONFIRM_DOCKER=1; shift ;;
         --skip-branches)    SKIP_BRANCHES=1; shift ;;
+        --prune-worktrees)  PRUNE_WORKTREES=1; shift ;;
         --worktree)         shift; TARGET_WORKTREE="$1"; shift ;;
         --json)             JSON_OUTPUT=1; shift ;;
         --force)            FORCE=1; shift ;;
@@ -76,6 +85,22 @@ is_live_branch() {
         case "$branch" in $p) return 0 ;; esac
     done
     return 1
+}
+
+# Is this worktree PATH a canonical persona home that must never be removed?
+#
+# INCIDENT NOTE (2026-07-02): a manual cleanup pass built its protect-list by
+# grepping a `$`-anchored path regex against composite "repo|path|meta" lines.
+# Because the path was field 2 (followed by "|meta"), the `$` never anchored,
+# the exclusion silently matched nothing, and ~25 persona homes were removed.
+# Fix: test the worktree BASENAME on its own, never a composite line. No
+# committed work is ever lost by `git worktree remove` (branch refs survive),
+# but the reusable homes had to be rebuilt — so guard them explicitly.
+is_protected_worktree() {
+    local path=$1
+    local base; base=$(basename "$path")
+    # exact "<repo>-<persona>" — anchored against the bare basename
+    [[ "$base" =~ -${PERSONAS_RE}$ ]]
 }
 
 # ---- 1. Worktree cargo clean ----------------------------------------------
@@ -120,6 +145,51 @@ for wt in "$WORKTREES_DIR"/*/; do
     wt_freed["$name"]=$size
     total_freed=$((total_freed + size))
 done
+
+# ---- 1b. Stale worktree removal (opt-in: --prune-worktrees) ---------------
+#
+# Removes worktrees that are fully redundant — clean AND merged into origin/main
+# — across ALL roots (enumerated via `git worktree list`, not a single glob, so
+# secondary roots like hwe-wt are covered). Never removes: the primary checkout,
+# a canonical persona home (is_protected_worktree), a dirty worktree, or one with
+# commits not in origin/main. `git worktree remove` preserves branch refs, so no
+# committed work is lost; only a redundant clean checkout directory is freed.
+
+if [ "$PRUNE_WORKTREES" -eq 1 ]; then
+    echo
+    echo "--- Stale worktree removal ($([ $APPLY -eq 1 ] && echo APPLY || echo DRY-RUN)) ---"
+    for repo_dir in "$WORKSPACE_DIR"/*/; do
+        [ -e "$repo_dir/.git" ] || continue
+        git -C "$repo_dir" rev-parse origin/main >/dev/null 2>&1 || continue
+        primary=$(git -C "$repo_dir" rev-parse --show-toplevel 2>/dev/null)
+        git -C "$repo_dir" worktree list --porcelain 2>/dev/null \
+          | awk '/^worktree /{print $2}' | while read -r wt; do
+            [ "$wt" = "$primary" ] && continue                      # keep primary
+            is_protected_worktree "$wt" && { printf "  %-40s KEEP (persona home)\n" "$(basename "$wt")"; continue; }
+            [ -n "$TARGET_WORKTREE" ] && [ "$(basename "$wt")" != "$TARGET_WORKTREE" ] && continue
+            # dirty? never remove (would discard uncommitted work)
+            if [ -n "$(git -C "$wt" status --porcelain 2>/dev/null)" ]; then
+                printf "  %-40s KEEP (uncommitted changes)\n" "$(basename "$wt")"; continue
+            fi
+            # commits not in origin/main? keep (unmerged work — branch ref would
+            # survive removal, but preserving the checkout aids the owner).
+            ahead=$(git -C "$wt" rev-list --count origin/main..HEAD 2>/dev/null || echo "?")
+            if [ "$ahead" != "0" ]; then
+                printf "  %-40s KEEP (%s commit(s) not in origin/main)\n" "$(basename "$wt")" "$ahead"; continue
+            fi
+            if [ "$APPLY" -eq 1 ]; then
+                if git -C "$repo_dir" worktree remove "$wt" 2>/dev/null; then
+                    printf "  %-40s removed\n" "$(basename "$wt")"
+                else
+                    printf "  %-40s remove FAILED\n" "$(basename "$wt")"
+                fi
+            else
+                printf "  %-40s would remove (clean + merged)\n" "$(basename "$wt")"
+            fi
+        done
+        [ "$APPLY" -eq 1 ] && git -C "$repo_dir" worktree prune 2>/dev/null
+    done
+fi
 
 # ---- 2. Merged-branch cleanup ---------------------------------------------
 
