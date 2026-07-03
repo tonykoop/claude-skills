@@ -1,14 +1,16 @@
 ---
 name: maker-engineering
-version: 1.2.0
-last-updated: 2026-06-19
+version: 1.3.0
+last-updated: 2026-07-02
 description: >-
   Route physical making projects when the right specialist is unclear, the user
   asks "I want to make X", "help me design this physical thing", "is this
   instrument-maker or makerspace?", "set up an experiment", or "design a jig or
   fixture", or the work spans fabrication, acoustics, reverse engineering,
   experiment design, or idea-to-build routing. Use for project intake,
-  specialist routing, DoE scaffolding, cross-project pattern search, and
+  specialist routing, CAD-generation modality routing (blind text code-CAD vs
+  image-conditioned vs live-CAD copilot, with an objective mesh-gate
+  validation harness), DoE scaffolding, cross-project pattern search, and
   multi-specialist handoffs. Do not use for generic design requests or when one
   specialist skill clearly owns the whole task.
 ---
@@ -30,6 +32,8 @@ This skill works best with these MCP connectors. Claude will suggest connecting 
 - `set up an experiment` / `design of experiments`
 - `hybrid project` / `this touches fabrication and acoustics`
 - `multi-specialist handoff`
+- `generate CAD for this` / `which CAD generation approach?` / `text-to-CAD or image-to-CAD?`
+- `validate this generated model` / `is this mesh buildable?`
 - Human-carrying or floatable objects: `kayak`, `canoe`, `boat`, `raft`,
   `paddleboard`, `bike frame`, `treehouse`, `climbing rig`, `ladder`,
   `play structure`, `child seat`, `swing`, `lift platform`, `dock float`
@@ -59,9 +63,10 @@ path, and produce crisp handoffs.
 
 1. Identify the project object, goal, and current maturity: idea, sketch, prototype, build, debug, or validation.
 2. Capture hard constraints: materials, tools, budget, deadline, safety limits, target environment, and available measurements.
-3. Decide the mode: intake, routing, DoE, cross-project pattern search, or multi-specialist orchestration.
+3. Decide the mode: intake, routing, CAD-generation modality routing, DoE, cross-project pattern search, or multi-specialist orchestration.
 4. Read the relevant reference only when needed:
    - Routing rules: [`references/routing-decision-tree.md`](references/routing-decision-tree.md)
+   - CAD-generation modality routing + validation harness: [`references/cad-generation-modalities.md`](references/cad-generation-modalities.md)
    - DoE scaffold: [`references/doe-template.md`](references/doe-template.md)
    - Specialist registry: [`references/specialist-registry.md`](references/specialist-registry.md)
    - Human-carrying / floatable safety gate: [`references/human-carrying-safety-gate.md`](references/human-carrying-safety-gate.md)
@@ -108,6 +113,21 @@ Use when a hybrid project needs multiple owners. Create separate, cross-linked
 handoffs with shared assumptions and integration checkpoints. Do not merge
 acoustic, fabrication, reverse-engineering, and experiment outputs into one
 muddled packet.
+
+### CAD-Generation Modality Routing
+
+Use when the project needs generated CAD and the question is *how*: blind
+text code-CAD (measured spec → OpenSCAD via CLI agents), image-conditioned
+code-CAD (photo + brief → parametric OpenSCAD via a CADAM-style tool), or a
+live-CAD copilot (Adam plugin / Luthier Bridge driving SolidWorks/Fusion
+for native feature trees). Route by input type and deliverable using the
+table in [`references/cad-generation-modalities.md`](references/cad-generation-modalities.md),
+then validate any generated candidate with the objective mesh gate defined
+there (renders / watertight / envelope on sorted extents / min-wall /
+body-count, with per-project floors). Record cost + runtime telemetry in
+provenance, label everything GENERATED, and treat modality itself as a DoE
+axis when comparing approaches — blind-vote preference and objective gate
+pass-rate are separate scorelines that can anticorrelate; never merge them.
 
 ### Safety Gate (human-carrying / floatable / overhead-of-person)
 

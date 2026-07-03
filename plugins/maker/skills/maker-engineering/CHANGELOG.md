@@ -1,5 +1,20 @@
 # Changelog — maker-engineering
 
+## 1.3.0 — 2026-07-02 (CAD-generation modality routing)
+
+Adds CAD-Generation Modality Routing as a first-class mode: blind text
+code-CAD vs image-conditioned vs live-CAD copilot, routed by input type and
+deliverable, with an objective mesh-gate validation harness and modality-as-
+DoE-axis framing.
+
+- `references/cad-generation-modalities.md` — routing table, per-lane
+  gotchas (compile budgets, SolidWorks units, tessellation watertightness),
+  six-check validation harness with per-project floors, cost telemetry
+  pattern, dual-scoreline rule (blind-vote vs objective gate can
+  anticorrelate — never merge them).
+- SKILL.md — new mode section, description + trigger phrases. Refs
+  claude-skills #550, makerbench-hwe #609/#602/#596.
+
 ## 1.2.0 — 2026-06-19 (eval suite)
 
 Adds the first machine-runnable eval suite (5 evals) and bumps SKILL.md to v1.2.0.
