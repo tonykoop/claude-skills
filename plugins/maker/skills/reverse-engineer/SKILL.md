@@ -1,7 +1,7 @@
 ---
 name: reverse-engineer
-version: 1.6.0
-last-updated: 2026-06-20
+version: 1.7.0
+last-updated: 2026-07-02
 description: >-
   Analyze objects, photos, video, sketches, descriptions, and
   named-but-unseen artifacts into disciplined reverse-engineering notes:
@@ -14,7 +14,11 @@ description: >-
   this", "how does this work?", "make my own version of this", "extract
   dimensions from this photo", "infer the mechanism", "what is inside this?",
   or otherwise asks to understand or recreate a real thing from incomplete
-  evidence. Pair with `maker-engineering`, `makerspace`, or `instrument-maker`
+  evidence. Can end in an executable parametric recreation (photo ->
+  image-conditioned code-CAD -> BOSL2/OpenSCAD with editable parameters) via
+  the Parametric Recreation Branch — use for "turn this photo into a 3D
+  model", "recreate this as CAD", "make a printable version of this".
+  Pair with `maker-engineering`, `makerspace`, or `instrument-maker`
   when analysis turns into design or fabrication. Do not use for software
   reverse engineering or protocol analysis.
 ---
@@ -37,6 +41,7 @@ This skill works best with these MCP connectors. Claude will suggest connecting 
 - `extract dimensions from this photo`
 - `infer the mechanism` / `how is this assembled?`
 - `teardown notes` / `document this existing thing`
+- `turn this photo into a 3D model` / `recreate this as CAD` / `make a printable version of this`
 
 ## Do not trigger for
 
@@ -108,6 +113,34 @@ CADFit mesh/scan branch unavailable: this runtime does not have a usable waterti
 ```
 
 Never present CADFit IoU as builder readiness by itself. High overlap can still be a manufacturing-wrong CAD tree.
+
+## Parametric Recreation Branch (image → executable CAD)
+
+When the user wants the analysis to end in a *model they can edit and print*
+— "turn this photo into a 3D model", "recreate this as CAD" — branch to
+`references/parametric-recreation.md` after the observation ledger exists.
+The branch turns confidence-marked dimensions into an image-conditioned
+code-CAD generation (reference pipeline: local CADAM + Claude via OpenRouter
+→ BOSL2/OpenSCAD with a named module per part and editable parameters),
+then validates the compiled mesh against an objective gate (renders /
+watertight / envelope / min-wall / body count).
+
+Non-negotiables, enforced by the reference:
+
+- The prompt is **built from the ledger** — stated dims carry their values,
+  `unknown`s become named placeholder parameters, measurement-gated features
+  are declared as placeholders in the prompt itself.
+- State fabrication floors (min wall, envelope) in the prompt; thin display
+  geometry is the universal failure mode of image-conditioned generation.
+- Every artifact carries provenance (pipeline, source image, cost, gate
+  scores) and the label **GENERATED — not a measured master**; recreations
+  from degraded intake are `provisional` like any other handoff.
+- Extract source from the tool's database, not its DOM; compile and gate
+  locally, never trust the in-browser preview.
+
+This branch complements CADFit: CADFit starts from a *mesh/scan*, this
+branch starts from *photos + the ledger*. Both end in parametric CAD with
+validation, and neither is builder-ready by itself.
 
 ## Degraded-Mode Banner
 
@@ -187,6 +220,7 @@ If a user asks to reproduce a proprietary product for commercial use, pause and 
 - `references/confidence-language.md`: Approved confidence terms and phrases to avoid. Includes the dimensional-confidence cap for degraded-intake modes.
 - `references/builder-handoff-template.md`: Compact handoff format for `maker-engineering`, `makerspace`, and `instrument-maker`. Includes the provisional-by-default rule for degraded intake.
 - `references/image-access-recovery.md`: Per-runtime recovery prompts when an image arrived but cannot be rendered (Claude Code, Codex CLI, web vision, Gemini CLI text mode, mobile zip-upload).
+- `references/parametric-recreation.md`: Image → executable parametric CAD branch — CADAM/Fable prompt recipe built from the observation ledger, BOSL2/OpenSCAD conventions, DB source extraction, objective mesh-gate validation, cost telemetry, and GENERATED-labeling provenance. Proven on the 2026-07-02 four-instrument pilot series (fujara gate 1.000).
 - `references/cadfit-setup-license.md`: CADFit optional external setup, attribution, runtime availability matrix, and license gate. Open before any CADFit mesh/scan workflow. CADFit is not bundled in this skill; the license gate currently flags redistribution/commercial-use risk.
 - `references/cadfit-feature-extractor.md`: CADFit-style mesh/scan feature extractor adapter. Use only when a real mesh or point-cloud path exists; it returns candidate sketch profiles, slicing planes, revolution axes, or a degraded result asking for usable mesh input.
 - `references/cadfit-test-cad-program.md`: CADFit-shaped `test_cad_program()` scoring adapter. Use for candidate CadQuery program feedback; returns Invalid-Ratio, Volumetric IoU, and kernel failure/unavailable signals as data.

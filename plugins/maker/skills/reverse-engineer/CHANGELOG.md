@@ -1,5 +1,21 @@
 # Changelog — reverse-engineer
 
+## 1.7.0 — 2026-07-02 (parametric recreation branch)
+
+Adds the Parametric Recreation Branch: the observation ledger can now end in
+an executable parametric recreation (photo → image-conditioned code-CAD →
+BOSL2/OpenSCAD, module per part, editable parameters), validated against an
+objective mesh gate and labeled GENERATED with cost/provenance telemetry.
+
+- `references/parametric-recreation.md` — CADAM+Fable prompt recipe built
+  from the ledger, Supabase source extraction, min-wall display-geometry
+  failure mode, sorted-extents envelope check, iteration-loop cost tracking.
+- SKILL.md — new branch section, description + trigger phrases
+  ("turn this photo into a 3D model", "recreate this as CAD").
+- Proven on the 2026-07-02 four-instrument pilot series (fujara gate 1.000,
+  sambuca/portative-organ 0.833, Tony-iterated lyre). Refs claude-skills #549,
+  makerbench-hwe #609.
+
 ## v1.6.0 — 2026-06-20
 
 - Wired the CADFit tools into SKILL.md as a dedicated mesh/scan branch that triggers only for real local mesh or point-cloud inputs.

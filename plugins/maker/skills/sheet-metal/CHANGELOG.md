@@ -3,6 +3,22 @@
 All notable changes to the `sheet-metal` skill are documented here. The format
 follows Keep a Changelog and the version numbers follow Semantic Versioning.
 
+## 1.1.0 — 2026-07-02 (generative front-end)
+
+Adds a generative front-end: text/image → parametric model → DXF
+flat-pattern candidate (CADAM lane) plus a live SolidWorks copilot lane
+(Adam plugin / Luthier Bridge). A generation front-end, not a review bypass —
+all output enters the authority ladder at concept/design and the existing
+DFM review gates are unchanged.
+
+- `references/generative-frontend.md` — prompt conventions (developable
+  surfaces, floors in the prompt, nominal geometry with downstream bend
+  math), Supabase source extraction, SolidWorks COM export + unit gotchas,
+  objective floor checks (min feature width, min flange ≥ 4×t, envelope vs
+  stock on sorted extents), GENERATED labeling.
+- SKILL.md — workflow step 1b + reference-map entry + description update.
+  Refs claude-skills #551, makerbench-hwe #609.
+
 ## [1.0.0] - 2026-05-18
 
 First complete release. Brings the skill to parity with `instrument-maker`,

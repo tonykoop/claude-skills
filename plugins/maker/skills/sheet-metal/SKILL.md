@@ -1,8 +1,8 @@
 ---
 name: sheet-metal
-version: 1.0.0
-last-updated: 2026-05-18
-description: Design, review, and plan sheet metal projects from concept through SolidWorks Sheet Metal features, flat patterns, DXF/plasma or laser handoff, bend sequencing, and shop-floor fabrication. Use for sheet metal boxes, modular toolboxes, storage trays, shelves, plant stands, STAS/gallery hangers, cat furniture, stackable rolling cases, hybrid wood-metal attache cases, musical horns and lofted bends, combat robot chassis, electronics or PC enclosures, automotive/off-road brackets and roof racks, lighting, kinetic sculpture, camping/outdoor gear, food or beverage tools, camera/audio rigs, costume armor, props, furniture accents, garden systems, repair panels, STEM kits, geometric folded art, and Maker Nexus-style plasma, brake, shear, slip-roll, welding, and finishing workflows.
+version: 1.1.0
+last-updated: 2026-07-02
+description: Design, review, and plan sheet metal projects from concept through SolidWorks Sheet Metal features, flat patterns, DXF/plasma or laser handoff, bend sequencing, and shop-floor fabrication. Includes a generative front-end (text or reference image -> parametric model -> DXF flat-pattern candidate via CADAM-style tools, plus a live SolidWorks copilot lane) with objective floor checks before human DFM review. Use for sheet metal boxes, modular toolboxes, storage trays, shelves, plant stands, STAS/gallery hangers, cat furniture, stackable rolling cases, hybrid wood-metal attache cases, musical horns and lofted bends, combat robot chassis, electronics or PC enclosures, automotive/off-road brackets and roof racks, lighting, kinetic sculpture, camping/outdoor gear, food or beverage tools, camera/audio rigs, costume armor, props, furniture accents, garden systems, repair panels, STEM kits, geometric folded art, and Maker Nexus-style plasma, brake, shear, slip-roll, welding, and finishing workflows.
 ---
 
 # Sheet Metal
@@ -54,6 +54,14 @@ critical dimensions, fastening, load cases, and drawing authority are explicit.
    - combat robot, electronics/PC enclosure, vehicle rack/bracket
    - lighting, kinetic sculpture, camp gear, creator rig, prop, repair panel
    - geometric folded art or stacked wood-metal art
+1b. If the user wants a model *generated* from a text brief or reference
+   image (or wants a copilot driving live SolidWorks), open
+   [`references/generative-frontend.md`](references/generative-frontend.md)
+   and run that lane first — it feeds the normal workflow at the `concept`/
+   `design` authority level. Generated candidates must pass the objective
+   floor checks there (min feature width, min flange, envelope vs stock)
+   before they consume human DFM review time; they are labeled GENERATED
+   and never skip the review gates below.
 2. Capture minimum inputs:
    - target object, outside envelope, inside clearances, and interfaces
    - material, thickness/gauge, finish, and joining method
@@ -119,6 +127,13 @@ critical gates, or safety-sensitive loads.
   Read for the distilled feature list, project-type registry, sub-modules,
   progressive-disclosure design, and how this skill was shaped from the
   brainstorming transcript.
+- `references/generative-frontend.md`
+  Read when the user wants a model generated from a text brief or reference
+  image (CADAM image/text lane -> parametric OpenSCAD -> DXF candidate) or
+  wants a live SolidWorks copilot session (Adam plugin / Luthier Bridge).
+  Covers prompt conventions (developable surfaces, floors in the prompt,
+  nominal geometry with downstream bend math), unit and export gotchas,
+  objective floor checks before DFM review, and GENERATED labeling.
 - `references/shop-dfm-guardrails.md`
   Read for Maker Nexus-style tool assumptions, SolidWorks Sheet Metal rules,
   bend allowance, K-factor, reliefs, plasma/DXF hygiene, brake/shear/slip-roll

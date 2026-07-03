@@ -1,5 +1,30 @@
 # maker plugin — Changelog
 
+## 2.2.0 — 2026-07-02
+
+Generative-CAD workflows distilled from the 2026-07-02 image→CAD breakthrough
+(instrument pilot series + Code-CAD Arena, makerbench-hwe) into three skills:
+
+- `reverse-engineer` 1.7.0 — new **Parametric Recreation Branch**: the
+  observation ledger can now end in an executable parametric recreation
+  (photo → CADAM-style image-conditioned code-CAD → BOSL2/OpenSCAD with a
+  module per part + Customizer parameters), with prompt recipe built from the
+  ledger, objective mesh-gate validation, DB source extraction, cost
+  telemetry, and GENERATED-labeling provenance
+  (`references/parametric-recreation.md`). (#549)
+- `maker-engineering` 1.3.0 — new **CAD-Generation Modality Routing** mode:
+  route blind text code-CAD vs image-conditioned vs live-CAD copilot
+  (Adam plugin / Luthier Bridge) by input type and deliverable; objective
+  validation harness (sorted-extents envelope, min-wall, body-count) as the
+  DoE acceptance check; modality as an experiment axis with dual scorelines
+  kept separate (`references/cad-generation-modalities.md`). (#550)
+- `sheet-metal` 1.1.0 — new **generative front-end**: text/image → parametric
+  model → DXF flat-pattern candidate via CADAM lane, plus live SolidWorks
+  copilot lane (real Sheet Metal feature trees, COM export gotchas, unit
+  checks); objective floor checks (min feature width, min flange, envelope
+  vs stock) before human DFM review; existing review gates unchanged
+  (`references/generative-frontend.md`). (#551)
+
 ## 2.1.0 — 2026-06-22
 
 Add the `music-teacher` skill to the maker set (now 15 skills). Agentic learner
