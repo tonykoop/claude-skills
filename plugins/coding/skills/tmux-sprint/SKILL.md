@@ -88,6 +88,12 @@ Each terminal owns its own session. Clicking between the two windows is now
 visually independent — the manager window doesn't follow the personas window
 (or vice versa).
 
+On Windows, attach each session in its own top-level Windows Terminal WINDOW
+(`wt.exe --window new`), not tabs — a resize/scrollback/disconnect glitch in
+one window then can't disturb the other. If the grid viewport detaches, the
+agents keep running; re-attach (`tmux attach -t sprint`) to restore the view
+rather than killing/relaunching the session.
+
 ### Verifying the topology after launch
 
 ```bash
@@ -139,6 +145,15 @@ cross-session handoffs, and dual-manager setups.
 
 ## Subcommands
 
+### Pane addressing
+
+Prefer the stable `pane_id` (`%N`) over the positional `pane_index` (`:0.N`)
+when a write must hit a specific persona: indices renumber when a pane dies or
+the layout reflows, silently misrouting send-keys. The recommended two-session
+topology with `remain-on-exit on` keeps panes from reflowing, so positional
+addressing is safe there; re-fetch the map with `tmux list-panes -t <session>
+-F '#{pane_id} idx=#{pane_index}'` after any topology change.
+
 ### `preflight` — structured pane probe
 
 ```
@@ -174,6 +189,13 @@ Detection logic recognizes:
 - **agy working**: `Generating…` spinner / `esc to cancel` hint
 - **Dead bash**: no model line, just `<user>@<host>:~$` prompt
 - **Blank**: compacted claude pane (empty tail with worktree footer still present)
+
+Capture a generous scrollback window for liveness classification
+(`capture-pane -p -S -40`, not a short `tail -N`): Claude's activity line
+(`✻ Coalescing (17m · ↓ 39k tokens)`) sits 12–18 lines above the prompt and a
+short window false-classifies a busy pane as IDLE. Detect any line ending
+`(XmYs · ↓ Nk tokens)` as BUSY regardless of the verb-of-the-hour, rather than
+matching a fixed verb list.
 
 Any state other than `IDLE` returns a `BUSY` or `DEAD` verdict. `dispatch`
 refuses to send to non-`OK` targets unless `--force`.
@@ -222,6 +244,10 @@ at it.
    2026-04-17 where Elsa's pane silently absorbed the initial send. Only
    after all three tiers fail is the dispatch marked `SILENT_FAIL` and
    logged with a ⚠️ marker so the manager sees it immediately.
+   For codex panes the `-l` paste can still be parsing when `C-m` fires; the
+   three-tier verify recovers this, but avoid `sleep 2` spacing between paste
+   and submit — 4s+ is more reliable, and a single extra `C-m` submits a pane
+   left with prompt-in-input.
 8. **Persist round state.** Append the complete record to
    `~/.claude/projects/<project-slug>/tmux-v2/rounds/round-<N>.json`.
    The record survives manager-pane `/compact` and is readable by a second
@@ -266,6 +292,14 @@ No user interaction needed unless the codex binary itself prompts for auth.
 `restart` is runtime-aware: an `agy` pane is considered revived once its
 `? for shortcuts` prompt-box footer appears rather than the codex banner.
 
+### Converting a pane between runtimes (codex ↔ claude)
+
+To switch a pane's runtime mid-sprint, set `remain-on-exit off` first, then
+`tmux respawn-pane -t <pane> -k -c <working-dir> '<new command>'` — bare
+`respawn-pane -k` relaunches the pane's ORIGINAL command, and
+`/quit`-then-launch freezes panes that have `remain-on-exit on`. Respawned
+panes get fresh `pane_id` values, so re-fetch the mapping after.
+
 ### agy (Antigravity / Gemini) panes
 
 `agy` is a first-class pane type alongside `claude` and `codex`. Set
@@ -294,6 +328,28 @@ and the driver handles it everywhere:
   agy grid drains Gemini quota for little output. `launch-grid.sh` warns when
   more than `TMUX_SPRINT_AGY_MAX` (default 3) interactive agy panes are
   launched; prefer headless `agy -p` for fan-out, or lower the count.
+
+## Pane modal / overlay handling (claude + codex)
+
+Some pane states are NOT cleared by the dispatch verify's blind `C-m` retry —
+sending another `C-m` is actively wrong. Detect the modal string in the
+capture and send the correct key instead.
+
+- **Claude "allow all edits" modal:** for a pane showing `Yes, allow all edits
+  during this session`, send the numeric key `2` (session-scoped allow), NEVER
+  Enter — Enter selects once-only option 1 and re-triggers the modal on every
+  later edit, appearing as an endless approval tail. Bulk-clear: for each pane
+  whose capture contains that string, `send-keys '2'`. (Largely obviated when
+  panes run "auto mode on" — see the permission-mode note under Phase 0.)
+- **Codex "Create a plan?" overlay:** codex shows `Create a plan? shift+tab use
+  Plan mode · esc dismiss` on fresh user turns; plain Enter ENTERS plan mode
+  instead of submitting. When a codex capture contains `Create a plan?`, send
+  `Escape`, confirm it cleared, then send `Enter`. `approval_policy =
+  on-request` does not suppress this — it's a UX decision point, not a
+  permission check.
+- Both states defeat the dispatch verify's blind `C-m` retry — detect the
+  modal string in the capture and send the correct key instead of another
+  `C-m`.
 
 ### Provider failover - budget-exhausted pane recovery
 
@@ -493,6 +549,15 @@ Read /tmp/r9i-dan.md and execute. Plan first.
 This avoids `tmux send-keys -l` hangs on large prompts while preserving a
 readable contract file for recovery after `/compact`.
 
+#### Permission mode: auto mode on, not acceptEdits
+
+Start Claude panes in plan mode for the initial dispatch (operator reads each
+plan), then transition to `⏵⏵ auto mode on` for execution — NOT `acceptEdits`,
+which auto-approves edits but still prompts on every bash command (git push,
+pytest, gh) and leaves panes idle waiting. Launch with `--permission-mode
+auto`, or cycle each pane with `shift+tab` (tmux `BTab`) until the footer reads
+"auto mode on" — verify it does not say "accept edits on".
+
 Rename each pane/session before dispatch when the runtime supports it:
 
 ```text
@@ -519,6 +584,34 @@ Batch dispatch by runtime and risk:
   handoff and agent record rather than changing expectations mid-round.
 - If a pane is blocked on approval, auth, missing tools, or a long-running
   command, skip it in the next batch and let the manager recover it explicitly.
+
+Empirical staffing and process rules (2026-06):
+
+- Codex gpt-5.5 is the default workhorse; claude is capable but quota-fragile —
+  do NOT run 3 heavy claude lanes on one Claude subscription (they share one
+  bucket and throttle collectively); keep GPT-OSS off bulk/mechanical
+  multi-file work.
+- On a mixed codex+claude grid, lean codex-heavy when speed matters (codex
+  clears plan gates with a plain "Approved. Execute the plan." and moves fast
+  on small slices); reserve the claude half for substantive multi-file packets.
+  Set `approval_policy = "on-request"` in `~/.codex/config.toml` to cut codex's
+  read-prompt overhead.
+- Sprint in isolated per-persona worktrees — shared-checkout rounds devolve
+  into intermingled edits the moment agents start implementing. Agents default
+  `gh pr create` to `main`; force `--base <branch>` in the assignment (a wrong
+  base off an integration branch explodes the diff).
+- Treat a single dispatch `SILENT_FAIL` skeptically — the verify window is
+  often too short for a cold-starting agent (false negative); confirm by
+  capture before re-sending.
+
+### GitHub throughput / rate limits
+
+Codex CLI on WSL2 reaches api.github.com and runs `gh` directly — codex panes
+self-commit, push, and open/close their own PRs; do NOT route their GitHub
+writes through the manager. The binding limit is GitHub's ~500/hr secondary
+content-creation cap, which is per ACCOUNT, not per token: panes authed as the
+same user share one bucket, so genuine parallel-fan throughput needs a separate
+GitHub account (a bot user with org write access), not a second PAT.
 
 For GitHub-backed sprint queues, preserve issue labels as first-class routing
 inputs. Read `references/label-aware-routing.md` before generating assignment
