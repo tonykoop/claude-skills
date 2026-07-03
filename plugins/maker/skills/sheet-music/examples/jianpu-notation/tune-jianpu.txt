@@ -1,0 +1,4 @@
+Tiny Pentatonic Test  (Jianpu: 1=C, 4/4, q=80)  [K:Am -> tonic shown as scale degree 6]
+
+    . . .   . . .      
+6 7 1 2 3 | 3 2 1 7 6 |

@@ -1,7 +1,7 @@
 ---
 name: sheet-music
-version: 0.1.0
-last-updated: 2026-05-20
+version: 0.1.1
+last-updated: 2026-07-03
 description: Generate sheet music, fingering charts, MIDI, audio renderings, and printable songsheets for the musical instruments built from Tony Koop's instrument-maker repos. Trigger whenever the user mentions writing/transcribing/arranging a song or tune, ABC/LilyPond/MusicXML, sheet music, fingering chart, tablature, songbook, beginner songbook, learning to play a flute/violin/harp/duduk/etc., pairing music with a build packet, generating practice scales or warm-up exercises for a custom-built instrument, dropping a `learn-to-play/` folder into a build repo, or commissioning an original "Heifer Zephyr" tune. Also trigger when an instrument-maker-v4 packet ships and the user wants a starter songbook to accompany it. Pairs with `instrument-maker-v4`, reads its `instruments/registry.yaml`, and can deposit per-instrument songbooks into sibling build repos under `C:\Users\Tony\Documents\GitHub\{instrument}\learn-to-play\`.
 ---
 
@@ -52,7 +52,9 @@ learn-to-play/
 Each tune folder contains: `tune.abc` (canonical), `tune.ly` (engraved),
 `tune.musicxml` (DAW-ready), `tune.mid` (playable), `tune.wav` (rendered
 preview, if soundfont present), `tune-fingering.svg` (notes annotated with
-fingering), and `notes.md` (history, range checks, practice tips).
+fingering), `tune-jianpu.txt` (numbered notation, for East-Asian
+instruments — see `references/jianpu-notation.md`), and `notes.md`
+(history, range checks, practice tips).
 
 Use Mode A when the prompt names a target instrument or build repo.
 
@@ -126,8 +128,8 @@ reference doc.
    if they require unsupported cross-fingerings, simplify or substitute.
 6. **Render the pipeline.** Run `scripts/render_pipeline.py` which calls,
    in order: `abc_to_midi.py`, `abc_to_lilypond.py`, `abc_to_musicxml.py`,
-   `render_fingering_svg.py`, `render_audio.py`, `build_songsheet_pdf.py`.
-   Each step is independently re-runnable.
+   `abc_to_jianpu.py`, `render_fingering_svg.py`, `render_audio.py`,
+   `build_songsheet_pdf.py`. Each step is independently re-runnable.
 7. **Deposit (Mode A only).** Run `scripts/deposit_songbook.py
    --target {build-repo}` to write the `learn-to-play/` folder into the
    target build repo. The script also updates that repo's README to link
@@ -150,6 +152,7 @@ reference doc.
 | "render audio for [tune]" | `scripts/render_audio.py` only |
 | "make a printable songbook PDF" | `scripts/build_songsheet_pdf.py`, optionally via Adobe MCP |
 | "open this in Ableton" | `references/ableton-handoff.md` — produce MusicXML + MIDI + a prompt template the user pastes into the Claude+Ableton connector |
+| "give me this in Jianpu / numbered notation" | `scripts/abc_to_jianpu.py`, see `references/jianpu-notation.md` |
 
 ## Cross-skill handoffs
 
@@ -318,6 +321,9 @@ pipeline but expect rougher output until v0.2.
 - `references/starter-songbook.md` — `learn-to-play/` folder layout.
 - `references/repo-pairing.md` — how to read `instrument-maker-v4`'s
   catalog and pair with build packets.
+- `references/jianpu-notation.md` — numbered-notation (简谱) encoding
+  rules and the `abc_to_jianpu.py` generator, for East-Asian instruments
+  (guzheng, pipa, erhu, konghou, sheng).
 
 Companion skill: **instrument-maker-v4** (designs the instrument; this
 skill writes the music for it).
