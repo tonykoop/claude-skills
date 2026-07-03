@@ -115,8 +115,60 @@ def test_render_pipeline_end_to_end(tmp_path):
     assert "stages" in summary
     # MIDI stage must succeed (stdlib fallback always works)
     assert summary["stages"]["midi"]["ok"] is True
+    # Jianpu stage must succeed (pure stdlib, no external deps)
+    assert summary["stages"]["jianpu"]["ok"] is True
     # Fingering stage must succeed (no external deps)
     assert summary["stages"]["fingering"]["ok"] is True
+
+
+def test_abc_to_jianpu_major_key(tmp_path):
+    """Twinkle Twinkle in C major: 1=C header, movable-do degrees."""
+    out = tmp_path / "twinkle-jianpu.txt"
+    r = run("scripts/abc_to_jianpu.py",
+            "--tune", "catalog/public-domain/nursery/twinkle-twinkle/tune.abc",
+            "--out", str(out))
+    assert r.returncode == 0, r.stderr
+    text = out.read_text()
+    assert "1=C" in text
+    assert "4/4" in text
+    # C C G G | A A G- | -> scale degrees 1 1 5 5 | 6 6 5-
+    assert "1 1 5 5 | 6 6 5- | 4 4 3 3 | 2 2 1- |" in text
+
+
+def test_abc_to_jianpu_minor_key_shows_relative_major(tmp_path):
+    """K:Am renders under the relative major's 1=C header, tonic as scale degree 6."""
+    out = tmp_path / "pentatonic-jianpu.txt"
+    r = run("scripts/abc_to_jianpu.py",
+            "--tune", "tests/sample_inputs/tiny-pentatonic.abc",
+            "--out", str(out))
+    assert r.returncode == 0, r.stderr
+    text = out.read_text()
+    assert "1=C" in text
+    assert "scale degree 6" in text
+    # A B c d e | e d c B A -> 6 7 1 2 3 | 3 2 1 7 6
+    assert "6 7 1 2 3 | 3 2 1 7 6" in text
+    # lowercase c d e are one octave above the written register -> dot row above
+    lines = text.splitlines()
+    body_idx = next(i for i, ln in enumerate(lines) if "6 7 1 2 3" in ln)
+    assert "." in lines[body_idx - 1]
+
+
+def test_abc_to_jianpu_rest_and_duration(tmp_path):
+    tune = tmp_path / "rest.abc"
+    tune.write_text("X:1\nT:Rest Test\nM:4/4\nL:1/4\nQ:1/4=90\nK:C\nC2 z E F |\n")
+    out = tmp_path / "rest-jianpu.txt"
+    r = run("scripts/abc_to_jianpu.py", "--tune", str(tune), "--out", str(out))
+    assert r.returncode == 0, r.stderr
+    text = out.read_text()
+    # C2 (half note, one extra beat) -> "1-"; z (rest) -> "0"
+    assert "1- 0 3 4 |" in text
+
+
+def test_abc_to_jianpu_missing_tune(tmp_path):
+    r = run("scripts/abc_to_jianpu.py",
+            "--tune", str(tmp_path / "does-not-exist.abc"),
+            "--out", str(tmp_path / "out.txt"))
+    assert r.returncode != 0
 
 
 def test_compose_original_writes_scaffold(tmp_path):

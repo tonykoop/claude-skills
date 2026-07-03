@@ -6,9 +6,10 @@ Pipeline stages, in order:
   1. abc_to_lilypond.py    -> tune.ly
   2. abc_to_musicxml.py    -> tune.musicxml
   3. abc_to_midi.py        -> tune.mid
-  4. render_fingering_svg  -> tune-fingering.svg
-  5. render_audio.py       -> tune.wav (and optionally tune.mp3)
-  6. build_songsheet_pdf   -> tune.pdf
+  4. abc_to_jianpu.py      -> tune-jianpu.txt
+  5. render_fingering_svg  -> tune-fingering.svg
+  6. render_audio.py       -> tune.wav (and optionally tune.mp3)
+  7. build_songsheet_pdf   -> tune.pdf
 
 Each stage checks for its dependencies and degrades gracefully. Stages
 that can't run print "skipped: <reason>" and the pipeline continues.
@@ -95,6 +96,8 @@ def render(tune: Path, instrument: str, out_dir: Path,
         ("midi",        "abc_to_midi.py",     ["--tune", str(canonical),
                                                 "--instrument", instrument,
                                                 "--out", str(out_dir / "tune.mid")]),
+        ("jianpu",      "abc_to_jianpu.py",   ["--tune", str(canonical),
+                                                "--out", str(out_dir / "tune-jianpu.txt")]),
         ("fingering",   "render_fingering_svg.py", ["--tune", str(canonical),
                                                     "--instrument", instrument,
                                                     "--out", str(out_dir / "tune-fingering.svg")]),

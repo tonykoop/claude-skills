@@ -12,7 +12,8 @@ starter songbooks into any of Tony's build repos automatically.
 
 ## What it does
 
-- Notation in ABC, LilyPond, MusicXML, and ASCII staff
+- Notation in ABC, LilyPond, MusicXML, Jianpu (numbered notation), and
+  ASCII staff
 - Fingering charts as SVG, ready to print or embed in a songsheet
 - MIDI files for every tune
 - Rendered audio (WAV/MP3) using instrument-appropriate soundfonts
