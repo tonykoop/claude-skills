@@ -1,0 +1,53 @@
+{
+  "skill_name": "voice-to-cad",
+  "evals": [
+    {
+      "id": 0,
+      "name": "dictated-ramble-to-brief",
+      "prompt": "ok so i was walking the dog and dictating this \u2014 i want to make like a desktop rain chime? a little tower thing for my desk, maybe 30cm tall, water drips from a reservoir at the top down through a series of tiny tuned metal cups or leaves and it makes this soft random chime sound, refillable, and it has to not splash my keyboard. i 3d print at home and i have some brass sheet. anyway \u2014 start the voice-to-cad thing on this. i can't answer questions live right now, so make your best calls where you'd normally ask me, but show me what you WOULD have asked and run the flow up through the design brief and give me the readback you'd want me to approve.",
+      "expected_output": "A design-brief.md with confidence-labeled constraints (stated/inferred/assumed), envelope in mm, distinct part list with min_bodies, min_wall floor derived from FDM+brass processes, unknowns section, the would-have-asked questions shown one-per-lens, and a gate readback of 4 sentences or fewer. Should NOT proceed past the brief gate.",
+      "files": [],
+      "assertions": [
+        "design-brief.md exists and every constraint row carries a stated/inferred/assumed confidence label",
+        "brief contains an envelope in mm and an explicit min_bodies / distinct part list",
+        "a min_wall floor appears and is justified from the stated processes (FDM and/or brass sheet)",
+        "the would-have-asked questions cover all four lenses (form, function, first principles, materials)",
+        "gate readback is 4 sentences or fewer and asks for explicit approval",
+        "flow STOPS at the brief gate - no image prompt, no CAD, no repo content produced",
+        "keyboard-splash constraint and refillability from the ramble survive into the brief"
+      ]
+    },
+    {
+      "id": 1,
+      "name": "brief-to-image-tournament-staging",
+      "prompt": "here's my approved design brief for a 'heron' garden hose guide \u2014 a 60cm tall powder-coated steel silhouette of a heron whose curved neck is the hose guide arc, staked into a garden bed, envelope [200, 150, 650]mm, parts: body silhouette (5mm plate), ground stake (tube), guide roller (printed sleeve), min_bodies 3, material honesty: if it reads as steel it IS steel. My image generator is offline today. Do the voice-to-cad image stage anyway: give me the base prompt for approval, the 4 variants, and stage the full tournament (bracket, how you'll present pairs, what you log per vote) so it's ready to fire the moment the generator is back.",
+      "expected_output": "One base image prompt (photorealistic, material-honest, garden-context background, scale cue) presented for approval BEFORE any generation; 4 variants that each change exactly one named axis; a 2-round single-elimination bracket plan with 3 votes; a vote-log JSON schema capturing round, pair, axis, winner, note. No fabricated images, no skipped approval gate.",
+      "files": [],
+      "assertions": [
+        "exactly one base prompt is presented for approval BEFORE any generation is attempted",
+        "base prompt is material-honest (steel reads as steel) and includes a garden-context background and scale cue",
+        "exactly 4 variants, each changing exactly one named axis from the base",
+        "tournament staged as 2-round single-elimination with 3 total votes and voice-answerable presentation (A/B letters)",
+        "vote log schema captures round, pair, axis, winner, and a free-text note",
+        "no images fabricated or claimed generated; offline state respected",
+        "a both-lose/regenerate escape hatch is offered for bad pairs"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "winner-to-cad-prompt-and-repo-plan",
+      "prompt": "voice-to-cad status: brief approved (desktop rain chime tower, envelope [120,120,320]mm, parts: reservoir cap, drip manifold, 5 chime cups, catch basin, center column \u2014 min_bodies 5, FDM so 1.6mm min wall, unknowns: cup tuning is explicitly a placeholder). tournament done: winner was variant C 'brass cups, matte black tower', votes said angular beat organic twice. CADAM is busy rendering something else right now, so don't run it \u2014 instead write me the exact CAD prompt you'd paste in, tell me how you'll pull the code out and gate it, and draft the full repo push: I want a NEW private repo called rain-chime, show me the provenance.json you'd write and the README banner, and tell me what you need from me before anything gets pushed.",
+      "expected_output": "A CADAM-ready prompt containing: image-as-aesthetic-authority + brief-as-dimensional-authority split, module per part with distinct bodies, named parameters with values, 1.6mm floor + envelope stated, cup tuning declared as placeholder, $fn cap. Extraction via Supabase query (not DOM), objective gate with all 6 checks including sorted-extents envelope. Repo plan: new private repo, provenance.json matching the v1 schema with tournament synthesis, verbatim GENERATED banner, and an explicit pre-push confirm listing repo/path/files. Nothing actually pushed.",
+      "files": [],
+      "assertions": [
+        "CAD prompt distinguishes image as aesthetic authority from brief numbers as dimensional authority",
+        "CAD prompt demands a named module per part, distinct bodies, and named parameters carrying the brief's values",
+        "CAD prompt states the 1.6mm min-wall floor, the [120,120,320] envelope, a $fn cap, and declares cup tuning a placeholder",
+        "extraction plan pulls code from CADAM's local Supabase (SQL against messages.parts), not DOM scraping",
+        "gate plan lists all six checks including sorted-extents envelope comparison and min_bodies=5",
+        "repo plan: NEW private repo, provenance.json includes tournament synthesis + costs + GENERATED labels, README banner matches the skill's verbatim banner",
+        "an explicit pre-push confirm (repo, path, file list) is requested; nothing was actually created or pushed"
+      ]
+    }
+  ]
+}
