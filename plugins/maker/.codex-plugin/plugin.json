@@ -1,7 +1,7 @@
 {
   "name": "maker",
-  "version": "1.5.0",
-  "description": "Tony Koop's maker portfolio: instrument design, fabrication (CNC, laser, sheet-metal), shop-floor planning, wildlife habitat, reverse engineering, sheet music, private invention packet prep, plus personal-practice skills for yoga sequencing, playlist building, idea capture, and energy-aware planning.",
+  "version": "1.6.0",
+  "description": "Tony Koop's maker portfolio: instrument design, fabrication (CNC, laser, sheet-metal), live Fusion/SolidWorks CAD workflows, shop-floor planning, wildlife habitat, reverse engineering, sheet music, private invention packet prep, plus personal-practice skills for yoga sequencing, playlist building, idea capture, and energy-aware planning.",
   "author": {
     "name": "Tony Koop",
     "email": "tonykoop@gmail.com",
@@ -28,7 +28,7 @@
   "interface": {
     "displayName": "Maker",
     "shortDescription": "Physical-world design, fabrication, music, habitat, invention packet, and practice skills.",
-    "longDescription": "A bundled maker toolkit for instrument design, fabrication planning, CNC and laser workflows, sheet metal, habitat projects, reverse engineering, sheet music, private invention packet prep, yoga sequencing, playlists, and idea capture. Several skills include connector-aware workflows and Codex fallbacks for Drive, Docs, Sheets, Slides, browser verification, and GitHub handoffs.",
+    "longDescription": "A bundled maker toolkit for instrument design, fabrication planning, CNC and laser workflows, sheet metal, habitat projects, reverse engineering, sheet music, private invention packet prep, yoga sequencing, playlists, and idea capture. Live-CAD skills prefer authenticated hwe Fusion/SolidWorks MCP tools and retain VBA-editor computer control as the native fallback.",
     "developerName": "Tony Koop",
     "category": "Making",
     "capabilities": [

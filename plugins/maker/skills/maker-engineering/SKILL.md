@@ -1,7 +1,5 @@
 ---
 name: maker-engineering
-version: 1.3.0
-last-updated: 2026-07-02
 description: >-
   Route physical making projects when the right specialist is unclear, the user
   asks "I want to make X", "help me design this physical thing", "is this
@@ -10,7 +8,8 @@ description: >-
   experiment design, or idea-to-build routing. Use for project intake,
   specialist routing, CAD-generation modality routing (blind text code-CAD vs
   image-conditioned vs live-CAD copilot, with an objective mesh-gate
-  validation harness), DoE scaffolding, cross-project pattern search, and
+  validation harness), two-path SolidWorks routing through hwe-solidworks MCP
+  or in-process VBA-editor computer control, DoE scaffolding, cross-project pattern search, and
   multi-specialist handoffs. Do not use for generic design requests or when one
   specialist skill clearly owns the whole task.
 ---
@@ -128,6 +127,31 @@ body-count, with per-project floors). Record cost + runtime telemetry in
 provenance, label everything GENERATED, and treat modality itself as a DoE
 axis when comparing approaches — blind-vote preference and objective gate
 pass-rate are separate scorelines that can anticorrelate; never merge them.
+
+#### SolidWorks live-CAD route
+
+Treat SolidWorks as a two-path capability:
+
+1. Prefer `hwe-solidworks` MCP for repeatable live reads, staged parameter or
+   feature changes, mates, configurations, design-table reads, and exports.
+   Require `ping.api_available: true`, read `get_context`, stage changes,
+   inspect `list_pending`, and use `confirm` as the sole staged-write gate.
+   Treat configuration activation, design-table writes, and exports as direct
+   mutations and apply their explicit gates.
+2. Route to VBA-editor computer control when MCP is unavailable, Connected COM
+   preflight fails, a required SolidWorks operation is not exposed, or an
+   in-process macro is the more faithful native-feature implementation. Keep
+   the `.bas` source beside the CAD packet, emit stage-specific error messages
+   and a trace, and select planes/entities by object or persistent reference
+   rather than fragile localized names.
+3. Validate both routes against the live SolidWorks kernel and record
+   provenance: route, connector/macro version, active document, input
+   authority, staged/confirmed operations, body or feature count, critical
+   dimensions, output path, and screenshot/trace evidence.
+
+Never equate connector availability with model correctness or fabrication
+readiness. Preserve measurement gates and route the completed CAD evidence to
+the owning specialist.
 
 ### Safety Gate (human-carrying / floatable / overhead-of-person)
 
