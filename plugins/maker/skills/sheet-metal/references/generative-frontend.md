@@ -46,6 +46,24 @@ Luthier Bridge (StudioPipeline-hwe, `fusion/LuthierBridge` + SolidWorks
 adapter) is the Fable-native equivalent: loopback HTTP + bearer token,
 two-phase stage/confirm, and session context capture for provenance.
 
+Use two control paths:
+
+1. **MCP-first.** Require `hwe-solidworks.ping` to report
+   `api_available: true`, then read `get_context`. Stage parameter, feature, or
+   mate changes; inspect `list_pending`; call `confirm` only after reviewing
+   the exact delta. Configuration activation, design-table writes, and exports
+   are direct mutations and retain their separate gates.
+2. **VBA/computer-control fallback.** Use an in-process `.bas`/`.swp` macro
+   through the SolidWorks VBA editor when Connected COM is unavailable, the
+   connector lacks the needed native Sheet Metal feature, or the feature must
+   be authored with lower-level SolidWorks API calls. Emit stage-specific
+   errors and a trace; prefer feature-object/persistent-reference selection to
+   localized display names.
+
+Record the chosen path, preflight result, active document, inputs, body/feature
+count, flat-pattern state, units, export path, and screenshot or trace. A live
+kernel success is still `design` evidence until DFM review promotes it.
+
 Lane gotchas, verified on a generated multi-part assembly:
 
 - **Units**: SolidWorks exports default to inches in some paths — verify mm

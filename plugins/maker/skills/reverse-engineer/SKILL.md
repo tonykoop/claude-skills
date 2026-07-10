@@ -1,26 +1,17 @@
 ---
 name: reverse-engineer
-version: 1.7.0
-last-updated: 2026-07-02
 description: >-
-  Analyze objects, photos, video, sketches, descriptions, and
-  named-but-unseen artifacts into disciplined reverse-engineering notes:
-  observed facts, inferred facts, assumptions, unknowns, confidence-marked
-  dimensions, follow-up measurements, mechanism hypotheses, material/process
-  guesses, and builder handoffs. Works on platforms that can render images and
-  on platforms that can't (Codex CLI without vision, Gemini CLI text mode,
-  mobile zip-upload, pasted-link-only flows) by switching to named-object,
-  dictated, video, or description-only intake modes. Use when the user says "reverse engineer
-  this", "how does this work?", "make my own version of this", "extract
-  dimensions from this photo", "infer the mechanism", "what is inside this?",
-  or otherwise asks to understand or recreate a real thing from incomplete
-  evidence. Can end in an executable parametric recreation (photo ->
-  image-conditioned code-CAD -> BOSL2/OpenSCAD with editable parameters) via
-  the Parametric Recreation Branch — use for "turn this photo into a 3D
-  model", "recreate this as CAD", "make a printable version of this".
-  Pair with `maker-engineering`, `makerspace`, or `instrument-maker`
-  when analysis turns into design or fabrication. Do not use for software
-  reverse engineering or protocol analysis.
+  Analyze real objects from photos, video, sketches, scans, measurements, or
+  descriptions into uncertainty-preserving observations, inferred mechanisms,
+  confidence-marked dimensions, material/process hypotheses, measurement
+  requests, and builder handoffs. Use for "reverse engineer this", "how does
+  this work?", "make my own version", "extract dimensions", teardown work, or
+  recreating an object as editable CAD. Supports image-to-code-CAD, mesh/scan
+  CADFit analysis, and a two-path SolidWorks workflow: hwe-solidworks MCP
+  stage-confirm tools when live preflight passes, with in-process VBA-editor
+  computer control as the fallback for unavailable or unsupported operations.
+  Pair with maker-engineering, makerspace, or instrument-maker when analysis
+  becomes design or fabrication. Do not use for software reverse engineering.
 ---
 
 # Reverse Engineer
@@ -141,6 +132,32 @@ Non-negotiables, enforced by the reference:
 This branch complements CADFit: CADFit starts from a *mesh/scan*, this
 branch starts from *photos + the ledger*. Both end in parametric CAD with
 validation, and neither is builder-ready by itself.
+
+## Live SolidWorks Recreation
+
+Use both supported SolidWorks paths; select by live capability rather than by
+preference alone.
+
+1. Prefer `hwe-solidworks` MCP when its `ping` reports `api_available: true`.
+   Read `get_context` before writing. Use `stage_parameter`, `stage_feature`,
+   or `stage_mate`, inspect `list_pending`, and call `confirm` only after the
+   staged delta matches the observation ledger. Keep wire dimensions in mm.
+2. Use VBA-editor computer control when MCP is absent, Connected COM cannot
+   attach safely, the operation is not exposed as an MCP tool, or native
+   feature-tree control is required. Generate or update an auditable `.bas`,
+   run it in-process through SolidWorks Macro/VBE, and capture stage-specific
+   errors plus a trace file. Select reference planes by feature object where
+   possible instead of localized display names.
+3. Validate either path against the real kernel: record active document,
+   feature/body count, bounding box or critical dimensions, save/export path,
+   and a screenshot or trace. MCP success, macro completion, and visual
+   plausibility are evidence—not fabrication authority.
+4. Preserve reverse-engineering uncertainty. Map measured ledger values to
+   named parameters; keep inferred values confidence-marked and assumptions
+   explicit in the CAD parameter ledger.
+
+Do not silently switch paths after a failure. Record the failed preflight or
+unsupported operation and the reason for using the fallback.
 
 ## Degraded-Mode Banner
 

@@ -210,16 +210,18 @@ skills:
       and LLM-timestamp soft-provenance guardrail (Stories #414–#418).
 
   maker-engineering:
-    canonical_version: 1.2.0
+    canonical_version: 1.4.0
     runtime: shared
     repo_path: plugins/maker/skills/maker-engineering
-    last_updated: 2026-06-19
+    last_updated: 2026-07-09
     status: active
     notes: >-
       Umbrella routing skill for physical making projects and specialist
       handoffs. v1.1 adds the human-carrying / floatable-object safety gate.
       v1.2.0 adds first machine-runnable eval suite (5 evals) and corrects
       repo_path from skills/ to plugins/maker/skills/.
+      v1.4.0 adds two-path SolidWorks live-CAD routing through hwe-solidworks
+      MCP or in-process VBA-editor computer control with live-kernel evidence.
 
   instrument-maker:
     canonical_version: 4.5.0
@@ -262,16 +264,17 @@ skills:
     notes: Portable snapshot from the standalone makerspace repo. v1.1.1 adds a generator-backed DXF/CNC fabrication handoff checklist on top of the structured-shop-artifacts validator; v1.1.2 adds repo-to-shop-packet routing for woodworking/mechanism fabrication handoffs; v1.1.4 records that issue #15 (fabrication specialist, epic #211) is satisfied by this existing skill and adds a fabrication-specialist-charter reference plus the first CHANGELOG; v1.2.0 promotes the Alpha tool-matrix schema into makerspace (S8 decision, issue #219) as the source of truth for the Evolution Pipeline Alpha Workspace Compiler.
 
   sheet-metal:
-    canonical_version: 1.0.0
+    canonical_version: 1.2.0
     runtime: shared
-    repo_path: skills/sheet-metal
-    last_updated: 2026-05-18
+    repo_path: plugins/maker/skills/sheet-metal
+    last_updated: 2026-07-09
     status: active
     notes: >-
       Sheet metal CAD, SolidWorks Sheet Metal, flat-pattern, DXF/plasma,
       brake, slip-roll, welding, Maker Nexus-style fabrication, horns/lofted
       bends, enclosures, toolboxes, kinetic objects, and mixed-material shop
-      packet skill.
+      packet skill. v1.2.0 adds authenticated hwe-solidworks MCP-first control,
+      VBA-editor computer-control fallback, and live-kernel provenance gates.
 
   laser-art:
     canonical_version: 0.2.0
@@ -286,12 +289,12 @@ skills:
       repo_path from skills/ to plugins/maker/skills/.
 
   reverse-engineer:
-    canonical_version: 1.6.0
+    canonical_version: 1.8.0
     runtime: shared
-    repo_path: skills/reverse-engineer
-    last_updated: 2026-06-20
+    repo_path: plugins/maker/skills/reverse-engineer
+    last_updated: 2026-07-09
     status: active
-    notes: Portable snapshot from reverse-engineering/skills/v1/reverse-engineer for cross-platform review. v1.1.0 adds image-access preflight and degraded-mode banner (#70). v1.2.0 adds the CADFit setup, attribution, runtime matrix, and license gate for Epic #362 story #367. v1.3.0 adds the CADFit-style mesh feature extractor adapter for Epic #362 story #363. v1.4.0 adds the CADFit-shaped test_cad_program scoring adapter for Epic #362 story #364. v1.5.0 adds the CADFit correction/pruning loop for Epic #362 story #365. v1.6.0 wires CADFit into the mesh/scan-only branch for Epic #362 story #366.
+    notes: Portable snapshot from reverse-engineering/skills/v1/reverse-engineer for cross-platform review. v1.1.0 adds image-access preflight and degraded-mode banner (#70). v1.2.0 adds the CADFit setup, attribution, runtime matrix, and license gate for Epic #362 story #367. v1.3.0 adds the CADFit-style mesh feature extractor adapter for Epic #362 story #363. v1.4.0 adds the CADFit-shaped test_cad_program scoring adapter for Epic #362 story #364. v1.5.0 adds the CADFit correction/pruning loop for Epic #362 story #365. v1.6.0 wires CADFit into the mesh/scan-only branch for Epic #362 story #366. v1.8.0 adds the hwe-solidworks MCP-first and VBA-editor computer-control fallback workflow with live-kernel provenance.
 
   habitat-maker:
     canonical_version: 0.5.0

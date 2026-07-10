@@ -16,6 +16,23 @@ management. It is the dedicated SolidWorks companion to
 - Common SolidWorks traps
 - File naming and assembly hygiene
 
+## Live Control Paths
+
+Prefer authenticated `hwe-solidworks` MCP when its live preflight passes. Read
+the active context first, keep connector wire dimensions in mm, stage changes,
+inspect the pending queue, and use `confirm` as the sole staged-write gate.
+Use `export_readiness` before flat-DXF export. Treat configuration activation,
+design-table writes, and exports as direct mutations rather than staged work.
+
+Use VBA-editor computer control when MCP is unavailable or lacks the required
+native Sheet Metal operation. Keep auditable `.bas` source beside the part,
+emit stage-specific errors plus a trace, and prefer feature-object or
+persistent-reference selection over localized names. Validate either path
+against the live kernel: active document, feature/body count, Sheet Metal and
+Flat-Pattern features, material thickness, bend parameters, units, saved path,
+and screenshot/trace evidence. Do not promote live output to fabrication
+authority until the DFM and flat-pattern gates in this reference pass.
+
 ## Master Layout Part (MLP)
 
 Use a Master Layout Part as the single source of size and interface truth for

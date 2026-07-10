@@ -1,8 +1,16 @@
 ---
 name: sheet-metal
-version: 1.1.0
-last-updated: 2026-07-02
-description: Design, review, and plan sheet metal projects from concept through SolidWorks Sheet Metal features, flat patterns, DXF/plasma or laser handoff, bend sequencing, and shop-floor fabrication. Includes a generative front-end (text or reference image -> parametric model -> DXF flat-pattern candidate via CADAM-style tools, plus a live SolidWorks copilot lane) with objective floor checks before human DFM review. Use for sheet metal boxes, modular toolboxes, storage trays, shelves, plant stands, STAS/gallery hangers, cat furniture, stackable rolling cases, hybrid wood-metal attache cases, musical horns and lofted bends, combat robot chassis, electronics or PC enclosures, automotive/off-road brackets and roof racks, lighting, kinetic sculpture, camping/outdoor gear, food or beverage tools, camera/audio rigs, costume armor, props, furniture accents, garden systems, repair panels, STEM kits, geometric folded art, and Maker Nexus-style plasma, brake, shear, slip-roll, welding, and finishing workflows.
+description: >-
+  Design, review, and plan sheet metal projects from concept through native
+  SolidWorks Sheet Metal features, flat patterns, DXF/plasma or laser handoff,
+  bend sequencing, and shop fabrication. Use for boxes, trays, enclosures,
+  toolboxes, brackets, racks, chassis, horns, lofted bends, rolled forms,
+  repair panels, sculpture, props, furniture, and mixed-material builds.
+  Supports generated CAD with objective floor checks and two live SolidWorks
+  paths: prefer authenticated hwe-solidworks MCP stage-confirm tools when
+  preflight passes; use in-process VBA-editor computer control for unsupported
+  or unavailable operations. Keeps generated models provisional until human
+  DFM, bend, material, tooling, flat-pattern, and safety gates pass.
 ---
 
 # Sheet Metal
@@ -18,6 +26,9 @@ This skill works best with these MCP connectors. Claude will suggest connecting 
 - **Wolfram** (`de1d1dc7-ec10-459d-b511-797982834b43`) — required for bend-allowance math, flat-pattern computations, parametric design tables, mass/inertia of welded assemblies. Suggest before computing developed length or K-factor.
 - **Adobe for Creativity** (`22854937-9510-4b57-9230-62c820102d8f`) — optional for shop packet covers, DXF previews, fabrication handoff docs.
 - **Autodesk Product Help** (`1f5a311c-ea2d-4b9c-b78b-197e8f2974b9`) — optional for Fusion 360 sheet-metal feature lookups when the user is working outside SolidWorks.
+- **hwe-solidworks** (local MCP) — preferred for live SolidWorks context,
+  staged parameters/features/mates, configurations, design-table reads, and
+  STEP/STL/Parasolid/flat-DXF export when `ping.api_available` is true.
 
 ## Scope Boundaries
 
@@ -62,6 +73,13 @@ critical dimensions, fastening, load cases, and drawing authority are explicit.
    floor checks there (min feature width, min flange, envelope vs stock)
    before they consume human DFM review time; they are labeled GENERATED
    and never skip the review gates below.
+1c. For live SolidWorks, choose the control path explicitly:
+   - MCP: `ping` → `get_context` → stage → `list_pending` → `confirm`.
+   - VBA/computer control: use when MCP preflight fails or the required Sheet
+     Metal operation is not exposed. Keep the `.bas` source and execution
+     trace with the packet.
+   Do not silently switch paths, and do not call `confirm` until the pending
+   delta and units have been reviewed.
 2. Capture minimum inputs:
    - target object, outside envelope, inside clearances, and interfaces
    - material, thickness/gauge, finish, and joining method
