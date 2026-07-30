@@ -125,12 +125,12 @@ ts_send_one() { # ts_send_one <pane> <text>
   tmux send-keys -t "$(ts_target "$pane")" C-m
 }
 
-# Did the prompt land? prompt text echoed OR a working/tool indicator appeared.
-ts_landed() { # ts_landed <pane> <needle>
-  local cap; cap="$(ts_capture "$1")"
-  printf '%s' "$cap" | grep -qF "$2" && return 0
-  printf '%s' "$cap" | grep -qiE '(•|◦) (Working|Booting)|Cooked|Leavening|Galloping|Processing|esc to interrupt|tool' && return 0
-  return 1
+# Did the prompt submit? Echoed prompt text alone is explicitly insufficient.
+ts_landed() { # ts_landed <pane> <marker>
+  local cap state
+  cap="$(ts_capture "$1")"
+  state="$(ts_submission_state "$cap" "$2")"
+  [[ "$state" == "ACTIVE" || "$state" == "COMPLETE" ]]
 }
 
 records="[]"
@@ -139,6 +139,7 @@ ts_dt() { date -u +%FT%TZ 2>/dev/null || echo unknown; }
 for i in "${!TO[@]}"; do
   pane="${PANE[$i]}"; who="${NAME[$i]}"; rt="${RUNTIME[$i]}"; file="${ASSIGN[$i]}"
   oneliner="Round ${ROUND}: read ${file} and execute. This file is a contract — do not edit it."
+  marker="Round ${ROUND}:"
 
   status="SILENT_FAIL"; tier=0
 
@@ -153,19 +154,19 @@ for i in "${!TO[@]}"; do
   # tier 1: send + verify
   ts_send_one "$pane" "$oneliner"; tier=1
   sleep 3
-  if ts_landed "$pane" "$oneliner"; then
+  if ts_landed "$pane" "$marker"; then
     status="OK"
   else
     # tier 2: nudge with a fresh C-m
     tmux send-keys -t "$(ts_target "$pane")" C-m; tier=2
     sleep 3
-    if ts_landed "$pane" "$oneliner"; then
+    if ts_landed "$pane" "$marker"; then
       status="OK"
     else
       # tier 3: full re-send (catches the post-/clear absorb race)
       ts_send_one "$pane" "$oneliner"; tier=3
       sleep 6
-      ts_landed "$pane" "$oneliner" && status="OK"
+      ts_landed "$pane" "$marker" && status="OK"
     fi
   fi
 

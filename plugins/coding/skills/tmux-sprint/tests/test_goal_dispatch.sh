@@ -15,8 +15,9 @@ export HOME="$TMP/home"; mkdir -p "$HOME"
 export TMUX_SPRINT_PROJECT="goal-test"
 
 # Fake tmux: capture-pane reads STATE/<pane>.txt.
-# send-keys -l *appends* each sent line to STATE/<pane>.log (for goal tests)
-# and overwrites STATE/<pane>.txt (so ts_landed can find the assignment).
+# send-keys -l appends each sent line to STATE/<pane>.log and leaves it
+# composed in STATE/<pane>.txt. A separate C-m adds activity evidence. This
+# preserves the goal-order assertions while exercising real submission proof.
 STATE="$TMP/state"; mkdir -p "$STATE"; export STATE
 for p in 0 1 2 3 4 5; do
   printf '❯ idle  Ctx: 50%%\n' > "$STATE/$p.txt"
@@ -41,7 +42,11 @@ case "$cmd" in
   send-keys)
     if [[ "$haslit" -eq 1 ]]; then
       printf '%s\n' "$lit" >> "$STATE/$pane.log"
-      printf '%s\n' "$lit" > "$STATE/$pane.txt"
+      printf 'COMPOSED:%s\n' "$lit" > "$STATE/$pane.txt"
+    elif [[ "${args[*]}" == *"C-m"* ]] && grep -q '^COMPOSED:' "$STATE/$pane.txt" 2>/dev/null; then
+      sed 's/^COMPOSED://' "$STATE/$pane.txt" > "$STATE/$pane.next"
+      printf '• Working (1s • esc to interrupt)\n' >> "$STATE/$pane.next"
+      mv "$STATE/$pane.next" "$STATE/$pane.txt"
     fi
     ;;
 esac

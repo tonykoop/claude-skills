@@ -1,5 +1,13 @@
 # coding plugin — Changelog
 
+## 2.4.0 — 2026-07-30
+
+- `sprint-supervisor` v1.9.0: event-driven Claude hooks, scoped safe permission
+  decisions, manager-pane nudges, mixed-grid watchdog, and queued-unsent
+  recovery with activity-based verification.
+- `tmux-sprint` v2.10.0: transactional dispatch no longer accepts echoed prompt
+  text as submission evidence.
+
 ## 2.3.0 — 2026-06-21
 
 `sprint-supervisor` (v1.4.0): add **GitHub access — app-scoped MCP rate buckets** section.

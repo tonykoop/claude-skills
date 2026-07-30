@@ -1,5 +1,31 @@
 # Changelog — sprint-supervisor
 
+## v1.9.0 — 2026-07-30 (event-driven supervision and verified dispatch)
+
+Implements the event-driven supervisor path tracked by #555:
+
+- Added `scripts/supervisor-event.sh`, a fail-soft event bridge that records
+  Claude/Codex lifecycle events under `/tmp/sprint-supervisor`, deduplicates
+  nudges, and wakes only a declared idle manager pane.
+- Added `scripts/permission-gate.sh`, a Claude `PermissionRequest` hook that
+  auto-allows only narrow single-command read-only diagnostics plus
+  `tmux capture-pane` / `tmux send-keys` from the declared manager pane.
+  Compound commands, destructive shapes, broad interpreter permissions, and
+  worker-originated tmux writes stay with the user/model.
+- Added `scripts/install-hooks.sh`, an idempotent settings merger for
+  `PermissionRequest`, `Notification(permission_prompt|idle_prompt)`, and
+  `Stop` hooks. Existing hooks/settings are preserved and backed up.
+- Packaged a unified `scripts/sprint-watchdog.sh` for mixed Claude/Codex grids:
+  wide captures, two consecutive idle strikes, permission classification,
+  queued-unsent detection, bounded `C-m` retries, and activity-based
+  submission verification.
+- Added focused shell tests for permission gating, malformed event payloads,
+  nudge dedupe, hook installation, idle classification, safe prompt handling,
+  and queued-unsent detection.
+- Updated the lock contract with `supervisor_pane` and documented event wake as
+  conditional; scheduled reconciliation remains the fallback for a busy or
+  absent manager.
+
 ## v1.8.0 — 2026-06-19 (morning-summary generic worked example — Refs #164)
 
 Genericized `references/morning-summary.md` for public release (Refs #164):

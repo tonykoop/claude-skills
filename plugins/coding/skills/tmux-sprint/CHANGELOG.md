@@ -1,5 +1,16 @@
 # Changelog - tmux-sprint
 
+## v2.10.0 — 2026-07-30
+
+- Fixed transactional dispatch verification so echoed prompt text is no longer
+  treated as proof of submission. `ts_submission_state` now distinguishes
+  `ACTIVE`, `COMPLETE`, `QUEUED`, `COMPOSED`, and `MISSING`.
+- Dispatch retries a composed/queued handoff with a bounded `C-m`, then a full
+  resend, and succeeds only when activity or completed-response evidence occurs
+  after the last round marker.
+- Expanded capture scrollback and added regression tests whose fake Codex pane
+  remains composed until `C-m` is actually received.
+
 ## v2.9.0 — 2026-06-19
 
 - Add first machine-runnable eval suite (`evals/evals.json`): 5 evals covering
