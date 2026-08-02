@@ -1,0 +1,4 @@
+interface:
+  display_name: "WRFCoin Launch Personas"
+  short_description: "Launch parallel WRFCoin persona sessions"
+  default_prompt: "Use $wrfcoin-launch-personas to launch Alice, Bob, Cindy, Dan, Elsa, Frank, or Gina in parallel Codex or Claude sessions from the sprint doc."

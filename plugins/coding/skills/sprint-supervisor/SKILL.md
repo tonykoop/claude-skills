@@ -13,6 +13,10 @@ This skill is intentionally split from the mechanical watchdog hook. The hook ab
 
 > **Project-agnostic core.** This skill is the generic `tmux-agent-supervisor`. All project-specific behavior (refusal-list paths, approval-rubric entries, repo groupings, host names, citation format) lives in a config file — see the **Configuration** section. A worked configuration for one real project ("wrfcoin") ships as the commented example block in `references/supervisor-config.example.yaml`; treat it as illustrative, not as a default.
 
+`tmux-boss` was consolidated here. Its portable approval rubric and operation
+model now live in `references/`; use them when adapting this supervisor to a
+different project profile.
+
 ## Configuration
 
 The refusal list, the approval rubric, and the project-specific labels (repo groupings, host names, workspace paths, PR citation format) are **externalized into a config file** so the skill core stays generic and you can release or share it without leaking project internals.

@@ -8,7 +8,6 @@ import re
 import shutil
 import sys
 from dataclasses import dataclass, field
-from datetime import date
 from pathlib import Path
 from typing import Any
 
@@ -532,9 +531,9 @@ def annotate_records(records: list[SkillRecord], manifest: dict[str, Any]) -> tu
             if manifest_status in OBSOLETE_STATUSES:
                 append_issue(record, f"cleanup-candidate:{manifest_status}")
             canonical = str(record.manifest.get("canonical_version") or "")
-            if not record.version:
+            if not record.version and not record.manifest:
                 append_issue(record, "missing-version")
-            else:
+            elif record.version:
                 cmp = compare_semver(record.version, canonical)
                 if cmp is None:
                     append_issue(record, "unparseable-version")
@@ -544,18 +543,18 @@ def annotate_records(records: list[SkillRecord], manifest: dict[str, Any]) -> tu
                     append_issue(record, f"ahead-of-canonical:{canonical}")
 
             manifest_updated = str(record.manifest.get("last_updated") or "")
-            if not record.last_updated:
+            if not record.last_updated and not record.manifest:
                 append_issue(record, "missing-last-updated")
-            elif not is_date(record.last_updated):
+            elif record.last_updated and not is_date(record.last_updated):
                 append_issue(record, "unparseable-last-updated")
-            elif manifest_updated and record.last_updated < manifest_updated:
+            elif record.last_updated and manifest_updated and record.last_updated < manifest_updated:
                 append_issue(record, f"stale-last-updated:{manifest_updated}")
-            elif manifest_updated and record.last_updated > manifest_updated:
+            elif record.last_updated and manifest_updated and record.last_updated > manifest_updated:
                 append_issue(record, f"manifest-last-updated-stale:{record.last_updated}")
 
-            if not record.changelog_path:
+            if not record.changelog_path and record.version:
                 append_issue(record, "missing-changelog")
-            elif not changelog_mentions_version(record.changelog_path, canonical):
+            elif record.changelog_path and record.version and not changelog_mentions_version(record.changelog_path, canonical):
                 append_issue(record, f"changelog-missing-version:{canonical}")
         else:
             if record.planned:
@@ -696,13 +695,8 @@ def sort_canonical_first(repo_root: Path, records: list[SkillRecord]) -> list[Sk
 
 
 def render_fix(record: SkillRecord) -> str:
-    canonical_version = record.version
-    if record.manifest:
-        canonical_version = str(record.manifest.get("canonical_version") or record.version or "")
     fixed = {
         "name": record.name,
-        "version": canonical_version or record.version or "1.0.0",
-        "last-updated": date.today().isoformat(),
         "description": record.description or "Short description.",
     }
     return "\n".join(
@@ -710,8 +704,6 @@ def render_fix(record: SkillRecord) -> str:
             "Suggested frontmatter",
             "---",
             f"name: {fixed['name']}",
-            f"version: {fixed['version']}",
-            f"last-updated: {fixed['last-updated']}",
             f"description: {fixed['description']}",
             "---",
         ]

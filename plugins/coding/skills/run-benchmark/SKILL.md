@@ -1,23 +1,11 @@
 ---
 name: run-benchmark
-version: 0.2.0
-last-updated: 2026-06-19
 description: >-
-  Drive an AI-agent benchmark contribution end-to-end — run the harness on a
-  model, scrutinize and aggregate the results, file issues, open pull requests,
-  and submit leaderboard rows — with verify-don't-trust integrity discipline so
-  nothing you do contaminates the benchmark or fakes a score. Works for any
-  agentic benchmark, not just one: it first reads the target repo's own contract
-  (AGENTS.md / CONTRIBUTING.md / submission docs) and detects its harness, then
-  maps that onto a common five-phase workflow. MakerBench-HWE is the worked
-  reference. Use this whenever the user wants to benchmark a model, evaluate an
-  agent against a benchmark or leaderboard, run an eval harness, reproduce or
-  regrade results, aggregate or sanity-check benchmark scores, file an issue or
-  PR against a benchmark repo, or submit/verify results to a leaderboard — even
-  if they just name a benchmark (MakerBench, SWE-bench, a CAD/eval repo) and say
-  "run it" or "submit my results." Never trains on benchmark data, never touches
-  private oracles/answer keys, never hand-edits a score or sets its own
-  verification status.
+  Run or review an AI-agent benchmark contribution with reproducible,
+  integrity-preserving evidence. Use for eval-harness runs, score verification,
+  regrading, leaderboard submission, or benchmark issues and PRs. Read the
+  target repository rules, avoid private answer keys, and never edit scores or
+  verification status by hand.
 ---
 
 # Run Benchmark
