@@ -1,0 +1,4 @@
+interface:
+  display_name: "WRFCoin Agent Teams"
+  short_description: "Coordinate WRFCoin persona-led agent teams"
+  default_prompt: "Use $wrfcoin-agent-teams to run a WRFCoin sprint-ops, quality-gate, or cross-repo-integration team under one persona or audit lead."
