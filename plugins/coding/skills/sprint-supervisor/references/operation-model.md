@@ -55,6 +55,14 @@ Escalate (notify the operator, take no approving action) when a prompt is:
 
 Everything else that matches the safe-approval rubric may be auto-approved.
 
+## Hook failure discipline
+
+`PostToolUse hook exited code 5` is a diagnostic event, not a reason to add a
+new hook or broaden permissions. Capture the pane, determine the hook command,
+scope, and failing dependency, then repair only the demonstrated fault. A hook
+must fail closed and must never approve secrets, destructive work,
+protected-branch pushes, Actions, or live deployment.
+
 ## Morning summary
 
 On operator return (or end of window), emit: counts of auto-approved vs.

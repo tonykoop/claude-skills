@@ -6,7 +6,8 @@ project-specific.
 
 ## Safe to auto-approve (prompt shapes)
 
-- Read-only inspection commands (status, diff, log, list).
+- Direct read-only `git`, `gh`, `gpg`, or `gpgconf` inspection in the worker's
+  exact worktree, approved for the current conversation only.
 - Routine file edits within the worktree the worker already owns.
 - Re-running a previously-approved command verbatim.
 - Test / lint / build invocations that do not push or deploy.
@@ -17,6 +18,9 @@ project-specific.
 - Filesystem destruction: `rm -rf`, mass delete, overwrite outside the
   worktree.
 - Anything touching production, secrets, credentials, or deploy.
+- Any “always allow” / settings-global rule for a shell command, and shell
+  wrappers or chains (`for`, assignments, substitutions, pipelines, `eval`,
+  broad `bash`/`sh`) offered as routine approval work.
 - Network calls to unknown hosts.
 - Rate-limit / quota / billing prompts.
 - Anything the prompt cannot be unambiguously classified against this rubric.
