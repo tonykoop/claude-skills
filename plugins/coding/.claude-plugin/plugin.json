@@ -1,7 +1,7 @@
 {
   "$schema": "https://claude.com/schemas/plugin.json",
   "name": "coding",
-  "version": "2.4.0",
+  "version": "2.5.0",
   "description": "Engineering operations: tmux sprint dispatch and supervision, WRFCoin personas and launch readiness, PR review, swarm dispatch, benchmarks, CI triage, source citations, scaffold hygiene, disk cleanup, and skill metadata audits.",
   "author": {
     "name": "Tony Koop",
