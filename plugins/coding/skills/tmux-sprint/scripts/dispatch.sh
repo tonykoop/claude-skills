@@ -21,10 +21,12 @@
 # Flow per round:
 #   1. preflight every target; abort on BUSY/DEAD unless --force
 #   2. validate each assignment file (path + preamble)
-#   3. cancel copy-mode, send text, send C-m (never the literal "Enter")
-#      for codex panes with --goal: send "/goal <text>" first, then assignment
+#   3. cancel copy-mode, send text, then submit Codex with two C-m keystrokes
+#      (never the literal "Enter"); for codex panes with --goal, submit the
+#      goal before the assignment
 #   4. rate-limit by runtime (claude parallel-ish @2s, codex sequential @10s)
-#   5. verify submission with a three-tier retry; mark SILENT_FAIL if all fail
+#   5. recapture Codex panes for spinner/timer liveness; only re-submit with a
+#      second double C-m when the assignment remains in the compose buffer
 #   6. persist the round record under ~/.claude/projects/<slug>/tmux-v2/rounds/
 
 set -euo pipefail
@@ -118,19 +120,32 @@ fi
 
 # --- send + verify -----------------------------------------------------------
 
-ts_send_one() { # ts_send_one <pane> <text>
-  local pane="$1" text="$2"
+ts_send_one() { # ts_send_one <pane> <runtime> <text>
+  local pane="$1" runtime="$2" text="$3"
   ts_cancel_copy_mode "$pane"
   tmux send-keys -t "$(ts_target "$pane")" -l "$text"
   tmux send-keys -t "$(ts_target "$pane")" C-m
+  # Codex sometimes receives the paste before its composer is ready to submit.
+  # Two deliberate C-m keystrokes are more reliable than a blind later nudge.
+  if [[ "$runtime" == "codex" ]]; then
+    tmux send-keys -t "$(ts_target "$pane")" C-m
+  fi
 }
 
-# Did the prompt land? prompt text echoed OR a working/tool indicator appeared.
-ts_landed() { # ts_landed <pane> <needle>
+# Is the agent visibly processing? These are liveness signals, not an echoed
+# prompt, and include both spinner and elapsed-timer forms.
+ts_live() { # ts_live <pane>
   local cap; cap="$(ts_capture "$1")"
-  printf '%s' "$cap" | grep -qF "$2" && return 0
-  printf '%s' "$cap" | grep -qiE '(•|◦) (Working|Booting)|Cooked|Leavening|Galloping|Processing|esc to interrupt|tool' && return 0
+  printf '%s' "$cap" | grep -qiE '(•|◦|✻|✢|●|·).*(Working|Booting|thinking|Processing|Generating|tool)|Cooked|Leavening|Galloping|esc to interrupt|[0-9]+[smh][[:space:]]*(elapsed|ago|·)' && return 0
   return 1
+}
+
+# A resend is only safe when the exact assignment is still visible at the
+# bottom of the pane, where Codex's compose buffer renders. Do not use a plain
+# prompt echo elsewhere in scrollback as evidence that another Enter is wanted.
+ts_in_compose_buffer() { # ts_in_compose_buffer <pane> <needle>
+  local cap; cap="$(ts_capture "$1")"
+  printf '%s\n' "$cap" | tail -12 | grep -qF "$2"
 }
 
 records="[]"
@@ -147,26 +162,34 @@ for i in "${!TO[@]}"; do
     ts_cancel_copy_mode "$pane"
     tmux send-keys -t "$(ts_target "$pane")" -l "/goal $GOAL"
     tmux send-keys -t "$(ts_target "$pane")" C-m
+    tmux send-keys -t "$(ts_target "$pane")" C-m
     sleep 2
   fi
 
-  # tier 1: send + verify
-  ts_send_one "$pane" "$oneliner"; tier=1
-  sleep 3
-  if ts_landed "$pane" "$oneliner"; then
+  # Codex needs a capture-based submission check: a spinner or elapsed timer
+  # proves the turn is live. A second double-Enter is allowed only if its text
+  # is still in the compose buffer. Other runtimes retain the historical retry.
+  ts_send_one "$pane" "$rt" "$oneliner"; tier=1
+  sleep $([[ "$rt" == "codex" ]] && echo 4 || echo 3)
+  if ts_live "$pane"; then
     status="OK"
-  else
-    # tier 2: nudge with a fresh C-m
+  elif [[ "$rt" == "codex" ]]; then
+    if ts_in_compose_buffer "$pane" "$oneliner"; then
+      tmux send-keys -t "$(ts_target "$pane")" C-m
+      tmux send-keys -t "$(ts_target "$pane")" C-m
+      tier=2
+      sleep 4
+      ts_live "$pane" && status="OK"
+    fi
+  elif ts_in_compose_buffer "$pane" "$oneliner"; then
+    # Non-Codex panes keep their compatible single-submit recovery path.
     tmux send-keys -t "$(ts_target "$pane")" C-m; tier=2
     sleep 3
-    if ts_landed "$pane" "$oneliner"; then
-      status="OK"
-    else
-      # tier 3: full re-send (catches the post-/clear absorb race)
-      ts_send_one "$pane" "$oneliner"; tier=3
-      sleep 6
-      ts_landed "$pane" "$oneliner" && status="OK"
-    fi
+    ts_in_compose_buffer "$pane" "$oneliner" && status="OK"
+  else
+    ts_send_one "$pane" "$rt" "$oneliner"; tier=3
+    sleep 6
+    ts_live "$pane" || ts_in_compose_buffer "$pane" "$oneliner" && status="OK"
   fi
 
   if [[ "$status" == "OK" ]]; then

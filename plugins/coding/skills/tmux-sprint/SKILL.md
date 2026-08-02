@@ -230,24 +230,22 @@ at it.
 4. **Build the one-liner** for each pane, e.g.
    `Round 53: read <path> and execute. This file is a contract — do not
    edit it.`
-5. **Send text, then `C-m`** — separate send-keys calls. Never pass the
-   literal string `"Enter"`.
+5. **Codex: send text, then `C-m` twice** — separate send-keys calls. Never
+   pass the literal string `"Enter"`. The double submit is required because a
+   Codex paste may otherwise remain in the compose buffer. Claude and agy use
+   their existing single `C-m` submission.
 6. **Rate-limit by pane type.** Claude panes fire 2s apart and can
    interleave in parallel (different processes); codex panes are strictly
    sequential with 10s spacing (shared backend — 5s occasionally hit
    `overloaded_error`; 10s observed stable 2026-04-17).
-7. **Verify submission — three-tier retry.** 3s after send, recapture the
-   pane. If the prompt text appears OR a `Working`/`Processing`/tool-call
-   indicator shows, mark success. If nothing: (a) retry with fresh `C-m`;
-   (b) still nothing → full re-send (cancel copy-mode, re-send text,
-   `C-m`, wait 2×verify) — this catches the post-`/clear` race observed
-   2026-04-17 where Elsa's pane silently absorbed the initial send. Only
-   after all three tiers fail is the dispatch marked `SILENT_FAIL` and
-   logged with a ⚠️ marker so the manager sees it immediately.
-   For codex panes the `-l` paste can still be parsing when `C-m` fires; the
-   three-tier verify recovers this, but avoid `sleep 2` spacing between paste
-   and submit — 4s+ is more reliable, and a single extra `C-m` submits a pane
-   left with prompt-in-input.
+7. **Verify Codex submission by liveness.** Wait at least 4s, then recapture
+   and require a spinner/working/tool indicator or elapsed timer. If the exact
+   assignment remains in the bottom compose buffer, send a **second** double
+   `C-m`, recapture, and require liveness again. Do not send that second double
+   submit merely because matching text appears somewhere in scrollback; and do
+   not blindly full-resend a Codex contract. Mark a pane `SILENT_FAIL` when
+   neither liveness nor a safe compose-buffer recovery is observed. Claude and
+   agy retain their compatible single-submit retry behavior.
 8. **Persist round state.** Append the complete record to
    `~/.claude/projects/<project-slug>/tmux-v2/rounds/round-<N>.json`.
    The record survives manager-pane `/compact` and is readable by a second

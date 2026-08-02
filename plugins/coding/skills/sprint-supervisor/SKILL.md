@@ -85,9 +85,10 @@ See `references/dispatch-patterns.md` for worked patterns including the mobile c
 ## Prerequisites (verify before starting)
 
 1. **Auto mode is on.** Without it, you'll prompt the user on every tool call and the whole point is defeated. If auto mode is off, ask the user to enable it before continuing.
-2. **Sprint manager is running** in tmux window `0:0`. Capture it once to confirm:
+2. **Sprint manager is running** in tmux window `0:0`. Capture it once to confirm
+   with a direct, individually targeted call (no pipeline):
    ```bash
-   tmux capture-pane -t 0:0 -p -S -20 | tail -20
+   tmux capture-pane -p -t 0:0 -S -20
    ```
 3. **Target sessions exist.** Run `tmux list-sessions` and verify your scope's targets are present.
 
@@ -207,29 +208,27 @@ Build a set of "panes owned by peers" from any peer lockfile whose heartbeat is 
 ### 3. Check the sprint manager
 
 ```bash
-tmux capture-pane -t 0:0 -p -S -60 | tail -60
+tmux capture-pane -p -t 0:0 -S -60
 ```
 
 If a prompt is open, apply the rubric below. The manager pane is the most load-bearing single pane — never skip it, even if a peer also claims it.
 
 ### 4. Scan your grid panes
 
-Use the bundled script:
+Resolve the specific pane IDs first, then issue **one direct tool call per pane**.
+Batch those calls in the client/tool layer so they run in parallel; do not wrap
+them in an escalated shell loop, a pipeline, or a command substitution. For
+example, the three captures below are three independently-targeted calls:
+
 ```bash
-bash <skill-dir>/scripts/grid-scan.sh <target1> <target2> ...
+tmux capture-pane -p -t twingrid-a:0.0 -S -40
+tmux capture-pane -p -t twingrid-a:0.1 -S -40
+tmux capture-pane -p -t twingrid-b:0.0 -S -40
 ```
 
-Or inline (functionally equivalent):
-```bash
-for sess in <target1> <target2>; do
-  for id in $(tmux list-panes -t "$sess" -F '#{pane_id}'); do
-    out=$(tmux capture-pane -p -t "$id" 2>/dev/null | tail -12)
-    if echo "$out" | grep -qE 'Press enter to confirm|Yes, proceed|Approaching rate limits|Would you like to'; then
-      echo "=== $id ==="; echo "$out" | tail -10; echo ""
-    fi
-  done
-done
-```
+Read each capture directly and apply the prompt rubric only to a pane that is
+not claimed by a peer. `scripts/grid-scan.sh` remains a local diagnostic helper,
+not the approval path for unattended escalated shell execution.
 
 For each stuck pane that **isn't** claimed by a peer (from step 2), apply the rubric below. **Space approvals ~2s apart** to avoid agent-pane API overload.
 
@@ -277,8 +276,9 @@ Always re-schedule unless the user has returned or an escalation triggered. If e
 |---|---|
 | `Would you like to make the following edits?` with `1. Yes / 2. don't ask again for these files (a) / 3. No` | `a Enter` |
 | `Would you like to make the following edits?` with `1. Yes / 2. No` (no `a` option) | `y Enter` |
-| `Would you like to run the following command?` for benign read-only (`npm audit`, `cargo test`, `cargo check`, `gh pr view`, `gh pr list`, `gh issue view`, `git status`, `git diff`, `git log`, `ls`, `find` with `-maxdepth`) | `p Enter` (always-allow) |
-| `Would you like to run the following command?` for `gh pr create/comment/ready/merge`, `gh issue close/comment`, `git push` to a feature/codex branch, `git rebase`, `git push --force-with-lease` to a feature branch | `y Enter` |
+| `Would you like to run the following command?` for routine work | Approve only a direct `gh`, `git`, `gpg`, or `gpgconf` invocation after inspecting its exact arguments and worktree. Do **not** persist an allow rule. Avoid shell `for`, assignments, substitutions, pipelines, `eval`, cleanup chains, broad `bash`/`sh`, and destructive persistent approvals. |
+| Claude/Sonnet asks for read-only Git inspection in its exact assigned worktree | Approve **this conversation only** after checking the target worktree; do not select a settings-global or “always allow” option. |
+| `Would you like to run the following command?` for `gh pr create/comment/ready/merge`, `gh issue close/comment`, `git push` to a feature/codex branch, `git rebase`, `git push --force-with-lease` to a feature branch | `y Enter` only after the direct command and target branch are understood; never convert this into a persistent shell allowance. |
 | `Would you like to run the following command?` for `ssh` read-only ops on a config-listed host (e.g. `<host>`: dashboard scripts, `docker ps`, `find`, `ls`, `git status`) — only if the host appears in the config's allowlist | `y Enter` |
 | `Approaching rate limits — Switch to gpt-5.4-mini?` | `2 Enter` (Keep current model). The reason is **not** that downshifting is always wrong — it's that the sprint-manager may have a better plan (e.g. migrate the pane to a different provider entirely: codex → claude → gemini). Preserving model choice keeps that path open. The manager owns the pivot; the supervisor just doesn't shortcut it. |
 | Provider availability test prompt (sprint-manager dispatching a brief "are you up?" probe to a freshly-launched `claude` or `gemini` in a previously-exhausted pane) | Same rules as the corresponding edit/command rubric row apply — judge by shape, not by which CLI is asking. |
@@ -286,6 +286,16 @@ Always re-schedule unless the user has returned or an escalation triggered. If e
 | Anything else, or a command you can't immediately classify | Capture the last 40 lines first (`tmux capture-pane -p -t <pane> -S -40`), then judge. Lean conservative — when in doubt, escalate, don't approve. |
 
 The reason this rubric is structured by prompt-pattern rather than by command-substring is that the agent CLI prompt UI is the stable surface — its options change rarely. Command shapes are not. Match the prompt, then sanity-check the command, then act.
+
+### Hook failures are evidence, not an approval signal
+
+If a pane repeatedly shows `PostToolUse hook exited code 5`, stop approving new
+hook installation or policy changes. First capture the exact pane, identify the
+hook command and its configured scope, and diagnose the failing dependency or
+exit condition. Hooks must fail safe: they may never auto-approve secrets,
+destructive commands, protected-branch pushes, Actions, or live deployment.
+Only a narrowly scoped, tested hook repair may follow the diagnosis; do not use
+a global setting or a broad permission rule to silence the failure.
 
 ## Refusal list — do NOT auto-approve, escalate to user
 

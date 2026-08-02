@@ -12,8 +12,8 @@ TMP="$(mktemp -d)"; trap 'rm -rf "$TMP"' EXIT
 export HOME="$TMP/home"; mkdir -p "$HOME"
 export TMUX_SPRINT_PROJECT="disp-test"
 
-# Fake tmux: capture-pane reads STATE/<pane>.txt; send-keys -l overwrites it
-# (simulating the prompt echoing into the pane). Seed all panes IDLE.
+# Fake tmux: capture-pane reads STATE/<pane>.txt; send-keys -l writes a
+# compose buffer. The second Codex C-m flips that buffer to a live spinner.
 STATE="$TMP/state"; mkdir -p "$STATE"; export STATE
 for p in 0 1 2 3 4 5; do printf '❯ idle  Ctx: 50%%\n' > "$STATE/$p.txt"; done
 BIN="$TMP/bin"; mkdir -p "$BIN"
@@ -31,7 +31,17 @@ done
 pane="${target##*.}"
 case "$cmd" in
   capture-pane) cat "$STATE/$pane.txt" 2>/dev/null || true;;
-  send-keys)    [[ "$haslit" -eq 1 ]] && printf '%s\n' "$lit" > "$STATE/$pane.txt";;
+  send-keys)
+    if [[ "$haslit" -eq 1 ]]; then
+      printf '%s\n' "$lit" > "$STATE/$pane.txt"
+    elif [[ "$*" == *" C-m"* ]]; then
+      count_file="$STATE/$pane.c-m"
+      count=$(cat "$count_file" 2>/dev/null || echo 0); count=$((count + 1))
+      printf '%s\n' "$count" > "$count_file"
+      if [[ "$pane" -ge 3 && "$count" -ge 2 ]]; then
+        printf '• Working 4s elapsed\n' > "$STATE/$pane.txt"
+      fi
+    fi;;
 esac
 exit 0
 EOF
@@ -84,5 +94,12 @@ jq -e '
   .dispatches[0].persona == "alice" and
   .dispatches[0].status == "OK"
 ' "$rec" >/dev/null || fail "round record shape wrong: $(cat "$rec")"
+
+# 6. Codex needs the initial double-C-m and marks success from spinner/timer
+# liveness rather than from an echoed assignment.
+out="$(D --round 8 --manager claude-opus-4-6 --to dan --assignment "$good" 2>&1)" \
+  || fail "Codex dispatch should succeed; output: $out"
+[[ "$out" == *"✓ dan"* ]] || fail "expected success line for dan; got: $out"
+[[ "$(cat "$STATE/3.c-m")" -eq 2 ]] || fail "Codex dispatch must send exactly two initial C-m keys"
 
 echo "dispatch tests passed"
