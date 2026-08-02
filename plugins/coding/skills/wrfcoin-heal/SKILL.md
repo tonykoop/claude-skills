@@ -7,6 +7,8 @@ description: Run a focused WRFCoin fix-check-test loop for Rust, TypeScript, Flu
 
 Use a scoped compile and test loop after implementation work.
 
+For a generic Rust or TypeScript repair loop outside WRFCoin, use `heal`.
+
 ## Process
 
 1. Detect the smallest reasonable scope.

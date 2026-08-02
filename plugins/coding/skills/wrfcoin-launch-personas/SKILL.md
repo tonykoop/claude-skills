@@ -46,8 +46,8 @@ The manifest maps each persona to:
 
 Before launching, read:
 
-- `/home/tony/.codex/skills/wrfcoin-agent-teams/SKILL.md`
-- `/home/tony/.codex/skills/wrfcoin-agent-teams/references/team-topologies.md`
+- `../wrfcoin-agent-teams/SKILL.md`
+- `../wrfcoin-agent-teams/references/team-topologies.md`
 
 ## Suggested manifest
 

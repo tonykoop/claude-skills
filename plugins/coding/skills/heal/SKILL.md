@@ -13,6 +13,8 @@ description: >-
 Autonomous fix-compile-test iteration. Runs the test suite, reads errors, fixes code,
 and repeats until everything passes or the iteration cap is hit.
 
+For a WRFCoin persona branch, use `wrfcoin-heal` for its focused multi-stack loop.
+
 This eliminates the manual back-and-forth that accounts for ~25 friction incidents per
 sprint (buggy_code + wrong_approach), especially in Rust where compile cycles are expensive.
 
