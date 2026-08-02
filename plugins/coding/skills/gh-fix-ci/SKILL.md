@@ -1,7 +1,5 @@
 ---
 name: gh-fix-ci
-version: 0.2.0
-last-updated: 2026-06-19
 description: >-
   Use when a user asks to debug or fix failing GitHub PR checks that run in
   GitHub Actions; use `gh` to inspect checks and logs, summarize failure
@@ -17,11 +15,7 @@ Use `gh` to locate failing PR checks, fetch the GitHub Actions logs for the
 actionable failures, summarize the failure snippet, then propose a fix plan and
 implement **only after explicit approval**.
 
-> **Provenance:** ported from the Codex-only `codex/skills/gh-fix-ci` so the
-> coding plugin has a Claude-usable variant. The Codex CLI copy (which leans on
-> Codex's `create-plan` skill) is retained as a runtime variant; see
-> `references/codex-variant.md`. Behavior is identical — only the plan-drafting
-> step differs by runtime.
+> **Provenance:** consolidated in the coding plugin for both Codex and Claude.
 
 ## Scope
 

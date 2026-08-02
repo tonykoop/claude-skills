@@ -1,9 +1,5 @@
 ---
 name: instrument-maker
-version: 4.5.0
-last-updated: 2026-06-13
-legacy-alias: instrument-maker-v4
-partial-skill: true
 description: >-
   (v4.5.0) Design, document, validate, and ship musical instruments end-to-end:
   woodwinds, strings, drums, percussion, idiophones, hybrid acoustic/electric,
@@ -704,4 +700,3 @@ This skill works best with these MCP connectors. Claude will suggest connecting 
 - **Wolfram** (`de1d1dc7-ec10-459d-b511-797982834b43`) — required for live acoustic-law evaluation, parametric design tables, tube/bore/string math, intervals. Suggest at first acoustic computation if not connected.
 - **Adobe for Creativity** (`22854937-9510-4b57-9230-62c820102d8f`) — optional for visual register exports, capstone deck images, shop packet covers, photo shotlist editing.
 - **Blender** (local stdio MCP — no registry UUID, requires the Blender MCP add-on) — optional for 3D concept renders and parametric mesh experiments. Skip `suggest_connectors`; direct the user to install the add-on.
-

@@ -236,19 +236,18 @@ skills:
       ~/.skill-cleanup-backups/.
 
   gh-fix-ci:
-    canonical_version: 0.2.0
-    runtime: claude
+    canonical_version: 0.3.0
+    runtime: shared
     repo_path: plugins/coding/skills/gh-fix-ci
-    last_updated: 2026-06-19
+    last_updated: 2026-08-02
     status: active
     notes: >-
       Claude-usable port of the Codex-only gh-fix-ci into the coding plugin
       (consolidation). Inspects failing GitHub Actions PR checks, pulls run
       logs, extracts a failure snippet, scopes out external CI providers, and
       drafts a fix plan before implementing. Ships scripts/inspect_pr_checks.py
-      (the script the original codex SKILL referenced but never shipped). The
-      codex variant remains at codex/skills/gh-fix-ci (codex-gh-fix-ci entry).
-      v0.2.0 adds evals/evals.json (4 evals).
+      (the script the original codex SKILL referenced but never shipped).
+      v0.3.0 consolidates the active implementation for both runtimes.
 
   studio-release:
     canonical_version: 0.3.0
@@ -283,7 +282,10 @@ skills:
     runtime: codex
     repo_path: codex/skills/gh-fix-ci
     last_updated: 2026-05-08
-    status: active
+    status: retired
+    notes: >-
+      Retired 2026-08-02. Superseded by the shared gh-fix-ci implementation in
+      plugins/coding/skills/gh-fix-ci.
 
   wrfcoin-sprint-dispatch:
     canonical_version: 1.0.0

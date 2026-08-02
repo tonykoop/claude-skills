@@ -1,5 +1,10 @@
 # Changelog — gh-fix-ci
 
+## v0.3.0 — 2026-08-02
+
+- Consolidated the active implementation in the coding plugin and retired the
+  standalone Codex variant.
+
 ## v0.2.0 — 2026-06-19 (structured evals)
 
 Added `evals/evals.json` (4 evals):
