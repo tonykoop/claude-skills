@@ -8,3 +8,4 @@
 # dedicated one-shot renormalize when branches are quiet.
 scripts/wolfram-cloud-sync/**                              text=auto eol=lf
 plugins/maker/skills/idea-incubator/references/templates/** text=auto eol=lf
+plugins/coding/skills/skills-meta/scripts/skills-meta.py   text=auto eol=crlf whitespace=cr-at-eol

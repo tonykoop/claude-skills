@@ -1,0 +1,4 @@
+interface:
+  display_name: "WRFCoin Heal"
+  short_description: "Run a focused fix-check-test loop"
+  default_prompt: "Use $wrfcoin-heal to iterate on the failing WRFCoin checks until the scoped build or tests are green."

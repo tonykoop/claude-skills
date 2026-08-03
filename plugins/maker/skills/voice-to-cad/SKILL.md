@@ -1,23 +1,11 @@
 ---
 name: voice-to-cad
-version: 0.2.0
-last-updated: 2026-07-02
 description: >-
-  Idea-to-prototype express highway: a voice-first, multi-turn pipeline that
-  takes a spoken or dictated idea through structured brainstorm (form,
-  function, first principles, materials) → approved design brief → refined AI
-  image prompt → a generated concept-image tournament voted A/B arena-style →
-  image-conditioned codeCAD production (parametric OpenSCAD via CADAM + Claude,
-  objective mesh gate) → artifacts committed to an existing or new GitHub repo
-  with GENERATED provenance. Use whenever the user wants to go from a rough
-  idea, voice note, or dictated ramble toward a physical prototype — "I have an
-  idea for a thing", "let's design something new", "take this idea to CAD",
-  "idea to prototype", "voice to CAD", "let's brainstorm then build it" — even
-  if they don't name a pipeline. Also use when the user wants concept images
-  A/B-voted before CAD, or wants a brainstormed object pushed to a repo. Do not
-  use for recreating an existing object from photos (use reverse-engineer) or
-  when the user already has a finished spec and just wants CAD generated (use
-  maker-engineering's modality routing directly).
+  Turn a rough spoken or written product idea into a gated prototype: design
+  brief, concept-image A/B, and parametric code CAD with provenance. Use for
+  new-object brainstorming or voice-to-CAD requests; route existing-object
+  reconstruction to reverse-engineer and finished specifications to
+  maker-engineering.
 ---
 
 # Voice to CAD — the idea-to-prototype express highway
