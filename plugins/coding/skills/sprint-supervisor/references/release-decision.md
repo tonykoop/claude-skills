@@ -131,9 +131,10 @@ unchecked items on the PR:
       sprint dates). These are illustrative and safe-ish, but a full public pass
       should swap them for placeholders too. Left as TODO to keep this PR's
       SKILL.md edits surgical and low-risk.
-- [ ] **`sprint-watchdog.sh` packaging.** The watchdog is install-only today and
-      still carries the original default sessions; package it alongside the skill
-      and read its sessions/paths from the same config.
+- [x] **`sprint-watchdog.sh` packaging.** Completed in v1.9.0: the packaged
+      watcher takes explicit targets or reads them from the scope lockfile,
+      detects two-strike idle and queued-unsent prompts, and routes judgment
+      events through the packaged supervisor event bridge.
 - [ ] **skills-meta manifest** entry confirming the config-file dependency
       (#165).
 

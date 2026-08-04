@@ -1,8 +1,8 @@
 ---
 name: sprint-supervisor
-version: 1.8.0
-last-updated: 2026-06-19
-description: Babysit a running multi-pane tmux agent sprint while the user is AFK or asleep. Polls the manager pane and grid persona panes every ~4 min via ScheduleWakeup, auto-approves routine agent permission prompts using a configurable rubric, escalates destructive prompts, and produces a morning summary. Use this skill whenever the user says "watch the sprint", "supervise overnight", "I'm going to bed keep the sprint going", "babysit the panes", "keep an eye on twingrid", or invokes "/sprint-supervisor" — even without the word "supervisor". Scales by named scope — one instance handles a twingrid (18 panes), multiple instances divide-and-conquer a triplegrid or quadgrid by scoping each supervisor to a slice of grids coordinated via /tmp lockfile so peers don't double-approve. Pairs with sprint-watchdog.sh which absorbs the mechanical ~70% of approvals; this skill handles the judgment ~30% — commands, rate-limit prompts, escalation.
+version: 1.9.0
+last-updated: 2026-07-30
+description: Babysit a running multi-pane tmux agent sprint while the user is AFK or asleep. Combines event-driven Claude PermissionRequest, idle, and stop hooks with a mixed-provider tmux watchdog and a ~4 min reconciliation loop; auto-approves only narrow routine prompts, catches composed-but-unsubmitted handoffs, escalates destructive prompts, and produces a morning summary. Use this skill whenever the user says "watch the sprint", "supervise overnight", "I'm going to bed keep the sprint going", "babysit the panes", "keep an eye on twingrid", or invokes "/sprint-supervisor" — even without the word "supervisor". Scales by named scope — one instance handles a twingrid (18 panes), multiple instances divide-and-conquer a triplegrid or quadgrid by scoping each supervisor to a slice of grids coordinated via /tmp lockfile so peers don't double-approve.
 ---
 
 # /sprint-supervisor
@@ -92,13 +92,33 @@ See `references/dispatch-patterns.md` for worked patterns including the mobile c
 3. **Target sessions exist.** Run `tmux list-sessions` and verify your scope's targets are present.
 
 3a. **Do NOT pair this skill with a `/goal` stop-hook.** A goal bound to "finish the sprint" re-fires after every response and floods the loop with no-op "goal not satisfied" acks. Rely on ScheduleWakeup cadence + stuck-pane events. If the user sets `/goal` anyway, flag the noise once and proceed.
-4. **Watchdog hook is running** (recommended, not required). The watchdog defaults to `twingrid-a twingrid-b`, so always pass your scope's actual targets via `SPRINT_SESSIONS`. Start it after writing the lockfile in step 5 so you can pull targets straight from it. The watchdog script path is configurable (`watchdog_script` in the config; defaults to `~/.claude/skills/sprint-supervisor/scripts/sprint-watchdog.sh` or wherever the install placed it):
+4. **Event hooks and watchdog are installed** (recommended, not required).
+   Install the Claude hooks into the project settings with the actual manager
+   pane and scope. The installer preserves existing settings/hooks, writes a
+   backup, and is idempotent:
    ```bash
-   SPRINT_SESSIONS="$(python3 -c "import json; print(' '.join(json.load(open('/tmp/sprint-supervisor/<scope>.lock'))['targets']))")" \
-     nohup "$WATCHDOG_SCRIPT" > /tmp/sprint-watchdog.log 2>&1 &
+   <skill-dir>/scripts/install-hooks.sh \
+     --settings <workspace>/.claude/settings.local.json \
+     --supervisor-pane manager:0.0 \
+     --scope <scope>
+   ```
+   The `PermissionRequest` hook auto-allows only a small single-command
+   read-only allowlist plus `tmux capture-pane` / `tmux send-keys` when the
+   request originates in the declared supervisor pane. Unknown and refusal
+   shapes remain ordinary permission prompts and emit an event.
+
+   Start the mixed-provider watcher after writing the lockfile in step 5:
+   ```bash
+   nohup <skill-dir>/scripts/sprint-watchdog.sh \
+     --scope <scope> --targets "twingrid-a twingrid-b" \
+     > /tmp/sprint-supervisor/watchdog.out 2>&1 &
    disown
    ```
-   Check the log at `/tmp/sprint-watchdog.log` to confirm it logged `sessions='<your targets>'` rather than the default. Without the watchdog, you'll spend most of your cycles on routine edit prompts instead of judgment work. **Don't skip the `SPRINT_SESSIONS` export** — the watchdog will silently watch the wrong sessions and you'll wonder why no edit prompts ever get auto-approved (2026-05-18 lesson).
+   The watcher can also take targets from the scope lockfile. It uses two
+   consecutive idle observations, wide pane captures, and verified
+   `C-m` submission for queued handoffs. Run `--once --dry-run` before an
+   unattended launch. Without hooks/watchdog, retain the scheduled
+   reconciliation loop as the fallback.
 5. **Claim the scope.** Write a lockfile so peer supervisors can see your slice and avoid stepping on it. The lockfile is also where you persist state across wakeups so the wakeup prompt itself can stay tiny (see "Loop cadence" below):
    ```bash
    mkdir -p /tmp/sprint-supervisor
@@ -106,6 +126,7 @@ See `references/dispatch-patterns.md` for worked patterns including the mobile c
    {
      "scope": "<scope>",
      "manager_pane": "0:0",
+     "supervisor_pane": "manager:0.0",
      "targets": ["twingrid-a", "twingrid-b"],
      "started": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
      "heartbeat": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
@@ -118,6 +139,9 @@ See `references/dispatch-patterns.md` for worked patterns including the mobile c
    EOF
    ```
    Field semantics:
+   - **`supervisor_pane`** — the one pane allowed to issue standing
+     `tmux capture-pane` / `tmux send-keys` commands through the permission
+     hook. Resolve it before installation; never point it at a worker.
    - **`current_phase`** ∈ {`cold-start`, `active`, `idle`, `re-engaged`} — drives cadence (see "Loop cadence").
    - **`last_goal_achieved_seen_at`** — ISO timestamp of the most recent cycle that saw the manager's "Goal achieved" pill; used to decide when to ramp to idle cadence.
    - **`last_status_summary`** — one-line summary of the most recent action ("approved Round 32 merge loop (14 PRs)", "manager idle on Goal achieved", etc.) so the wakeup prompt can resume statefully without re-pasting context.
@@ -152,7 +176,19 @@ Resume /sprint-supervisor for scope <scope>. State in /tmp/sprint-supervisor/<sc
 ```
 This survives compact boundaries (the SKILL is re-loaded by the harness) and saves ~3KB of re-pasted rubric per cycle. Do NOT re-paste the rubric, target list, or per-iter status into the wakeup prompt — that drove ~30 wasted cycles' worth of cache bloat in the 2026-05-18 run.
 
-**Nothing wakes a paused supervisor** except a ScheduleWakeup firing, human input, or your own `PushNotification` — the watchdog/stophook only DROP marker files, they cannot resume your tool-loop. Your wake cadence is the hard latency floor; never trust a narrative that says "the hook will notify me."
+**Event wake is conditional, not magical.** `supervisor-event.sh` always writes
+the event and `.pending` marker. If the declared supervisor pane is an idle
+Claude/Codex TUI, it also sends a short file-reference nudge and verifies the
+Codex submit path with one bounded second `C-m`. It never interrupts a busy
+supervisor. ScheduleWakeup/human input remains the fallback latency floor when
+the manager is busy, absent, or not a recognized agent TUI.
+
+The hooks are deliberately narrow. Claude's `PermissionRequest` hook may return
+an allow/deny decision, while `Notification` exposes `permission_prompt` and
+`idle_prompt`; keep matchers scoped and leave unknown commands to the model or
+user. See the official Claude Code hooks reference and hooks guide:
+`https://code.claude.com/docs/en/hooks` and
+`https://code.claude.com/docs/en/hooks-guide`.
 
 ### Pending-judgment short-circuit
 
@@ -521,10 +557,10 @@ tmux is detected by `tmux-preflight.sh` and surfaced as a soft warning with
 install guidance rather than a loud failure or silent empty scan — never assume
 a single tmux build.
 
-> **Note:** `sprint-watchdog.sh` is an install-time companion (it ships into the
-> live `~/.claude` install, not this repo package). The same two portability
-> rules apply to it — `date -u +%Y-%m-%dT%H:%M:%SZ` over `date -Iseconds`, and
-> a portable pane-read loop. Apply them when that script is next packaged.
+> **Note:** `sprint-watchdog.sh`, `supervisor-event.sh`,
+> `permission-gate.sh`, and `install-hooks.sh` are packaged in this skill.
+> They use portable UTC timestamps and pane-read loops; the watcher requires
+> Bash because it uses arrays and process substitution.
 
 ## Marathon mode (long-haul ~5h runs)
 

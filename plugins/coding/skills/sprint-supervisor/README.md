@@ -4,10 +4,10 @@
 
 `sprint-supervisor` is an operational skill that watches an already-running
 tmux "sprint" — a manager agent dispatching work to a grid of persona agents —
-and keeps it unblocked while you're away. It polls the panes on an adaptive
-cadence, auto-approves the routine permission prompts you'd otherwise answer by
-hand, escalates anything destructive, and hands you a structured summary when
-you return.
+and keeps it unblocked while you're away. It combines event-driven Claude hooks,
+a mixed-provider tmux watchdog, and an adaptive reconciliation cadence;
+auto-approves only narrow routine permission prompts, escalates anything
+destructive, and hands you a structured summary when you return.
 
 It is **project-agnostic**: all project-specific behavior lives in a config
 file, so you can point it at any tmux agent swarm. (A worked configuration for
@@ -15,8 +15,11 @@ one real project ships as a commented example.)
 
 ## What it does
 
-- **Polls** the manager pane (`tmux 0:0`) and your grid persona panes every
-  ~4 minutes via scheduled wakeups.
+- **Reacts** to Claude permission, idle, and stop events and nudges an idle
+  declared manager pane with a short file-reference prompt.
+- **Reconciles** the manager and grid panes every ~4 minutes as a fallback.
+- **Detects** handoffs left composed but unsubmitted and verifies activity
+  after a bounded `C-m` retry.
 - **Auto-approves** routine agent prompts (edit confirmations, benign read-only
   commands, feature-branch pushes/PRs) using a configurable rubric matched by
   *prompt shape*, so it works across codex / claude / gemini / agy CLIs.
@@ -34,14 +37,14 @@ There are two layers, on purpose:
 
 | Layer | What it is | Handles | Model in loop? |
 |---|---|---|---|
-| **`sprint-watchdog.sh`** | A shell hook running in the background | The mechanical ~70%: plain edit-confirmation prompts | No |
-| **`sprint-supervisor` (this skill)** | A scheduled-wakeup skill | The judgment ~30%: command approvals, rate-limit prompts, refusal-list calls, escalation, the morning summary | Yes |
+| **Claude hooks** | `PermissionRequest`, `Notification`, and `Stop` commands | Narrow read-only decisions and immediate event files/nudges | No |
+| **`sprint-watchdog.sh`** | A shell watcher running in the background | Edit prompts, two-strike idle, queued-unsent detection | No |
+| **`sprint-supervisor` (this skill)** | The manager model plus reconciliation loop | Judgment prompts, routing, escalation, morning summary | Yes |
 
-The watchdog clears the high-volume, low-judgment prompts without spending model
-tokens. The skill wakes on a cadence to handle the prompts that actually need a
-decision. The watchdog can also drop a `.pending` marker when it sees a
-command-shape prompt it deliberately won't touch, so the skill acts on it
-immediately instead of waiting a full cycle.
+The hook and watcher clear high-volume, low-judgment prompts without spending
+model tokens. They always write `.pending`/event files for judgment work and
+can nudge a declared manager only when its TUI is idle; scheduled reconciliation
+remains the fallback when it is busy or unavailable.
 
 ## Lockfile coordination
 
@@ -113,7 +116,14 @@ defaults and prompts you once to create your own copy.
    sessions). Make sure agents run in true auto mode, not `acceptEdits`.
 2. **Configure** (first time only): copy the example config and set your
    `workspace_dir`, `protected_branches`, and any `trusted_hosts`.
-3. **Supervise.** Invoke the skill:
+3. **Install hooks** (recommended):
+   ```bash
+   scripts/install-hooks.sh \
+     --settings <workspace>/.claude/settings.local.json \
+     --supervisor-pane manager:0.0 --scope default
+   ```
+   Existing settings/hooks are preserved and backed up.
+4. **Supervise.** Invoke the skill:
    ```
    /sprint-supervisor
    ```
@@ -121,9 +131,9 @@ defaults and prompts you once to create your own copy.
    claims a lockfile, optionally starts the watchdog, and begins the wakeup loop.
    Cold-start from your phone works too — if no manager is running, it confirms
    once and hands off to the sprint-manager skill to stand the topology up.
-4. **Walk away.** It approves routine prompts, refuses destructive ones (pinging
+5. **Walk away.** It approves routine prompts, refuses destructive ones (pinging
    you via `PushNotification`), and runs a periodic post-merge prune sweep.
-5. **Morning summary.** When the sprint goes idle it builds a summary (merges,
+6. **Morning summary.** When the sprint goes idle it builds a summary (merges,
    issues closed, what it handled, caveats), posts it to Slack if configured,
    and renders it as its next reply. Dismiss the supervisor to clean up.
 

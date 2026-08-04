@@ -1,7 +1,7 @@
 ---
 name: tmux-sprint
-version: 2.9.0
-last-updated: 2026-06-19
+version: 2.10.0
+last-updated: 2026-07-30
 description: >-
   Transactional sprint-round dispatch, liveness probing, and codex-session
   revival for persona agents running in a tmux grid. Use whenever the user
@@ -237,9 +237,11 @@ at it.
    sequential with 10s spacing (shared backend — 5s occasionally hit
    `overloaded_error`; 10s observed stable 2026-04-17).
 7. **Verify submission — three-tier retry.** 3s after send, recapture the
-   pane. If the prompt text appears OR a `Working`/`Processing`/tool-call
-   indicator shows, mark success. If nothing: (a) retry with fresh `C-m`;
-   (b) still nothing → full re-send (cancel copy-mode, re-send text,
+   pane. Echoed prompt text alone is `COMPOSED`, not success. Mark success only
+   when activity or completed-response evidence appears *after the last round
+   marker*. A queued-message footer is also not success. If the prompt remains
+   composed or queued: (a) retry with fresh `C-m`; (b) still not landed → full
+   re-send (cancel copy-mode, re-send text,
    `C-m`, wait 2×verify) — this catches the post-`/clear` race observed
    2026-04-17 where Elsa's pane silently absorbed the initial send. Only
    after all three tiers fail is the dispatch marked `SILENT_FAIL` and

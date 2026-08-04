@@ -63,6 +63,17 @@ eq "$(ts_metric_ctx 'foo Ctx: 42% bar')"        "42%" "ctx metric"
 eq "$(ts_metric_codex5h 'x 5h  24% y')"         "24%" "5h metric"
 eq "$(ts_metric_codexwk 'weekly 18% later')"    "18%" "weekly metric"
 
+# --- submission verification -------------------------------------------------
+eq "$(ts_submission_state '› Round 9: read /tmp/a.md and execute.
+gpt-5.6 · weekly 42%' 'Round 9:')" COMPOSED "echoed prompt is not submitted"
+eq "$(ts_submission_state '› Round 9: read /tmp/a.md and execute.
+• Working (1s • esc to interrupt)' 'Round 9:')" ACTIVE "working after prompt is submitted"
+eq "$(ts_submission_state '› Round 9: read /tmp/a.md and execute.
+Press up to edit queued messages' 'Round 9:')" QUEUED "queued prompt is not submitted"
+eq "$(ts_submission_state '› Round 9: read /tmp/a.md and execute.
+• Ran git status
+─ Worked for 2s' 'Round 9:')" COMPLETE "completed response after prompt is submitted"
+
 # --- preflight.sh end to end against a fake tmux -----------------------------
 
 TMP="$(mktemp -d)"

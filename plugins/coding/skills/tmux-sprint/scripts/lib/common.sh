@@ -112,11 +112,48 @@ ts_target() { # ts_target <pane>  ->  sprint:sprint.<pane>
 }
 
 ts_capture() { # ts_capture <pane>  -> last screenful of pane text
-  tmux capture-pane -p -t "$(ts_target "$1")" 2>/dev/null || true
+  tmux capture-pane -p -t "$(ts_target "$1")" -S -30 2>/dev/null || true
 }
 
 ts_cancel_copy_mode() { # send-keys -X cancel is a no-op outside copy-mode
   tmux send-keys -t "$(ts_target "$1")" -X cancel 2>/dev/null || true
+}
+
+# ts_submission_state <capture> <marker>
+#
+# A visible prompt echo is not proof that Enter submitted it. Codex may leave a
+# multiline/file-reference handoff composed at the bottom of the pane; older
+# dispatch code treated the echoed text itself as success. Require activity or
+# a completed-response marker *after the last prompt marker*.
+#
+# States: ACTIVE COMPLETE QUEUED COMPOSED MISSING
+ts_submission_state() {
+  local text="$1" marker="$2" after
+  if printf '%s' "$text" | grep -q 'Press up to edit queued messages'; then
+    echo QUEUED
+    return
+  fi
+  if ! printf '%s' "$text" | grep -qF "$marker"; then
+    echo MISSING
+    return
+  fi
+  after="$(
+    printf '%s\n' "$text" | awk -v marker="$marker" '
+      { line[NR]=$0; if (index($0, marker)) last=NR }
+      END { for (i=last+1; i<=NR; i++) print line[i] }
+    '
+  )"
+  if printf '%s' "$after" | grep -qiE \
+    '(•|◦)[[:space:]]+(Working|Booting)|esc to interrupt|Processing|Generating|Compacting|thinking with|[·✻][[:space:]].*…[[:space:]]+\(|Running [0-9]+ shell|shells? still running|↓[[:space:]]*[0-9]'; then
+    echo ACTIVE
+    return
+  fi
+  if printf '%s' "$after" | grep -qE \
+    '^[[:space:]]*(•|●)[[:space:]]|^[[:space:]]*(Ran|Explored|Edited|Created|Updated)[[:space:]]|Worked for [0-9]|─ Worked for'; then
+    echo COMPLETE
+    return
+  fi
+  echo COMPOSED
 }
 
 # --- pane state detection ----------------------------------------------------

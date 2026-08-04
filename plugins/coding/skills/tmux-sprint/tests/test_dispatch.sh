@@ -12,8 +12,9 @@ TMP="$(mktemp -d)"; trap 'rm -rf "$TMP"' EXIT
 export HOME="$TMP/home"; mkdir -p "$HOME"
 export TMUX_SPRINT_PROJECT="disp-test"
 
-# Fake tmux: capture-pane reads STATE/<pane>.txt; send-keys -l overwrites it
-# (simulating the prompt echoing into the pane). Seed all panes IDLE.
+# Fake tmux: capture-pane reads STATE/<pane>.txt; send-keys -l leaves the
+# prompt composed, and the following C-m transitions it to Working. This proves
+# that an echoed prompt alone no longer satisfies dispatch verification.
 STATE="$TMP/state"; mkdir -p "$STATE"; export STATE
 for p in 0 1 2 3 4 5; do printf '❯ idle  Ctx: 50%%\n' > "$STATE/$p.txt"; done
 BIN="$TMP/bin"; mkdir -p "$BIN"
@@ -31,7 +32,15 @@ done
 pane="${target##*.}"
 case "$cmd" in
   capture-pane) cat "$STATE/$pane.txt" 2>/dev/null || true;;
-  send-keys)    [[ "$haslit" -eq 1 ]] && printf '%s\n' "$lit" > "$STATE/$pane.txt";;
+  send-keys)
+    if [[ "$haslit" -eq 1 ]]; then
+      printf 'COMPOSED:%s\n' "$lit" > "$STATE/$pane.txt"
+    elif [[ "${args[*]}" == *"C-m"* ]] && grep -q '^COMPOSED:' "$STATE/$pane.txt" 2>/dev/null; then
+      sed 's/^COMPOSED://' "$STATE/$pane.txt" > "$STATE/$pane.next"
+      printf '• Working (1s • esc to interrupt)\n' >> "$STATE/$pane.next"
+      mv "$STATE/$pane.next" "$STATE/$pane.txt"
+    fi
+    ;;
 esac
 exit 0
 EOF
