@@ -100,8 +100,12 @@ See `references/dispatch-patterns.md` for worked patterns including the mobile c
    <skill-dir>/scripts/install-hooks.sh \
      --settings <workspace>/.claude/settings.local.json \
      --supervisor-pane manager:0.0 \
-     --scope <scope>
+     --scope <scope> \
+     --supervised-panes "<pane> <pane>"
    ```
+   `--supervised-panes` is what the `Stop` gate watches (see "Close the
+   busy-supervisor window" below); omit it and the gate falls back to the
+   lockfile's targets.
    The `PermissionRequest` hook auto-allows only a small single-command
    read-only allowlist plus `tmux capture-pane` / `tmux send-keys` when the
    request originates in the declared supervisor pane. Unknown and refusal
@@ -182,6 +186,28 @@ Claude/Codex TUI, it also sends a short file-reference nudge and verifies the
 Codex submit path with one bounded second `C-m`. It never interrupts a busy
 supervisor. ScheduleWakeup/human input remains the fallback latency floor when
 the manager is busy, absent, or not a recognized agent TUI.
+
+**Close the busy-supervisor window with the Stop gate.** Because the nudge fires
+only when the supervisor is idle, a prompt raised while the supervisor is
+mid-turn waits until the supervisor next goes idle — which is exactly when it is
+about to stop. `scripts/stop-gate.sh` runs on `Stop`, captures every pane in
+`SPRINT_SUPERVISED_PANES` (falling back to the lockfile's `supervised_panes` /
+`targets`), and returns `{"decision":"block"}` naming the pending command if any
+pane still has an unanswered permission prompt — sending the supervisor back to
+answer it instead of ending the turn. It skips panes showing `esc to interrupt`
+(prompt already answered, output still scrolling) and self-releases after
+`SPRINT_STOP_GATE_MAX` (default 5) consecutive blocks, so a refusal-shape prompt
+awaiting the owner cannot livelock the session. Wire it with
+`install-hooks.sh --supervised-panes '0:0.0 2:0.0'`.
+
+This matters more than it sounds. On 2026-08-11 a Codex manager sat blocked
+through several multi-minute supervisor turns and the *user* — who was supposed
+to be asleep — had to clear the prompts by hand. Neither obvious fix works:
+polling cadence still stalls an agent for the whole interval (an agent can prompt
+five times in five minutes), and blanket auto-approval trades the stall for
+unreviewed commands. Answering promptly, enforced at the one moment the
+supervisor is guaranteed to be about to go idle, is the fix. Pair it with the
+discipline of checking supervised panes as the **first** action of every turn.
 
 The hooks are deliberately narrow. Claude's `PermissionRequest` hook may return
 an allow/deny decision, while `Notification` exposes `permission_prompt` and
@@ -558,7 +584,7 @@ install guidance rather than a loud failure or silent empty scan — never assum
 a single tmux build.
 
 > **Note:** `sprint-watchdog.sh`, `supervisor-event.sh`,
-> `permission-gate.sh`, and `install-hooks.sh` are packaged in this skill.
+> `permission-gate.sh`, `stop-gate.sh`, and `install-hooks.sh` are packaged in this skill.
 > They use portable UTC timestamps and pane-read loops; the watcher requires
 > Bash because it uses arrays and process substitution.
 

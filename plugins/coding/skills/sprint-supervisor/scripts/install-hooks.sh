@@ -8,10 +8,11 @@ HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
 SETTINGS="${CLAUDE_PROJECT_DIR:-$PWD}/.claude/settings.local.json"
 SUPERVISOR_PANE=""
 SCOPE="default"
+SUPERVISED_PANES=""
 DRY=0
 
 usage() {
-  echo "usage: $0 [--settings PATH] --supervisor-pane SESSION:WINDOW.PANE [--scope NAME] [--dry-run]"
+  echo "usage: $0 [--settings PATH] --supervisor-pane SESSION:WINDOW.PANE [--scope NAME] [--supervised-panes 'P ...'] [--dry-run]"
 }
 
 while [ "$#" -gt 0 ]; do
@@ -19,6 +20,7 @@ while [ "$#" -gt 0 ]; do
     --settings) shift; SETTINGS="${1:-}" ;;
     --supervisor-pane) shift; SUPERVISOR_PANE="${1:-}" ;;
     --scope) shift; SCOPE="${1:-default}" ;;
+    --supervised-panes) shift; SUPERVISED_PANES="${1:-}" ;;
     --dry-run) DRY=1 ;;
     -h|--help) usage; exit 0 ;;
     *) echo "unknown argument: $1" >&2; usage >&2; exit 2 ;;
@@ -37,18 +39,22 @@ printf '%s' "$source_json" | jq empty
 
 permission_cmd="bash $HERE/permission-gate.sh"
 event_cmd="bash $HERE/supervisor-event.sh hook"
+stop_gate_cmd="bash $HERE/stop-gate.sh"
 
 updated="$(
   printf '%s' "$source_json" | jq \
     --arg pane "$SUPERVISOR_PANE" \
     --arg scope "$SCOPE" \
+    --arg supervised "$SUPERVISED_PANES" \
     --arg permission_cmd "$permission_cmd" \
-    --arg event_cmd "$event_cmd" '
+    --arg event_cmd "$event_cmd" \
+    --arg stop_gate_cmd "$stop_gate_cmd" '
       def append_unique($item):
         . as $a | if any($a[]?; . == $item) then $a else $a + [$item] end;
       .env = (.env // {}) |
       .env.SPRINT_SUPERVISOR_PANE = $pane |
       .env.SPRINT_SUPERVISOR_SCOPE = $scope |
+      (if $supervised == "" then . else .env.SPRINT_SUPERVISED_PANES = $supervised end) |
       .hooks = (.hooks // {}) |
       .hooks.PermissionRequest = (
         (.hooks.PermissionRequest // []) |
@@ -73,6 +79,10 @@ updated="$(
         append_unique({
           matcher:"",
           hooks:[{type:"command",command:$event_cmd,timeout:10}]
+        }) |
+        append_unique({
+          matcher:"",
+          hooks:[{type:"command",command:$stop_gate_cmd,timeout:20}]
         })
       )
     '
