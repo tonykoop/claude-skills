@@ -55,8 +55,17 @@ for p in $PANES; do
   # verb list (the spinner verb is unbounded and whimsical).
   printf '%s' "$cap" | tail -3 | grep -qE 'esc to interrupt' && continue
 
+  # Command prompts carry a Reason:/$ line. Edit prompts carry neither, so fall
+  # back to the question and the edited path — a bare pane id tells the
+  # supervisor nothing about what it is being sent back to answer.
   detail="$(printf '%s' "$cap" | grep -E '^[[:space:]]*(Reason:|\$ )' | head -2 \
             | tr '\n' ' ' | cut -c1-300)"
+  if [ -z "${detail// /}" ]; then
+    detail="$(printf '%s' "$cap" \
+              | grep -E 'Would you like to|Requesting permission for:|Edited |Edit file' \
+              | tail -2 | tr '\n' ' ' | tr -s '[:space:]' ' ' | cut -c1-300)"
+  fi
+  [ -n "${detail// /}" ] || detail="(prompt open; capture the pane to see it)"
   pending="${pending}[$p] ${detail}
 "
 done
