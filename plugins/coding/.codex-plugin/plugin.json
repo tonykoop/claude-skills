@@ -1,6 +1,6 @@
 {
   "name": "coding",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "Engineering operations: tmux sprint dispatch and supervision, WRFCoin personas and launch readiness, PR review, swarm dispatch, benchmarks, CI triage, source citations, scaffold hygiene, disk cleanup, and skill metadata audits.",
   "author": {
     "name": "Tony Koop",
