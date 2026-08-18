@@ -24,6 +24,15 @@ SCOPE="${SPRINT_SUPERVISOR_SCOPE:-default}"
 STATE_DIR="${SPRINT_SUPERVISOR_STATE_ROOT:-/tmp/sprint-supervisor}"
 STATE="$STATE_DIR/$SCOPE.stop-gate.count"
 MAX="${SPRINT_STOP_GATE_MAX:-5}"
+PROMPT_FOOTER_RE='Press enter to confirm or esc to cancel'
+PROMPT_QUESTION_RE='Would you like to (make|run) the following|Do you want to proceed[?]|Requesting permission for:'
+
+# The bound is a safety valve, so a typo must not silently turn it off. Keep the
+# accepted range deliberately small: more than 100 forced turns is not useful.
+case "$MAX" in ''|*[!0-9]*) MAX=5 ;; esac
+if [ "${#MAX}" -gt 3 ] || [ "$MAX" -lt 1 ] || [ "$MAX" -gt 100 ]; then
+  MAX=5
+fi
 
 mkdir -p "$STATE_DIR" 2>/dev/null || true
 command -v tmux >/dev/null 2>&1 || exit 0
@@ -35,6 +44,14 @@ panes_from_lock() {
   jq -r '(.supervised_panes // .targets // [])[]?' "$lock" 2>/dev/null || true
 }
 
+latest_prompt() {
+  awk -v footer="$PROMPT_FOOTER_RE" -v question="$PROMPT_QUESTION_RE" '
+    $0 ~ question { start = NR; line = NR; kind = "question" }
+    $0 ~ footer { line = NR; kind = "footer" }
+    END { if (line) print line, kind, (start ? start : line) }
+  '
+}
+
 PANES="${SPRINT_SUPERVISED_PANES:-}"
 [ -n "$PANES" ] || PANES="$(panes_from_lock | tr '\n' ' ')"
 [ -n "${PANES// /}" ] || exit 0
@@ -44,24 +61,35 @@ for p in $PANES; do
   cap="$(tmux capture-pane -p -t "$p" -S -40 2>/dev/null)" || continue
   [ -n "$cap" ] || continue
 
-  # An open prompt still awaiting an answer. Covers claude / codex / gemini
+  # Find the most recent prompt marker. Covers claude / codex / gemini
   # phrasings by matching the confirmation footer as well as the question.
-  printf '%s' "$cap" | grep -qE \
-    'Press enter to confirm or esc to cancel|Would you like to (make|run) the following|Do you want to proceed\?|Requesting permission for:' \
-    || continue
+  prompt_meta="$(printf '%s\n' "$cap" | latest_prompt)"
+  [ -n "$prompt_meta" ] || continue
+  read -r prompt_line prompt_kind prompt_start <<< "$prompt_meta"
+  after_prompt="$(printf '%s\n' "$cap" | tail -n "+$((prompt_line + 1))")"
+  prompt_block="$(printf '%s\n' "$cap" | tail -n "+$prompt_start")"
 
-  # Skip a pane that is actively working: the prompt was already answered and
-  # this is just scrollback. The activity marker is the reliable signal, not a
-  # verb list (the spinner verb is unbounded and whimsical).
-  printf '%s' "$cap" | tail -3 | grep -qE 'esc to interrupt' && continue
+  # A newer agent input cursor or activity marker proves the matching prompt is
+  # scrollback from an already-answered request, not the current pane state. A
+  # footer is the end of a permission dialog, so any later input cursor is new;
+  # question-only edit dialogs retain numbered choice cursors and need the
+  # narrower empty/default-input match.
+  if [ "$prompt_kind" = "footer" ]; then
+    printf '%s\n' "$after_prompt" \
+      | grep -qE '^[[:space:]]*[❯›>]([[:space:]]|$)' && continue
+  else
+    printf '%s\n' "$after_prompt" \
+      | grep -qE '^[[:space:]]*[❯›>][[:space:]]*($|Use /skills([[:space:]]|$))' && continue
+  fi
+  printf '%s\n' "$after_prompt" | tail -5 | grep -qE 'esc to interrupt' && continue
 
   # Command prompts carry a Reason:/$ line. Edit prompts carry neither, so fall
   # back to the question and the edited path — a bare pane id tells the
   # supervisor nothing about what it is being sent back to answer.
-  detail="$(printf '%s' "$cap" | grep -E '^[[:space:]]*(Reason:|\$ )' | head -2 \
+  detail="$(printf '%s' "$prompt_block" | grep -E '^[[:space:]]*(Reason:|\$ )' | head -2 \
             | tr '\n' ' ' | cut -c1-300)"
   if [ -z "${detail// /}" ]; then
-    detail="$(printf '%s' "$cap" \
+    detail="$(printf '%s' "$prompt_block" \
               | grep -E 'Would you like to|Requesting permission for:|Edited |Edit file' \
               | tail -2 | tr '\n' ' ' | tr -s '[:space:]' ' ' | cut -c1-300)"
   fi
@@ -78,6 +106,7 @@ fi
 n=0
 [ -f "$STATE" ] && n="$(cat "$STATE" 2>/dev/null || echo 0)"
 case "$n" in ''|*[!0-9]*) n=0 ;; esac
+[ "${#n}" -le 3 ] || n=0
 n=$((n + 1))
 printf '%s' "$n" > "$STATE"
 

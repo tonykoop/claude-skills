@@ -54,7 +54,7 @@ updated="$(
       .env = (.env // {}) |
       .env.SPRINT_SUPERVISOR_PANE = $pane |
       .env.SPRINT_SUPERVISOR_SCOPE = $scope |
-      (if $supervised == "" then . else .env.SPRINT_SUPERVISED_PANES = $supervised end) |
+      .env.SPRINT_SUPERVISED_PANES = $supervised |
       .hooks = (.hooks // {}) |
       .hooks.PermissionRequest = (
         (.hooks.PermissionRequest // []) |
