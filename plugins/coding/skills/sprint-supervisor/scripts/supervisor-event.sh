@@ -57,9 +57,16 @@ supervisor_pane() {
   fi
 }
 
+# A pane is BUSY only when the agent itself is working. Background work the
+# agent has already handed off — "· done 3:04 PM · 1 shell still running",
+# "· 2 monitors still running" — appears on the COMPLETED line and means the
+# opposite: the agent is idle and waiting for input. Treating it as busy
+# silently suppresses every nudge to a supervisor that has a background task
+# open, which is exactly when the supervisor most needs to be woken.
+# The active foreground form ("Running 1 shell command…") stays matched below.
 is_busy_capture() {
   printf '%s' "$1" | grep -qE \
-    'esc to interrupt|\([0-9]+m? ?[0-9]*s .*(tokens|esc)|Running [0-9]+ shell|shells? still running|Working \(|↓ [0-9]|Compacting|thinking with|Pontificating|Processing|Generating'
+    'esc to interrupt|\([0-9]+m? ?[0-9]*s .*(tokens|esc)|Running [0-9]+ shell|Working \(|↓ [0-9]|Compacting|thinking with|Pontificating|Processing|Generating'
 }
 
 is_idle_agent_capture() {
