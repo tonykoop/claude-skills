@@ -1,5 +1,19 @@
 # coding plugin — Changelog
 
+## 2.6.1 — 2026-11-17
+
+Two WRFCoin skills rewritten from the current code.
+
+- `wrfcoin-mobile-dev` 2.0.0: rewritten from the public `wrfcoin/mobile` repo. No more
+  `blockchain-core` FFI; real module map (wallets and vault, collect key, advisory
+  governance vote/propose signing, ladder view), `--dart-define` table for the chain 888
+  testnet, the `flutter test` file-list workaround, profile APK builds (never on
+  live-node hosts) and the wireless adb install recipe.
+- `ci-triage` 0.3.0: public repos run on free hosted runners, so the billing-block logic
+  is gone. Adds the CT102 runner count (must be 8), stuck queued/pending runs that hold
+  concurrency groups, and the jobs API when `--log-failed` is empty. Reads the current
+  public repo list; private repos dropped; old June schedule table removed.
+
 ## 2.6.0 — 2026-11-17
 
 WRFCoin skills realigned with the WRFCoin 2026-10-30 workflow reset (public repos in

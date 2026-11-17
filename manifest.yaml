@@ -58,12 +58,16 @@ skills:
       Retired 2026-11-17. WRFCoin lane/sprint planning was replaced by docs/plans/DECISIONS.md and future-epics.md in the 2026-10-30 reset. Repo copy removed; history in git.
 
   wrfcoin-mobile-dev:
-    canonical_version: 1.0.0
+    canonical_version: 2.0.0
     runtime: shared
     repo_path: plugins/coding/skills/wrfcoin-mobile-dev
-    last_updated: 2026-08-02
+    last_updated: 2026-11-17
     status: active
-    notes: Flutter and Dart development guidance for the WRFCoin mobile app.
+    notes: >-
+      Working guide for the WRFCoin phone app (public wrfcoin/mobile, chain 888):
+      module map, dart-define flags, flutter test file-list workaround, APK builds
+      and wireless adb install. v2.0.0 rewritten from the current repo (no
+      blockchain-core FFI).
 
   launch-audit:
     canonical_version: 1.0.0
@@ -214,18 +218,17 @@ skills:
       stale repo_path.
 
   ci-triage:
-    canonical_version: 0.2.0
+    canonical_version: 0.3.0
     runtime: claude
     repo_path: plugins/coding/skills/ci-triage
-    last_updated: 2026-06-19
+    last_updated: 2026-11-17
     status: active
     notes: >-
-      Read-only CI and Dependabot health check across all 7 WRFCoin repos
-      (core4, backend, frontend, smart-contracts, infra, security-testing,
-      mobile). Fires 5 gh commands in parallel, categorizes failures as
-      billing/real/config, writes a timestamped markdown report to
-      wrfcoin/docs/ci-triage/. v0.2.0 adds first machine-runnable eval suite
-      (5 evals).
+      Read-only CI and Dependabot health check across the public WRFCoin repos
+      (list read live from gh) plus the 8 CT102 self-hosted runners. Categorizes
+      failures as real/config/stuck/flaky, flags stuck queued runs holding
+      concurrency groups, writes a timestamped report to wrfcoin/docs/ci-triage/.
+      v0.3.0 drops the billing-block logic (public repos use free hosted runners).
 
   codex-merge-manager:
     canonical_version: 1.0.0
