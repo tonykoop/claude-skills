@@ -17,6 +17,11 @@ description: >-
   `/compact`.
 ---
 
+> **Not for WRFCoin (owner, 2026-10-30 reset).** The WRFCoin workspace no longer uses tmux
+> grids, persona panes or supervisors, and agents there must never answer another pane's
+> permission prompts. Do not use this skill in `/home/tony/wrfcoin*`; use parallel agents
+> with their own worktrees instead. It remains available for other projects.
+
 # tmux-sprint — Sprint Driver
 
 This skill drives an active tmux persona grid. A separate launch step

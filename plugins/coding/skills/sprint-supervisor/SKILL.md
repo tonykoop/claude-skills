@@ -5,6 +5,11 @@ last-updated: 2026-07-30
 description: Babysit a running multi-pane tmux agent sprint while the user is AFK or asleep. Combines event-driven Claude PermissionRequest, idle, and stop hooks with a mixed-provider tmux watchdog and a ~4 min reconciliation loop; auto-approves only narrow routine prompts, catches composed-but-unsubmitted handoffs, escalates destructive prompts, and produces a morning summary. Use this skill whenever the user says "watch the sprint", "supervise overnight", "I'm going to bed keep the sprint going", "babysit the panes", "keep an eye on twingrid", or invokes "/sprint-supervisor" — even without the word "supervisor". Scales by named scope — one instance handles a twingrid (18 panes), multiple instances divide-and-conquer a triplegrid or quadgrid by scoping each supervisor to a slice of grids coordinated via /tmp lockfile so peers don't double-approve.
 ---
 
+> **Not for WRFCoin (owner, 2026-10-30 reset).** The WRFCoin workspace no longer uses tmux
+> grids, persona panes or supervisors, and agents there must never answer another pane's
+> permission prompts. Do not use this skill in `/home/tony/wrfcoin*`; use parallel agents
+> with their own worktrees instead. It remains available for other projects.
+
 # /sprint-supervisor
 
 Watch an already-running tmux sprint and keep it unblocked while the user is away. The sprint manager (an agent in tmux window `0:0`) dispatches work to a persona grid; this skill steps in when either the manager or a grid pane stalls on a permission prompt the user would normally answer.
@@ -112,6 +117,7 @@ See `references/dispatch-patterns.md` for worked patterns including the mobile c
    nohup <skill-dir>/scripts/sprint-watchdog.sh \
      --scope <scope> --targets "twingrid-a twingrid-b" \
      > /tmp/sprint-supervisor/watchdog.out 2>&1 &
+   echo $! > /tmp/sprint-supervisor/<scope>.watchdog.pid
    disown
    ```
    The watcher can also take targets from the scope lockfile. It uses two
@@ -611,7 +617,7 @@ When the user returns and dismisses the supervisor:
    rm -f /tmp/sprint-supervisor/<scope>.pending
    # Keep <scope>.summary.md and <scope>.prune.log — user may want to grep them later.
    ```
-3. Stop the watchdog if you started it. **Use the bracket trick so `pkill` doesn't match its own command line and kill your shell:** `pkill -f '[s]print-watchdog.sh'` (plain `pkill -f sprint-watchdog.sh` self-matches and aborts with exit 144 — 2026-06-19 lesson). Confirm with `pgrep -f '[s]print-watchdog.sh'`.
+3. Stop the watchdog if you started it, **by its saved PID only** (record `$!` into `/tmp/sprint-supervisor/<scope>.watchdog.pid` when you start it): `kill "$(cat /tmp/sprint-supervisor/<scope>.watchdog.pid)"`. Never `pkill -f`/pattern-kill: a pattern matches other people's processes on a shared host.
 4. Don't reschedule another wakeup.
 
 ## Close-down procedure (full sprint teardown)

@@ -9,6 +9,20 @@ description: >-
   or pastes a PR URL.
 ---
 
+> **WRFCoin rules (2026-11, overrides the text below).**
+> - Merge gate = **green CI at the PR head**. No "waived" CI, no merge on a Codex
+>   timeout, no second human reviewer needed (owner, 2026-10-31). If CI is red or
+>   billing-blocked, do not merge: report it.
+> - VERIFY-FIRST: re-read PR state and checks right before merging; earlier verdicts go stale.
+> - **Consensus code** (core4 block validation, state apply, rewards, anything a feature
+>   flag schedules): CI green at the merged head, one merge at a time onto current main.
+>   It reaches nodes only through a batched `release.sh` release (one amd64 replay).
+>   Never schedule a feature yourself.
+> - UI PRs need a phone- and desktop-width screenshot in the PR.
+> - Persona worktrees (`<repo>-alice` etc.) are retired; skip the persona-reset part of step 8.
+> - Quick fixes go in a worktree of `/home/tony/wrfcoin-public/<repo>`, never in
+>   `/home/tony/wrfcoin/<repo>` or `/home/tony/wrfcoin/worktrees/*` (read-only `*-archive` clones).
+
 # PR Review
 
 Review open PRs against their linked GitHub issues. Post structured findings before
@@ -64,9 +78,9 @@ gh api repos/wrfcoin/$REPO/pulls/$PR/comments \
   --jq '.[] | select(.user.login | contains("codex")) | select(.commit_id == "'$HEAD_SHA'")'
 ```
 
-**Merge only if** (a) codex reviewed HEAD with zero P1 concerns, OR
-(b) 120s elapsed without a fresh review (timeout). When timing out, note
-`codex-timed-out` in the merge comment so the record is clear.
+**Merge only if CI is green at HEAD** and (a) codex reviewed HEAD with zero P1
+concerns, OR (b) 120s elapsed without a fresh review (note `codex-timed-out`).
+A Codex timeout never substitutes for green CI.
 
 If codex flags P1 concerns, post them as manager-required revisions and
 CHANGES REQUESTED verdict — do not merge.
@@ -142,7 +156,7 @@ worktree. Prevents the disk-bloat failure mode from the 2026-05 WSL2 vhdx
 overflow incident — see `feedback_post_merge_prune.md`.
 
 ```bash
-~/.claude/skills/disk-cleanup/scripts/prune-after-merge.sh \
+<coding-plugin>/skills/disk-cleanup/scripts/prune-after-merge.sh \
   --repo <repo> --branch <head-branch> --apply --json
 ```
 
@@ -189,9 +203,9 @@ Don't blindly trust or reject red checks.
    ```bash
    gh run view <run-id> --repo wrfcoin/<repo> --log-failed
    ```
-2. If the job has no steps/logs and matches the known billing/spend-limit
-   pattern, treat it as infra/account noise and document the waiver in the
-   review comment's CI row.
+2. If the job has no steps/logs (billing/spend-limit or runner outage), it is
+   NOT green: do not merge. Report it (WRFCoin CI runs on the CT102 self-hosted
+   runners; check that all 8 are active) and re-run once fixed.
 3. If the job shows a real code failure, do not merge until resolved.
 
 ## Reviewing multiple PRs — review DIRECTLY, never fan out sub-agents

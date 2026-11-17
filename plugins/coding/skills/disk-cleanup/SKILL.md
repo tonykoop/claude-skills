@@ -57,6 +57,9 @@ Cadence: weekly to biweekly, manually invoked. No scheduler.
   estimates only.
 - `--apply` enables the destructive operations: `cargo clean`, branch
   deletion, npm/pnpm cache clean.
+- **Never pass `--include-docker` on a host that runs a chain node** (WRFCoin: ws, Mango,
+  CT101). If the node container is stopped (e.g. mid-release) its chain-data volume counts
+  as unused and is deleted.
 - `--include-docker` adds `docker system prune --volumes` to the apply
   list (requires `--apply`).
 - `--prune-worktrees` enables the stale-worktree-removal step (clean + merged
