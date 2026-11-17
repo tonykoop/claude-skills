@@ -1,5 +1,25 @@
 # coding plugin — Changelog
 
+## 2.6.0 — 2026-11-17
+
+WRFCoin skills realigned with the WRFCoin 2026-10-30 workflow reset (public repos in
+`wrfcoin-public`, merge on green CI, releases only via `release.sh`, no tmux grids/personas).
+
+- Retired `wrfcoin-launch-personas`, `wrfcoin-agent-teams`, `wrfcoin-sprint-planner`
+  (manifest `status: retired`; repo copies removed, history in git).
+- `launch-audit`: security/consensus findings never go into public GitHub issues; reads the
+  public mains, not the archive clones.
+- `handoff`: fresh worktrees off the public clone with a `pwd`/origin check; no
+  `checkout -B` / `clean -fdx`; lead merges on green CI.
+- `merge-review`: green CI at HEAD is the merge gate (no billing waivers, no Codex-timeout
+  merges); consensus PRs merge one at a time and ship via `release.sh`.
+- `heal`, `wrfcoin-heal`: backend tests point Postgres/Redis at a closed port; explicit
+  `flutter test` file lists; disk guard; no builds on live-node hosts.
+- `sprint-supervisor`, `tmux-sprint`, `sprint-update`: marked not for WRFCoin (still
+  usable elsewhere). Supervisor stops its watchdog by saved PID, not `pkill -f`;
+  tmux-sprint kills only its named session, never `tmux kill-server`.
+- `disk-cleanup`: warn never to use `--include-docker` on a host that runs a chain node.
+
 ## 2.4.0 — 2026-07-30
 
 - `sprint-supervisor` v1.9.0: event-driven Claude hooks, scoped safe permission
