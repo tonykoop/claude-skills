@@ -1,5 +1,17 @@
 # Changelog — ci-triage
 
+## v0.3.0 — 2026-11-17
+
+- Public WRFCoin repos run on free GitHub-hosted runners: removed the billing-block
+  category, budget rows and the June 2026 weekly schedule table.
+- Added the CT102 self-hosted runner check (8 online across core4-archive,
+  backend-archive, infra-archive).
+- Added stuck-run diagnosis (old queued run holding a concurrency group; recommend
+  force-cancel, don't run it) and the jobs API fallback when `--log-failed` is empty.
+- Repo list now read live from `gh repo list wrfcoin --visibility public`; private repos
+  are out of the report.
+- Evals: billing eval replaced by `runners-not-eight`; added `stuck-pending-run`.
+
 ## v0.2.0 — 2026-06-19 (eval suite)
 
 Adds the first machine-runnable eval suite (5 evals) covering the skill's

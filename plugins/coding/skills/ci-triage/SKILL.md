@@ -1,327 +1,222 @@
 ---
 name: ci-triage
-version: 0.2.0
-last-updated: 2026-06-19
+version: 0.3.0
+last-updated: 2026-11-17
 description: >-
-  Run a read-only CI and Dependabot health check across all 7 WRFCoin repos
-  (core4, backend, frontend, smart-contracts, infra, security-testing, mobile)
-  and write a detailed markdown report to wrfcoin/docs/ci-triage/. Use this
-  skill whenever the user wants to check CI health, see which GitHub Actions
-  workflows are passing or failing, check billing status, triage Dependabot
-  alerts, audit pipeline state, see if the spending limit was fixed, check if
-  real failures appeared after billing was resolved, or just wants a status
-  snapshot across repos. Trigger phrases include "ci-triage", "check CI",
-  "ci status", "are workflows passing", "check the pipelines",
-  "dependabot status", "any new failures", "did billing get fixed".
+  Run a read-only CI and Dependabot health check across the public WRFCoin
+  repos (wrfcoin org: core4, backend, frontend, mobile, infra,
+  smart-contracts, docs, oracle-reference, testnet-support, meteo-types,
+  forecast-score, defi-protocols, storage-providers) plus the 8 self-hosted
+  CT102 runners, and write a markdown report to wrfcoin/docs/ci-triage/. Use
+  this skill whenever the user wants to check CI health, see which GitHub
+  Actions workflows pass or fail, find why a run is stuck queued or pending,
+  check that the CT102 runners are back on, triage Dependabot alerts, or get a
+  status snapshot across repos. Trigger phrases include "ci-triage", "check
+  CI", "ci status", "are workflows passing", "check the pipelines",
+  "dependabot status", "any new failures", "why is CI stuck", "are the
+  runners on".
 ---
 
-# CI Triage — WRFCoin Multi-Repo
+# CI Triage — WRFCoin public repos
 
-Run a thorough, read-only diagnostic sweep across all WRFCoin repos and write a
-detailed markdown report to `wrfcoin/docs/ci-triage/`. No code changes, no PRs,
-no commits.
+Read-only sweep. No code changes, no PRs, no commits, no reruns. The only file it
+writes is the report.
 
 **Output file:** `/home/tony/wrfcoin/docs/ci-triage/YYYY-MM-DD-HH-MM-ci-triage.md`
-Use the actual current UTC date/time in the filename (e.g. `2026-03-16-03-45-ci-triage.md`).
+(actual current UTC time in the name).
+
+## Where CI runs (2026-11)
+
+- **Public repos** (the `wrfcoin/*` repos without `-archive`) run on GitHub-hosted
+  `ubuntu-latest` (a few jobs on `macos-14` / `windows-2022`). Public repos get hosted
+  minutes free, so there is **no billing block** any more. A failure here is `real`,
+  `config`, `stuck` or `flaky`, never "billing".
+- **CT102 self-hosted runners: 8 in total**, registered to the private archive repos:
+  `core4-archive` (4, label `n5pro`), `backend-archive` (2, `ct102-backend`),
+  `infra-archive` (2, `n5pro`). Release replay and some archive gates use them. Steps
+  that stop them (release kits, maintenance) have left them off for a day before, so
+  always count them.
+- The `*-archive` repos are read-only history. Do not triage their workflows beyond
+  the runner count.
+
+Get the current public list instead of trusting the one above:
+
+```bash
+gh repo list wrfcoin --limit 100 --visibility public --no-archived \
+  --json name -q '.[].name' | grep -v '^\.github$' | sort
+```
+
+Never include private repos (security testing, incubation, `*-archive`) in the
+report's per-repo sections. The report is a local file, but parts of it may be
+pasted into public issues.
 
 ---
 
-## Step 1 — Gather all data in parallel
+## Step 1 — Gather data in parallel
 
-Fire ALL of these bash commands simultaneously (all in one message, separate tool calls):
+Set `REPOS` from the command above, then fire these as separate tool calls in one
+message.
 
-**A. CI run history — last 10 runs per repo:**
+**A. Runner count (must be 8):**
 ```bash
-for repo in core4 backend frontend smart-contracts infra security-testing mobile; do
+for r in core4-archive backend-archive infra-archive; do
+  gh api repos/wrfcoin/$r/actions/runners \
+    --jq "\"$r \(.total_count) total, \([.runners[]|select(.status==\"online\")]|length) online, \([.runners[]|select(.busy)]|length) busy\""
+done
+```
+Online across the three must add up to **8**. Fewer means a runner service is down
+on CT102. Report it as P0 and give Tony the read-only check to run on the Proxmox
+host: `pct exec 102 -- systemctl list-units --type=service --state=active
+--no-legend 'actions.runner.*' | wc -l` (must print 8). Do not start or stop
+runners yourself, and don't call them fixed until you have seen the 8.
+
+**B. Run history, last 10 per repo:**
+```bash
+for repo in $REPOS; do
   echo "=== wrfcoin/$repo ==="
   gh run list --repo wrfcoin/$repo --limit 10 \
     --json databaseId,name,status,conclusion,createdAt,headBranch,event 2>&1
-  echo ""
 done
 ```
 
-**B. Full Dependabot open alert detail (all repos, all fields):**
+**C. Stuck runs (queued):**
 ```bash
-for repo in core4 backend frontend smart-contracts infra security-testing; do
+for repo in $REPOS; do
+  gh api "repos/wrfcoin/$repo/actions/runs?status=queued&per_page=50" \
+    --jq ".workflow_runs[] | \"$repo \(.id) \(.name) \(.created_at) \(.head_branch)\"" 2>&1
+done
+```
+
+**D. Dependabot open alerts:**
+```bash
+for repo in $REPOS; do
   echo "=== wrfcoin/$repo ==="
-  gh api repos/wrfcoin/$repo/dependabot/alerts --paginate \
-    --jq '.[] | select(.state=="open") | {
-      number,
-      severity: .security_vulnerability.severity,
+  gh api "repos/wrfcoin/$repo/dependabot/alerts?state=open&per_page=100" --paginate \
+    --jq '.[] | {number, severity: .security_vulnerability.severity,
       package: .security_vulnerability.package.name,
       ecosystem: .security_vulnerability.package.ecosystem,
       summary: .security_advisory.summary,
-      patched_versions: .security_vulnerability.patched_versions,
-      cvss: .security_advisory.cvss.score
-    }' 2>&1
-  echo ""
+      patched: .security_vulnerability.first_patched_version.identifier}' 2>&1
 done
 ```
-
-**C. Workflow inventory per repo:**
-```bash
-for repo in core4 backend infra smart-contracts security-testing mobile frontend; do
-  echo "=== wrfcoin/$repo ==="
-  gh api repos/wrfcoin/$repo/actions/workflows \
-    --jq '.workflows[] | {name, state, path}' 2>&1
-  echo ""
-done
-```
-
-**D. Repo metadata:**
-```bash
-for repo in core4 backend frontend smart-contracts infra security-testing mobile; do
-  echo "=== wrfcoin/$repo ==="
-  gh repo view wrfcoin/$repo \
-    --json defaultBranchRef,isArchived,diskUsage,hasIssuesEnabled,openIssues:issues 2>&1
-  echo ""
-done
-```
+A 403/404 means alerts are off for that repo; say so, don't guess.
 
 **E. Open Dependabot PRs:**
 ```bash
-for repo in core4 backend frontend smart-contracts infra security-testing; do
-  echo "=== wrfcoin/$repo ==="
-  gh pr list --repo wrfcoin/$repo --author "dependabot[bot]" --state open \
-    --json number,title,createdAt,headRefName 2>&1
-  echo ""
+for repo in $REPOS; do
+  gh pr list --repo wrfcoin/$repo --author "app/dependabot" --state open \
+    --json number,title,createdAt 2>&1 | sed "s|^|$repo |"
 done
 ```
 
 ---
 
-## Step 2 — Deep-dive every recent failure
+## Step 2 — Deep-dive each recent failure
 
-For each repo that has runs with `conclusion: "failure"` in the **last 3 runs**,
-inspect the most recent failed run:
-
-```bash
-gh run view <RUN_ID> --repo wrfcoin/<repo> 2>&1
-```
-
-Then, if the failure is NOT billing (i.e. jobs actually ran), fetch the failure log:
+For each repo whose **last 3 runs on `main`** include `conclusion: failure`, look at
+the newest failed run:
 
 ```bash
-gh run view <RUN_ID> --repo wrfcoin/<repo> --log-failed 2>&1 | head -120
+gh run view <RUN_ID> --repo wrfcoin/<repo>
+gh run view <RUN_ID> --repo wrfcoin/<repo> --log-failed | tail -120
 ```
 
-Categorize each failure as:
-- **`billing`** — annotation says "spending limit" or "account payments have failed"
-- **`real`** — log shows actual test/lint/build/compile error with output
-- **`config`** — missing secret, broken workflow reference, invalid syntax, missing external infra
+If `--log-failed` prints nothing (common for cancelled, timed-out or never-started
+jobs), use the jobs API:
 
-Run these inspections in parallel (one tool call per repo in a single message).
+```bash
+gh api repos/wrfcoin/<repo>/actions/runs/<RUN_ID>/jobs \
+  --jq '.jobs[] | {id, name, status, conclusion, runner_name, started_at, completed_at,
+        failed_steps: [.steps[]|select(.conclusion=="failure")|.name]}'
+gh api repos/wrfcoin/<repo>/actions/jobs/<JOB_ID>/logs | tail -120
+```
+
+`gh run view` shows only the first page of check runs on big workflows; when a job
+seems missing, page the jobs API (`?per_page=100`).
+
+Never print secrets: if a log excerpt shows a token, key or `.env` value, drop that
+line from the report.
+
+Categorize each failure:
+- **`real`**: test, lint, type-check, build or compile error in the log.
+- **`config`**: missing secret, bad workflow reference, invalid YAML, missing external
+  service, a self-hosted label with no runner.
+- **`stuck`**: run sits `queued`/`pending` with 0 jobs (see below).
+- **`flaky`**: the same commit passed on a rerun or a neighbouring run. Name the test.
+
+### Stuck runs hold concurrency groups
+
+A run that sits `pending` with **zero jobs** is usually blocked by an older run still
+`queued` in the same concurrency group (for example one that targeted a self-hosted
+label with no runner). `cancel-in-progress: true` does not evict a queued run, and
+`gh run cancel` often only "submits" the request. Close/reopen, rebase and rerun all
+fail the same way.
+
+Diagnosis (read-only): from C, match the workflow and PR/branch, and note the old
+run's id and age. The fix is
+`gh api -X POST repos/wrfcoin/<repo>/actions/runs/<OLD_ID>/force-cancel`. That
+changes state, so this skill only **recommends** it (P0 item with the exact command);
+run it only if the user explicitly asks.
 
 ---
 
-## Step 3 — Write the detailed markdown report
-
-Write the complete report to `/home/tony/wrfcoin/docs/ci-triage/<YYYY-MM-DD-HH-MM>-ci-triage.md`.
-
-Use this structure — populate every section with real data, not placeholders:
+## Step 3 — Write the report
 
 ```markdown
-# CI Triage Report — YYYY-MM-DD HH:MM UTC
-
-> Generated automatically. Re-run `/ci-triage` at any time for a fresh snapshot.
+# CI Triage — YYYY-MM-DD HH:MM UTC
 
 ## Summary
-
 | Item | Value |
-|------|-------|
-| Billing status | BLOCKED / UNBLOCKED |
-| Repos with clean CI (main) | N / 7 |
+|---|---|
+| CT102 runners online | N / 8 (core4-archive a, backend-archive b, infra-archive c) |
+| Public repos green on main | N / M |
 | Repos with real failures | N |
-| Repos with no CI | N |
-| Total open Dependabot alerts | N (C critical, H high, M medium, L low) |
+| Stuck (queued/pending) runs | N |
+| Open Dependabot alerts | N (C critical, H high, M medium, L low) |
 | Open Dependabot PRs | N |
-| Budget used this cycle | X min / 3,000 min |
 
----
+## Runners
+[Counts from A. If not 8: which repo is short, and the exact check for Tony.]
 
-## Billing & Budget
+## Per-repo CI
+### <repo>   (one section per public repo)
+- Last run on main: [time, workflow, result]
+- Last 10 runs: table (run id, workflow, branch, event, result, when)
+- Failures: category, root cause, short log excerpt (no secrets)
 
-[Current billing status. Quote the annotation message if billing-blocked.
-Note which repos have had runs since the last billing event.
-Flag if minutes are running low (< 500 remaining).]
+## Stuck runs
+[repo, run id, workflow, age, blocking run id, recommended force-cancel command]
 
----
-
-## Per-Repo CI Status
-
-### core4
-- **Workflows active:** N
-- **Last run on main:** [timestamp, workflow name, result]
-- **Recent run summary (last 10):**
-
-| Run # | Workflow | Branch | Result | Triggered | When |
-|-------|----------|--------|--------|-----------|------|
-| ...   | ...      | ...    | ✓/✗    | push/pr/schedule | ... |
-
-- **Failures detail:**
-  [For each failing workflow, category + root cause + relevant log excerpt]
-
-### backend
-[same structure — note if no workflow files exist]
-
-### frontend
-[same structure]
-
-### smart-contracts
-[same structure]
-
-### infra
-[same structure — note the alignment-campaign-rollup schedule noise]
-
-### security-testing
-[same structure]
-
-### mobile
-[same structure]
-
----
-
-## Workflow Inventory
-
-### core4 (N workflows)
-| Workflow | State | Classification | Notes |
-|----------|-------|---------------|-------|
-| Rust Shared/Native Parity Gate | active | Essential | ... |
-| CI Readiness | active | Essential | ... |
-| ... | ... | ... | ... |
-
-Classify each as: **Essential** (build/test/lint), **Optional** (compliance/docs/release),
-**Aspirational** (not yet functional), or **Broken-by-design** (references missing infra/secrets).
-
-[Repeat for infra, smart-contracts, security-testing, mobile, frontend]
-
----
-
-## Dependabot Alert Detail
-
-### core4
-#### Critical
-| # | Package | Ecosystem | Summary | CVSS | Fix Available |
-|---|---------|-----------|---------|------|---------------|
-| N | pkg | rust/npm/pip | ... | X.X | yes / no |
-
-#### High
-[same table]
-
-#### Medium
-[same table]
-
-#### Low
-[same table]
-
-### backend
-[same sections]
-
-### frontend
-[same]
-
-### smart-contracts
-[same — flag OpenZeppelin contract vulnerabilities explicitly as on-chain risk]
-
-### infra
-[same]
-
-### security-testing
-[same]
-
-### mobile
-> Dependabot alerts disabled for this repo.
-
----
+## Dependabot
+[Per repo: counts by severity; critical/high rows with package and fix version.
+Flag smart-contracts alerts as on-chain risk. Note repos with alerts off.]
 
 ## Open Dependabot PRs
+[repo, #, title, age; or "none"]
 
-[List any open PRs from dependabot[bot] across all repos, with title and age.
-If none: "No open Dependabot PRs across any repo."]
+## Changes since the previous report
+[Diff against the newest file in docs/ci-triage/, if any.]
 
----
-
-## Runtime Dependency Analysis (Rust — core4)
-
-For HIGH and CRITICAL Rust alerts in core4, note whether the vulnerable package
-is in the runtime binary dependency chain or dev/test only.
-Use results from cargo tree analysis if available in prior context; otherwise note
-that a `cargo tree -i <pkg>` check is needed.
-
-Key known runtime packages (from prior analysis):
-- `yamux` → wrfcoin-p2p (runtime P2P) — HIGH, no fix available
-- `ed25519-dalek` → wrfcoin-p2p (runtime P2P identity) — MEDIUM
-- `ring@0.17` → wrfcoin-p2p (libp2p-noise) — MEDIUM
-- `bytes` → wrfcoin-native-chain (actix-web) — MEDIUM
-- `protobuf` → wrfcoin-native-chain + shared-protocol (prometheus) — MEDIUM, no fix
-
----
-
-## Changes Since Previous Triage
-
-[Compare against the last report in docs/ci-triage/ if one exists.
-List: new failures, resolved failures, alert count changes, new workflows, etc.
-If this is the first report, compare against the 2026-03-15 baseline below.]
-
-**2026-03-15 baseline:**
-- All CI billing-blocked
-- core4: ~68 open alerts (2 critical, 22 high, 41 medium, 13 low)
-- backend: 19 open alerts (1 critical, 7 high)
-- frontend: 4 open alerts
-- smart-contracts: 22 open alerts
-- infra: 3 open alerts
-- security-testing: 22 open alerts
-- 0 open Dependabot PRs
-
----
-
-## Priority Action Items
-
-[Ordered by urgency. Be specific — include file paths, workflow names, issue numbers.]
-
-### P0 — Blocking (fix before next merge to main)
-1. ...
-
-### P1 — High (fix this sprint)
-1. ...
-
-### P2 — Track (schedule for later)
-1. ...
-
----
-
-## Known Context
-
-- **backend** has 0 workflow files — CI never runs for this repo
-- **frontend** has `documentation-pipeline.yml` — runs weekly Wednesday 04:00 UTC
-- **mobile** Dependabot alerts disabled (enable in repo Security settings)
-- **core4** npm alerts come from stale `frontend/` + `backend/` subdirs pending PR #376
-- Branch protection API returns 403 on all repos (private repos, GitHub Teams required)
-- core4 burns ~95% of Actions minutes budget — 3,000 min/month included (Teams plan)
-- **core4 CI Readiness currently failing (real)**: `tests/unit/carbon-credit/carbon-audit-service.test.ts` and `tests/unit/network/protocol-validation.test.ts` import missing `backend/` modules
-- **32 workflows converted to weekly on 2026-03-16** — a workflow last run several days ago is likely just waiting for its scheduled day, not broken
-
-## Weekly workflow schedule (effective 2026-03-16)
-
-All 32 converted workflows also have `workflow_dispatch` for manual runs.
-
-| Day | Repo(s) | Workflows (UTC) |
-|-----|---------|-----------------|
-| Mon | core4 | CI Readiness (04:00), TDD Phase 3C (03:00), Supply Chain (04:00), Parity Gate (05:00) |
-| Tue | core4 | CLI Integration (04:00), Chromatic (05:00), Component Discovery (06:00) |
-| Wed | core4, frontend, smart-contracts | Gap Report (04:00), SBOM (05:00), Docs Pipeline (04:00), Audit Readiness (04:00), Governance Verify (05:00) |
-| Thu | infra | Alignment Rollup (04:00), Integrity Observability (05:00), Game Day (06:00) |
-| Fri | infra | Sanctions Parity (04:00), WRF Nano (05:00), Policy Bundle (06:00) |
-| Sat | infra, security-testing | Docs Sync (04:00), Launch Contract (05:00), P2P Partition (06:00), Adversarial Bot Farms (02:00), Sanction Evasion (03:00), Borderless (04:00), Sanction Parity (05:00) |
-| Sun | core4, security-testing, mobile | Docker Scan (02:00), Policy Evasion (02:00), Determinism (03:00), Forecast Gaming (04:00), Consensus Liveness (05:00), Mobile CI (06:00) |
+## Action items
+### P0 (blocks merges or releases)
+### P1 (this week)
+### P2 (track)
 ```
 
----
+## Step 4 — Finish
 
-## Step 4 — Finish up
+1. Print the report path as a Firefox link in a code block:
+   `file://///wsl.localhost/Ubuntu/home/tony/wrfcoin/docs/ci-triage/<name>.md`
+2. Print a short summary: runners N/8, how many repos are green, any real failures or
+   stuck runs, critical alerts.
+3. Do not print the whole report.
 
-After writing the file:
-1. Print the full path of the report file to stdout so the user knows where it is
-2. Print a one-paragraph executive summary to stdout (the TL;DR — billing status,
-   how many workflows are green, any critical new findings)
-3. Do NOT print the entire report to stdout — it's in the file
+## Rules
+
+- Read-only. If asked to fix something mid-triage, log it as an action item and say
+  that fixing is a separate task (`gh-fix-ci` or `heal`).
+- No `gh run rerun` loops and no retry loops on `gh` errors: report the error.
+- Count claims come from the tool's own count (`total_count`, `length`), not from
+  eyeballing output.
+- Never mention private security work, private branches or unreleased
+  security fixes in the report.
