@@ -17,6 +17,11 @@ description: >-
   `/compact`.
 ---
 
+> **Not for WRFCoin (owner, 2026-10-30 reset).** The WRFCoin workspace no longer uses tmux
+> grids, persona panes or supervisors, and agents there must never answer another pane's
+> permission prompts. Do not use this skill in `/home/tony/wrfcoin*`; use parallel agents
+> with their own worktrees instead. It remains available for other projects.
+
 # tmux-sprint — Sprint Driver
 
 This skill drives an active tmux persona grid. A separate launch step
@@ -60,8 +65,10 @@ either terminal.
 From outside any tmux:
 
 ```bash
-# Kill any stale sessions left from prior runs
-tmux kill-server 2>/dev/null || true
+# Kill only the stale sprint sessions YOU created earlier, by name. Never
+# `tmux kill-server`: it kills every session on the socket, including the
+# user's and other agents'.
+tmux kill-session -t sprint 2>/dev/null || true
 
 # Create the manager session (this is where Claude Code runs)
 tmux new-session -d -s manager -n manager

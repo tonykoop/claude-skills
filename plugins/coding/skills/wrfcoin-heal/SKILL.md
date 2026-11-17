@@ -22,11 +22,17 @@ For a generic Rust or TypeScript repair loop outside WRFCoin, use `heal`.
 - Rust crate: `cargo check -p <crate>`
 - Rust targeted tests: `cargo test -p <crate> <test_name>`
 - TypeScript: `npx tsc --noEmit`
-- Jest: `npx jest --no-coverage`
-- Flutter: `flutter test`
+- Jest (backend): `DATABASE_URL=postgres://127.0.0.1:1/x REDIS_URL=redis://127.0.0.1:1 npx jest --no-coverage`
+  (unset, backend tests hit the LIVE local Postgres/Redis)
+- Flutter: `flutter test <explicit test files>` (the full suite hangs on ws on two files; CI runs them)
 - Solidity: `npx hardhat test`
 
 ## Rules
+
+- Work in a worktree of `/home/tony/wrfcoin-public/<repo>`, never in `/home/tony/wrfcoin/<repo>`
+  (read-only archive clones).
+- Rust: stop if `df -h /` shows under 20 GB free; never point a cargo target dir at /tmp.
+- Build and test on the workstation or CT102 only, never on a host running a live node.
 
 - Fix one logical problem per round.
 - Do not refactor unrelated code during a heal loop.

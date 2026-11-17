@@ -37,29 +37,27 @@ Write to `docs/plans/YYYY-MM-DD-<persona>-<slug>.md` (lowercase persona name):
 
 You own wrfcoin/<repo>#<issue>: <title>.
 
-Repo: /home/tony/wrfcoin/<repo>
+Repo: /home/tony/wrfcoin-public/<repo>   (origin wrfcoin/<repo>)
 
 ---
 
 ## PHASE 1 — WORKTREE SETUP (do this first)
 
-You MUST work in your semi-permanent persona worktree. Do NOT modify the main checkout
-at /home/tony/wrfcoin/<repo>. Working in the main checkout WILL cause your changes
-to be lost (linters and other agents operate there).
+Create a fresh worktree off the PUBLIC clone. Never use `/home/tony/wrfcoin/<repo>` or
+`/home/tony/wrfcoin/worktrees/*`: those are clones of the read-only `*-archive` repos and
+a PR from them lands in the wrong repo.
 
-Semi-permanent worktrees exist at `/home/tony/wrfcoin/worktrees/<repo>-<persona>/`.
-Each persona reuses its worktree — do NOT create new worktrees with `git worktree add`.
+    git -C /home/tony/wrfcoin-public/<repo> fetch origin main
+    git -C /home/tony/wrfcoin-public/<repo> worktree add \
+        /home/tony/wrfcoin-public/wt-<repo>-<slug> -b <branch-name> origin/main
+    cd /home/tony/wrfcoin-public/wt-<repo>-<slug>
+    pwd && git remote get-url origin   # must print wrfcoin/<repo>, not *-archive
 
-    cd /home/tony/wrfcoin/worktrees/<repo>-<persona>
-    git fetch origin main
-    git checkout -B <branch-name> origin/main
-    git clean -fdx
+Do not reuse someone else's worktree, and do not run `git checkout -B` or `git clean -fdx`
+in an existing one (both destroy work). Rust builds: check `df -h /` first and stop under
+20 GB free; never put a cargo target dir in /tmp.
 
-The `checkout -B` resets the worktree to a fresh branch from latest main. The `clean -fdx`
-removes any leftover build artifacts from the previous assignment.
-
-ALL of your work must happen inside /home/tony/wrfcoin/worktrees/<repo>-<persona>/.
-Do not cd back to /home/tony/wrfcoin/<repo> to edit files.
+ALL of your work must happen inside that worktree.
 
 ---
 
@@ -144,8 +142,10 @@ When your implementation is done and all validation passes:
 
     git push origin <branch-name>
 
-Do NOT merge the PR and do NOT mark it ready-for-review — the merge-review will
-review and merge.
+Do NOT merge the PR yourself. The lead merges once CI is green (no second reviewer
+is required). Consensus code (core4 validation, state apply, rewards, scheduled
+features) merges one PR at a time onto current main and ships in a batched node
+release via release.sh; never deploy it to a node yourself.
 ```
 
 ### Available semi-permanent worktrees

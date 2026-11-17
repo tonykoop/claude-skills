@@ -3,7 +3,7 @@
 # Update this file whenever a skill version is bumped, packaged, or deprecated.
 
 schema_version: 1
-last_updated: 2026-08-02
+last_updated: 2026-11-17
 
 install_roots:
   windows:
@@ -26,9 +26,10 @@ skills:
     canonical_version: 1.0.0
     runtime: shared
     repo_path: plugins/coding/skills/wrfcoin-agent-teams
-    last_updated: 2026-08-02
-    status: active
-    notes: Persona-led WRFCoin team orchestration with explicit subagent ownership.
+    last_updated: 2026-11-17
+    status: retired
+    notes: >-
+      Retired 2026-11-17. The WRFCoin persona/sprint-doc process ended with the 2026-10-30 workflow reset (parallel agents with their own worktrees, no personas). Repo copy removed; history in git.
 
   wrfcoin-heal:
     canonical_version: 1.0.0
@@ -42,17 +43,19 @@ skills:
     canonical_version: 1.0.0
     runtime: shared
     repo_path: plugins/coding/skills/wrfcoin-launch-personas
-    last_updated: 2026-08-02
-    status: active
-    notes: Launches named WRFCoin personas in visible Codex or Claude sessions.
+    last_updated: 2026-11-17
+    status: retired
+    notes: >-
+      Retired 2026-11-17. Persona tmux/wt.exe launches ended with the WRFCoin 2026-10-30 workflow reset (no tmux grids or personas). Repo copy removed; history in git.
 
   wrfcoin-sprint-planner:
     canonical_version: 1.0.0
     runtime: shared
     repo_path: plugins/coding/skills/wrfcoin-sprint-planner
-    last_updated: 2026-08-02
-    status: active
-    notes: Backlog shaping, lane assignment, and handoff planning for WRFCoin sprints.
+    last_updated: 2026-11-17
+    status: retired
+    notes: >-
+      Retired 2026-11-17. WRFCoin lane/sprint planning was replaced by docs/plans/DECISIONS.md and future-epics.md in the 2026-10-30 reset. Repo copy removed; history in git.
 
   wrfcoin-mobile-dev:
     canonical_version: 1.0.0

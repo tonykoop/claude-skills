@@ -8,6 +8,8 @@ description: >-
   "update the sprint", or after a batch of merges to bring the sprint document current.
 ---
 
+> **Not for WRFCoin** (2026-10-30 reset: no sprint docs or personas; open questions go in `docs/plans/DECISIONS.md`). Still fine for other projects.
+
 # Sprint Document Update
 
 Update the sprint doc at `docs/plans/<date>_Sprint.md` (or the most recent sprint file).

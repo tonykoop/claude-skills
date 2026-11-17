@@ -153,6 +153,10 @@ npm test 2>&1 | tail -50
 npx jest --no-coverage 2>&1 | tail -50
 ```
 
+> **WRFCoin backend tests:** always set `DATABASE_URL=postgres://127.0.0.1:1/x` and
+> `REDIS_URL=redis://127.0.0.1:1` (or another closed port) before `npm test`/`jest`.
+> Unset, they connect to the LIVE local Postgres/Redis on the workstation.
+
 ---
 
 ## Phase 3: Diagnose Failures

@@ -9,6 +9,18 @@ description: >-
   "pre-deploy check", "are we ready to launch", "readiness check", "go/no-go".
 ---
 
+> **WRFCoin rules (2026-11, overrides the text below).** The `wrfcoin/core4`, `backend`,
+> `frontend`, `infra`, `mobile` and `smart-contracts` repos are PUBLIC since 2026-10-22.
+> - **Security and consensus findings never go into public issues.** Write them only to the
+>   local report (`/home/tony/wrfcoin/audit/`) and hand them to the lead; any fix goes on a
+>   `private/*` branch that is never pushed or described publicly until deployed.
+> - Other findings: file in the matching `*-archive` repo (the backlog stays there), not the
+>   public repo, unless Tony says otherwise.
+> - Read code from `/home/tony/wrfcoin-public/<repo>` (current main), not the archive clones.
+> - Chain 888 runs three producers (ws, Mango arm64, n5/CT101). Audits are read-only: no
+>   ssh/compose on live-node hosts; node changes ship only through a deploy kit / `release.sh`
+>   with Tony typing YES.
+
 # Pre-Deployment Launch Audit Swarm
 
 Spawn 6 specialized audit agents to deep-dive deployment-critical domains, file
@@ -78,10 +90,10 @@ Each agent uses `subagent_type: "general-purpose"` and `model: "sonnet"`.
 You are a launch-readiness audit agent for the WRFCoin blockchain platform.
 Your job is READ-ONLY research — do NOT modify any code.
 
-Workspace: /home/tony/wrfcoin/
-Repos: core4, backend, frontend, smart-contracts, infra, security-testing, mobile
+Workspace: /home/tony/wrfcoin-public/ (current public mains; NOT /home/tony/wrfcoin/<repo>, which are archive clones)
+Repos: core4, backend, frontend, smart-contracts, infra, mobile, oracle-reference, testnet-support
 
-Deployment target: Local testnet on N5 Pro (Proxmox, Docker containers via SSH).
+Deployment target: public testnet chain 888 (producers ws, Mango, n5/CT101; builds on ws or CT102 only).
 No cloud/registry pushes — all images built locally.
 
 Rules:
@@ -130,10 +142,8 @@ Priority targets:
    Pattern: console.log.*key, log::info.*secret, println!.*password
 
 File each finding:
-    gh issue create --repo wrfcoin/<repo> \
-      --title "[Security] <title>" \
-      --label "audit/security,<P0|P1|P2>" \
-      --body "<body with file:line, impact, fix>"
+    DO NOT file a GitHub issue (the repos are public). Record each finding
+    only in the report below; the lead routes fixes to a private/* branch.
 
 Write report to: /home/tony/wrfcoin/audit/security-report.md
 ```
@@ -275,10 +285,8 @@ Priority targets:
    Ref: PR #505 established u64 base units
 
 File each finding:
-    gh issue create --repo wrfcoin/core4 \
-      --title "[Consensus] <title>" \
-      --label "audit/consensus,<P0|P1|P2>" \
-      --body "<body with file:line, impact, fix>"
+    DO NOT file a GitHub issue (core4 is public). Record each finding
+    only in the report below; consensus fixes ship in a batched node release.
 
 Write report to: /home/tony/wrfcoin/audit/consensus-report.md
 ```
